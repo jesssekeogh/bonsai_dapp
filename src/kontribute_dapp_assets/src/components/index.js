@@ -1,0 +1,1 @@
+export { default as AlertTest } from './alerttest/AlertTest';
