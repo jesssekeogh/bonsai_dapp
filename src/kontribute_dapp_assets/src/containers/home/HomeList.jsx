@@ -1,49 +1,47 @@
 import React from 'react'
 import "./homelist.css";
+import { Link } from 'react-router-dom';
 import {
-    Alert,
-    AlertIcon,
-    AlertDescription,
-    AlertTitle,
-    CloseButton,
-    VStack, 
+    Heading, 
     Box, 
-    StackDivider
+    Stack,
   } from '@chakra-ui/react';
 
 // the main home section of the dapp
 
+// text color
+
+function Feature({ title, ...rest }) {
+  return (
+    <Box p={5} shadow='md' borderWidth='1px' borderRadius='lg' {...rest}>
+      <Heading bgGradient='linear(to-t, #705025, #a7884a)' bgClip='text'>{title}</Heading>
+    </Box>
+  )
+}
+
+function StackEx() {
+  return (
+    <Stack spacing={8}>
+      <Link to="world-of-bonsai">
+      <Feature className="bonsai__box"
+        title='Stories'
+        />
+      </Link>
+      <Feature className="bonsai__box2"
+        title='NFT'
+      />
+      <Feature className="bonsai__box2"
+        title='Create'
+      />
+    </Stack>
+  )
+}
+
 const HomeList = () => {
     return (
-    <div>
-        <div className="home__alert">
-    
-        <Alert status='info' variant='left-accent'>
-        <AlertIcon />
-        <AlertTitle mr={2}>Kontribute is in heavy development mode!</AlertTitle>
-        <AlertDescription>See our roadmap for information regarding launch.</AlertDescription>
-        <CloseButton position='absolute' right='8px' top='8px' />
-        </Alert>
-
-        </div>
         <div className="home__tabs">
-        <VStack
-            divider={<StackDivider borderColor='gray.200' />}
-            spacing={4}
-            align='stretch'
-            >
-          <Box h='40px' bg='yellow.200'>
-           1
-          </Box>
-          <Box h='40px' bg='tomato'>
-          2
-          </Box>
-          <Box h='40px' bg='pink.100'>
-          3
-          </Box>
-        </VStack>
+        <StackEx />
         </div>
-    </div>
     )
 }
 

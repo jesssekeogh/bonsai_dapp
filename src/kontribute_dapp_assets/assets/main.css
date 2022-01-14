@@ -1,2 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Noto+Sans+JP:wght@700&family=Orienta&family=Risque&display=swap');
+
 .bonsai__home{
+    margin-top: 4rem;
+    padding:5%;
+    font-family: 'Noto Sans JP', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
