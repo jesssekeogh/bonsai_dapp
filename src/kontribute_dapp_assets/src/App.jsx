@@ -1,10 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import "../assets/main.css";
-import Stories from './Stories';
-import { HomeList, NavBar } from './containers';
 
-// this is the launch page
+// CSS
+import "../assets/main.css";
+
+// pages:
+import Stories from './Stories';
+
+// containers & components:
+import { HomeList, NavBar } from './containers';
+import { Auth } from './components';
+
+// this is the launch page:
 
 function App() {
   return (
@@ -25,6 +32,7 @@ function Home() {
     <NavBar />
     <div className="bonsai__home">
       <HomeList />
+      <Auth />
     </div>
     </div>
   )

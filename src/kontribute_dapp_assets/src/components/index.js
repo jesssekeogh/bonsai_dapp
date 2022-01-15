@@ -1,1 +1,1 @@
-export { default as AlertTest } from './alerttest/AlertTest';
+export { default as Auth } from './auth/Auth';

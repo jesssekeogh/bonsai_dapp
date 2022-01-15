@@ -1,7 +1,8 @@
 import React from 'react';
 import "../assets/main.css";
 import { NavBar } from './containers';
-// this is where the world of bonsai voting page will be
+
+// this is where a tab of available stories will be (thinking cards)
 
 const Bonsai = () => {
     return (
