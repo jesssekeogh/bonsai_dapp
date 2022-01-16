@@ -4,7 +4,9 @@ import { NavBar } from './containers';
 
 // this is where a tab of available stories will be (thinking cards)
 
-const Bonsai = () => {
+// if authenticated load up story:
+
+const Stories = () => {
     return (
         <div>
             <NavBar />
@@ -15,4 +17,4 @@ const Bonsai = () => {
     )
 }
 
-export default Bonsai;
+export default Stories;

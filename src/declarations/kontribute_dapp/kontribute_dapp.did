@@ -1,14 +1,3 @@
-type Phone = nat;
-type Name = text;
-type Entry = 
- record {
-   address1: text;
-   address2: text;
-   email: text;
-   name: Name;
-   phone: Phone;
- };
 service : {
-  insert: (Name, text, text, text, Phone) -> ();
-  lookup: (Name) -> (opt Entry) query;
+  whoami: () -> (principal);
 }
