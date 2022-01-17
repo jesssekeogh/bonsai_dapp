@@ -23,21 +23,17 @@
     align-items: center;
 }
 
-.bonsai__navbar-sign:hover {
-    opacity: 0.8;
+.bonsai__navbar-sign p {
+    width:100%;
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-
-.bonsai__navbar-sign button {
-    color: #fff;
-    padding: 0.5rem 1rem;
-    background: #17191e;
-    border: 1px solid #9d8144;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 25px;
-    cursor: pointer;
-    border-radius: 5px;
+.bonsai__navbar-sign button:hover {
+    opacity: 0.8;
 }
 
 /* Iphone X css */
