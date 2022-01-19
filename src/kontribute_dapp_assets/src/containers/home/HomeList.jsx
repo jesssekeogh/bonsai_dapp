@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./homelist.css";
 import { Link } from 'react-router-dom';
 import {
     Heading, 
     Box, 
     Stack,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+    CloseButton
   } from '@chakra-ui/react';
 
 // the main home section of the dapp
@@ -37,12 +42,34 @@ function StackEx() {
   )
 }
 
+
 const HomeList = () => {
+  const [alert, toggleAlert] = useState(true);
+
+  if(alert === true){
+    return(
+      <div className="home__tabs">
+      <Alert status='warning'>
+      <AlertIcon />
+      <Box flex='1'>
+      <AlertTitle color='red' textDecoration='underline' >Development Mode!</AlertTitle>
+      <AlertDescription display='block'>
+        Kontribute is still in heavy development and testing. Keep up to date with us on Discord and Twitter.
+      </AlertDescription>
+      </Box>
+      <CloseButton onClick={() => toggleAlert(false)} as='Button' position='absolute' right='8px' top='8px' />
+      </Alert>
+      <br></br>
+      <StackEx />
+      </div>
+      )
+  }else{
     return (
-        <div className="home__tabs">
+      <div className="home__tabs">
         <StackEx />
-        </div>
+      </div>
     )
+  }
 }
 
 export default HomeList

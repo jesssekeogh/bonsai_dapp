@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Noto+Sans+JP:wght@700&family=Orienta&family=Risque&display=swap');
 
 .bonsai__home{
-    margin-top: 4rem;
+    margin-top: 3rem;
     padding:5%;
     font-family: 'Noto Sans JP', sans-serif;
     display: flex;
@@ -13,6 +13,13 @@
     opacity: 0.8;
 }
 
+.bonsai__stories {
+    color:#fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
 /* Iphone X css */
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
     .bonsai__home{

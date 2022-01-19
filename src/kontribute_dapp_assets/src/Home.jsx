@@ -3,6 +3,7 @@ import "../assets/main.css";
 import { NavBar, HomeList } from './containers';
 
 const Home = props => {
+
     return (
         <div>
         <NavBar userId={props.userId} signOutFunc={props.signOutFunc}/>
