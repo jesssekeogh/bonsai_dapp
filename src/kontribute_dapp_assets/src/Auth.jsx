@@ -111,7 +111,7 @@ const Auth = () => {
       
             {signedIn ? (
               <>
-                <Home userId={principal} signOutFunc={signOut()} signActor={signActor}/>
+                <Home userId={principal} signOutFunc={signOut} signActor={signActor}/>
               </>
             ) : null}
             </div>
