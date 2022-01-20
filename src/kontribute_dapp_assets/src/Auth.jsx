@@ -11,6 +11,11 @@ import {
   Button
 } from '@chakra-ui/react';
 
+// for the actor
+import { createActor, canisterId } from '../../declarations/kontribute_dapp';
+// import { Actor, HttpAgent } from '@dfinity/agent';
+// import { idlFactory, canisterId } from '../../declarations/kontribute_dapp';
+
 const Auth = () => {
         const [signedIn, setSignedIn] = useState(false)
         const [principal, setPrincipal] = useState("")
@@ -29,7 +34,8 @@ const Auth = () => {
             setPrincipal(principal)
           }
         }
-        
+        // initiate the actor to pass in principal to sign backend contracts
+
         const signIn = async () => {
           const { identity, principal } = await new Promise((resolve, reject) => {
             client.login({
@@ -45,13 +51,24 @@ const Auth = () => {
           setSignedIn(true)
           setPrincipal(principal)
         }
-      
+
+        const signActor = async () => {
+          const identity = await client.getIdentity();
+          const userActor = createActor(canisterId, {
+            agentOptions: {
+              identity,
+            },
+          });
+          const id = await userActor.whoami();
+          return id.toText()
+        }
+
         const signOut = async () => {
           await client.logout()
           setSignedIn(false)
           setPrincipal("")
         }
-      
+
         useEffect(() => {
           initAuth()
         }, [])
@@ -94,7 +111,7 @@ const Auth = () => {
       
             {signedIn ? (
               <>
-                <Home userId={principal} signOutFunc={signOut}/>
+                <Home userId={principal} signOutFunc={signOut()} signActor={signActor}/>
               </>
             ) : null}
             </div>
