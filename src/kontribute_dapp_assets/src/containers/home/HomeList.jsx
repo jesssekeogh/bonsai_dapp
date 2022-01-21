@@ -27,7 +27,7 @@ function Feature({ title, ...rest }) {
 function StackEx() {
   return (
     <Stack spacing={8}>
-      <Link to="world-of-bonsai">
+      <Link to="world-of-bonsai" state={'hello'}>
       <Feature className="bonsai__box"
         title='Stories'
         />

@@ -2,8 +2,14 @@ import React from 'react';
 import "../assets/main.css";
 import { NavBar } from './containers';
 
+// for the props:
+import { useLocation } from 'react-router-dom';
+
 const Stories = () => {
-        
+    const location = useLocation()
+    const from = location.state
+    console.log(from)
+    
     return (
         <div>
             <NavBar />

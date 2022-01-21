@@ -13,8 +13,6 @@ import {
 
 // for the actor
 import { createActor, canisterId } from '../../declarations/kontribute_dapp';
-// import { Actor, HttpAgent } from '@dfinity/agent';
-// import { idlFactory, canisterId } from '../../declarations/kontribute_dapp';
 
 const Auth = () => {
         const [signedIn, setSignedIn] = useState(false)
@@ -34,9 +32,8 @@ const Auth = () => {
             setPrincipal(principal)
           }
         }
-        // initiate the actor to pass in principal to sign backend contracts
 
-        const signIn = async () => {
+       const signIn = async () => {
           const { identity, principal } = await new Promise((resolve, reject) => {
             client.login({
               identityProvider: "https://identity.ic0.app",
@@ -52,6 +49,7 @@ const Auth = () => {
           setPrincipal(principal)
         }
 
+        // signing actor so the user can interact with smart contracts with their principal
         const signActor = async () => {
           const identity = await client.getIdentity();
           const userActor = createActor(canisterId, {
@@ -59,9 +57,8 @@ const Auth = () => {
               identity,
             },
           });
-          const id = await userActor.whoami();
-          return id.toText()
-        }
+          return userActor
+        };
 
         const signOut = async () => {
           await client.logout()
