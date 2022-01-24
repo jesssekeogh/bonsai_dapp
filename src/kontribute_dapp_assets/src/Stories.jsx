@@ -6,13 +6,13 @@ import { NavBar } from './containers';
 import { useLocation } from 'react-router-dom';
 
 const Stories = () => {
+    // will change to useContext
     const location = useLocation()
     const from = location.state
-    console.log(from)
     
     return (
         <div>
-            <NavBar />
+            <NavBar userId={from}/>
         <div className="bonsai__stories">
             <h1>stories go here</h1>
         </div>

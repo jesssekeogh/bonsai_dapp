@@ -24,10 +24,10 @@ function Feature({ title, ...rest }) {
   )
 }
 
-function StackEx() {
+function StackEx(props) {
   return (
     <Stack spacing={8}>
-      <Link to="world-of-bonsai" state={'hello'}>
+      <Link to="world-of-bonsai" state={props.userId}>
       <Feature className="bonsai__box"
         title='Stories'
         />
@@ -43,7 +43,7 @@ function StackEx() {
 }
 
 
-const HomeList = () => {
+const HomeList = props => {
   const [alert, toggleAlert] = useState(true);
 
   if(alert === true){
@@ -60,13 +60,13 @@ const HomeList = () => {
       <CloseButton onClick={() => toggleAlert(false)} as='Button' position='absolute' right='8px' top='8px' />
       </Alert>
       <br></br>
-      <StackEx />
+      <StackEx userId={props.userId}/>
       </div>
       )
   }else{
     return (
       <div className="home__tabs">
-        <StackEx />
+        <StackEx userId={props.userId}/>
       </div>
     )
   }
