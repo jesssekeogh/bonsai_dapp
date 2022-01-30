@@ -10,8 +10,8 @@ import {UserContext} from '../../Context.jsx';
 
 const NavBar = () => {
 
-    // context for the user profile
-    const { principal, signOut } = useContext(UserContext)
+  // context for the user profile
+  const { principal, signOut } = useContext(UserContext)
 
   return (
     <div className="bonsai__navbar">

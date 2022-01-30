@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import "./homelist.css";
 import { Link } from 'react-router-dom';
 import {
@@ -14,9 +14,6 @@ import {
 
 // the main home section of the dapp
 
-// user context from auth
-import {UserContext} from '../../Context.jsx';
-
 function Feature({ title, ...rest }) {
   return (
     <Box p={5} shadow='md' borderWidth='1px' borderRadius='lg' {...rest}>
@@ -27,11 +24,9 @@ function Feature({ title, ...rest }) {
 
 function StackEx() {
 
-  const {principal, signOut, signActor} = useContext(UserContext)
-
   return (
     <Stack spacing={8}>
-      <Link to="world-of-bonsai" state={principal}>
+      <Link to="stories">
       <Feature className="bonsai__box"
         title='Stories'
         />
