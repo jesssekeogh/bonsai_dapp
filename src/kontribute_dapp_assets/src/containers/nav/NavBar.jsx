@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { CgInfinity } from 'react-icons/cg';
 import './NavBar.css';
 import { Link } from 'react-router-dom';
 import logo  from './kontribute_logo.png';
 import { Button, Menu, MenuList, MenuItem, MenuButton, MenuGroup, MenuDivider } from '@chakra-ui/react';
 
-const NavBar = props => {
+// user context from auth
+import {UserContext} from '../../Context.jsx';
+
+const NavBar = () => {
+
+    // context for the user profile
+    const { principal, signOut } = useContext(UserContext)
 
   return (
     <div className="bonsai__navbar">
@@ -22,9 +28,9 @@ const NavBar = props => {
           </MenuButton>
           <MenuList>
           <MenuGroup title='Principal ID'>
-            <MenuItem maxW='200px'><p>{props.userId}</p></MenuItem>
+            <MenuItem maxW='200px'><p>{principal}</p></MenuItem>
             <MenuDivider />
-          <MenuItem onClick={props.signOutFunc}>Sign Out</MenuItem>
+          <MenuItem onClick={signOut}>Sign Out</MenuItem>
           </MenuGroup>
           </MenuList>
         </Menu>

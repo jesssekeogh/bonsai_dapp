@@ -9,12 +9,12 @@ import Auth from './Auth';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Auth />} />
-        <Route path="/world-of-bonsai" element={<Stories />} />
-      </Routes>
-    </Router>
+  <Router>
+    <Routes>
+      <Route path="/" element={<Auth />} />
+      <Route path="/world-of-bonsai" element={<Stories />} />
+    </Routes>
+  </Router>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, createContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import { AuthClient } from "@dfinity/auth-client";
 import Home from "./Home";
 import "../assets/main.css";
@@ -13,6 +13,9 @@ import {
 
 // for the actor
 import { createActor, canisterId } from '../../declarations/kontribute_dapp';
+
+// for storing the user
+import { UserContext } from './Context';
 
 const Auth = () => {
         const [signedIn, setSignedIn] = useState(false)
@@ -108,7 +111,9 @@ const Auth = () => {
       
             {signedIn ? (
               <>
-                <Home userId={principal} signOutFunc={signOut} signActor={signActor}/>
+              <UserContext.Provider value={{principal, signOut, signActor}}>
+                <Home />
+              </UserContext.Provider>
               </>
             ) : null}
             </div>

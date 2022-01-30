@@ -1,18 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import "../assets/main.css";
-import { NavBar } from './containers';
 
-// for the props:
-import { useLocation } from 'react-router-dom';
+// user context from auth
+import {useLocation} from 'react-router-dom';
 
 const Stories = () => {
-    // will change to useContext
     const location = useLocation()
-    const from = location.state
-    
+    console.log(location.state)
+
     return (
         <div>
-            <NavBar userId={from}/>
         <div className="bonsai__stories">
             <h1>stories go here</h1>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import "./homelist.css";
 import { Link } from 'react-router-dom';
 import {
@@ -9,12 +9,13 @@ import {
     AlertIcon,
     AlertTitle,
     AlertDescription,
-    CloseButton
+    CloseButton,
   } from '@chakra-ui/react';
 
 // the main home section of the dapp
 
-// text color
+// user context from auth
+import {UserContext} from '../../Context.jsx';
 
 function Feature({ title, ...rest }) {
   return (
@@ -24,10 +25,13 @@ function Feature({ title, ...rest }) {
   )
 }
 
-function StackEx(props) {
+function StackEx() {
+
+  const {principal, signOut, signActor} = useContext(UserContext)
+
   return (
     <Stack spacing={8}>
-      <Link to="world-of-bonsai" state={props.userId}>
+      <Link to="world-of-bonsai" state={principal}>
       <Feature className="bonsai__box"
         title='Stories'
         />
@@ -43,7 +47,7 @@ function StackEx(props) {
 }
 
 
-const HomeList = props => {
+const HomeList = () => {
   const [alert, toggleAlert] = useState(true);
 
   if(alert === true){
@@ -57,16 +61,16 @@ const HomeList = props => {
         Kontribute is still in heavy development and testing. Keep up to date with us on Discord and Twitter.
       </AlertDescription>
       </Box>
-      <CloseButton onClick={() => toggleAlert(false)} as='Button' position='absolute' right='8px' top='8px' />
+      <CloseButton onClick={() => toggleAlert(false)} position='absolute' right='8px' top='8px' />
       </Alert>
       <br></br>
-      <StackEx userId={props.userId}/>
+      <StackEx />
       </div>
       )
   }else{
     return (
       <div className="home__tabs">
-        <StackEx userId={props.userId}/>
+        <StackEx />
       </div>
     )
   }
