@@ -53,7 +53,7 @@ const HomeList = () => {
       <Box flex='1'>
       <AlertTitle color='red' textDecoration='underline' >Development Mode!</AlertTitle>
       <AlertDescription display='block'>
-        Kontribute is still in heavy development and testing. Keep up to date with us on Discord and Twitter.
+        <p>Kontribute is still in heavy development and testing. Keep up to date with us on <a style={{color: '#5562ea', textDecoration: 'underline'}} href="https://discord.gg/S3qRpq8R6e" target="_blank" rel="noreferrer">Discord</a> and <a style={{color: '#5da9dd', textDecoration: 'underline'}} href="https://mobile.twitter.com/TeamBonsai_ICP" target="_blank" rel="noreferrer">Twitter</a></p>
       </AlertDescription>
       </Box>
       <CloseButton onClick={() => toggleAlert(false)} position='absolute' right='8px' top='8px' />

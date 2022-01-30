@@ -23,15 +23,6 @@
     align-items: center;
 }
 
-.bonsai__navbar-sign p {
-    width:100%;
-    clear: both;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
 .bonsai__navbar-sign button:hover {
     opacity: 0.8;
 }

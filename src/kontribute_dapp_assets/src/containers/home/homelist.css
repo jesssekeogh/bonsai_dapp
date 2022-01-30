@@ -19,6 +19,7 @@
     background-color: #17191e;
     border: solid #9d8144;
 }
+
 .bonsai__box2:hover{
     cursor:not-allowed;
 }
@@ -28,6 +29,10 @@
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
     .home__tabs {
         width:100%;
+    }
+    .home__tabs p {
+        font-size:0.7rem;
+        line-height: 18px;
     }
 }
 
