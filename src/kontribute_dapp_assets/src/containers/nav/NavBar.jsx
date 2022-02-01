@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { CgInfinity } from 'react-icons/cg';
 import './NavBar.css';
 import { Link } from 'react-router-dom';
-import logo  from './kontribute_logo.png';
+import logo  from '../../../assets/kontribute_logo.png';
 
 import { Button, Menu, MenuList, MenuItem, MenuButton, MenuGroup, MenuDivider, useClipboard } from '@chakra-ui/react';
 import {CopyIcon, LockIcon} from '@chakra-ui/icons';
@@ -31,11 +31,11 @@ const NavBar = () => {
             Profile
           </MenuButton>
           <MenuList>
-          <MenuGroup title='Principal ID'>
-            <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW='200px'>{hasCopied ? alert('Copied to clipboard!') : principal}</MenuItem>
-            <MenuDivider />
-          <MenuItem icon={<LockIcon />}onClick={signOut}>Sign Out</MenuItem>
-          </MenuGroup>
+            <MenuGroup title='Principal ID' />
+              <MenuDivider />
+              <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW='200px'>{hasCopied ? alert('Copied to clipboard!') : principal}</MenuItem>
+              <MenuDivider />
+            <MenuItem icon={<LockIcon />}onClick={signOut}>Sign Out</MenuItem>
           </MenuList>
         </Menu>
       </div>
