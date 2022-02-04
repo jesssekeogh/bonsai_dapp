@@ -24,27 +24,37 @@ actor {
     // state
     stable var uniqueUsers : Trie.Trie<Principal, hasVoted> = Trie.empty();
 
-    // if user in profiles return false(menaing already voted) if true create a profile and increment vote. 
-    public shared(msg) func VoteOption1 () : async Text {
+    // vote option,check anon, check if account exists, create an account and increment
+    public shared(msg) func VoteOption1 (hasvoted: hasVoted) : async Text {
         let callerId = msg.caller;
 
-        // check for the anon
         if(Principal.toText(callerId) == anon) {
             return "the anon";
         };
 
-        //search the trie for the account
         let result = Trie.find(
             uniqueUsers,
             key(callerId),
             Principal.equal
         );
-        let newresult = Result.fromOption(result, "error");
+        let newresult =  Result.fromOption(result, "error");
+
         if(Result.isOk(newresult)){
-            return "the already have an account and have voted" // set this to return false e.g already voted
+            return "they already have an account and have voted"
         };
-        return "theres no account and no vote"
-        // (todo) implement here a create profile and increment vote
+
+        let hasvoted = true;
+
+        uniqueUsers := Trie.replace(
+            uniqueUsers,
+            key(callerId),
+            Principal.equal,
+            ?hasvoted
+            ).0;
+
+        vote1 += 1;
+        return "new account has been created and vote incremented";
+
     };
 
     // get the votes (need to encapsulate in a type)
@@ -54,7 +64,7 @@ actor {
         return vote3;
     };
 
-    // util func
+    // utility func
     private func key(x : Principal) : Trie.Key<Principal> {
         return { key = x; hash = Principal.hash(x) }
     };
