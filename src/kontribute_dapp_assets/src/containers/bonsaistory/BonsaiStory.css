@@ -1,0 +1,27 @@
+.bonsai__story {
+    color:#76736a;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.bonsai__story_heading {
+    color: #f0e6d3;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.bonsai__story_heading h5 {
+    color: #c8aa6e;
+    font-size: 2rem;
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
+    .bonsai__story_heading {
+        font-size: 2.5rem;
+    }
+    
+    .bonsai__story_heading h5 {
+        font-size: 1.5rem;
+    }
+}

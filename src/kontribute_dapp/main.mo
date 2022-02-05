@@ -10,26 +10,24 @@ actor {
     };
 
     //MAIN CONTRACT:
-    // the votes
-    stable var vote1 : Nat = 0;
-    stable var vote2 : Nat = 0;
-    stable var vote3 : Nat = 0;
-
     // the anonymous identity
     var anon : Text = "2vxsx-fae";
 
     // user profile
     public type hasVoted = Bool;
 
-    // state
-    stable var uniqueUsers : Trie.Trie<Principal, hasVoted> = Trie.empty();
+    // state (add stable)
+    var uniqueUsers : Trie.Trie<Principal, hasVoted> = Trie.empty();
+    var vote1 : Nat = 0;
+    var vote2 : Nat = 0;
+    var vote3 : Nat = 0;
 
-    // vote option,check anon, check if account exists, create an account and increment
+    // vote options,check anon, check if account exists, create an account and increment
     public shared(msg) func VoteOption1 (hasvoted: hasVoted) : async Text {
         let callerId = msg.caller;
 
         if(Principal.toText(callerId) == anon) {
-            return "the anon";
+            return "Anonymous user: Invalid";
         };
 
         let result = Trie.find(
@@ -37,10 +35,10 @@ actor {
             key(callerId),
             Principal.equal
         );
-        let newresult =  Result.fromOption(result, "error");
+        let newresult =  Result.fromOption(result, "true");
 
         if(Result.isOk(newresult)){
-            return "they already have an account and have voted"
+            return "user already has an account and has voted"
         };
 
         let hasvoted = true;
@@ -57,10 +55,80 @@ actor {
 
     };
 
-    // get the votes (need to encapsulate in a type)
-    public query func getVotes() : async Nat {
+    public shared(msg) func VoteOption2 (hasvoted: hasVoted) : async Text {
+        let callerId = msg.caller;
+
+        if(Principal.toText(callerId) == anon) {
+            return "Anonymous user: Invalid";
+        };
+
+        let result = Trie.find(
+            uniqueUsers,
+            key(callerId),
+            Principal.equal
+        );
+        let newresult =  Result.fromOption(result, "true");
+
+        if(Result.isOk(newresult)){
+            return "user already has an account and has voted"
+        };
+
+        let hasvoted = true;
+
+        uniqueUsers := Trie.replace(
+            uniqueUsers,
+            key(callerId),
+            Principal.equal,
+            ?hasvoted
+            ).0;
+
+        vote2 += 1;
+        return "new account has been created and vote incremented";
+
+    };
+
+    public shared(msg) func VoteOption3 (hasvoted: hasVoted) : async Text {
+        let callerId = msg.caller;
+
+        if(Principal.toText(callerId) == anon) {
+            return "Anonymous user: Invalid";
+        };
+
+        let result = Trie.find(
+            uniqueUsers,
+            key(callerId),
+            Principal.equal
+        );
+        let newresult =  Result.fromOption(result, "true");
+
+        if(Result.isOk(newresult)){
+            return "user already has an account and has voted"
+        };
+
+        let hasvoted = true;
+
+        uniqueUsers := Trie.replace(
+            uniqueUsers,
+            key(callerId),
+            Principal.equal,
+            ?hasvoted
+            ).0;
+
+        vote3 += 1;
+        return "new account has been created and vote incremented";
+
+    };
+
+    // call the votes
+    public query func getVote1() : async Nat {
         return vote1;
+    };
+
+    public query func getVote2() : async Nat {
         return vote2;
+    };
+
+    public query func getVote3() : async Nat {
         return vote3;
     };
 
@@ -68,4 +136,5 @@ actor {
     private func key(x : Principal) : Trie.Key<Principal> {
         return { key = x; hash = Principal.hash(x) }
     };
+
 }

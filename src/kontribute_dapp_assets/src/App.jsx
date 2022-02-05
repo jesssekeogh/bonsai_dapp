@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // pages:
 import Home from "./Home";
 import Stories from './Stories';
+import {BonsaiStory} from './containers';
 
 // design
 import "../assets/main.css";
@@ -124,6 +125,7 @@ function App() {
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/stories" element={<Stories />} />
+          <Route path="/world-of-bonsai" element={<BonsaiStory />} />
       </Routes>
       </UserContext.Provider>
     </Router>

@@ -13,13 +13,96 @@
     opacity: 0.8;
 }
 
-.bonsai__stories {
-    color:#fff;
+/* for the stories page */
+
+.bonsai__card {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    
+    flex-direction: row;
+
+    border: 1px solid #9d8144;
+    padding: 2rem;
+    margin: 4rem;
+    border-radius: 1rem;
 }
+
+.bonsai__card-content {
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+    color: #fff;
+}
+
+.bonsai__card-content p {
+    font-family: var(--font-family);
+    font-size: 12px;
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.bonsai__card-content h3 {
+    font-family: var(--font-family);
+    font-size: 24px;
+    line-height: 45px;
+    font-weight: 800;
+}
+
+.bonsai__card-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 2rem;
+}
+
+.bonsai__card-btn button {
+    background: #000;
+    color: #fff;
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 30px;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+
+    border: none;
+    outline: none;
+    cursor: pointer;
+    min-width: 150px;
+}
+.bonsai__card-btn button:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 650px) {
+    .bonsai__card {
+        flex-direction: column;
+    }
+
+    .bonsai__card-btn {
+        margin: 2rem 0 0;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .bonsai__card {
+        flex-direction: column;
+        margin: 4rem 2rem;
+    }
+
+    .bonsai__card-content h3 {
+        font-size: 18px;
+        line-height: 32px;
+    }
+
+    .bonsai__card-btn button {
+        font-size: 14px;
+        line-height: 28px;
+    }
+}
+
 /* Iphone X css */
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
     .bonsai__home{

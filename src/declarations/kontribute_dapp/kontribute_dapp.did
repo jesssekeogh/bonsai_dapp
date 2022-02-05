@@ -1,3 +1,10 @@
+type hasVoted = bool;
 service : {
+  VoteOption1: (hasVoted) -> (text);
+  VoteOption2: (hasVoted) -> (text);
+  VoteOption3: (hasVoted) -> (text);
+  getVote1: () -> (nat) query;
+  getVote2: () -> (nat) query;
+  getVote3: () -> (nat) query;
   whoami: () -> (principal);
 }
