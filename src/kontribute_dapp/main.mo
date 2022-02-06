@@ -17,7 +17,7 @@ actor {
     public type hasVoted = Bool;
 
     // state (add stable)
-    var uniqueUsers : Trie.Trie<Principal, hasVoted> = Trie.empty();
+    var uniqueUser : Trie.Trie<Principal, hasVoted> = Trie.empty();
     var vote1 : Nat = 0;
     var vote2 : Nat = 0;
     var vote3 : Nat = 0;
@@ -31,7 +31,7 @@ actor {
         };
 
         let result = Trie.find(
-            uniqueUsers,
+            uniqueUser,
             key(callerId),
             Principal.equal
         );
@@ -43,15 +43,15 @@ actor {
 
         let hasvoted = true;
 
-        uniqueUsers := Trie.replace(
-            uniqueUsers,
+        uniqueUser := Trie.replace(
+            uniqueUser,
             key(callerId),
             Principal.equal,
             ?hasvoted
             ).0;
 
         vote1 += 1;
-        return "new account has been created and vote incremented";
+        return "new account has been created and vote1 incremented";
 
     };
 
@@ -63,7 +63,7 @@ actor {
         };
 
         let result = Trie.find(
-            uniqueUsers,
+            uniqueUser,
             key(callerId),
             Principal.equal
         );
@@ -75,15 +75,15 @@ actor {
 
         let hasvoted = true;
 
-        uniqueUsers := Trie.replace(
-            uniqueUsers,
+        uniqueUser := Trie.replace(
+            uniqueUser,
             key(callerId),
             Principal.equal,
             ?hasvoted
             ).0;
 
         vote2 += 1;
-        return "new account has been created and vote incremented";
+        return "new account has been created and vote2 incremented";
 
     };
 
@@ -95,7 +95,7 @@ actor {
         };
 
         let result = Trie.find(
-            uniqueUsers,
+            uniqueUser,
             key(callerId),
             Principal.equal
         );
@@ -107,15 +107,15 @@ actor {
 
         let hasvoted = true;
 
-        uniqueUsers := Trie.replace(
-            uniqueUsers,
+        uniqueUser := Trie.replace(
+            uniqueUser,
             key(callerId),
             Principal.equal,
             ?hasvoted
             ).0;
 
         vote3 += 1;
-        return "new account has been created and vote incremented";
+        return "new account has been created and vote3 incremented";
 
     };
 

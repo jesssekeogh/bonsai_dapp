@@ -27,7 +27,7 @@ const NavBar = () => {
         {/* the profile button */}
         <div className="bonsai__navbar-sign">
         <Menu>
-          <MenuButton as={Button} bg='#17191e' border='1px' borderColor='#9d8144' color='white' colorScheme='#17191e' rightIcon={<CgInfinity />}>
+          <MenuButton as={Button} bg='#17191e' border='1px' borderColor='#9d8144' color='#f0e6d3' colorScheme='#17191e' rightIcon={<CgInfinity />}>
             Profile
           </MenuButton>
           <MenuList>

@@ -2,7 +2,14 @@ import React, {useContext, useState, useContext, useEffect} from 'react';
 import NavBar from '../nav/NavBar';
 
 // Styling
-import { Container, Center, Button } from '@chakra-ui/react';
+import { Container, Center, Button, Flex, Box, Heading, Spacer, Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton, useDisclosure } from '@chakra-ui/react';
+import { PlusSquareIcon } from '@chakra-ui/icons';
 import { Fade } from "react-awesome-reveal";
 import "./BonsaiStory.css";
 
@@ -21,19 +28,31 @@ const BonsaiStory = () => {
     const voteoption1 = async () => {
         const user = await signActor()
         const vote = await user.VoteOption1(true)
-        console.log(vote)
+        if(vote.toString() === "new account has been created and vote1 incremented"){
+            alert("Success! Thanks for voting")
+        }else{
+            return alert("Failed! You have already voted")
+        }
     }
 
     const voteoption2 = async () => {
         const user = await signActor()
         const vote = await user.VoteOption2(true)
-        console.log(vote)
+        if(vote.toString() === "new account has been created and vote2 incremented"){
+            alert("Success! Thanks for voting")
+        }else{
+            return alert("Failed! You have already voted")
+        }
     }
 
     const voteoption3 = async () => {
         const user = await signActor()
         const vote = await user.VoteOption3(true)
-        console.log(vote)
+        if(vote.toString() === "new account has been created and vote3 incremented"){
+            alert("Success! Thanks for voting")
+        }else{
+            return alert("Failed! You have already voted")
+        }
     }
 
     // query the votes
@@ -55,71 +74,163 @@ const BonsaiStory = () => {
         setvote3(votes.toString())
     }
 
+    // for modals
+    const { isOpen : isOpen1, onOpen: onOpen1, onClose: onClose1 } = useDisclosure()
+    const { isOpen : isOpen2, onOpen: onOpen2, onClose: onClose2 } = useDisclosure()
+    const { isOpen : isOpen3, onOpen: onOpen3, onClose: onClose3 } = useDisclosure()
+
     useEffect(() => {
         getvote1()
         getvote2()
         getvote3()
     }, [])
 
-    //for the buttons
-    const [button1, setbutton1] = useState(true)
-    const button1click = async () => {
-        setbutton1(false)
-    }
-
     return (
         <div>
             <NavBar />
-            <div class="bonsai__story_heading">
-            <Center>
-                <h1>World of Bonsai</h1>
-            </Center>
-            <Center>
-            <h5>Chapter 1</h5>
-            </Center>
+            <div className="bonsai__story_heading">
+                <Center>
+                    <h1>World of Bonsai</h1>
+                </Center>
+                <Center>
+                    <h5>Chapter 1</h5>
+                </Center>
             </div>
             <Fade>
-            <Container>
-            <div class="bonsai__story">
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
-            </div>
-            </Container>
+                <Container>
+                <div className="bonsai__story">
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                    Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
+                    id do ex enim consectetur nisi duis elit. Qui mollit magna exercitation est sit.
+                </div>
+                </Container>
             </Fade>
-            <Container>
-            <button onClick={() => voteoption1()}>vote on option 1</button>
-            <br></br>
-            <button onClick={() => voteoption2()}>vote on option 2</button>
-            <br></br>
-            <button onClick={() => voteoption3()}>vote on option 3</button>
-            <br></br>
-            <p>{vote1}</p>
-            <p>{vote2}</p>
-            <p>{vote3}</p>
+
+            <Container mt='4'>
+                <Flex mb='4'>
+                    <Box p='2'>
+                        <Heading size='md' color='#c8aa6e'>Option Title</Heading>
+                    </Box>
+                    <Spacer />
+                    <Box>
+
+                        <Button onClick={onOpen1} mr='2' colorScheme='#f0e6d3' bg='#282828'>Read option 1</Button>
+                        <Modal isOpen={isOpen1} onClose={onClose1}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>Option 1</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                this is the text for option 1
+                            </ModalBody>
+
+                            <ModalFooter>
+                            <Button onClick={() => voteoption1()} rightIcon={<PlusSquareIcon />} bg='#17191e' border='1px' borderColor='#9d8144' color='#f0e6d3' colorScheme='#17191e' mr='4'>
+                                    Place Vote
+                                </Button>
+                            <Button colorScheme='black' variant='outline' mr={3} onClick={onClose1}>
+                                    Close
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                        </Modal>
+
+                        <Box as='button' borderRadius='md' bg='#0fbdde' color='black' fontWeight='semibold' px={4} h={8}>
+                            {vote1}
+                        </Box>
+                    </Box>
+                </Flex>
+
+                <Flex mb='4'>
+                    <Box p='2'>
+                        <Heading size='md' color='#c8aa6e'>Option Title</Heading>
+                    </Box>
+                    <Spacer />
+                    <Box>
+
+                            <Button onClick={onOpen2} mr='2' colorScheme='#f0e6d3' bg='#282828'>Read option 2</Button>
+                            <Modal isOpen={isOpen2} onClose={onClose2}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader>Option 2</ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                    this is the text for option 2
+                                </ModalBody>
+
+                                <ModalFooter>
+                                <Button onClick={() => voteoption2()} rightIcon={<PlusSquareIcon />} bg='#17191e' border='1px' borderColor='#9d8144' color='#f0e6d3' colorScheme='#17191e' mr='4'>
+                                        Place Vote
+                                    </Button>
+                                <Button colorScheme='black' variant='outline' mr={3} onClick={onClose2}>
+                                        Close
+                                    </Button>
+                                </ModalFooter>
+                            </ModalContent>
+                            </Modal>
+
+                        <Box as='button' borderRadius='md' bg='#0fbdde' color='black' fontWeight='semibold' px={4} h={8}>
+                            {vote2}
+                        </Box>
+                    </Box>
+                </Flex>
+
+                <Flex mb='4'>
+                    <Box p='2'>
+                        <Heading size='md' color='#c8aa6e'>Option Title</Heading>
+                    </Box>
+                    <Spacer />
+                    <Box>
+
+                            <Button onClick={onOpen3} mr='2' colorScheme='#f0e6d3' bg='#282828'>Read option 3</Button>
+                            <Modal isOpen={isOpen3} onClose={onClose3}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader>Option 3</ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                    this is the text for option 3
+                                </ModalBody>
+
+                                <ModalFooter>
+                                <Button onClick={() => voteoption3()} rightIcon={<PlusSquareIcon />} bg='#17191e' border='1px' borderColor='#9d8144' color='#f0e6d3' colorScheme='#17191e' mr='4'>
+                                        Place Vote
+                                    </Button>
+                                <Button colorScheme='black' variant='outline' mr={3} onClick={onClose3}>
+                                        Close
+                                    </Button>
+                                </ModalFooter>
+                            </ModalContent>
+                            </Modal>
+
+                        <Box as='button' borderRadius='md' bg='#0fbdde' color='black' fontWeight='semibold' px={4} h={8}>
+                            {vote3}
+                        </Box>
+                    </Box>
+                </Flex>
             </Container>
 
     </div>
