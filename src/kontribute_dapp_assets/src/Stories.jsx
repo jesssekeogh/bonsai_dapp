@@ -3,6 +3,7 @@ import "../assets/main.css";
 import {NavBar} from './containers';
 import {Link} from 'react-router-dom';
 import { Slide } from "react-awesome-reveal";
+import Footer from './Footer';
 
 // stories page will link in our stories here
 const Stories = () => {
@@ -23,6 +24,7 @@ const Stories = () => {
                 </div>
             </div>
             </Slide>
+            <Footer />
         </div>
     )
 }

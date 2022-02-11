@@ -197,10 +197,10 @@ const BonsaiStory = () => {
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Option 1</ModalHeader>
+              <ModalContent bg='#0a0a0d'>
+                <ModalHeader color="#c8aa6e">Option 1</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>this is the text for option 1</ModalBody>
+                <ModalBody color='#76736a'>this is the text for option 1</ModalBody>
 
                 <ModalFooter>
                   {!isClicked1 ? (
@@ -236,6 +236,7 @@ const BonsaiStory = () => {
                   ) : null}
                   <Button
                     colorScheme="black"
+                    color="#f0e6d3"
                     variant="outline"
                     mr={3}
                     onClick={onClose1}
@@ -273,10 +274,10 @@ const BonsaiStory = () => {
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Option 2</ModalHeader>
+              <ModalContent bg='#0a0a0d'>
+                <ModalHeader color="#c8aa6e">Option 2</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>this is the text for option 2</ModalBody>
+                <ModalBody color='#76736a'>this is the text for option 2</ModalBody>
 
                 <ModalFooter>
                   {!isClicked2 ? (
@@ -312,6 +313,7 @@ const BonsaiStory = () => {
                   ) : null}
                   <Button
                     colorScheme="black"
+                    color="#f0e6d3"
                     variant="outline"
                     mr={3}
                     onClick={onClose2}
@@ -348,11 +350,11 @@ const BonsaiStory = () => {
               Read option 3
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Option 3</ModalHeader>
+              <ModalOverlay/>
+              <ModalContent bg='#0a0a0d'>
+                <ModalHeader color="#c8aa6e">Option 3</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>this is the text for option 3</ModalBody>
+                <ModalBody color='#76736a'>this is the text for option 3</ModalBody>
 
                 <ModalFooter>
                   {!isClicked3 ? (
@@ -388,6 +390,7 @@ const BonsaiStory = () => {
                   ) : null}
                   <Button
                     colorScheme="black"
+                    color="#f0e6d3"
                     variant="outline"
                     mr={3}
                     onClick={onClose3}

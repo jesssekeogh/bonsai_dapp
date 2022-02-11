@@ -13,6 +13,15 @@
     opacity: 0.8;
 }
 
+.Bonsai__auth_footer {
+    position: fixed;
+    bottom: 5%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* for the stories page */
 
 .bonsai__card {

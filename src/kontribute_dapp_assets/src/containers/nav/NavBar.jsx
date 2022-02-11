@@ -3,6 +3,7 @@ import { CgInfinity } from "react-icons/cg";
 import "./NavBar.css";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
+import motokologo from '../../..//assets/Motoko_logo_mark_-_black.png'
 
 import {
   Button,
@@ -14,6 +15,7 @@ import {
   MenuDivider,
   useClipboard,
   IconButton,
+  Image
 } from "@chakra-ui/react";
 import {
   CopyIcon,
@@ -77,6 +79,8 @@ const NavBar = () => {
             icon={<HamburgerIcon />}
           ></MenuButton>
           <MenuList>
+          <MenuGroup title="Links" />
+          <MenuDivider />
             <a
               href="https://discord.gg/S3qRpq8R6e"
               target="_blank"
@@ -103,11 +107,8 @@ const NavBar = () => {
               target="_blank"
               rel="noreferrer"
             >
-              <MenuItem icon={<ExternalLinkIcon />}>Source Code</MenuItem>
+              <MenuItem icon={<ExternalLinkIcon />} command={<Image src={motokologo} h='7' w='7'/>}>Source Code</MenuItem>
             </a>
-            <MenuItem icon={<NotAllowedIcon />} command="Coming Soon!">
-              Medium
-            </MenuItem>
           </MenuList>
         </Menu>
       </div>
