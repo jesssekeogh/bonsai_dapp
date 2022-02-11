@@ -119,6 +119,19 @@ actor {
 
     };
 
+    // read a hasvoted for a specific user - working on story Ids and connect this to seperate bools(different hashmap?)
+    public shared(msg) func getValue(): async ?hasVoted{
+        let callerId = msg.caller;
+
+        let result = Trie.get(
+            uniqueUser,
+            key(callerId),
+            Principal.equal
+        );
+
+        return result
+    };
+
     // call the votes
     public query func getVote1() : async Nat {
         return vote1;
