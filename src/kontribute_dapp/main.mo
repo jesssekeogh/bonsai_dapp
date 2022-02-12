@@ -1,6 +1,7 @@
 import Principal "mo:base/Principal";
 import Trie "mo:base/Trie";
 import Result "mo:base/Result";
+import Option "mo:base/Option";
 
 actor {
 
@@ -14,109 +15,132 @@ actor {
     var anon : Text = "2vxsx-fae";
 
     // user profile
-    public type hasVoted = Bool;
+    public type Profile = {
+        hasVoted: Bool;
+        WhichOption: Text; 
+    };
 
     // state (add stable)
-    stable var uniqueUser : Trie.Trie<Principal, hasVoted> = Trie.empty();
-    stable var vote1 : Nat = 0;
-    stable var vote2 : Nat = 0;
-    stable var vote3 : Nat = 0;
+    var uniqueUser : Trie.Trie<Principal, Profile> = Trie.empty();
+    var vote1 : Nat = 0;
+    var vote2 : Nat = 0;
+    var vote3 : Nat = 0;
 
-    // vote options,check anon, check if account exists, create an account and increment
-    public shared(msg) func VoteOption1 (hasvoted: hasVoted) : async Text {
+    // vote options,check anon, get the value of principal (null if no vote)
+    public shared(msg) func VoteOption1 () : async Text {
         let callerId = msg.caller;
 
         if(Principal.toText(callerId) == anon) {
             return "Anonymous user: Invalid";
         };
 
-        let result = Trie.find(
+        let result = Trie.get(
             uniqueUser,
             key(callerId),
             Principal.equal
         );
-        let newresult =  Result.fromOption(result, "true");
 
-        if(Result.isOk(newresult)){
-            return "user already has an account and has voted"
+        if(result == null){
+            let userchoice: Profile = {
+                hasVoted = true;
+                WhichOption = "vote1";
+            };
+            uniqueUser := Trie.replace(
+                uniqueUser,
+                key(callerId),
+                Principal.equal,
+                ?userchoice
+            ).0;
+            vote1 += 1;
+            return "user has voted successfully on vote1"
         };
 
-        let hasvoted = true;
-
-        uniqueUser := Trie.replace(
-            uniqueUser,
-            key(callerId),
-            Principal.equal,
-            ?hasvoted
-            ).0;
-
-        vote1 += 1;
-        return "new account has been created and vote1 incremented";
+        return "user has already voted";
 
     };
 
-    public shared(msg) func VoteOption2 (hasvoted: hasVoted) : async Text {
+    public shared(msg) func VoteOption2 () : async Text {
         let callerId = msg.caller;
 
         if(Principal.toText(callerId) == anon) {
             return "Anonymous user: Invalid";
         };
 
-        let result = Trie.find(
+        let result = Trie.get(
             uniqueUser,
             key(callerId),
             Principal.equal
         );
-        let newresult =  Result.fromOption(result, "true");
 
-        if(Result.isOk(newresult)){
-            return "user already has an account and has voted"
+        if(result == null){
+            let userchoice: Profile = {
+                hasVoted = true;
+                WhichOption = "vote2";
+            };
+            uniqueUser := Trie.replace(
+                uniqueUser,
+                key(callerId),
+                Principal.equal,
+                ?userchoice
+            ).0;
+            vote2 += 1;
+            return "user has voted successfully on vote2"
         };
 
-        let hasvoted = true;
-
-        uniqueUser := Trie.replace(
-            uniqueUser,
-            key(callerId),
-            Principal.equal,
-            ?hasvoted
-            ).0;
-
-        vote2 += 1;
-        return "new account has been created and vote2 incremented";
+        return "user has already voted";
 
     };
 
-    public shared(msg) func VoteOption3 (hasvoted: hasVoted) : async Text {
+    public shared(msg) func VoteOption3 () : async Text {
         let callerId = msg.caller;
 
         if(Principal.toText(callerId) == anon) {
             return "Anonymous user: Invalid";
         };
 
-        let result = Trie.find(
+        let result = Trie.get(
             uniqueUser,
             key(callerId),
             Principal.equal
         );
-        let newresult =  Result.fromOption(result, "true");
 
-        if(Result.isOk(newresult)){
-            return "user already has an account and has voted"
+        if(result == null){
+            let userchoice: Profile = {
+                hasVoted = true;
+                WhichOption = "vote3";
+            };
+            uniqueUser := Trie.replace(
+                uniqueUser,
+                key(callerId),
+                Principal.equal,
+                ?userchoice,
+            ).0;
+            vote3 += 1;
+            return "user has voted successfully on vote3"
         };
 
-        let hasvoted = true;
+        return "user has already voted";
 
-        uniqueUser := Trie.replace(
+    };
+
+    // check if user has voted yet and on which option
+    public shared(msg) func readVotes() : async Profile {
+        let callerId = msg.caller;
+
+        var result = Trie.get(
             uniqueUser,
             key(callerId),
-            Principal.equal,
-            ?hasvoted
-            ).0;
+            Principal.equal
+        );
 
-        vote3 += 1;
-        return "new account has been created and vote3 incremented";
-
+        if(result == null) {
+            let userchoice : Profile = {
+                hasVoted = false;
+                WhichOption = "novote"; 
+                };
+            return userchoice
+        };
+        return Option.unwrap(result)
     };
 
     // call the votes

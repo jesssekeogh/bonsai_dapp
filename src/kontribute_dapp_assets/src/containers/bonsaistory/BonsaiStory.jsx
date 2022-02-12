@@ -37,14 +37,14 @@ const BonsaiStory = () => {
   const voteoption1 = async () => {
     setClick1(true);
     const user = await signActor();
-    const vote = await user.VoteOption1(true);
-    if (
-      vote.toString() === "new account has been created and vote1 incremented"
-    ) {
+    const vote = await user.VoteOption1();
+    if (vote.toString() === "user has voted successfully on vote1") {
       setClick1(false);
+      onClose1();
       return alert("Success! Thanks for voting");
     } else {
       setClick1(false);
+      onClose1();
       return alert("Failed! You have already voted");
     }
   };
@@ -52,14 +52,14 @@ const BonsaiStory = () => {
   const voteoption2 = async () => {
     setClick2(true);
     const user = await signActor();
-    const vote = await user.VoteOption2(true);
-    if (
-      vote.toString() === "new account has been created and vote2 incremented"
-    ) {
+    const vote = await user.VoteOption2();
+    if (vote.toString() === "user has voted successfully on vote2") {
       setClick2(false);
+      onClose2();
       return alert("Success! Thanks for voting");
     } else {
       setClick2(false);
+      onClose2();
       return alert("Failed! You have already voted");
     }
   };
@@ -67,14 +67,14 @@ const BonsaiStory = () => {
   const voteoption3 = async () => {
     setClick3(true);
     const user = await signActor();
-    const vote = await user.VoteOption3(true);
-    if (
-      vote.toString() === "new account has been created and vote3 incremented"
-    ) {
+    const vote = await user.VoteOption3();
+    if (vote.toString() === "user has voted successfully on vote3") {
       setClick3(false);
+      onClose3();
       return alert("Success! Thanks for voting");
     } else {
       setClick3(false);
+      onClose3();
       return alert("Failed! You have already voted");
     }
   };
@@ -197,10 +197,12 @@ const BonsaiStory = () => {
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
-              <ModalContent bg='#0a0a0d'>
+              <ModalContent bg="#0a0a0d">
                 <ModalHeader color="#c8aa6e">Option 1</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody color='#76736a'>this is the text for option 1</ModalBody>
+                <ModalBody color="#76736a">
+                  this is the text for option 1
+                </ModalBody>
 
                 <ModalFooter>
                   {!isClicked1 ? (
@@ -274,10 +276,12 @@ const BonsaiStory = () => {
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
-              <ModalContent bg='#0a0a0d'>
+              <ModalContent bg="#0a0a0d">
                 <ModalHeader color="#c8aa6e">Option 2</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody color='#76736a'>this is the text for option 2</ModalBody>
+                <ModalBody color="#76736a">
+                  this is the text for option 2
+                </ModalBody>
 
                 <ModalFooter>
                   {!isClicked2 ? (
@@ -350,11 +354,13 @@ const BonsaiStory = () => {
               Read option 3
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
-              <ModalOverlay/>
-              <ModalContent bg='#0a0a0d'>
+              <ModalOverlay />
+              <ModalContent bg="#0a0a0d">
                 <ModalHeader color="#c8aa6e">Option 3</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody color='#76736a'>this is the text for option 3</ModalBody>
+                <ModalBody color="#76736a">
+                  this is the text for option 3
+                </ModalBody>
 
                 <ModalFooter>
                   {!isClicked3 ? (

@@ -1,10 +1,15 @@
-type hasVoted = bool;
+type Profile = 
+ record {
+   WhichOption: text;
+   hasVoted: bool;
+ };
 service : {
-  VoteOption1: (hasVoted) -> (text);
-  VoteOption2: (hasVoted) -> (text);
-  VoteOption3: (hasVoted) -> (text);
+  VoteOption1: () -> (text);
+  VoteOption2: () -> (text);
+  VoteOption3: () -> (text);
   getVote1: () -> (nat) query;
   getVote2: () -> (nat) query;
   getVote3: () -> (nat) query;
+  readVotes: () -> (Profile);
   whoami: () -> (principal);
 }
