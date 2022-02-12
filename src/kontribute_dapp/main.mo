@@ -17,10 +17,10 @@ actor {
     public type hasVoted = Bool;
 
     // state (add stable)
-    var uniqueUser : Trie.Trie<Principal, hasVoted> = Trie.empty();
-    var vote1 : Nat = 0;
-    var vote2 : Nat = 0;
-    var vote3 : Nat = 0;
+    stable var uniqueUser : Trie.Trie<Principal, hasVoted> = Trie.empty();
+    stable var vote1 : Nat = 0;
+    stable var vote2 : Nat = 0;
+    stable var vote3 : Nat = 0;
 
     // vote options,check anon, check if account exists, create an account and increment
     public shared(msg) func VoteOption1 (hasvoted: hasVoted) : async Text {
@@ -117,19 +117,6 @@ actor {
         vote3 += 1;
         return "new account has been created and vote3 incremented";
 
-    };
-
-    // read a hasvoted for a specific user - working on story Ids and connect this to seperate bools(different hashmap?)
-    public shared(msg) func getValue(): async ?hasVoted{
-        let callerId = msg.caller;
-
-        let result = Trie.get(
-            uniqueUser,
-            key(callerId),
-            Principal.equal
-        );
-
-        return result
     };
 
     // call the votes
