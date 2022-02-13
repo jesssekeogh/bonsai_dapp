@@ -127,7 +127,7 @@ actor {
     public shared(msg) func readVotes() : async Profile {
         let callerId = msg.caller;
 
-        var result = Trie.get(
+        let result = Trie.get(
             uniqueUser,
             key(callerId),
             Principal.equal

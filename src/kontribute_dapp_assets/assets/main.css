@@ -45,14 +45,12 @@
 }
 
 .bonsai__card-content p {
-    font-family: var(--font-family);
     font-size: 12px;
     line-height: 30px;
     font-weight: 500;
 }
 
 .bonsai__card-content h3 {
-    font-family: var(--font-family);
     font-size: 24px;
     line-height: 45px;
     font-weight: 800;
@@ -67,7 +65,7 @@
 }
 
 .bonsai__card-btn button {
-    background: #000;
+    background: #17191e;
     color: #fff;
     font-family: var(--font-family);
     font-weight: 700;
@@ -76,7 +74,7 @@
     padding: 0.5rem 1rem;
     border-radius: 2rem;
 
-    border: none;
+    border: 1px solid #9d8144;
     outline: none;
     cursor: pointer;
     min-width: 150px;
@@ -116,11 +114,19 @@
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
     .bonsai__home{
         padding: 15%;
+        margin-top: 2rem;
     }
 }
 
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1224px) {
+    .bonsai__home{
+        margin-top: 8rem;
+    }
+}
+
+/* Large screen ----------- */
+@media only screen and (min-device-width : 1601px) {
     .bonsai__home{
         margin-top: 8rem;
     }

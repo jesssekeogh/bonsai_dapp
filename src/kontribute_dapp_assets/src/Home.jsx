@@ -1,7 +1,6 @@
 import React from "react";
 import "../assets/main.css";
 import { NavBar, HomeList } from "./containers";
-import Footer from "./Footer";
 
 const Home = () => {
   return (
@@ -10,7 +9,6 @@ const Home = () => {
       <div className="bonsai__home">
         <HomeList />
       </div>
-      <Footer />
     </div>
   );
 };

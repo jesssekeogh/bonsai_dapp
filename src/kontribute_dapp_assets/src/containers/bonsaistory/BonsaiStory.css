@@ -16,6 +16,43 @@
     font-size: 2rem;
 }
 
+.bonsai__story_back-button button {
+    text-align: center;
+    background: #17191e;
+    color: #fff;
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 30px;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+
+    border: 1px solid #9d8144;
+    outline: none;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.bonsai__story_back-button button:hover {
+    opacity: 0.8;
+}
+
+.bonsai__story_back-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 2rem 6rem;
+
+}
+
+.bonsai__vote h5 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #f0e6d3;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
     .bonsai__story_heading {
         font-size: 2.5rem;
@@ -23,5 +60,12 @@
     
     .bonsai__story_heading h5 {
         font-size: 1.5rem;
+    }
+    .bonsai__story_back-button {
+        justify-content: center;
+    
+    }
+    .bonsai__vote h5 {
+        font-size: 1.2rem;
     }
 }

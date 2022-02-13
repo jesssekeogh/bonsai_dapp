@@ -1,5 +1,6 @@
 import React, { useContext, useState, useContext, useEffect } from "react";
 import NavBar from "../nav/NavBar";
+import { Link } from "react-router-dom";
 
 // Styling
 import {
@@ -182,7 +183,11 @@ const BonsaiStory = () => {
           </div>
         </Container>
       </Fade>
-
+      <div className="bonsai__vote">
+        <Center>
+          <h5>You choose what happens next!</h5>
+        </Center>
+      </div>
       <Container mt="4">
         <Flex mb="4">
           <Box p="2">
@@ -193,15 +198,17 @@ const BonsaiStory = () => {
           <Spacer />
           <Box>
             <Button onClick={onOpen1} mr="2" colorScheme="#f0e6d3" bg="#282828">
-              Read option 1
+              Read option 1&nbsp;
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
               <ModalContent bg="#0a0a0d">
                 <ModalHeader color="#c8aa6e">Option 1</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody color="#76736a">
-                  this is the text for option 1
+                <ModalBody>
+                  <div className="bonsai__story">
+                    this is the text for option 1
+                  </div>
                 </ModalBody>
 
                 <ModalFooter>
@@ -279,8 +286,10 @@ const BonsaiStory = () => {
               <ModalContent bg="#0a0a0d">
                 <ModalHeader color="#c8aa6e">Option 2</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody color="#76736a">
-                  this is the text for option 2
+                <ModalBody>
+                  <div className="bonsai__story">
+                    this is the text for option 2
+                  </div>
                 </ModalBody>
 
                 <ModalFooter>
@@ -358,8 +367,10 @@ const BonsaiStory = () => {
               <ModalContent bg="#0a0a0d">
                 <ModalHeader color="#c8aa6e">Option 3</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody color="#76736a">
-                  this is the text for option 3
+                <ModalBody>
+                  <div className="bonsai__story">
+                    this is the text for option 3
+                  </div>
                 </ModalBody>
 
                 <ModalFooter>
@@ -421,6 +432,11 @@ const BonsaiStory = () => {
           </Box>
         </Flex>
       </Container>
+      <div className="bonsai__story_back-button">
+        <Link to="/stories">
+          <button type="button">Go back</button>
+        </Link>
+      </div>
     </div>
   );
 };
