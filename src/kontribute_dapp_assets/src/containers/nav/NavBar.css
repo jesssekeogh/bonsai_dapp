@@ -7,14 +7,18 @@
 
 .bonsai__navbar-links_logo {
     margin-right: 2rem;
+    border: 1px solid #9d8144;
+    border-radius: 5px;
+    background-color: #17191e;
 }
 .bonsai__navbar-links_logo:hover {
     opacity: 0.8;
 }
 
 .bonsai__navbar-links_logo img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
 }
 
 .bonsai__navbar-sign {

@@ -31,6 +31,7 @@
     flex-direction: row;
 
     border: 1px solid #9d8144;
+    background-color: #0a0a0d;
     padding: 2rem;
     margin: 4rem;
     border-radius: 1rem;
@@ -67,20 +68,23 @@
 .bonsai__card-btn button {
     background: #17191e;
     color: #fff;
-    font-family: var(--font-family);
     font-weight: 700;
     font-size: 18px;
     line-height: 30px;
     padding: 0.5rem 1rem;
     border-radius: 2rem;
-
-    border: 1px solid #9d8144;
+    
     outline: none;
     cursor: pointer;
     min-width: 150px;
 }
 .bonsai__card-btn button:hover {
     opacity: 0.8;
+}
+
+/* for the background image */
+.bonsai__image {
+    border-radius: 0.9rem;
 }
 
 @media screen and (max-width: 650px) {
@@ -112,22 +116,73 @@
 
 /* Iphone X css */
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
+    .bonsai__card {
+        min-height: 184px;
+    }
+   
     .bonsai__home{
-        padding: 15%;
+        padding: 10%;
         margin-top: 2rem;
     }
+
+    .bonsai__card-content {
+        position: absolute;
+        top:12%;
+    }
+
+    .bonsai__card-btn {
+        position: absolute;
+        top:40%;
+    }
+
+    .bonsai__card {
+        padding: 0rem;
+    }
+
 }
 
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1224px) {
     .bonsai__home{
-        margin-top: 8rem;
+        margin-top: 6rem;
+    }
+
+    .bonsai__image {
+        width:40%;
+    }
+
+    .bonsai__card-content {
+        margin-left: 1.2rem;
     }
 }
 
-/* Large screen ----------- */
-@media only screen and (min-device-width : 1601px) {
+@media only screen  and (min-width : 1224px) {
+    .bonsai__image {
+        width:17%;
+        height: 100px;
+    }
+
+    .bonsai__card {
+        justify-content: normal;
+    }
+
+    .bonsai__card-btn {
+        position: absolute;
+        top: 35%;
+        right: 10%;
+    }
+
+    .bonsai__card-content {
+        margin-left: 2rem;
+    }
+}
+
+/* Large screens ----------- */
+@media only screen  and (min-width : 1824px) {
     .bonsai__home{
         margin-top: 8rem;
+    }
+    .bonsai__image {
+        width:14%;
     }
 }
