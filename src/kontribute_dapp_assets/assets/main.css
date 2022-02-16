@@ -31,7 +31,7 @@
     flex-direction: row;
 
     border: 1px solid #9d8144;
-    background-color: #0a0a0d;
+    background-color: #17191e;
     padding: 2rem;
     margin: 4rem;
     border-radius: 1rem;
@@ -66,7 +66,7 @@
 }
 
 .bonsai__card-btn button {
-    background: #17191e;
+    background: #000;
     color: #fff;
     font-weight: 700;
     font-size: 18px;
@@ -85,6 +85,14 @@
 /* for the background image */
 .bonsai__image {
     border-radius: 0.9rem;
+}
+
+/* for the loading spinner */
+.bonsai__spinner {
+    position: absolute;
+    top: 300%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 @media screen and (max-width: 650px) {
@@ -115,11 +123,7 @@
 }
 
 /* Iphone X css */
-@media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
-    .bonsai__card {
-        min-height: 184px;
-    }
-   
+@media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
     .bonsai__home{
         padding: 10%;
         margin-top: 2rem;
@@ -130,6 +134,7 @@
         top:12%;
     }
 
+    /* sets the image to cover the stories box on Phones */
     .bonsai__card-btn {
         position: absolute;
         top:40%;
@@ -154,6 +159,7 @@
     .bonsai__card-content {
         margin-left: 1.2rem;
     }
+
 }
 
 @media only screen  and (min-width : 1224px) {
@@ -175,6 +181,10 @@
     .bonsai__card-content {
         margin-left: 2rem;
     }
+
+    .bonsai__spinner {
+        top: 350%;
+    }
 }
 
 /* Large screens ----------- */
@@ -183,6 +193,10 @@
         margin-top: 8rem;
     }
     .bonsai__image {
-        width:14%;
+        width:12%;
+    }
+
+    .bonsai__spinner {
+        top: 500%;
     }
 }

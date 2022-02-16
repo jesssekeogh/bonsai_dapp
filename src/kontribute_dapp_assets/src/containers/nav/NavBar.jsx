@@ -16,6 +16,7 @@ import {
   useClipboard,
   IconButton,
   Image,
+  Spinner,
 } from "@chakra-ui/react";
 import {
   CopyIcon,
@@ -32,6 +33,9 @@ const NavBar = () => {
   const { principal, signOut, signActor } = useContext(UserContext);
   const { hasCopied, onCopy } = useClipboard(principal);
 
+  // for loading spinner while fetching vote
+  const [isReady, setReady] = useState(false);
+
   // for the recent votes in the Profile
   const [recentvote, setrecentvote] = useState("");
   const readVotes = async () => {
@@ -39,13 +43,17 @@ const NavBar = () => {
     const result = await user.readVotes();
 
     if (result.WhichOption.toString() === "vote1") {
+      setReady(true);
       setrecentvote("Option 1");
     } else if (result.WhichOption.toString() === "vote2") {
+      setReady(true);
       setrecentvote("Option 2");
     } else if (result.WhichOption.toString() === "vote3") {
+      setReady(true);
       setrecentvote("Option 3");
     } else {
-      setrecentvote("Not Voted");
+      setReady(true);
+      setrecentvote("No Vote");
     }
   };
 
@@ -83,8 +91,11 @@ const NavBar = () => {
             <MenuDivider />
             <MenuGroup title="Recent Votes" />
             <Link to="/world-of-bonsai">
-              <MenuItem icon={<MdHowToVote />} command={recentvote}>
-                Bonsai Story:
+              <MenuItem
+                icon={<MdHowToVote />}
+                command={isReady ? recentvote : <Spinner size="xs" />}
+              >
+                Bonsai Warriors:
               </MenuItem>
             </Link>
             <MenuDivider />
@@ -106,7 +117,6 @@ const NavBar = () => {
           ></MenuButton>
           <MenuList>
             <MenuGroup title="Links" />
-            <MenuDivider />
             <a
               href="https://discord.gg/S3qRpq8R6e"
               target="_blank"
@@ -135,7 +145,7 @@ const NavBar = () => {
             >
               <MenuItem
                 icon={<ExternalLinkIcon />}
-                command={<Image src={motokologo} h="7" w="7" />}
+                command={<Image src={motokologo} h="6" w="6" />}
               >
                 Source Code
               </MenuItem>

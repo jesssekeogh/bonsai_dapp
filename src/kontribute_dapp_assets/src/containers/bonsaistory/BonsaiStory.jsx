@@ -132,10 +132,10 @@ const BonsaiStory = () => {
       <NavBar />
       <div className="bonsai__story_heading">
         <Center>
-          <h1>World of Bonsai</h1>
+          <h1>Bonsai Warriors</h1>
         </Center>
         <Center>
-          <h5>Chapter 1</h5>
+          <h5>Prologue</h5>
         </Center>
       </div>
       <Fade>
@@ -207,7 +207,7 @@ const BonsaiStory = () => {
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="bonsai__story">
-                    this is the text for option 1
+                    This is the text for option 1
                   </div>
                 </ModalBody>
 
