@@ -85,7 +85,7 @@ const NavBar = () => {
           </MenuButton>
           <MenuList>
             <MenuGroup title="Principal ID" />
-            <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="200px">
+            <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
               {hasCopied ? alert("Copied to clipboard!") : principal}
             </MenuItem>
             <MenuDivider />

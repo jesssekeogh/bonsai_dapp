@@ -141,73 +141,78 @@ const BonsaiStory = () => {
       <Fade>
         <Container>
           <div className="bonsai__story">
-            Dolor amet eu occaecat excepteur do adipisicing cillum duis. Est
-            ullamco ullamco sit ea irure consequat id do ex enim consectetur
-            nisi duis elit. Qui mollit magna exercitation est sit. Dolor amet eu
-            occaecat excepteur do adipisicing cillum duis. Est ullamco ullamco
-            sit ea irure consequat id do ex enim consectetur nisi duis elit. Qui
-            mollit magna exercitation est sit. Dolor amet eu occaecat excepteur
-            do adipisicing cillum duis. Est ullamco ullamco sit ea irure
-            consequat id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit. Dolor amet eu occaecat excepteur do
-            adipisicing cillum duis. Est ullamco ullamco sit ea irure consequat
-            id do ex enim consectetur nisi duis elit. Qui mollit magna
-            exercitation est sit.
+            Welcome to the tale of Bonsai Warriors - here you take part in the
+            world that you shall in the future enjoy in other means. This is an
+            interactive story. Together you decide the course of the story told
+            as it unfolds. You will begin as a mere novice, a beginner. By the
+            end of this tale, you shall have carved a place for yourself in this
+            world as a legend or died trying.
+            <br></br>
+            <br></br>
+            Let us now introduce you to where you shall begin this journey. The
+            Celestial Empire of Man.
+            <br></br>
+            <br></br>
+            In the Celestial Empire, there are laws that must be obeyed, laws
+            which bind all mankind into one great and inexhaustible force. None
+            can defeat the boundless spirit and drive of the peoples of this
+            great empire. This is so because of the God-Emperor, praise be the
+            Kangxi Emperor. May his rule last another thousand years yet.
+            <br></br>
+            <br></br>
+            He is the guardian of the Eternal Bonsai, the greatest of all
+            mankind and the most powerful of all the Celestial Empire. It is
+            under his command that the legions and sects stand guard. It is his
+            wishes that decide the fate of millions. It is all because of his
+            power. Might makes right. In the Celestial Empire, only the Kangxi
+            Emperor can be right.
+            <br></br>
+            <br></br>
+            As for you, this is but the beginning of your journey in this world.
+            You are just a lowly acolyte, freshly accepted to a prestigious
+            academy. Here you shall learn how to harness the same powers that
+            the Emperor and his most powerful Cultivators enjoy. You will learn
+            sorcery and you will make a name for yourself.
+            <br></br>
+            <br></br>
+            But for now, the most pressing question is...
           </div>
         </Container>
       </Fade>
       <div className="bonsai__vote">
         <Center>
-          <h5>You choose what happens next!</h5>
+          <h5>who are you?</h5>
         </Center>
       </div>
       <Container mt="4">
         <Flex mb="4">
           <Box p="2">
             <Heading size="md" color="#c8aa6e">
-              Option Title
+              Artisan
             </Heading>
           </Box>
           <Spacer />
           <Box>
             <Button onClick={onOpen1} mr="2" colorScheme="#f0e6d3" bg="#282828">
-              Read option 1&nbsp;
+              Read Option 1&nbsp;
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
               <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Option 1</ModalHeader>
+                <ModalHeader color="#c8aa6e">Artisan</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="bonsai__story">
-                    This is the text for option 1
+                    Child of a working family, owners of a fairly prosperous
+                    Spirit Herb farm, local to the academy. This will be the
+                    furthest you have ever traveled.
+                    <br></br>
+                    <br></br>
+                    Advantages: Some resources, Average starting ability.
+                    Numerous miscellaneous skills. Above-average innate talent.
+                    <br></br>
+                    <br></br>
+                    Disadvantages: No real disadvantages
                   </div>
                 </ModalBody>
 
@@ -273,22 +278,32 @@ const BonsaiStory = () => {
         <Flex mb="4">
           <Box p="2">
             <Heading size="md" color="#c8aa6e">
-              Option Title
+              Soldier
             </Heading>
           </Box>
           <Spacer />
           <Box>
             <Button onClick={onOpen2} mr="2" colorScheme="#f0e6d3" bg="#282828">
-              Read option 2
+              Read Option 2
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
               <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Option 2</ModalHeader>
+                <ModalHeader color="#c8aa6e">Soldier</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="bonsai__story">
-                    this is the text for option 2
+                    You are the child of a military family, more than commoners,
+                    less than nobles. You are proud of your heritage among the
+                    fighting men of the Empire and ready to prove your worth.
+                    <br></br>
+                    <br></br>
+                    Advantages: Some resources, Higher physical ability. Begins
+                    with a weapon-based martial skill. Above-average talent.
+                    <br></br>
+                    <br></br>
+                    Disadvantages: Lower mental ability. Lack of
+                    non-combat-related skills
                   </div>
                 </ModalBody>
 
@@ -354,22 +369,34 @@ const BonsaiStory = () => {
         <Flex mb="4">
           <Box p="2">
             <Heading size="md" color="#c8aa6e">
-              Option Title
+              Street Rat
             </Heading>
           </Box>
           <Spacer />
           <Box>
             <Button onClick={onOpen3} mr="2" colorScheme="#f0e6d3" bg="#282828">
-              Read option 3
+              Read Option 3
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
               <ModalOverlay />
               <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Option 3</ModalHeader>
+                <ModalHeader color="#c8aa6e">Street Rat</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="bonsai__story">
-                    this is the text for option 3
+                    You have nothing and you are nothing. Child of a prostitute
+                    and an unknown father, you have always lived by your wits,
+                    stealing from others to survive day by day. Yet you were
+                    still discovered by an Agent as a budding talent, and now
+                    everything has changed.
+                    <br></br>
+                    <br></br>
+                    Advantages: High innate talent, ‘practical’ skills, decent
+                    physical and mental abilities, Possible hidden ability?
+                    <br></br>
+                    <br></br>
+                    Disadvantages: No resources. Very low social ability.
+                    Compulsory Military Service.
                   </div>
                 </ModalBody>
 

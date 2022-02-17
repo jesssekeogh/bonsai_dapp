@@ -21,10 +21,10 @@ actor {
     };
 
     // state (add stable)
-    var uniqueUser : Trie.Trie<Principal, Profile> = Trie.empty();
-    var vote1 : Nat = 0;
-    var vote2 : Nat = 0;
-    var vote3 : Nat = 0;
+    stable var uniqueUser : Trie.Trie<Principal, Profile> = Trie.empty();
+    stable var vote1 : Nat = 0;
+    stable var vote2 : Nat = 0;
+    stable var vote3 : Nat = 0;
 
     // vote options,check anon, get the value of principal (null if no vote)
     public shared(msg) func VoteOption1 () : async Text {
