@@ -40,6 +40,7 @@ const BonsaiStory = () => {
     const user = await signActor();
     const vote = await user.VoteOption1();
     if (vote.toString() === "user has voted successfully on vote1") {
+      getvote1()
       setClick1(false);
       onClose1();
       return alert("Success! Thanks for voting");
@@ -55,6 +56,7 @@ const BonsaiStory = () => {
     const user = await signActor();
     const vote = await user.VoteOption2();
     if (vote.toString() === "user has voted successfully on vote2") {
+      getvote2()
       setClick2(false);
       onClose2();
       return alert("Success! Thanks for voting");
@@ -70,6 +72,7 @@ const BonsaiStory = () => {
     const user = await signActor();
     const vote = await user.VoteOption3();
     if (vote.toString() === "user has voted successfully on vote3") {
+      getvote3()
       setClick3(false);
       onClose3();
       return alert("Success! Thanks for voting");
