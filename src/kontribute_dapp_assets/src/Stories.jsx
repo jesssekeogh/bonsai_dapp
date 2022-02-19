@@ -40,7 +40,7 @@ const Stories = () => {
               <h3>Bonsai Warriors</h3>
             </div>
             <div className="bonsai__card-btn">
-              <Link to="/world-of-bonsai">
+              <Link to="/bonsai-warriors">
                 <button type="button">Read Now</button>
               </Link>
             </div>

@@ -40,7 +40,7 @@ const BonsaiStory = () => {
     const user = await signActor();
     const vote = await user.VoteOption1();
     if (vote.toString() === "user has voted successfully on vote1") {
-      getvote1()
+      getvote1();
       setClick1(false);
       onClose1();
       return alert("Success! Thanks for voting");
@@ -56,7 +56,7 @@ const BonsaiStory = () => {
     const user = await signActor();
     const vote = await user.VoteOption2();
     if (vote.toString() === "user has voted successfully on vote2") {
-      getvote2()
+      getvote2();
       setClick2(false);
       onClose2();
       return alert("Success! Thanks for voting");
@@ -72,7 +72,7 @@ const BonsaiStory = () => {
     const user = await signActor();
     const vote = await user.VoteOption3();
     if (vote.toString() === "user has voted successfully on vote3") {
-      getvote3()
+      getvote3();
       setClick3(false);
       onClose3();
       return alert("Success! Thanks for voting");
@@ -144,13 +144,28 @@ const BonsaiStory = () => {
       <Fade>
         <Container>
           <div className="bonsai__story">
-            Welcome to the tale of Bonsai Warriors - here you take part in the
-            world that you shall in the future enjoy in other means. This is an
-            interactive story. Together you decide the course of the story told
-            as it unfolds. You will begin as a mere novice, a beginner. By the
-            end of this tale, you shall have carved a place for yourself in this
-            world as a legend or died trying.
+            <b>Welcome to the start of Bonsai Warriors.</b>
             <br></br>
+            <br></br>
+            <i>
+              This is the start of where you will take part in this
+              ever-evolving world. This is an interactive story, every update to
+              the story will come with a vote. As a group, you will decide the
+              course of the story through your collective votes.
+              <br></br>
+              Bonsai Warrior’s story will start with all of you deciding who you
+              will be playing as, consider it to be like character creation in
+              RPGs. Over the next few updates, you will create your character.
+              They will be a brand new student at an academy in the Celestial
+              Empire of Man. Beyond that, it’s up to your votes to decide who
+              this student will be.
+              <br></br>
+              <br></br>
+              By the end of this story, you will have together carved a place in
+              this world as a legend or died trying.
+            </i>
+            <br></br>
+            <br></br>- - - - - - - - - - - - -<br></br>
             <br></br>
             Let us now introduce you to where you shall begin this journey. The
             Celestial Empire of Man.
@@ -184,7 +199,7 @@ const BonsaiStory = () => {
       </Fade>
       <div className="bonsai__vote">
         <Center>
-          <h5>who are you?</h5>
+          <h5>Who are you?</h5>
         </Center>
       </div>
       <Container mt="4">
@@ -211,11 +226,15 @@ const BonsaiStory = () => {
                     furthest you have ever traveled.
                     <br></br>
                     <br></br>
-                    Advantages: Some resources, Average starting ability.
-                    Numerous miscellaneous skills. Above-average innate talent.
+                    Advantages:
+                    <br></br>
+                    Some resources, Average starting ability. Numerous
+                    miscellaneous skills. Above-average innate talent.
                     <br></br>
                     <br></br>
-                    Disadvantages: No real disadvantages
+                    Disadvantages:
+                    <br></br>
+                    No real disadvantages
                   </div>
                 </ModalBody>
 
@@ -301,12 +320,15 @@ const BonsaiStory = () => {
                     fighting men of the Empire and ready to prove your worth.
                     <br></br>
                     <br></br>
-                    Advantages: Some resources, Higher physical ability. Begins
-                    with a weapon-based martial skill. Above-average talent.
+                    Advantages:
+                    <br></br>
+                    Some resources, Higher physical ability. Begins with a
+                    weapon-based martial skill. Above-average talent.
                     <br></br>
                     <br></br>
-                    Disadvantages: Lower mental ability. Lack of
-                    non-combat-related skills
+                    Disadvantages:
+                    <br></br>
+                    Lower mental ability. Lack of non-combat-related skills
                   </div>
                 </ModalBody>
 
@@ -394,12 +416,16 @@ const BonsaiStory = () => {
                     everything has changed.
                     <br></br>
                     <br></br>
-                    Advantages: High innate talent, ‘practical’ skills, decent
-                    physical and mental abilities, Possible hidden ability?
+                    Advantages:
+                    <br></br>
+                    High innate talent, ‘practical’ skills, decent physical and
+                    mental abilities, Possible hidden ability?
                     <br></br>
                     <br></br>
-                    Disadvantages: No resources. Very low social ability.
-                    Compulsory Military Service.
+                    Disadvantages:
+                    <br></br>
+                    No resources. Very low social ability. Compulsory Military
+                    Service.
                   </div>
                 </ModalBody>
 

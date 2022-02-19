@@ -134,7 +134,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
-                <Route path="/world-of-bonsai" element={<BonsaiStory />} />
+                <Route path="/bonsai-warriors" element={<BonsaiStory />} />
               </Routes>
             </UserContext.Provider>
           </Router>

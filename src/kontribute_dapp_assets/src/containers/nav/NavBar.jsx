@@ -90,7 +90,7 @@ const NavBar = () => {
             </MenuItem>
             <MenuDivider />
             <MenuGroup title="Recent Votes" />
-            <Link to="/world-of-bonsai">
+            <Link to="/bonsai-warriors">
               <MenuItem
                 icon={<MdHowToVote />}
                 command={isReady ? recentvote : <Spinner size="xs" />}

@@ -2,7 +2,7 @@
     color:#cec6b6;
     font-weight: 500;
     line-height: 24px;
-    font-size: 14pt;
+    font-size: 15pt;
     font-family: 'Times New Roman', Times, serif;
 }
 
@@ -67,6 +67,6 @@
     
     }
     .bonsai__vote h5 {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
     }
 }
