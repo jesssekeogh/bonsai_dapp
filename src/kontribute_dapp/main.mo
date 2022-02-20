@@ -133,14 +133,18 @@ actor {
             Principal.equal
         );
 
-        if(result == null) {
-            let userchoice : Profile = {
+        switch (result){
+            case (null){
+                let userchoice : Profile = {
                 hasVoted = false;
                 WhichOption = "novote"; 
                 };
             return userchoice
+            };
+            case (?result){
+                return result
+            };
         };
-        return Option.unwrap(result)
     };
 
     // call the votes
