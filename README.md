@@ -9,4 +9,7 @@ In heavy development:
 
 We are working on new NFT and Interactive story solutions to bring these features to fruition.
 
+## Some notes:
+Local Internt Identity is placed in App.jsx line 47 - replace this in Prod
+
 ### Made by Team Bonsai
