@@ -1,7 +1,6 @@
 import Principal "mo:base/Principal";
 import Trie "mo:base/Trie";
 import Result "mo:base/Result";
-import Option "mo:base/Option";
 
 actor {
 
