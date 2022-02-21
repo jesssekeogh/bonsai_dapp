@@ -4,8 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // pages:
 import Home from "./Home";
 import Stories from "./Stories";
-import Footer from "./Footer";
-import { BonsaiStory } from "./containers";
+import NFT from "./NFT";
+import Create from "./Create";
+import { Footer } from "./containers";
+import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
 
 // design
 import "../assets/main.css";
@@ -19,6 +21,7 @@ import { createActor, canisterId } from "../../declarations/kontribute_dapp";
 
 // for storing the user
 import { UserContext } from "./Context";
+import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory/index";
 
 // this is the launch page:
 
@@ -44,7 +47,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/", // "https://identity.ic0.app",
+        identityProvider: "https://identity.ic0.app", //"http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -134,7 +137,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
-                <Route path="/bonsai-warriors" element={<BonsaiStory />} />
+                <Route path="/NFT" element={<NFT />} />
+                <Route path="Create" element={<Create />} />
+                <Route path="/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
               </Routes>
             </UserContext.Provider>
           </Router>

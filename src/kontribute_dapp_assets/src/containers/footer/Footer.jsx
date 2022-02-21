@@ -1,7 +1,7 @@
 import React from "react";
-import icBadge from "../assets/ic-badge-powered-by_label-stripe-white-text.svg";
+import icBadge from "../../../assets/ic-badge-powered-by_label-stripe-white-text.svg";
 import { Box, Image } from "@chakra-ui/react";
-import "../assets/main.css";
+import "./Footer.css";
 
 const Footer = () => {
   return (

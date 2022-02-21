@@ -1,5 +1,5 @@
 import React, { useContext, useState, useContext, useEffect } from "react";
-import NavBar from "../nav/NavBar";
+import { NavBar } from "../../../containers";
 import { Link } from "react-router-dom";
 
 // Styling
@@ -25,9 +25,9 @@ import { Fade, Bounce } from "react-awesome-reveal";
 import "./BonsaiStory.css";
 
 // user context from auth
-import { UserContext } from "../../Context.jsx";
+import { UserContext } from "../../../Context.jsx";
 
-const BonsaiStory = () => {
+const BonsaiWarriorsPrologue = () => {
   const { signActor } = useContext(UserContext);
 
   // the votes:
@@ -497,4 +497,4 @@ const BonsaiStory = () => {
   );
 };
 
-export default BonsaiStory;
+export default BonsaiWarriorsPrologue;

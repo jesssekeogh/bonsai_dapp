@@ -4,7 +4,8 @@ import bonsai_bg from "../assets/beauty_render3_5.png";
 import { NavBar } from "./containers";
 import { Link } from "react-router-dom";
 import { Slide } from "react-awesome-reveal";
-import { Spinner, Center } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
+
 // stories page will link in our stories here
 const Stories = () => {
   //optimise image loading
@@ -17,6 +18,7 @@ const Stories = () => {
     };
     img.src = bonsai_bg;
   }, []);
+
   return (
     <div>
       <NavBar />
@@ -40,7 +42,7 @@ const Stories = () => {
               <h3>Bonsai Warriors</h3>
             </div>
             <div className="bonsai__card-btn">
-              <Link to="/bonsai-warriors">
+              <Link to="/bonsai-warriors-prologue">
                 <button type="button">Read Now</button>
               </Link>
             </div>

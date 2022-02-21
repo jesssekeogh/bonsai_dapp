@@ -23,10 +23,25 @@ import {
   LockIcon,
   HamburgerIcon,
   ExternalLinkIcon,
+  NotAllowedIcon,
 } from "@chakra-ui/icons";
 
 // user context from auth
 import { UserContext } from "../../Context.jsx";
+
+const MenuLinks = () => (
+  <>
+    <Link to="/stories">
+      <p>STORIES</p>
+    </Link>
+    <Link to="/NFT">
+      <p>NFT</p>
+    </Link>
+    <Link to="/Create">
+      <p>CREATE</p>
+    </Link>
+  </>
+);
 
 const NavBar = () => {
   // context for the user profile
@@ -63,10 +78,16 @@ const NavBar = () => {
 
   return (
     <div className="bonsai__navbar">
-      <div className="bonsai__navbar-links_logo">
-        <Link to="/">
-          <img src={logo} alt="Kontribute" />
-        </Link>
+      <div className="bonsai__navbar-links">
+        <div className="bonsai__navbar-links_logo">
+          <Link to="/">
+            <img src={logo} alt="Kontribute" />
+          </Link>
+        </div>
+
+        <div className="bonsai__navbar-links_container">
+          <MenuLinks />
+        </div>
       </div>
 
       {/* the profile button */}
@@ -90,7 +111,7 @@ const NavBar = () => {
             </MenuItem>
             <MenuDivider />
             <MenuGroup title="Recent Votes" />
-            <Link to="/bonsai-warriors">
+            <Link to="/bonsai-warriors-prologue">
               <MenuItem
                 icon={<MdHowToVote />}
                 command={isReady ? recentvote : <Spinner size="xs" />}
@@ -116,7 +137,26 @@ const NavBar = () => {
             icon={<HamburgerIcon />}
           ></MenuButton>
           <MenuList>
-            <MenuGroup title="Links" />
+            {/* for mobile view */}
+            <div className="bonsai__link-dropdown">
+              <MenuGroup title="Navbar Links" />
+              <Link to="/stories">
+                <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
+              </Link>
+              <Link to="/NFT">
+              <MenuItem icon={<NotAllowedIcon />} command="Roadmap Item">
+                NFT
+              </MenuItem>
+              </Link>
+              <Link to="/Create">
+              <MenuItem icon={<NotAllowedIcon />} command="Roadmap Item">
+                Create
+              </MenuItem>
+              </Link>
+              <MenuDivider />
+            </div>
+
+            <MenuGroup title="External Links" />
             <a
               href="https://discord.gg/S3qRpq8R6e"
               target="_blank"

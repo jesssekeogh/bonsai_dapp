@@ -13,15 +13,6 @@
     opacity: 0.8;
 }
 
-.Bonsai__auth_footer {
-    position: fixed;
-    bottom: 5%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 /* for the stories page */
 
 .bonsai__card {
@@ -126,7 +117,7 @@
 @media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
     .bonsai__home{
         padding: 10%;
-        margin-top: 2rem;
+        margin-top: 6rem;
     }
 
     .bonsai__card-content {
