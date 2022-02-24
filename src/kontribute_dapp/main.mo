@@ -1,26 +1,17 @@
 import Principal "mo:base/Principal";
 import Trie "mo:base/Trie";
 import Result "mo:base/Result";
+import Types "types";
 
 actor {
 
-    // test whoami() function
-    public shared (msg) func whoami() : async Principal {
-        msg.caller
-    };
+    // Bonsai Prologue Vote state and funcs:
 
-    //MAIN CONTRACT:
     // the anonymous identity
     var anon : Text = "2vxsx-fae";
 
-    // user profile
-    public type Profile = {
-        hasVoted: Bool;
-        WhichOption: Text; 
-    };
-
     // state (add stable)
-    stable var uniqueUser : Trie.Trie<Principal, Profile> = Trie.empty();
+    stable var uniqueUser : Trie.Trie<Principal, Types.Profile> = Trie.empty();
     stable var vote1 : Nat = 0;
     stable var vote2 : Nat = 0;
     stable var vote3 : Nat = 0;
@@ -40,9 +31,9 @@ actor {
         );
 
         if(result == null){
-            let userchoice: Profile = {
+            let userchoice: Types.Profile = {
                 hasVoted = true;
-                WhichOption = "vote1";
+                whichOption = "vote1";
             };
             uniqueUser := Trie.replace(
                 uniqueUser,
@@ -72,9 +63,9 @@ actor {
         );
 
         if(result == null){
-            let userchoice: Profile = {
+            let userchoice: Types.Profile = {
                 hasVoted = true;
-                WhichOption = "vote2";
+                whichOption = "vote2";
             };
             uniqueUser := Trie.replace(
                 uniqueUser,
@@ -104,9 +95,9 @@ actor {
         );
 
         if(result == null){
-            let userchoice: Profile = {
+            let userchoice: Types.Profile = {
                 hasVoted = true;
-                WhichOption = "vote3";
+                whichOption = "vote3";
             };
             uniqueUser := Trie.replace(
                 uniqueUser,
@@ -123,7 +114,7 @@ actor {
     };
 
     // check if user has voted yet and on which option
-    public shared(msg) func readVotes() : async Profile {
+    public shared(msg) func readVotes() : async Types.Profile {
         let callerId = msg.caller;
 
         let result = Trie.get(
@@ -134,9 +125,9 @@ actor {
 
         switch (result){
             case (null){
-                let userchoice : Profile = {
+                let userchoice : Types.Profile = {
                 hasVoted = false;
-                WhichOption = "novote"; 
+                whichOption = "novote"; 
                 };
             return userchoice
             };
@@ -163,5 +154,5 @@ actor {
     private func key(x : Principal) : Trie.Key<Principal> {
         return { key = x; hash = Principal.hash(x) }
     };
-
+    
 }
