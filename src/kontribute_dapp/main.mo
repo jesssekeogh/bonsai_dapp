@@ -159,6 +159,12 @@ actor {
         return vote3;
     };
 
+    // total vote count
+    public query func getAllVotes() : async Nat {
+        let allVotes = vote1 + vote2 + vote3;
+        return allVotes;
+    };
+
     // utility func
     private func key(x : Principal) : Trie.Key<Principal> {
         return { key = x; hash = Principal.hash(x) }

@@ -7,6 +7,7 @@ export const idlFactory = ({ IDL }) => {
     'VoteOption1' : IDL.Func([], [IDL.Text], []),
     'VoteOption2' : IDL.Func([], [IDL.Text], []),
     'VoteOption3' : IDL.Func([], [IDL.Text], []),
+    'getAllVotes' : IDL.Func([], [IDL.Nat], ['query']),
     'getVote1' : IDL.Func([], [IDL.Nat], ['query']),
     'getVote2' : IDL.Func([], [IDL.Nat], ['query']),
     'getVote3' : IDL.Func([], [IDL.Nat], ['query']),
