@@ -6,4 +6,11 @@ module {
         whichOption: Text; 
     };
 
+    // for creating stories
+    public type Story = {
+        title: Text;
+        chapter: Text;
+        body: Text;
+    }
+
 }

@@ -155,4 +155,33 @@ actor {
         return { key = x; hash = Principal.hash(x) }
     };
     
+
+    // WORK IN PROGRESS STORY FUNCTIONALITY(testing options):
+    var Writers : Trie.Trie<Principal, Types.Story> = Trie.empty();
+
+    public shared(msg) func create(story : Types.Story) : async Text {
+        if(story.title == ""){
+            return "Failed, one or more fields empty"
+        }else if(story.chapter == ""){
+            return "Failed, one or more fields empty"
+        }else if(story.body == ""){
+            return "Failed, one or more fields empty"
+        };
+
+        let callerId = msg.caller;
+        
+        let newStory : Types.Story = {
+            title = story.title;
+            chapter = story.chapter;
+            body = story.body;
+        };
+        Writers := Trie.replace(
+            Writers,
+            key(callerId),
+            Principal.equal,
+            ?newStory,
+        ).0;
+        return "Story Created!"
+    };
+
 }
