@@ -1,14 +1,16 @@
 type Profile = 
  record {
+   WhichOption: text;
    hasVoted: bool;
-   whichOption: text;
  };
 service : {
   VoteOption1: () -> (text);
   VoteOption2: () -> (text);
   VoteOption3: () -> (text);
+  getAllVotes: () -> (nat) query;
   getVote1: () -> (nat) query;
   getVote2: () -> (nat) query;
   getVote3: () -> (nat) query;
   readVotes: () -> (Profile);
+  whoami: () -> (principal);
 }

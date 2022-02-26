@@ -7,7 +7,6 @@ import Stories from "./Stories";
 import NFT from "./NFT";
 import Create from "./Create";
 import { Footer } from "./containers";
-import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
 
 // design
 import "../assets/main.css";
@@ -21,7 +20,10 @@ import { createActor, canisterId } from "../../declarations/kontribute_dapp";
 
 // for storing the user
 import { UserContext } from "./Context";
-import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory/index";
+
+// bonsai links:
+import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
+import { BonsaiAll } from "./all_stories/bonsaistory";
 
 // this is the launch page:
 
@@ -137,8 +139,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
-                <Route path="/NFT" element={<NFT />} />
-                <Route path="Create" element={<Create />} />
+                <Route path="/nft" element={<NFT />} />
+                <Route path="/create" element={<Create />} />
+                <Route path="/bonsai-all" element={<BonsaiAll />} />
                 <Route path="/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
               </Routes>
             </UserContext.Provider>

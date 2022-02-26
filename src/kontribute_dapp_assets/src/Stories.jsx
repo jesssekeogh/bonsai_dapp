@@ -38,12 +38,12 @@ const Stories = () => {
           <div className="bonsai__card">
             <img className="bonsai__image" src={bonsai_bg} />
             <div className="bonsai__card-content">
-              <p>Prologue</p>
+              <p>Featured!</p>
               <h3>Bonsai Warriors</h3>
             </div>
             <div className="bonsai__card-btn">
-              <Link to="/bonsai-warriors-prologue">
-                <button type="button">Read Now</button>
+              <Link to="/bonsai-all">
+                <button type="button">View All</button>
               </Link>
             </div>
           </div>

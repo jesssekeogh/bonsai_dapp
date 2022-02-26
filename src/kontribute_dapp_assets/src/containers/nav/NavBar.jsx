@@ -143,12 +143,12 @@ const NavBar = () => {
               <Link to="/stories">
                 <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
               </Link>
-              <Link to="/NFT">
+              <Link to="/nft">
               <MenuItem icon={<NotAllowedIcon />} command="Roadmap Item">
                 NFT
               </MenuItem>
               </Link>
-              <Link to="/Create">
+              <Link to="/create">
               <MenuItem icon={<NotAllowedIcon />} command="Roadmap Item">
                 Create
               </MenuItem>
