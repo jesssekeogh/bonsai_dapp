@@ -157,8 +157,10 @@ actor {
     
 
     // WORK IN PROGRESS STORY FUNCTIONALITY(testing options):
+
     var Writers : Trie.Trie<Principal, Types.Story> = Trie.empty();
 
+    // create story
     public shared(msg) func create(story : Types.Story) : async Text {
         if(story.title == ""){
             return "Failed, one or more fields empty"
@@ -183,5 +185,17 @@ actor {
         ).0;
         return "Story Created!"
     };
+
+    public func allStories(): async [Types.Story]{
+        // return all key and values:
+        // let my_array : [(Principal, Types.Story)] = Iter.toArray(Trie.iter(Writers));
+
+        // return all values
+        let result = Trie.toArray<Principal, Types.Story, Types.Story>(Writers, func (key, value): Types.Story{
+            value;
+        });
+
+        // on the frontend loop through all the values and display in new section
+    }
 
 }
