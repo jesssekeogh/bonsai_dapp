@@ -4,7 +4,6 @@ import { MdHowToVote } from "react-icons/md";
 import "./NavBar.css";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
-import motokologo from "../../..//assets/Motoko_logo_mark_-_black.png";
 import {
   Button,
   Menu,
@@ -15,15 +14,14 @@ import {
   MenuDivider,
   useClipboard,
   IconButton,
-  Image,
   Spinner,
 } from "@chakra-ui/react";
 import {
   CopyIcon,
   LockIcon,
   HamburgerIcon,
-  ExternalLinkIcon,
-  NotAllowedIcon,
+  EditIcon,
+  ViewIcon,
 } from "@chakra-ui/icons";
 
 // user context from auth
@@ -105,18 +103,18 @@ const NavBar = () => {
             Profile
           </MenuButton>
           <MenuList>
-            <MenuGroup title="Principal ID" />
+            <MenuGroup title="Principal ID"/>
             <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
               {hasCopied ? alert("Copied to clipboard!") : principal}
             </MenuItem>
             <MenuDivider />
-            <MenuGroup title="Recent Votes" />
+            <MenuGroup title="Bonsai Warriors Vote History" />
             <Link to="/bonsai-warriors-prologue">
               <MenuItem
                 icon={<MdHowToVote />}
                 command={isReady ? recentvote : <Spinner size="xs" />}
               >
-                Bonsai Warriors:
+                Prologue:
               </MenuItem>
             </Link>
             <MenuDivider />
@@ -125,6 +123,7 @@ const NavBar = () => {
             </MenuItem>
           </MenuList>
         </Menu>
+        <div className="bonsai__link-dropdown">
         <Menu>
           <MenuButton
             ms="2"
@@ -138,60 +137,23 @@ const NavBar = () => {
           ></MenuButton>
           <MenuList>
             {/* for mobile view */}
-            <div className="bonsai__link-dropdown">
-              <MenuGroup title="Navbar Links" />
+              <MenuGroup title="Pages" />
               <Link to="/stories">
                 <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
               </Link>
               <Link to="/nft">
-              <MenuItem icon={<NotAllowedIcon />} command="Roadmap Item">
+              <MenuItem icon={<ViewIcon />}>
                 NFT
               </MenuItem>
               </Link>
               <Link to="/create">
-              <MenuItem icon={<NotAllowedIcon />} command="Roadmap Item">
+              <MenuItem icon={<EditIcon />}>
                 Create
               </MenuItem>
               </Link>
-              <MenuDivider />
-            </div>
-
-            <MenuGroup title="External Links" />
-            <a
-              href="https://discord.gg/S3qRpq8R6e"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <MenuItem icon={<ExternalLinkIcon />}>Discord</MenuItem>
-            </a>
-            <a
-              href="https://mobile.twitter.com/TeamBonsai_ICP"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <MenuItem icon={<ExternalLinkIcon />}>Twitter</MenuItem>
-            </a>
-            <a
-              href="https://h5aet-waaaa-aaaab-qaamq-cai.raw.ic0.app/p/bonsai-warriors"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <MenuItem icon={<ExternalLinkIcon />}>DSCVR</MenuItem>
-            </a>
-            <a
-              href="https://github.com/jesssekeogh/bonsai_dapp"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <MenuItem
-                icon={<ExternalLinkIcon />}
-                command={<Image src={motokologo} h="6" w="6" />}
-              >
-                Source Code
-              </MenuItem>
-            </a>
           </MenuList>
         </Menu>
+        </div>
       </div>
     </div>
   );

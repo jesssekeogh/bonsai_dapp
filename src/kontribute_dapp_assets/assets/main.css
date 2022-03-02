@@ -1,12 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Noto+Sans+JP:wght@700&family=Orienta&family=Risque&display=swap');
 
 .bonsai__home{
-    margin-top: 3rem;
-    padding:5%;
     font-family: 'Noto Sans JP', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+}
+
+.bonsai__home button:hover{
+    opacity:0.8;
 }
 
 .bonsai__auth-button:hover{
@@ -17,7 +16,6 @@
 
 .bonsai__card {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     flex-direction: row;
 
@@ -53,7 +51,7 @@
     justify-content: center;
     align-items: center;
 
-    margin-left: 2rem;
+    margin-left: auto;
 }
 
 .bonsai__card-btn button {
@@ -86,6 +84,74 @@
     transform: translate(-50%, -50%);
 }
 
+/* for the main footer */
+.bonsai__footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+}
+
+.bonsai__footer-heading {
+    width: 100%;
+    text-align: center;
+
+    margin-bottom: 3rem;
+}
+
+.bonsai__footer-heading h1 {
+    font-weight: 800;
+    font-size: 54px;
+    line-height: 75px;
+    color: #c8aa6e;
+}
+
+.bonsai__footer-copyright {
+    margin-top: 2rem;
+    text-align: center;
+    width: 100%;
+}
+
+.bonsai__footer-copyright p {
+    font-size: 12px;
+    line-height: 15px;
+    color: #fff;
+}
+
+.bonsai__footer-icons {
+    font-size: 3rem;
+    color:antiquewhite;
+    display:grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 2rem
+}
+.bonsai__footer-icons a:hover{
+    opacity: 0.7;
+}
+@media screen and (max-width: 850px) {
+    .bonsai__footer-heading h1 {
+        font-size: 44px;
+        line-height: 50px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .bonsai__footer-heading h1 {
+        font-size: 34px;
+        line-height: 42px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .bonsai__footer-heading h1 {
+        font-size: 27px;
+        line-height: 38px;
+    }
+}
+/* end footer */
+
 @media screen and (max-width: 650px) {
     .bonsai__card {
         flex-direction: column;
@@ -115,20 +181,20 @@
 
 /* Iphone X css */
 @media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
+
     .bonsai__home{
-        padding: 10%;
-        margin-top: 6rem;
+        margin-top: 5rem;
     }
 
     .bonsai__card-content {
         position: absolute;
-        top:12%;
+        margin-top: 1.5rem;
     }
 
     /* sets the image to cover the stories box on Phones */
     .bonsai__card-btn {
-        position: absolute;
-        top:40%;
+        position:fixed;
+        margin-top: 6rem;
     }
 
     .bonsai__card {
@@ -139,9 +205,6 @@
 
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1224px) {
-    .bonsai__home{
-        margin-top: 6rem;
-    }
 
     .bonsai__image {
         width:40%;
@@ -159,16 +222,6 @@
         height: 100px;
     }
 
-    .bonsai__card {
-        justify-content: normal;
-    }
-
-    .bonsai__card-btn {
-        position: absolute;
-        top: 35%;
-        right: 10%;
-    }
-
     .bonsai__card-content {
         margin-left: 2rem;
     }
@@ -180,9 +233,6 @@
 
 /* Large screens ----------- */
 @media only screen  and (min-width : 1824px) {
-    .bonsai__home{
-        margin-top: 8rem;
-    }
     .bonsai__image {
         width:12%;
     }

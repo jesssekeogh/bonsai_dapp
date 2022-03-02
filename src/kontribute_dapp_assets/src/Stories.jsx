@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../assets/main.css";
 import bonsai_bg from "../assets/beauty_render3_5.png";
-import { NavBar } from "./containers";
+import { NavBar, Delayed } from "./containers";
 import { Link } from "react-router-dom";
-import { Slide } from "react-awesome-reveal";
-import { Spinner } from "@chakra-ui/react";
+import { SlideFade , Spinner} from '@chakra-ui/react';
 
 // stories page will link in our stories here
 const Stories = () => {
@@ -34,20 +33,38 @@ const Stories = () => {
         </div>
       ) : null}
       {imageIsReady ? (
-        <Slide>
-          <div className="bonsai__card">
-            <img className="bonsai__image" src={bonsai_bg} />
-            <div className="bonsai__card-content">
-              <p>Featured!</p>
-              <h3>Bonsai Warriors</h3>
+        <div>
+          <SlideFade in={true} offsetY='20px'>
+            <div className="bonsai__card">
+              <img className="bonsai__image" src={bonsai_bg} />
+              <div className="bonsai__card-content">
+                <p>Featured!</p>
+                <h3>Bonsai Warriors</h3>
+              </div>
+              <div className="bonsai__card-btn">
+                <Link to="/bonsai-all">
+                  <button type="button">View All</button>
+                </Link>
+              </div>
             </div>
-            <div className="bonsai__card-btn">
-              <Link to="/bonsai-all">
-                <button type="button">View All</button>
-              </Link>
-            </div>
-          </div>
-        </Slide>
+          </SlideFade>
+          <Delayed>
+            <SlideFade in={true} offsetY='20px'>
+              <div className="bonsai__card">
+                <img className="bonsai__image" src={bonsai_bg} />
+                <div className="bonsai__card-content">
+                  <p>User Content!</p>
+                  <h3>Community Stories</h3>
+                </div>
+                <div className="bonsai__card-btn">
+                  <Link to="/community-stories">
+                    <button type="button">View All</button>
+                  </Link>
+                </div>
+              </div>
+            </SlideFade>
+          </Delayed>
+        </div>
       ) : null}
     </div>
   );

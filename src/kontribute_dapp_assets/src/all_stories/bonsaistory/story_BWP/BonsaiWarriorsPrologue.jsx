@@ -18,7 +18,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Fade, Bounce } from "react-awesome-reveal";
@@ -489,7 +489,7 @@ const BonsaiWarriorsPrologue = () => {
         </Flex>
       </Container>
       <div className="bonsai__story_back-button">
-        <Link to="/stories">
+        <Link to="/bonsai-all">
           <button type="button">Go back</button>
         </Link>
       </div>

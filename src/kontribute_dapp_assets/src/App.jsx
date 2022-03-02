@@ -7,9 +7,9 @@ import Stories from "./Stories";
 import NFT from "./NFT";
 import Create from "./Create";
 import { Footer } from "./containers";
+import CommunityUploads from "./CommunityUploads";
 
 // design
-import "../assets/main.css";
 import klogo from "../assets/kontribute_logo.png";
 import { CgInfinity } from "react-icons/cg";
 import { Box, Image, Center, Button, Image } from "@chakra-ui/react";
@@ -87,7 +87,7 @@ function App() {
     <div>
       {!signedIn && client ? (
         <div>
-          <div className="bonsai__home">
+          <Center mt="10rem">
             <Box
               maxW="sm"
               borderWidth="1px"
@@ -127,7 +127,7 @@ function App() {
                 </Box>
               </Box>
             </Box>
-          </div>
+            </Center>
           <Footer />
         </div>
       ) : null}
@@ -143,6 +143,7 @@ function App() {
                 <Route path="/create" element={<Create />} />
                 <Route path="/bonsai-all" element={<BonsaiAll />} />
                 <Route path="/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
+                <Route path="/community-stories" element={<CommunityUploads />} />
               </Routes>
             </UserContext.Provider>
           </Router>
