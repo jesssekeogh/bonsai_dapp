@@ -53,7 +53,8 @@ const Stories = () => {
               <div className="bonsai__card">
                 <img className="bonsai__image" src={bonsai_bg} />
                 <div className="bonsai__card-content">
-                  <p>User Content!</p>
+                  {/* <p>User Content!</p> */}
+                  <br />
                   <h3>Community Stories</h3>
                 </div>
                 <div className="bonsai__card-btn">

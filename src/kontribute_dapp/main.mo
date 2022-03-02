@@ -186,6 +186,7 @@ actor {
         return "Story Created!"
     };
 
+    // return all user stories
     public func allStories(): async [Types.Story]{
         // return all key and values:
         // let my_array : [(Principal, Types.Story)] = Iter.toArray(Trie.iter(Writers));

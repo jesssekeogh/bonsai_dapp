@@ -74,8 +74,8 @@ const HomeList = () => {
           </Heading>
           <Text color="#f0e6d3">
             Kontribute is an interactive dapp built on the Internet Computer
-            Protocol (ICP). It allows users to interact with fun evolving lore
-            stories. Check out the Bonsai Warriors story and accompanying NFT
+            Protocol (ICP). Kontribute brings readers, writers and NFTs
+            together. Check out the Bonsai Warriors story and accompanying NFT
             collection below:
           </Text>
           <Stack
@@ -119,21 +119,21 @@ const HomeList = () => {
               icon={<Icon as={FcUpload} w={10} h={10} />}
               title={"Community Stories"}
               text={
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
+                "Kontribute allows users to upload their own non-fiction/fiction stories to the dapp. Stories are all fully stored on the ICP blockchain."
               }
             />
             <Feature
               icon={<Icon as={FcPicture} w={10} h={10} />}
               title={"NFT Integration"}
               text={
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
+                "See characters, places or anything else that is mentioned in a story in the form of an NFT. Own a piece of your favourite story through our NFT Anvil integration."
               }
             />
             <Feature
               icon={<Icon as={FcVoicePresentation} w={10} h={10} />}
               title={"Voting"}
               text={
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
+                "Readers choose the future of stories through integrated voting on the next evolution. Choose the faith of your favourite character."
               }
             />
           </SimpleGrid>
@@ -176,7 +176,7 @@ const HomeList = () => {
 
         <div className="bonsai__footer-copyright">
           <p>
-            <i>Made by Team Bonsai</i>
+            <i>by Team Bonsai</i>
           </p>
           <br />
           <p>©2022 Kontribute</p>
