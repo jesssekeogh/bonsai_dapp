@@ -1,3 +1,4 @@
+// all of the available types
 module {
 
     // user profile for voting

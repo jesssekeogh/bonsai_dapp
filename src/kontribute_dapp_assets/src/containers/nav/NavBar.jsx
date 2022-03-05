@@ -51,17 +51,17 @@ const NavBar = () => {
 
   // for the recent votes in the Profile
   const [recentvote, setrecentvote] = useState("");
+
   const readVotes = async () => {
     const user = await signActor();
     const result = await user.readVotes();
-
-    if (result.WhichOption.toString() === "vote1") {
+    if (result.whichOption.toString() === "vote1") {
       setReady(true);
       setrecentvote("Option 1");
-    } else if (result.WhichOption.toString() === "vote2") {
+    } else if (result.whichOption.toString() === "vote2") {
       setReady(true);
       setrecentvote("Option 2");
-    } else if (result.WhichOption.toString() === "vote3") {
+    } else if (result.whichOption.toString() === "vote3") {
       setReady(true);
       setrecentvote("Option 3");
     } else {

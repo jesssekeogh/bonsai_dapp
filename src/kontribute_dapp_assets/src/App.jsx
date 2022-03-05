@@ -16,8 +16,8 @@ import { Box, Image, Center, Button, Image } from "@chakra-ui/react";
 
 // for the actor
 import { AuthClient } from "@dfinity/auth-client";
+// for Bonsai Warriors votes:
 import { createActor, canisterId } from "../../declarations/kontribute_dapp";
-
 // for storing the user
 import { UserContext } from "./Context";
 
@@ -49,7 +49,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app", //"http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/",
+        identityProvider: "http:/qoctq-giaaa-aaaaa-aaaea-cai.localhost:8000/", //"https://identity.ic0.app",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();

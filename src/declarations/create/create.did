@@ -1,0 +1,10 @@
+type Story = 
+ record {
+   body: text;
+   chapter: text;
+   title: text;
+ };
+service : {
+  allStories: () -> (vec Story);
+  create: (Story) -> (text);
+}

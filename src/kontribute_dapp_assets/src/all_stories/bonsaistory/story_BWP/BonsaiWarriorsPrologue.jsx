@@ -291,6 +291,7 @@ const BonsaiWarriorsPrologue = () => {
               fontWeight="semibold"
               px={4}
               h={8}
+              onClick={() => getvote1()}
             >
               {vote1}
             </Box>
