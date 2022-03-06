@@ -7,6 +7,7 @@ actor {
     // The main contract for the imports
 
     // Functions for the Bonsai Stories - pass the user principal through
+    // update the votes
     public shared(msg) func VoteOption1 () : async Text {
         let callerId = msg.caller;
         await Bonsai.BonsaiOption1(callerId)
@@ -22,12 +23,32 @@ actor {
         await Bonsai.BonsaiOption3(callerId)
     };
 
+    // read to see which option for Prologue
     public shared(msg) func readVotes() : async Types.Profile {
         let callerId = msg.caller;
         await Bonsai.readBonsaiVotes(callerId)
     };
 
-    // call the votes
+    // read to see which option for Prologue II
+    public shared(msg) func readVotesII() : async Types.Profile {
+        let callerId = msg.caller;
+        await Bonsai.readBonsaiVotesII(callerId)
+    };
+
+    // call the votes for PrologueII
+    public func getVote1II() : async Nat {
+        await Bonsai.getBonsaiVote1II()
+    };
+
+    public func getVote2II() : async Nat {
+        await Bonsai.getBonsaiVote2II()
+    };
+
+    public func getVote3II() : async Nat {
+        await Bonsai.getBonsaiVote3II()
+    };
+
+    // call the votes for the prologue
     public func getVote1() : async Nat {
         await Bonsai.getBonsaiVote1()
     };
@@ -39,5 +60,4 @@ actor {
     public func getVote3() : async Nat {
         await Bonsai.getBonsaiVote3()
     };
-
 }

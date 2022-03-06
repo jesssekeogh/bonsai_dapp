@@ -23,6 +23,7 @@ import { UserContext } from "./Context";
 
 // bonsai links:
 import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
+import { BonsaiWarriorsPrologueII } from "./all_stories/bonsaistory"
 import { BonsaiAll } from "./all_stories/bonsaistory";
 
 // this is the launch page:
@@ -49,7 +50,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "http:/qoctq-giaaa-aaaaa-aaaea-cai.localhost:8000/", //"https://identity.ic0.app",
+        identityProvider: "http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/", //"https://identity.ic0.app",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -143,6 +144,7 @@ function App() {
                 <Route path="/create" element={<Create />} />
                 <Route path="/bonsai-all" element={<BonsaiAll />} />
                 <Route path="/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
+                <Route path="/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
                 <Route path="/community-stories" element={<CommunityUploads />} />
               </Routes>
             </UserContext.Provider>

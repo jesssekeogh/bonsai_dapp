@@ -8,9 +8,13 @@ export const idlFactory = ({ IDL }) => {
     'VoteOption2' : IDL.Func([], [IDL.Text], []),
     'VoteOption3' : IDL.Func([], [IDL.Text], []),
     'getVote1' : IDL.Func([], [IDL.Nat], []),
+    'getVote1II' : IDL.Func([], [IDL.Nat], []),
     'getVote2' : IDL.Func([], [IDL.Nat], []),
+    'getVote2II' : IDL.Func([], [IDL.Nat], []),
     'getVote3' : IDL.Func([], [IDL.Nat], []),
+    'getVote3II' : IDL.Func([], [IDL.Nat], []),
     'readVotes' : IDL.Func([], [Profile], []),
+    'readVotesII' : IDL.Func([], [Profile], []),
   });
 };
 export const init = ({ IDL }) => { return []; };

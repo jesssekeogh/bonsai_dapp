@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/main.css";
 import bonsai_bg from "../assets/beauty_render3_5.png";
+import placeholder from "../assets/4000x2250.png";
 import { NavBar, Delayed } from "./containers";
 import { Link } from "react-router-dom";
 import { SlideFade , Spinner} from '@chakra-ui/react';
@@ -51,7 +52,7 @@ const Stories = () => {
           <Delayed>
             <SlideFade in={true} offsetY='20px'>
               <div className="bonsai__card">
-                <img className="bonsai__image" src={bonsai_bg} />
+                <img className="bonsai__image" src={placeholder} />
                 <div className="bonsai__card-content">
                   {/* <p>User Content!</p> */}
                   <br />

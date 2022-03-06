@@ -51,6 +51,7 @@ const NavBar = () => {
 
   // for the recent votes in the Profile
   const [recentvote, setrecentvote] = useState("");
+  const [recentvoteII, setrecentvoteII] = useState("");
 
   const readVotes = async () => {
     const user = await signActor();
@@ -70,8 +71,27 @@ const NavBar = () => {
     }
   };
 
+  const readVotesII = async () => {
+    const user = await signActor();
+    const result = await user.readVotesII();
+    if (result.whichOption.toString() === "vote1") {
+      setReady(true);
+      setrecentvoteII("Option 1");
+    } else if (result.whichOption.toString() === "vote2") {
+      setReady(true);
+      setrecentvoteII("Option 2");
+    } else if (result.whichOption.toString() === "vote3") {
+      setReady(true);
+      setrecentvoteII("Option 3");
+    } else {
+      setReady(true);
+      setrecentvoteII("No Vote");
+    }
+  };
+
   useEffect(() => {
     readVotes();
+    readVotesII();
   }, []);
 
   return (
@@ -103,12 +123,20 @@ const NavBar = () => {
             Profile
           </MenuButton>
           <MenuList>
-            <MenuGroup title="Principal ID"/>
+            <MenuGroup title="Principal ID" />
             <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
               {hasCopied ? alert("Copied to clipboard!") : principal}
             </MenuItem>
             <MenuDivider />
             <MenuGroup title="Bonsai Warriors Vote History" />
+            <Link to="/bonsai-warriors-prologueII">
+              <MenuItem
+                icon={<MdHowToVote />}
+                command={isReady ? recentvoteII : <Spinner size="xs" />}
+              >
+                Prologue II:
+              </MenuItem>
+            </Link>
             <Link to="/bonsai-warriors-prologue">
               <MenuItem
                 icon={<MdHowToVote />}
@@ -124,35 +152,31 @@ const NavBar = () => {
           </MenuList>
         </Menu>
         <div className="bonsai__link-dropdown">
-        <Menu>
-          <MenuButton
-            ms="2"
-            as={IconButton}
-            bg="#17191e"
-            border="1px"
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
-            icon={<HamburgerIcon />}
-          ></MenuButton>
-          <MenuList>
-            {/* for mobile view */}
-              <MenuGroup title="Pages" />
+          <Menu>
+            <MenuButton
+              ms="2"
+              as={IconButton}
+              bg="#17191e"
+              border="1px"
+              borderColor="#9d8144"
+              color="#f0e6d3"
+              colorScheme="#17191e"
+              icon={<HamburgerIcon />}
+            ></MenuButton>
+            <MenuList>
+              {/* for mobile view */}
+              <MenuGroup title="Kontribute" />
               <Link to="/stories">
                 <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
               </Link>
               <Link to="/nft">
-              <MenuItem icon={<ViewIcon />}>
-                NFT
-              </MenuItem>
+                <MenuItem icon={<ViewIcon />}>NFT</MenuItem>
               </Link>
               <Link to="/create">
-              <MenuItem icon={<EditIcon />}>
-                Create
-              </MenuItem>
+                <MenuItem icon={<EditIcon />}>Create</MenuItem>
               </Link>
-          </MenuList>
-        </Menu>
+            </MenuList>
+          </Menu>
         </div>
       </div>
     </div>

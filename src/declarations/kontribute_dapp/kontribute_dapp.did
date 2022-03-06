@@ -8,7 +8,11 @@ service : {
   VoteOption2: () -> (text);
   VoteOption3: () -> (text);
   getVote1: () -> (nat);
+  getVote1II: () -> (nat);
   getVote2: () -> (nat);
+  getVote2II: () -> (nat);
   getVote3: () -> (nat);
+  getVote3II: () -> (nat);
   readVotes: () -> (Profile);
+  readVotesII: () -> (Profile);
 }

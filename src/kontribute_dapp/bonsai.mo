@@ -6,20 +6,23 @@ import Types "types";
 actor Bonsai {
     
     // The main contract used for bonsai warriors votes, state and funcs:
-    // Stories: Bonsai Warriors Prologue, to-do add chapter 1
+    // Stories: Bonsai Warriors Prologue, PrologueII
 
     // the anonymous identity
     var anon : Text = "2vxsx-fae";
 
-    // state (add stable) (change upon story added)
+    // Prologue user state and vote tally
     stable var uniqueUser : Trie.Trie<Principal, Types.Profile> = Trie.empty();
-
-    // Prologue vote options
     stable var vote1 : Nat = 0;
     stable var vote2 : Nat = 0;
     stable var vote3 : Nat = 0;
 
-    
+    // PrologueII user state and vote tally
+    stable var uniqueUserII : Trie.Trie<Principal, Types.Profile> = Trie.empty();
+    stable var vote1II : Nat = 0;
+    stable var vote2II : Nat = 0;
+    stable var vote3II : Nat = 0;
+
     // vote options,check anon, get the value of principal (null if no vote)
     public shared(msg) func BonsaiOption1 (callerId : Principal) : async Text {
 
@@ -28,7 +31,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUser,
+            uniqueUserII, // changed for chapter
             key(callerId),
             Principal.equal
         );
@@ -38,13 +41,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote1";
             };
-            uniqueUser := Trie.replace(
-                uniqueUser,
+            uniqueUserII := Trie.replace(
+                uniqueUserII,
                 key(callerId),
                 Principal.equal,
                 ?userchoice
             ).0;
-            vote1 += 1;
+            vote1II += 1;
             return "user has voted successfully on vote1"
         };
 
@@ -59,7 +62,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUser,
+            uniqueUserII,
             key(callerId),
             Principal.equal
         );
@@ -69,13 +72,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote2";
             };
-            uniqueUser := Trie.replace(
-                uniqueUser,
+            uniqueUserII := Trie.replace(
+                uniqueUserII,
                 key(callerId),
                 Principal.equal,
                 ?userchoice
             ).0;
-            vote2 += 1;
+            vote2II += 1;
             return "user has voted successfully on vote2"
         };
 
@@ -90,7 +93,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUser,
+            uniqueUserII,
             key(callerId),
             Principal.equal
         );
@@ -100,13 +103,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote3";
             };
-            uniqueUser := Trie.replace(
-                uniqueUser,
+            uniqueUserII := Trie.replace(
+                uniqueUserII,
                 key(callerId),
                 Principal.equal,
                 ?userchoice,
             ).0;
-            vote3 += 1;
+            vote3II += 1;
             return "user has voted successfully on vote3"
         };
 
@@ -114,11 +117,11 @@ actor Bonsai {
 
     };
 
-    // check if user has voted yet and on which option
+    // check if user has voted yet and on which option for Prologue
     public shared(msg) func readBonsaiVotes(callerId : Principal) : async Types.Profile {
 
         let result = Trie.get(
-            uniqueUser,
+            uniqueUser, // user state for Prologue
             key(callerId),
             Principal.equal
         );
@@ -137,7 +140,44 @@ actor Bonsai {
         };
     };
 
-    // call the votes
+
+    // check if user has voted yet and on which option for Prologue II
+    public shared(msg) func readBonsaiVotesII(callerId : Principal) : async Types.Profile {
+
+        let result = Trie.get(
+            uniqueUserII,
+            key(callerId),
+            Principal.equal
+        );
+
+        switch (result){
+            case (null){
+                let userchoice : Types.Profile = {
+                hasVoted = false;
+                whichOption = "novote"; 
+                };
+            return userchoice
+            };
+            case (?result){
+                return result
+            };
+        };
+    };
+
+    // call the votes for prologueII
+    public query func getBonsaiVote1II() : async Nat {
+        return vote1II;
+    };
+
+    public query func getBonsaiVote2II() : async Nat {
+        return vote2II;
+    };
+
+    public query func getBonsaiVote3II() : async Nat {
+        return vote3II;
+    };
+
+    // call the votes for prologue
     public query func getBonsaiVote1() : async Nat {
         return vote1;
     };

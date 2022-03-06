@@ -8,7 +8,11 @@ service : {
   BonsaiOption2: (principal) -> (text);
   BonsaiOption3: (principal) -> (text);
   getBonsaiVote1: () -> (nat) query;
+  getBonsaiVote1II: () -> (nat) query;
   getBonsaiVote2: () -> (nat) query;
+  getBonsaiVote2II: () -> (nat) query;
   getBonsaiVote3: () -> (nat) query;
+  getBonsaiVote3II: () -> (nat) query;
   readBonsaiVotes: (principal) -> (Profile);
+  readBonsaiVotesII: (principal) -> (Profile);
 }

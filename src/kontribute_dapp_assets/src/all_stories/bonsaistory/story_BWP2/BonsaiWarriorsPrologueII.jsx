@@ -19,17 +19,14 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Alert,
-  AlertIcon,
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
-import { Fade } from "react-awesome-reveal";
+import { Fade, Bounce } from "react-awesome-reveal";
 import "../BonsaiStory.css";
 
 // user context from auth
 import { UserContext } from "../../../Context.jsx";
-
-const BonsaiWarriorsPrologue = () => {
+const BonsaiWarriorsPrologueII = () => {
   const { signActor } = useContext(UserContext);
 
   // the votes:
@@ -37,22 +34,70 @@ const BonsaiWarriorsPrologue = () => {
   const [vote2, setvote2] = useState("");
   const [vote3, setvote3] = useState("");
 
+  const voteoption1 = async () => {
+    setClick1(true);
+    const user = await signActor();
+    const vote = await user.VoteOption1();
+    if (vote.toString() === "user has voted successfully on vote1") {
+      getvote1();
+      setClick1(false);
+      onClose1();
+      return alert("Success! Thanks for voting");
+    } else {
+      setClick1(false);
+      onClose1();
+      return alert("Failed! You have already voted");
+    }
+  };
+
+  const voteoption2 = async () => {
+    setClick2(true);
+    const user = await signActor();
+    const vote = await user.VoteOption2();
+    if (vote.toString() === "user has voted successfully on vote2") {
+      getvote2();
+      setClick2(false);
+      onClose2();
+      return alert("Success! Thanks for voting");
+    } else {
+      setClick2(false);
+      onClose2();
+      return alert("Failed! You have already voted");
+    }
+  };
+
+  const voteoption3 = async () => {
+    setClick3(true);
+    const user = await signActor();
+    const vote = await user.VoteOption3();
+    if (vote.toString() === "user has voted successfully on vote3") {
+      getvote3();
+      setClick3(false);
+      onClose3();
+      return alert("Success! Thanks for voting");
+    } else {
+      setClick3(false);
+      onClose3();
+      return alert("Failed! You have already voted");
+    }
+  };
+
   // query the votes
   const getvote1 = async () => {
     const user = await signActor();
-    const votes = await user.getVote1();
+    const votes = await user.getVote1II();
     setvote1(votes.toString());
   };
 
   const getvote2 = async () => {
     const user = await signActor();
-    const votes = await user.getVote2();
+    const votes = await user.getVote2II();
     setvote2(votes.toString());
   };
 
   const getvote3 = async () => {
     const user = await signActor();
-    const votes = await user.getVote3();
+    const votes = await user.getVote3II();
     setvote3(votes.toString());
   };
 
@@ -78,6 +123,11 @@ const BonsaiWarriorsPrologue = () => {
     getvote2();
     getvote3();
   }, []);
+
+  // button state for clicks
+  const [isClicked1, setClick1] = useState(false);
+  const [isClicked2, setClick2] = useState(false);
+  const [isClicked3, setClick3] = useState(false);
 
   return (
     <div>
@@ -152,10 +202,6 @@ const BonsaiWarriorsPrologue = () => {
         </Center>
       </div>
       <Container mt="4">
-        <Alert status="warning" mb="2rem" borderRadius="10px">
-          <AlertIcon />
-          Voting for this chapter has ended!
-        </Alert>
         <Flex mb="4">
           <Box p="2">
             <Heading size="md" color="#c8aa6e">
@@ -192,18 +238,37 @@ const BonsaiWarriorsPrologue = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button
-                    disabled
-                    rightIcon={<PlusSquareIcon />}
-                    bg="#17191e"
-                    border="1px"
-                    borderColor="#9d8144"
-                    color="#f0e6d3"
-                    colorScheme="#17191e"
-                    mr="4"
-                  >
-                    Place Vote
-                  </Button>
+                  {!isClicked1 ? (
+                    <Button
+                      onClick={() => voteoption1()}
+                      rightIcon={<PlusSquareIcon />}
+                      bg="#17191e"
+                      border="1px"
+                      borderColor="#9d8144"
+                      color="#f0e6d3"
+                      colorScheme="#17191e"
+                      mr="4"
+                    >
+                      Place Vote
+                    </Button>
+                  ) : null}
+                  {isClicked1 ? (
+                    <Bounce>
+                      <Button
+                        isLoading
+                        onClick={() => voteoption1()}
+                        rightIcon={<PlusSquareIcon />}
+                        bg="#17191e"
+                        border="1px"
+                        borderColor="#9d8144"
+                        color="#f0e6d3"
+                        colorScheme="#17191e"
+                        mr="4"
+                      >
+                        Place Vote
+                      </Button>
+                    </Bounce>
+                  ) : null}
                   <Button
                     colorScheme="black"
                     color="#f0e6d3"
@@ -225,6 +290,7 @@ const BonsaiWarriorsPrologue = () => {
               fontWeight="semibold"
               px={4}
               h={8}
+              onClick={() => getvote1()}
             >
               {vote1}
             </Box>
@@ -267,18 +333,37 @@ const BonsaiWarriorsPrologue = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button
-                    disabled
-                    rightIcon={<PlusSquareIcon />}
-                    bg="#17191e"
-                    border="1px"
-                    borderColor="#9d8144"
-                    color="#f0e6d3"
-                    colorScheme="#17191e"
-                    mr="4"
-                  >
-                    Place Vote
-                  </Button>
+                  {!isClicked2 ? (
+                    <Button
+                      onClick={() => voteoption2()}
+                      rightIcon={<PlusSquareIcon />}
+                      bg="#17191e"
+                      border="1px"
+                      borderColor="#9d8144"
+                      color="#f0e6d3"
+                      colorScheme="#17191e"
+                      mr="4"
+                    >
+                      Place Vote
+                    </Button>
+                  ) : null}
+                  {isClicked2 ? (
+                    <Bounce>
+                      <Button
+                        isLoading
+                        onClick={() => voteoption2()}
+                        rightIcon={<PlusSquareIcon />}
+                        bg="#17191e"
+                        border="1px"
+                        borderColor="#9d8144"
+                        color="#f0e6d3"
+                        colorScheme="#17191e"
+                        mr="4"
+                      >
+                        Place Vote
+                      </Button>
+                    </Bounce>
+                  ) : null}
                   <Button
                     colorScheme="black"
                     color="#f0e6d3"
@@ -345,18 +430,37 @@ const BonsaiWarriorsPrologue = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button
-                    disabled
-                    rightIcon={<PlusSquareIcon />}
-                    bg="#17191e"
-                    border="1px"
-                    borderColor="#9d8144"
-                    color="#f0e6d3"
-                    colorScheme="#17191e"
-                    mr="4"
-                  >
-                    Place Vote
-                  </Button>
+                  {!isClicked3 ? (
+                    <Button
+                      onClick={() => voteoption3()}
+                      rightIcon={<PlusSquareIcon />}
+                      bg="#17191e"
+                      border="1px"
+                      borderColor="#9d8144"
+                      color="#f0e6d3"
+                      colorScheme="#17191e"
+                      mr="4"
+                    >
+                      Place Vote
+                    </Button>
+                  ) : null}
+                  {isClicked3 ? (
+                    <Bounce>
+                      <Button
+                        isLoading
+                        onClick={() => voteoption3()}
+                        rightIcon={<PlusSquareIcon />}
+                        bg="#17191e"
+                        border="1px"
+                        borderColor="#9d8144"
+                        color="#f0e6d3"
+                        colorScheme="#17191e"
+                        mr="4"
+                      >
+                        Place Vote
+                      </Button>
+                    </Bounce>
+                  ) : null}
                   <Button
                     colorScheme="black"
                     color="#f0e6d3"
@@ -393,4 +497,4 @@ const BonsaiWarriorsPrologue = () => {
   );
 };
 
-export default BonsaiWarriorsPrologue;
+export default BonsaiWarriorsPrologueII;

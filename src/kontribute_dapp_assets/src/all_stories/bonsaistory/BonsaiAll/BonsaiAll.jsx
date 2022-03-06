@@ -62,8 +62,19 @@ const BonsaiAll = () => {
           <Delayed>
             <SlideFade in={true}>
               <StackEx
+                title1={"PROLOGUE II"}
+                body1={"You are an Artisan, now you must choose your name"}
+                link1={"/bonsai-warriors-prologueII"}
+              />
+            </SlideFade>
+          </Delayed>
+        </Center>
+        <Center mt="2rem">
+          <Delayed waitBeforeShow = {200}>
+            <SlideFade in={true}>
+              <StackEx
                 title1={"PROLOGUE"}
-                body1={"Character creation in the world of Bonsai Warriors"}
+                body1={"Introduction and character creation in the Bonsai Warriors Story"}
                 link1={"/bonsai-warriors-prologue"}
               />
             </SlideFade>
