@@ -143,69 +143,57 @@ const BonsaiWarriorsPrologueII = () => {
       <Fade>
         <Container>
           <div className="bonsai__story">
-            <b>Welcome to the start of Bonsai Warriors.</b>
+            <b>Welcome to the start of Character Creation.</b>
             <br></br>
             <br></br>
             <i>
-              This is the start of where you will take part in this
-              ever-evolving world. This is an interactive story, every update to
-              the story will come with a vote. As a group, you will decide the
-              course of the story through your collective votes.
-              <br></br>
-              Bonsai Warrior’s story will start with all of you deciding who you
-              will be playing as, consider it to be like character creation in
-              RPGs. Over the next few updates, you will create your character.
-              They will be a brand new student at an academy in the Celestial
-              Empire of Man. Beyond that, it’s up to your votes to decide who
-              this student will be.
-              <br></br>
-              <br></br>
-              By the end of this story, you will have together carved a place in
-              this world as a legend or died trying.
+              The winning vote was Artisan, so now we will be introduced to our
+              character and their life. You can consider this a part of the
+              prologue as well, an introduction to the world and story for all.
             </i>
             <br></br>
             <br></br>- - - - - - - - - - - - -<br></br>
             <br></br>
-            Let us now introduce you to where you shall begin this journey. The
-            Celestial Empire of Man.
+            The sun is good company on this warm summer's day. You walk along
+            with an upbeat swing to your steps, passing by the terraces of your
+            family’s herb farm. Walking down the little groove of dirt that
+            marks the path to your family’s home, it’s a great day. Your
+            father’s pride, his mulberry trees are in full bloom, their
+            multitude of sweet berries bending the branches down in your way.
+            You take full advantage of it, snagging some of them to snack on as
+            you reach the final stretch to your home. The path exited the
+            terraced farmland and spilled out onto the flat grasslands below.
             <br></br>
             <br></br>
-            In the Celestial Empire, there are laws that must be obeyed, laws
-            which bind all mankind into one great and inexhaustible force. None
-            can defeat the boundless spirit and drive of the peoples of this
-            great empire. This is so because of the God-Emperor, praise be the
-            Kangxi Emperor. May his rule last another thousand years yet.
+            Your father is the last in a long line of farmers, together your
+            family carved over a dozen generations carved this place out of the
+            wilderness. The family home reflects this, with the dozen-odd
+            buildings that sprawl along, the barns, work sheds, and the house
+            itself. To a more critical eye, it would be a rich peasant’s idea of
+            wealth, for you, it's much simpler, its home.
             <br></br>
             <br></br>
-            He is the guardian of the Eternal Bonsai, the greatest of all
-            mankind and the most powerful of all the Celestial Empire. It is
-            under his command that the legions and sects stand guard. It is his
-            wishes that decide the fate of millions. It is all because of his
-            power. Might makes right. In the Celestial Empire, only the Kangxi
-            Emperor can be right.
+            Above the homestead there is a faint curl of smoke, escaping from
+            the kitchen’s chimney. It’s almost lunchtime and you are starving.
+            The final stretch of the journey gets eaten up fast and the entry
+            into the kitchen is fairly dramatic.
             <br></br>
             <br></br>
-            As for you, this is but the beginning of your journey in this world.
-            You are just a lowly acolyte, freshly accepted to a prestigious
-            academy. Here you shall learn how to harness the same powers that
-            the Emperor and his most powerful Cultivators enjoy. You will learn
-            sorcery and you will make a name for yourself.
-            <br></br>
-            <br></br>
-            But for now, the most pressing question is...
+            Bounding through the door with a confident grin and a cheeky
+            declaration…
           </div>
         </Container>
       </Fade>
       <div className="bonsai__vote">
         <Center>
-          <h5>Who are you?</h5>
+          <h5>Who is your name?</h5>
         </Center>
       </div>
       <Container mt="4">
         <Flex mb="4">
           <Box p="2">
             <Heading size="md" color="#c8aa6e">
-              Artisan
+              Jiang Zhe
             </Heading>
           </Box>
           <Spacer />
@@ -216,24 +204,22 @@ const BonsaiWarriorsPrologueII = () => {
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
               <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Artisan</ModalHeader>
+                <ModalHeader color="#c8aa6e">
+                  Jiang Zhe - The Battle God!
+                </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="bonsai__story">
-                    Child of a working family, owners of a fairly prosperous
-                    Spirit Herb farm, local to the academy. This will be the
-                    furthest you have ever traveled.
+                    Age: 16
+                    <br></br>
+                    <br></br>
+                    Gender: Male
                     <br></br>
                     <br></br>
                     Advantages:
                     <br></br>
-                    Some resources, Average starting ability. Numerous
-                    miscellaneous skills. Above-average innate talent.
-                    <br></br>
-                    <br></br>
-                    Disadvantages:
-                    <br></br>
-                    No real disadvantages
+                    Melee Talent, you will more easily learn the close range and
+                    physical combat arts with both weapon and fist.
                   </div>
                 </ModalBody>
 
@@ -300,7 +286,7 @@ const BonsaiWarriorsPrologueII = () => {
         <Flex mb="4">
           <Box p="2">
             <Heading size="md" color="#c8aa6e">
-              Soldier
+              Tang Wei
             </Heading>
           </Box>
           <Spacer />
@@ -311,24 +297,23 @@ const BonsaiWarriorsPrologueII = () => {
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
               <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Soldier</ModalHeader>
+                <ModalHeader color="#c8aa6e">
+                  Tang Wei - The Sorceress of Destiny!
+                </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="bonsai__story">
-                    You are the child of a military family, more than commoners,
-                    less than nobles. You are proud of your heritage among the
-                    fighting men of the Empire and ready to prove your worth.
+                    Age: 17
+                    <br></br>
+                    <br></br>
+                    Gender: Female
                     <br></br>
                     <br></br>
                     Advantages:
                     <br></br>
-                    Some resources, Higher physical ability. Begins with a
-                    weapon-based martial skill. Above-average talent.
-                    <br></br>
-                    <br></br>
-                    Disadvantages:
-                    <br></br>
-                    Lower mental ability. Lack of non-combat-related skills
+                    Support/Exotic Talent, you will more easily learn skills
+                    that enhance or weaken others, as well as more exotic
+                    effects.
                   </div>
                 </ModalBody>
 
@@ -394,7 +379,7 @@ const BonsaiWarriorsPrologueII = () => {
         <Flex mb="4">
           <Box p="2">
             <Heading size="md" color="#c8aa6e">
-              Street Rat
+              Han Li
             </Heading>
           </Box>
           <Spacer />
@@ -405,27 +390,22 @@ const BonsaiWarriorsPrologueII = () => {
             <Modal isOpen={isOpen3} onClose={onClose3}>
               <ModalOverlay />
               <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Street Rat</ModalHeader>
+                <ModalHeader color="#c8aa6e">
+                  Han Li - The Fastest Bow in Zunyi!
+                </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="bonsai__story">
-                    You have nothing and you are nothing. Child of a prostitute
-                    and an unknown father, you have always lived by your wits,
-                    stealing from others to survive day by day. Yet you were
-                    still discovered by an Agent as a budding talent, and now
-                    everything has changed.
+                    Age: 15
                     <br></br>
                     <br></br>
-                    Advantages:
-                    <br></br>
-                    High innate talent, ‘practical’ skills, decent physical and
-                    mental abilities, Possible hidden ability?
+                    Gender: Male
                     <br></br>
                     <br></br>
-                    Disadvantages:
+                    Advantages
                     <br></br>
-                    No resources. Very low social ability. Compulsory Military
-                    Service.
+                    Ranged Talent, you will more easily learn ranged weapons and
+                    martial arts, both mundane and mystical.
                   </div>
                 </ModalBody>
 

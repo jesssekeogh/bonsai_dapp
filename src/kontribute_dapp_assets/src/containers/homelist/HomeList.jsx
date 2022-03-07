@@ -76,7 +76,7 @@ const HomeList = () => {
             Kontribute is an interactive dapp built on the Internet Computer
             Protocol (ICP). Kontribute brings readers, writers and NFTs
             together. Check out the Bonsai Warriors story and accompanying NFT
-            collection below:
+            collection
           </Text>
           <Stack
             direction={"row"}

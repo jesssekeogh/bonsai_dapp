@@ -74,7 +74,7 @@ const BonsaiAll = () => {
             <SlideFade in={true}>
               <StackEx
                 title1={"PROLOGUE"}
-                body1={"Introduction and character creation in the Bonsai Warriors Story"}
+                body1={"Introduction and character creation in the Bonsai Warriors story"}
                 link1={"/bonsai-warriors-prologue"}
               />
             </SlideFade>
