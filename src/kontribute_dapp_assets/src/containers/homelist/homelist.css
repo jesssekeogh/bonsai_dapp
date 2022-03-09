@@ -1,12 +1,20 @@
-.bonsai__header {
-    margin-bottom:2rem ;
+.home_list_container {
+    margin-top: -2rem;
+}
+
+.bonsai_features {
+    margin-top:3rem ;
 }
 
 /* Iphone X css */
 @media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
 
-    .bonsai__header {
-        margin-bottom:12rem ;
+    .bonsai_features {
+        margin-top:14rem ;
+    }
+
+    .home_list_container {
+        margin-top: 0rem;
     }
 
 }
@@ -14,16 +22,18 @@
 /* Iphone X css */
 @media only screen and (min-device-width : 400px) and (max-device-width : 767px) {
 
-    .bonsai__header {
-        margin-bottom:15.5rem ;
+    .bonsai_features {
+        margin-top:17rem ;
     }
 
 }
 
 /* Large screens ----------- */
 @media only screen  and (min-width : 1824px) {
-    .bonsai__header {
-        margin-bottom:6rem ;
-        margin-top: 15rem;
+    .bonsai_features {
+        margin-top: 22rem;
+    }
+    .home_list_container {
+        margin-top: 0rem;
     }
 }

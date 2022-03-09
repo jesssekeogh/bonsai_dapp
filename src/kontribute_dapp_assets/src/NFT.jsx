@@ -83,7 +83,7 @@ const NFT = () => {
       <Center py={5}>
         <Box
           role={"group"}
-          mt={"40rem"}
+          mt={"36rem"}
           p={6}
           maxW={"330px"}
           w={"full"}
@@ -137,7 +137,7 @@ const NFT = () => {
         </Box>
       </Center>
       {/* the courousal */}
-      <Container>
+      <Container mt="-3rem">
         <Center>
           <Heading
             fontWeight={600}

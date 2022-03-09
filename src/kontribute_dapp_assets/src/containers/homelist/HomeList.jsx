@@ -11,14 +11,8 @@ import {
   Icon,
   SimpleGrid,
   Flex,
-  Center,
 } from "@chakra-ui/react";
-import {
-  FcUpload,
-  FcPicture,
-  FcVoicePresentation,
-  FcDown,
-} from "react-icons/fc";
+import { FcUpload, FcPicture, FcVoicePresentation } from "react-icons/fc";
 import { FaDiscord, FaTwitter, FaGithub, FaRedditAlien } from "react-icons/fa";
 
 // the main home section of the dapp
@@ -49,18 +43,18 @@ const Feature = ({ title, text, icon }) => {
 
 const HomeList = () => {
   return (
-    <div>
+    <div className="home_list_container">
       <Container maxW={"3xl"}>
         <Stack
           as={Box}
           textAlign={"center"}
           spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}
+          py={{ base: 20, md: 32 }}
           mb="6"
         >
           <Heading
             fontWeight={600}
-            fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
+            fontSize={{ base: "5xl", sm: "5xl", md: "6xl" }}
             lineHeight={"110%"}
           >
             Welcome to <br />
@@ -107,37 +101,34 @@ const HomeList = () => {
             </Link>
           </Stack>
         </Stack>
-        <div className="bonsai__header">
-          <Center>
-            <FcDown />
-          </Center>
-        </div>
         {/* feature: */}
-        <Box p={4}>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-            <Feature
-              icon={<Icon as={FcUpload} w={10} h={10} />}
-              title={"Community Stories"}
-              text={
-                "Kontribute allows users to upload their own non-fiction/fiction stories to the dapp. Stories are all fully stored on the ICP blockchain."
-              }
-            />
-            <Feature
-              icon={<Icon as={FcPicture} w={10} h={10} />}
-              title={"NFT Integration"}
-              text={
-                "See characters, places or anything else that is mentioned in a story in the form of an NFT. Own a piece of your favourite story through our NFT Anvil integration."
-              }
-            />
-            <Feature
-              icon={<Icon as={FcVoicePresentation} w={10} h={10} />}
-              title={"Voting"}
-              text={
-                "Readers choose the future of stories through integrated voting on the next evolution. Choose the faith of your favourite character."
-              }
-            />
-          </SimpleGrid>
-        </Box>
+        <div className="bonsai_features">
+          <Box p={4}>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+              <Feature
+                icon={<Icon as={FcUpload} w={10} h={10} />}
+                title={"Community Stories"}
+                text={
+                  "Kontribute allows users to upload their own non-fiction/fiction stories to the dapp. Stories are all fully stored on the ICP blockchain."
+                }
+              />
+              <Feature
+                icon={<Icon as={FcPicture} w={10} h={10} />}
+                title={"NFT Integration"}
+                text={
+                  "See characters, places or anything else that is mentioned in a story in the form of an NFT. Own a piece of your favourite story through our NFT Anvil integration."
+                }
+              />
+              <Feature
+                icon={<Icon as={FcVoicePresentation} w={10} h={10} />}
+                title={"Voting"}
+                text={
+                  "Readers choose the future of stories through integrated voting on the next evolution. Choose the faith of your favourite character."
+                }
+              />
+            </SimpleGrid>
+          </Box>
+        </div>
       </Container>
       <div className="bonsai__footer">
         <div className="bonsai__footer-heading">

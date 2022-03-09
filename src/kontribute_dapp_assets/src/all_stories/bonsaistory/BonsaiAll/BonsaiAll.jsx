@@ -53,9 +53,7 @@ const BonsaiAll = () => {
     <div>
       <NavBar />
       <Center>
-        <div className="bonsai_all-heading">
           <Heading color="#a7884a">Bonsai Warriors</Heading>
-        </div>
       </Center>
       <div className="bonsai_all-container">
         <Center>

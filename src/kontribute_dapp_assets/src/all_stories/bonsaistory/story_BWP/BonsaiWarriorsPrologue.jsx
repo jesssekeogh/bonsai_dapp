@@ -154,7 +154,7 @@ const BonsaiWarriorsPrologue = () => {
       <Container mt="4">
         <Alert status="warning" mb="2rem" borderRadius="10px">
           <AlertIcon />
-          Voting for this chapter has ended!
+          Voting for this chapter has ended! <b>&nbsp;Winner: Artisan</b>
         </Alert>
         <Flex mb="4">
           <Box p="2">

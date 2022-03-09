@@ -19,6 +19,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Fade, Bounce } from "react-awesome-reveal";
@@ -26,8 +27,12 @@ import "../BonsaiStory.css";
 
 // user context from auth
 import { UserContext } from "../../../Context.jsx";
+
 const BonsaiWarriorsPrologueII = () => {
   const { signActor } = useContext(UserContext);
+
+  // for toasts:
+  const toast = useToast();
 
   // the votes:
   const [vote1, setvote1] = useState("");
@@ -42,11 +47,27 @@ const BonsaiWarriorsPrologueII = () => {
       getvote1();
       setClick1(false);
       onClose1();
-      return alert("Success! Thanks for voting");
+      return toast({
+        title: `Success! Thanks for voting`,
+        status: "success",
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
     } else {
       setClick1(false);
       onClose1();
-      return alert("Failed! You have already voted");
+      return toast({
+        title: `Failed! You have already voted`,
+        status: "error",
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
     }
   };
 
@@ -58,11 +79,27 @@ const BonsaiWarriorsPrologueII = () => {
       getvote2();
       setClick2(false);
       onClose2();
-      return alert("Success! Thanks for voting");
+      return toast({
+        title: `Success! Thanks for voting`,
+        status: "success",
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
     } else {
       setClick2(false);
       onClose2();
-      return alert("Failed! You have already voted");
+      return toast({
+        title: `Failed! You have already voted`,
+        status: "error",
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
     }
   };
 
@@ -74,11 +111,27 @@ const BonsaiWarriorsPrologueII = () => {
       getvote3();
       setClick3(false);
       onClose3();
-      return alert("Success! Thanks for voting");
+      return toast({
+        title: `Success! Thanks for voting`,
+        status: "success",
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
     } else {
       setClick3(false);
       onClose3();
-      return alert("Failed! You have already voted");
+      return toast({
+        title: `Failed! You have already voted`,
+        status: "error",
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
     }
   };
 

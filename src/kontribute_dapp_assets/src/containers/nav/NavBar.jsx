@@ -95,88 +95,90 @@ const NavBar = () => {
   }, []);
 
   return (
-    <div className="bonsai__navbar">
-      <div className="bonsai__navbar-links">
-        <div className="bonsai__navbar-links_logo">
-          <Link to="/">
-            <img src={logo} alt="Kontribute" />
-          </Link>
+    <div className="nav-container">
+      <div className="bonsai__navbar">
+        <div className="bonsai__navbar-links">
+          <div className="bonsai__navbar-links_logo">
+            <Link to="/">
+              <img src={logo} alt="Kontribute" />
+            </Link>
+          </div>
+
+          <div className="bonsai__navbar-links_container">
+            <MenuLinks />
+          </div>
         </div>
 
-        <div className="bonsai__navbar-links_container">
-          <MenuLinks />
-        </div>
-      </div>
-
-      {/* the profile button */}
-      <div className="bonsai__navbar-sign">
-        <Menu>
-          <MenuButton
-            as={Button}
-            bg="#17191e"
-            border="1px"
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
-            rightIcon={<CgInfinity />}
-          >
-            Profile
-          </MenuButton>
-          <MenuList>
-            <MenuGroup title="Principal ID" />
-            <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
-              {hasCopied ? alert("Copied to clipboard!") : principal}
-            </MenuItem>
-            <MenuDivider />
-            <MenuGroup title="Bonsai Warriors Vote History" />
-            <Link to="/bonsai-warriors-prologueII">
-              <MenuItem
-                icon={<MdHowToVote />}
-                command={isReady ? recentvoteII : <Spinner size="xs" />}
-              >
-                Prologue II:
-              </MenuItem>
-            </Link>
-            <Link to="/bonsai-warriors-prologue">
-              <MenuItem
-                icon={<MdHowToVote />}
-                command={isReady ? recentvote : <Spinner size="xs" />}
-              >
-                Prologue:
-              </MenuItem>
-            </Link>
-            <MenuDivider />
-            <MenuItem icon={<LockIcon />} onClick={signOut}>
-              Sign Out
-            </MenuItem>
-          </MenuList>
-        </Menu>
-        <div className="bonsai__link-dropdown">
+        {/* the profile button */}
+        <div className="bonsai__navbar-sign">
           <Menu>
             <MenuButton
-              ms="2"
-              as={IconButton}
+              as={Button}
               bg="#17191e"
               border="1px"
               borderColor="#9d8144"
               color="#f0e6d3"
               colorScheme="#17191e"
-              icon={<HamburgerIcon />}
-            ></MenuButton>
+              rightIcon={<CgInfinity />}
+            >
+              Profile
+            </MenuButton>
             <MenuList>
-              {/* for mobile view */}
-              <MenuGroup title="Kontribute" />
-              <Link to="/stories">
-                <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
+              <MenuGroup title="Principal ID" />
+              <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
+                {hasCopied ? alert("Copied to clipboard!") : principal}
+              </MenuItem>
+              <MenuDivider />
+              <MenuGroup title="Bonsai Warriors Vote History" />
+              <Link to="/bonsai-warriors-prologueII">
+                <MenuItem
+                  icon={<MdHowToVote />}
+                  command={isReady ? recentvoteII : <Spinner size="xs" />}
+                >
+                  Prologue II:
+                </MenuItem>
               </Link>
-              <Link to="/nft">
-                <MenuItem icon={<ViewIcon />}>NFT</MenuItem>
+              <Link to="/bonsai-warriors-prologue">
+                <MenuItem
+                  icon={<MdHowToVote />}
+                  command={isReady ? recentvote : <Spinner size="xs" />}
+                >
+                  Prologue:
+                </MenuItem>
               </Link>
-              <Link to="/create">
-                <MenuItem icon={<EditIcon />}>Create</MenuItem>
-              </Link>
+              <MenuDivider />
+              <MenuItem icon={<LockIcon />} onClick={signOut}>
+                Sign Out
+              </MenuItem>
             </MenuList>
           </Menu>
+          <div className="bonsai__link-dropdown">
+            <Menu>
+              <MenuButton
+                ms="2"
+                as={IconButton}
+                bg="#17191e"
+                border="1px"
+                borderColor="#9d8144"
+                color="#f0e6d3"
+                colorScheme="#17191e"
+                icon={<HamburgerIcon />}
+              ></MenuButton>
+              <MenuList>
+                {/* for mobile view */}
+                <MenuGroup title="Kontribute" />
+                <Link to="/stories">
+                  <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
+                </Link>
+                <Link to="/nft">
+                  <MenuItem icon={<ViewIcon />}>NFT</MenuItem>
+                </Link>
+                <Link to="/create">
+                  <MenuItem icon={<EditIcon />}>Create</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+          </div>
         </div>
       </div>
     </div>

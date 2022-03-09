@@ -1,3 +1,7 @@
+.nav-container {
+    margin-top: 8rem;
+}
+
 .bonsai__navbar {
     display: flex;
     justify-content: space-between;
@@ -5,6 +9,12 @@
     padding: 1.2rem 6rem;
     background-color: #111111;
     border-bottom: 5px double #1a1a1a;
+
+    /* fixed: */
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    z-index:1; /*Add this*/
 }
 
 .bonsai__navbar-links_logo {
