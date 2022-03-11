@@ -1,12 +1,27 @@
+type Story = 
+ record {
+   body: text;
+   chapter: text;
+   title: text;
+ };
 type Profile = 
  record {
    hasVoted: bool;
    whichOption: text;
  };
+type List = 
+ opt record {
+       record {
+         principal;
+         Story;
+       };
+       List;
+     };
 service : {
   VoteOption1: () -> (text);
   VoteOption2: () -> (text);
   VoteOption3: () -> (text);
+  getAll: (nat) -> (List);
   getVote1: () -> (nat);
   getVote1II: () -> (nat);
   getVote2: () -> (nat);
@@ -15,4 +30,5 @@ service : {
   getVote3II: () -> (nat);
   readVotes: () -> (Profile);
   readVotesII: () -> (Profile);
+  uploadStory: (Story) -> (text);
 }

@@ -4,7 +4,15 @@ type Story =
    chapter: text;
    title: text;
  };
+type List = 
+ opt record {
+       record {
+         principal;
+         Story;
+       };
+       List;
+     };
 service : {
-  allStories: () -> (vec Story);
-  create: (Story) -> (text);
+  allStories: (nat) -> (List);
+  create: (principal, Story) -> (text);
 }

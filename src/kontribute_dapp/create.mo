@@ -1,6 +1,8 @@
 import Principal "mo:base/Principal";
 import Trie "mo:base/Trie";
 import Types "types";
+import Iter "mo:base/Iter";
+import List "mo:base/List";
 
 actor Create {
 
@@ -15,8 +17,8 @@ actor Create {
 
     var Writers : Trie.Trie<Principal, Types.Story> = Trie.empty();
 
-    // create story
-    public shared(msg) func create(story : Types.Story) : async Text {
+    // create story (add logic to reject anon)
+    public shared(msg) func create(callerId : Principal, story : Types.Story) : async Text {
         if(story.title == ""){
             return "Failed, one or more fields empty"
         }else if(story.chapter == ""){
@@ -24,8 +26,6 @@ actor Create {
         }else if(story.body == ""){
             return "Failed, one or more fields empty"
         };
-
-        let callerId = msg.caller;
         
         let newStory : Types.Story = {
             title = story.title;
@@ -41,16 +41,16 @@ actor Create {
         return "Story Created!"
     };
 
-    // return all user stories
-    public func allStories(): async [Types.Story]{
+    // get the last n stories
+    public func allStories(amount : Nat): async List.List<(Principal, Types.Story)>{
         // return all key and values:
-        // let my_array : [(Principal, Types.Story)] = Iter.toArray(Trie.iter(Writers));
+        var my_list = Iter.toList(Trie.iter(Writers)); // maps all trie entries to List
 
-        // return all values
-        let result = Trie.toArray<Principal, Types.Story, Types.Story>(Writers, func (key, value): Types.Story{
-            value;
-        });
+        var new_list = List.nil<(Principal, Types.Story)>();
 
-        // on the frontend loop through all the values and display in new section
-    }
+        new_list := List.take(my_list, amount); // a new list to return the newest n entries
+
+        return new_list
+    };
+
 }

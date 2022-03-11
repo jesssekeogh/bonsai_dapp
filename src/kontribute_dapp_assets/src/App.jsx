@@ -50,7 +50,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",//"https://identity.ic0.app",
+        identityProvider: "https://identity.ic0.app", //"http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();

@@ -1,6 +1,7 @@
 import Bonsai "canister:bonsai";
 import Create "canister:create";
 import Types "types";
+import List "mo:base/List";
 
 actor {
 
@@ -60,4 +61,15 @@ actor {
     public func getVote3() : async Nat {
         await Bonsai.getBonsaiVote3()
     };
+
+    // functions for the create feature
+    // work in progress
+    public shared(msg) func uploadStory(story : Types.Story): async Text {
+        let callerId = msg.caller;
+        await Create.create(callerId, story)
+    };
+
+    public func getAll(amount : Nat) : async List.List<(Principal, Types.Story)>{
+        await Create.allStories(amount)
+    }
 }
