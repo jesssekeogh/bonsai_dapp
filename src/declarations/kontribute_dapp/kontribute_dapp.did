@@ -21,7 +21,7 @@ service : {
   VoteOption1: () -> (text);
   VoteOption2: () -> (text);
   VoteOption3: () -> (text);
-  getAll: (nat) -> (List);
+  getAllStories: (nat) -> (List);
   getVote1: () -> (nat);
   getVote1II: () -> (nat);
   getVote2: () -> (nat);

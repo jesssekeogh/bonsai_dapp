@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavBar } from "./containers";
 import {
   Alert,
@@ -19,13 +19,52 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  useToast
 } from "@chakra-ui/react";
 
+import { UserContext } from "./Context";
+
 const Create = () => {
+  const { signActor } = useContext(UserContext);
+
   const [alert, setAlert] = useState(true);
 
   const toggleAlert = () => {
     setAlert(false);
+  };
+
+  // for toasts:
+  const toast = useToast();
+
+  // post story to backend
+  const postStory = async () => {
+    const user = await signActor();
+    const post = await user.uploadStory({
+      title: Title.value,
+      body: Body.value,
+      chapter: Chapter.value,
+    });
+    if (post.toString() === "Story Created!") {
+      toast({
+        title: `Success! Story posted`,
+        status: "success",
+        isClosable: true,
+        position: "top-right",
+        containerStyle: {
+          marginTop: "5.5rem",
+        },
+      });
+    }else{
+      toast({
+        title: `Failed! A field was invalid`,
+        status: "error",
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
+    }
   };
 
   return (
@@ -79,19 +118,19 @@ const Create = () => {
               <Stack spacing={4}>
                 <HStack>
                   <Box>
-                    <FormControl id="firstName" isRequired>
+                    <FormControl id="Title" isRequired>
                       <FormLabel>Story Title</FormLabel>
                       <Input type="text" placeholder="Bonsai Warriors" />
                     </FormControl>
                   </Box>
                   <Box>
-                    <FormControl id="lastName" isRequired>
+                    <FormControl id="Chapter" isRequired>
                       <FormLabel>Chapter</FormLabel>
                       <Input type="text" placeholder="Chapter 1" />
                     </FormControl>
                   </Box>
                 </HStack>
-                <FormControl id="body" isRequired>
+                <FormControl id="Body" isRequired>
                   <FormLabel>Story Body</FormLabel>
                   <Textarea
                     placeholder="In the Celestial Empire, there are laws that must be obeyed, laws which bind all mankind into one great and inexhaustible force."
@@ -107,6 +146,7 @@ const Create = () => {
                     _hover={{
                       bg: "blue.500",
                     }}
+                    onClick={() => postStory()}
                   >
                     Post
                   </Button>

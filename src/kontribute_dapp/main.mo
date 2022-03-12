@@ -69,7 +69,7 @@ actor {
         await Create.create(callerId, story)
     };
 
-    public func getAll(amount : Nat) : async List.List<(Principal, Types.Story)>{
+    public func getAllStories(amount : Nat) : async List.List<(Principal, Types.Story)>{
         await Create.allStories(amount)
     }
 }

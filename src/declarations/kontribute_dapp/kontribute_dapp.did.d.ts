@@ -6,7 +6,7 @@ export interface _SERVICE {
   'VoteOption1' : () => Promise<string>,
   'VoteOption2' : () => Promise<string>,
   'VoteOption3' : () => Promise<string>,
-  'getAll' : (arg_0: bigint) => Promise<List>,
+  'getAllStories' : (arg_0: bigint) => Promise<List>,
   'getVote1' : () => Promise<bigint>,
   'getVote1II' : () => Promise<bigint>,
   'getVote2' : () => Promise<bigint>,

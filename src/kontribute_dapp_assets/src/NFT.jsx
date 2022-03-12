@@ -155,6 +155,7 @@ const NFT = () => {
           </Heading>
         </Center>
         <Box
+          bg="#fff"
           border="solid 1px"
           borderColor="#9d8144"
           mb={"5rem"}
