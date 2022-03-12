@@ -109,14 +109,14 @@ const HomeList = () => {
                 icon={<Icon as={FcUpload} w={10} h={10} />}
                 title={"Community Stories"}
                 text={
-                  "Kontribute allows users to upload their own non-fiction/fiction stories to the dapp. Stories are all fully stored on the ICP blockchain."
+                  "Kontribute will allow users to upload their own non-fiction/fiction stories to the dapp. Stories will be all fully stored on the ICP blockchain."
                 }
               />
               <Feature
                 icon={<Icon as={FcPicture} w={10} h={10} />}
                 title={"NFT Integration"}
                 text={
-                  "See characters, places or anything else that is mentioned in a story in the form of an NFT. Own a piece of your favourite story through our NFT Anvil integration."
+                  "See characters, places or anything else that is mentioned in a story in the form of an NFT. Own a piece of your favorite story through our NFT Anvil integration."
                 }
               />
               <Feature

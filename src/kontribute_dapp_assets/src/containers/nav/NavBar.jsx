@@ -35,9 +35,9 @@ const MenuLinks = () => (
     <Link to="/NFT">
       <p>NFT</p>
     </Link>
-    <Link to="/Create">
+    {/* <Link to="/Create">
       <p>CREATE</p>
-    </Link>
+    </Link> */}
   </>
 );
 
@@ -173,9 +173,9 @@ const NavBar = () => {
                 <Link to="/nft">
                   <MenuItem icon={<ViewIcon />}>NFT</MenuItem>
                 </Link>
-                <Link to="/create">
+                {/* <Link to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>
-                </Link>
+                </Link> */}
               </MenuList>
             </Menu>
           </div>

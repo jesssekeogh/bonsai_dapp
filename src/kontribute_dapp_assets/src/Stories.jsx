@@ -60,7 +60,7 @@ const Stories = () => {
               </div>
             </div>
           </SlideFade>
-          <Delayed>
+          {/* <Delayed>
             <SlideFade in={true} offsetY="20px">
               <div className="bonsai__card">
                 <img className="bonsai__image" src={placeholder} />
@@ -80,7 +80,7 @@ const Stories = () => {
                 </div>
               </div>
             </SlideFade>
-          </Delayed>
+          </Delayed> */}
         </div>
       ) : null}
     </div>
