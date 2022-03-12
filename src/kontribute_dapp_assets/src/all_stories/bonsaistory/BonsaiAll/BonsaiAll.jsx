@@ -1,0 +1,86 @@
+import React from "react";
+import { NavBar } from "../../../containers";
+import "./BonsaiAll.css";
+import {
+  Heading,
+  Center,
+  Box,
+  Text,
+  Stack,
+  Feature,
+  SlideFade,
+} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import { Delayed } from "../../../containers/index";
+
+function Feature({ title, desc, link, ...rest }) {
+  return (
+    <Box
+      p={5}
+      shadow="md"
+      borderWidth="1px"
+      borderColor="#9d8144"
+      borderRadius="5px"
+      bgColor="#16171b"
+      maxW="400px"
+      {...rest}
+    >
+      <Heading color="#a7884a" fontSize="xl">
+        {title}
+      </Heading>
+      <Text mb="3" color="#f0e6d3" mt={4}>
+        {desc}
+      </Text>
+      <div className="bonsai__button">
+        <Link to={link}>
+          <button type="button">Read Now</button>
+        </Link>
+      </div>
+    </Box>
+  );
+}
+
+function StackEx(props) {
+  return (
+    <Stack spacing={8}>
+      <Feature title={props.title1} desc={props.body1} link={props.link1} />
+    </Stack>
+  );
+}
+
+const BonsaiAll = () => {
+  return (
+    <div>
+      <NavBar />
+      <Center>
+          <Heading color="#a7884a">Bonsai Warriors</Heading>
+      </Center>
+      <div className="bonsai_all-container">
+        <Center>
+          <Delayed>
+            <SlideFade in={true}>
+              <StackEx
+                title1={"PROLOGUE II"}
+                body1={"You are an Artisan, now you must choose your name"}
+                link1={"/bonsai-warriors-prologueII"}
+              />
+            </SlideFade>
+          </Delayed>
+        </Center>
+        <Center mt="2rem">
+          <Delayed waitBeforeShow = {200}>
+            <SlideFade in={true}>
+              <StackEx
+                title1={"PROLOGUE"}
+                body1={"Introduction and character creation in the Bonsai Warriors story"}
+                link1={"/bonsai-warriors-prologue"}
+              />
+            </SlideFade>
+          </Delayed>
+        </Center>
+      </div>
+    </div>
+  );
+};
+
+export default BonsaiAll;

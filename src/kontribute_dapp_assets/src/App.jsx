@@ -4,21 +4,27 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // pages:
 import Home from "./Home";
 import Stories from "./Stories";
-import Footer from "./Footer";
-import { BonsaiStory } from "./containers";
+import NFT from "./NFT";
+import Create from "./Create";
+import { Footer } from "./containers";
+import CommunityUploads from "./CommunityUploads";
 
 // design
-import "../assets/main.css";
 import klogo from "../assets/kontribute_logo.png";
 import { CgInfinity } from "react-icons/cg";
 import { Box, Image, Center, Button, Image } from "@chakra-ui/react";
 
 // for the actor
 import { AuthClient } from "@dfinity/auth-client";
+// for Bonsai Warriors votes:
 import { createActor, canisterId } from "../../declarations/kontribute_dapp";
-
 // for storing the user
 import { UserContext } from "./Context";
+
+// bonsai links:
+import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
+import { BonsaiWarriorsPrologueII } from "./all_stories/bonsaistory"
+import { BonsaiAll } from "./all_stories/bonsaistory";
 
 // this is the launch page:
 
@@ -44,7 +50,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app", //"http://rkp4c-7iaaa-aaaaa-aaaca-cai.localhost:8000/", "https://identity.ic0.app",
+        identityProvider: "http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/", //"https://identity.ic0.app",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -82,7 +88,7 @@ function App() {
     <div>
       {!signedIn && client ? (
         <div>
-          <div className="bonsai__home">
+          <Center mt="10rem">
             <Box
               maxW="sm"
               borderWidth="1px"
@@ -122,7 +128,7 @@ function App() {
                 </Box>
               </Box>
             </Box>
-          </div>
+            </Center>
           <Footer />
         </div>
       ) : null}
@@ -134,7 +140,12 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
-                <Route path="/bonsai-warriors" element={<BonsaiStory />} />
+                <Route path="/nft" element={<NFT />} />
+                <Route path="/create" element={<Create />} />
+                <Route path="/bonsai-all" element={<BonsaiAll />} />
+                <Route path="/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
+                <Route path="/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
+                <Route path="/community-stories" element={<CommunityUploads />} />
               </Routes>
             </UserContext.Provider>
           </Router>

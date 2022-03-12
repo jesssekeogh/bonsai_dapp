@@ -1,16 +1,34 @@
+type Story = 
+ record {
+   body: text;
+   chapter: text;
+   title: text;
+ };
 type Profile = 
  record {
-   WhichOption: text;
    hasVoted: bool;
+   whichOption: text;
  };
+type List = 
+ opt record {
+       record {
+         principal;
+         Story;
+       };
+       List;
+     };
 service : {
   VoteOption1: () -> (text);
   VoteOption2: () -> (text);
   VoteOption3: () -> (text);
-  getAllVotes: () -> (nat) query;
-  getVote1: () -> (nat) query;
-  getVote2: () -> (nat) query;
-  getVote3: () -> (nat) query;
+  getAllStories: (nat) -> (List);
+  getVote1: () -> (nat);
+  getVote1II: () -> (nat);
+  getVote2: () -> (nat);
+  getVote2II: () -> (nat);
+  getVote3: () -> (nat);
+  getVote3II: () -> (nat);
   readVotes: () -> (Profile);
-  whoami: () -> (principal);
+  readVotesII: () -> (Profile);
+  uploadStory: (Story) -> (text);
 }

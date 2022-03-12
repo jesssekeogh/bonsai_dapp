@@ -1,0 +1,18 @@
+type Story = 
+ record {
+   body: text;
+   chapter: text;
+   title: text;
+ };
+type List = 
+ opt record {
+       record {
+         principal;
+         Story;
+       };
+       List;
+     };
+service : {
+  allStories: (nat) -> (List);
+  create: (principal, Story) -> (text);
+}

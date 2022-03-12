@@ -1,20 +1,17 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import "../assets/main.css";
 import bonsai_bg from "../assets/beauty_render3_5.png";
-import { NavBar } from "./containers";
+import placeholder from "../assets/4000x2250.png";
+import { NavBar, Delayed } from "./containers";
 import { Link } from "react-router-dom";
-import { Slide } from "react-awesome-reveal";
-//styles:
-import { Spinner } from "@chakra-ui/react";
 import {
-  Stat,
-  StatLabel,
-  StatArrow,
-  StatGroup,
+  SlideFade,
+  Spinner,
+  Badge,
+  Alert,
+  AlertIcon,
+  AlertDescription,
 } from "@chakra-ui/react";
-
-// user context from auth
-import { UserContext } from "./Context.jsx";
 
 // stories page will link in our stories here
 const Stories = () => {
@@ -25,22 +22,9 @@ const Stories = () => {
     const img = new Image();
     img.onload = () => {
       setIsReady(true);
-      queryAll();
     };
     img.src = bonsai_bg;
   }, []);
-
-  // get the total votes:
-  const { signActor } = useContext(UserContext);
-
-  // get all the votes
-  const [allVotes, setAllVotes] = useState("0");
-
-  const queryAll = async () => {
-    const user = await signActor();
-    const all = await user.getAllVotes();
-    setAllVotes(all.toString());
-  };
 
   return (
     <div>
@@ -57,29 +41,47 @@ const Stories = () => {
         </div>
       ) : null}
       {imageIsReady ? (
-        <Slide>
-          <div className="bonsai__card">
-            <img className="bonsai__image" src={bonsai_bg} />
-            <div className="bonsai__card-content">
-              <p>Prologue</p>
-              <h3>Bonsai Warriors</h3>
-              <StatGroup pb="5" color="#fff">
-                <Stat>
-                  <StatLabel>
-                    Total Votes:{" "}
-                      <StatArrow type="increase" />
-                      {allVotes}
-                  </StatLabel>
-                </Stat>
-              </StatGroup>
+        <div>
+          <SlideFade in={true} offsetY="20px">
+            <div className="bonsai__card">
+              <img className="bonsai__image" src={bonsai_bg} />
+              <div className="bonsai__card-content">
+                <p>
+                  <Badge colorScheme="green" borderRadius="5px">
+                    New Chapter
+                  </Badge>
+                </p>
+                <h3>Bonsai Warriors</h3>
+              </div>
+              <div className="bonsai__card-btn">
+                <Link to="/bonsai-all">
+                  <button type="button">View All</button>
+                </Link>
+              </div>
             </div>
-            <div className="bonsai__card-btn">
-              <Link to="/bonsai-warriors">
-                <button type="button">Read Now</button>
-              </Link>
-            </div>
-          </div>
-        </Slide>
+          </SlideFade>
+          {/* <Delayed>
+            <SlideFade in={true} offsetY="20px">
+              <div className="bonsai__card">
+                <img className="bonsai__image" src={placeholder} />
+                <div className="bonsai__card-content">
+                  <p>
+                    <Alert status="error" w="120px" h="32px" borderRadius="5px">
+                      <AlertIcon />
+                      <AlertDescription color="darkred" fontWeight="bold">TESTING</AlertDescription>
+                    </Alert>
+                  </p>
+                  <h3>Community Stories</h3>
+                </div>
+                <div className="bonsai__card-btn">
+                  <Link to="/community-stories">
+                    <button type="button">View All</button>
+                  </Link>
+                </div>
+              </div>
+            </SlideFade>
+          </Delayed> */}
+        </div>
       ) : null}
     </div>
   );

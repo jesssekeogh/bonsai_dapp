@@ -1,173 +1,75 @@
-import Principal "mo:base/Principal";
-import Trie "mo:base/Trie";
-import Result "mo:base/Result";
+import Bonsai "canister:bonsai";
+import Create "canister:create";
+import Types "types";
+import List "mo:base/List";
 
 actor {
 
-    // test whoami() function
-    public shared (msg) func whoami() : async Principal {
-        msg.caller
-    };
+    // The main contract for the imports
 
-    //MAIN CONTRACT:
-    // the anonymous identity
-    var anon : Text = "2vxsx-fae";
-
-    // user profile
-    public type Profile = {
-        hasVoted: Bool;
-        WhichOption: Text; 
-    };
-
-    // state (add stable)
-    stable var uniqueUser : Trie.Trie<Principal, Profile> = Trie.empty();
-    stable var vote1 : Nat = 0;
-    stable var vote2 : Nat = 0;
-    stable var vote3 : Nat = 0;
-
-    // vote options,check anon, get the value of principal (null if no vote)
+    // Functions for the Bonsai Stories - pass the user principal through
+    // update the votes
     public shared(msg) func VoteOption1 () : async Text {
         let callerId = msg.caller;
-
-        if(Principal.toText(callerId) == anon) {
-            return "Anonymous user: Invalid";
-        };
-
-        let result = Trie.get(
-            uniqueUser,
-            key(callerId),
-            Principal.equal
-        );
-
-        if(result == null){
-            let userchoice: Profile = {
-                hasVoted = true;
-                WhichOption = "vote1";
-            };
-            uniqueUser := Trie.replace(
-                uniqueUser,
-                key(callerId),
-                Principal.equal,
-                ?userchoice
-            ).0;
-            vote1 += 1;
-            return "user has voted successfully on vote1"
-        };
-
-        return "user has already voted";
-
+        await Bonsai.BonsaiOption1(callerId)
     };
 
     public shared(msg) func VoteOption2 () : async Text {
         let callerId = msg.caller;
-
-        if(Principal.toText(callerId) == anon) {
-            return "Anonymous user: Invalid";
-        };
-
-        let result = Trie.get(
-            uniqueUser,
-            key(callerId),
-            Principal.equal
-        );
-
-        if(result == null){
-            let userchoice: Profile = {
-                hasVoted = true;
-                WhichOption = "vote2";
-            };
-            uniqueUser := Trie.replace(
-                uniqueUser,
-                key(callerId),
-                Principal.equal,
-                ?userchoice
-            ).0;
-            vote2 += 1;
-            return "user has voted successfully on vote2"
-        };
-
-        return "user has already voted";
-
+        await Bonsai.BonsaiOption2(callerId)
     };
 
     public shared(msg) func VoteOption3 () : async Text {
         let callerId = msg.caller;
-
-        if(Principal.toText(callerId) == anon) {
-            return "Anonymous user: Invalid";
-        };
-
-        let result = Trie.get(
-            uniqueUser,
-            key(callerId),
-            Principal.equal
-        );
-
-        if(result == null){
-            let userchoice: Profile = {
-                hasVoted = true;
-                WhichOption = "vote3";
-            };
-            uniqueUser := Trie.replace(
-                uniqueUser,
-                key(callerId),
-                Principal.equal,
-                ?userchoice,
-            ).0;
-            vote3 += 1;
-            return "user has voted successfully on vote3"
-        };
-
-        return "user has already voted";
-
+        await Bonsai.BonsaiOption3(callerId)
     };
 
-    // check if user has voted yet and on which option
-    public shared(msg) func readVotes() : async Profile {
+    // read to see which option for Prologue
+    public shared(msg) func readVotes() : async Types.Profile {
         let callerId = msg.caller;
-
-        let result = Trie.get(
-            uniqueUser,
-            key(callerId),
-            Principal.equal
-        );
-
-        switch (result){
-            case (null){
-                let userchoice : Profile = {
-                hasVoted = false;
-                WhichOption = "novote"; 
-                };
-            return userchoice
-            };
-            case (?result){
-                return result
-            };
-        };
+        await Bonsai.readBonsaiVotes(callerId)
     };
 
-    // call the votes
-    public query func getVote1() : async Nat {
-        return vote1;
+    // read to see which option for Prologue II
+    public shared(msg) func readVotesII() : async Types.Profile {
+        let callerId = msg.caller;
+        await Bonsai.readBonsaiVotesII(callerId)
     };
 
-    public query func getVote2() : async Nat {
-        return vote2;
+    // call the votes for PrologueII
+    public func getVote1II() : async Nat {
+        await Bonsai.getBonsaiVote1II()
     };
 
-    public query func getVote3() : async Nat {
-        return vote3;
+    public func getVote2II() : async Nat {
+        await Bonsai.getBonsaiVote2II()
     };
 
-    // total vote count
-    public query func getAllVotes() : async Nat {
-        let allVotes = vote1 + vote2 + vote3;
-        return allVotes;
+    public func getVote3II() : async Nat {
+        await Bonsai.getBonsaiVote3II()
     };
 
-    // utility func
-    private func key(x : Principal) : Trie.Key<Principal> {
-        return { key = x; hash = Principal.hash(x) }
+    // call the votes for the prologue
+    public func getVote1() : async Nat {
+        await Bonsai.getBonsaiVote1()
     };
 
+    public func getVote2() : async Nat {
+        await Bonsai.getBonsaiVote2()
+    };
+
+    public func getVote3() : async Nat {
+        await Bonsai.getBonsaiVote3()
+    };
+
+    // functions for the create feature
+    // work in progress
+    public shared(msg) func uploadStory(story : Types.Story): async Text {
+        let callerId = msg.caller;
+        await Create.create(callerId, story)
+    };
+
+    public func getAllStories(amount : Nat) : async List.List<(Principal, Types.Story)>{
+        await Create.allStories(amount)
+    }
 }
