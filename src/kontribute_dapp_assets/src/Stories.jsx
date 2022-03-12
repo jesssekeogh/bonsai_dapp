@@ -24,6 +24,7 @@ const Stories = () => {
       setIsReady(true);
     };
     img.src = bonsai_bg;
+    window.scrollTo(0, 0);
   }, []);
 
   return (

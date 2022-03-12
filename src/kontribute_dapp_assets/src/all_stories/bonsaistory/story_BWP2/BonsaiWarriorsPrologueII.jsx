@@ -175,6 +175,7 @@ const BonsaiWarriorsPrologueII = () => {
     getvote1();
     getvote2();
     getvote3();
+    window.scrollTo(0, 0)
   }, []);
 
   // button state for clicks
@@ -219,7 +220,7 @@ const BonsaiWarriorsPrologueII = () => {
             <br></br>
             <br></br>
             Your father is the last in a long line of farmers, together your
-            family carved over a dozen generations carved this place out of the
+            family over a dozen generations, carved this place out of the
             wilderness. The family home reflects this, with the dozen-odd
             buildings that sprawl along, the barns, work sheds, and the house
             itself. To a more critical eye, it would be a rich peasant’s idea of

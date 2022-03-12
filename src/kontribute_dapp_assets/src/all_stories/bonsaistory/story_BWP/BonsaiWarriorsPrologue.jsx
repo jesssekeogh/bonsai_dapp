@@ -77,6 +77,7 @@ const BonsaiWarriorsPrologue = () => {
     getvote1();
     getvote2();
     getvote3();
+    window.scrollTo(0, 0)
   }, []);
 
   return (

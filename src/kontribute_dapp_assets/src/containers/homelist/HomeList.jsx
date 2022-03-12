@@ -123,7 +123,7 @@ const HomeList = () => {
                 icon={<Icon as={FcVoicePresentation} w={10} h={10} />}
                 title={"Voting"}
                 text={
-                  "Readers choose the future of stories through integrated voting on the next evolution. Choose the faith of your favourite character."
+                  "Readers choose the future of stories through integrated voting on the next evolution. Choose the fate of your favourite character."
                 }
               />
             </SimpleGrid>

@@ -13,7 +13,6 @@ export const idlFactory = ({ IDL }) => {
     'getBonsaiVote2II' : IDL.Func([], [IDL.Nat], ['query']),
     'getBonsaiVote3' : IDL.Func([], [IDL.Nat], ['query']),
     'getBonsaiVote3II' : IDL.Func([], [IDL.Nat], ['query']),
-    'readBonsaiVotes' : IDL.Func([IDL.Principal], [Profile], []),
     'readBonsaiVotesII' : IDL.Func([IDL.Principal], [Profile], []),
   });
 };

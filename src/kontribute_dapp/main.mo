@@ -24,12 +24,6 @@ actor {
         await Bonsai.BonsaiOption3(callerId)
     };
 
-    // read to see which option for Prologue
-    public shared(msg) func readVotes() : async Types.Profile {
-        let callerId = msg.caller;
-        await Bonsai.readBonsaiVotes(callerId)
-    };
-
     // read to see which option for Prologue II
     public shared(msg) func readVotesII() : async Types.Profile {
         let callerId = msg.caller;

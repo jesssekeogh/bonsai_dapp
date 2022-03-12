@@ -10,11 +10,11 @@
 @media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
 
     .bonsai_features {
-        margin-top:14rem ;
+        margin-top:16rem ;
     }
 
     .home_list_container {
-        margin-top: 0rem;
+        margin-top: -3rem;
     }
 
 }
@@ -23,7 +23,7 @@
 @media only screen and (min-device-width : 400px) and (max-device-width : 767px) {
 
     .bonsai_features {
-        margin-top:17rem ;
+        margin-top:18rem ;
     }
 
 }

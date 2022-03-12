@@ -28,7 +28,6 @@ service : {
   getVote2II: () -> (nat);
   getVote3: () -> (nat);
   getVote3II: () -> (nat);
-  readVotes: () -> (Profile);
   readVotesII: () -> (Profile);
   uploadStory: (Story) -> (text);
 }

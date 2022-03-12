@@ -13,7 +13,6 @@ export interface _SERVICE {
   'getVote2II' : () => Promise<bigint>,
   'getVote3' : () => Promise<bigint>,
   'getVote3II' : () => Promise<bigint>,
-  'readVotes' : () => Promise<Profile>,
   'readVotesII' : () => Promise<Profile>,
   'uploadStory' : (arg_0: Story) => Promise<string>,
 }

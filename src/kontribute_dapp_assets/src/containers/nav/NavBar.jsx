@@ -50,26 +50,7 @@ const NavBar = () => {
   const [isReady, setReady] = useState(false);
 
   // for the recent votes in the Profile
-  const [recentvote, setrecentvote] = useState("");
   const [recentvoteII, setrecentvoteII] = useState("");
-
-  const readVotes = async () => {
-    const user = await signActor();
-    const result = await user.readVotes();
-    if (result.whichOption.toString() === "vote1") {
-      setReady(true);
-      setrecentvote("Option 1");
-    } else if (result.whichOption.toString() === "vote2") {
-      setReady(true);
-      setrecentvote("Option 2");
-    } else if (result.whichOption.toString() === "vote3") {
-      setReady(true);
-      setrecentvote("Option 3");
-    } else {
-      setReady(true);
-      setrecentvote("No Vote");
-    }
-  };
 
   const readVotesII = async () => {
     const user = await signActor();
@@ -90,7 +71,6 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    readVotes();
     readVotesII();
   }, []);
 
@@ -141,7 +121,7 @@ const NavBar = () => {
               <Link to="/bonsai-warriors-prologue">
                 <MenuItem
                   icon={<MdHowToVote />}
-                  command={isReady ? recentvote : <Spinner size="xs" />}
+                  command="Unavailable"
                 >
                   Prologue:
                 </MenuItem>
