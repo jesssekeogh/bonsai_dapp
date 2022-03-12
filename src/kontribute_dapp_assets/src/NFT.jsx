@@ -78,14 +78,14 @@ const NFT = () => {
   ];
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-  
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <NavBar />
       {/* the courousal */}
-      <Container mt="0rem">
+      <Container mt="-2rem">
         <Center>
           <Heading
             fontWeight={600}
@@ -102,6 +102,15 @@ const NFT = () => {
             </Text>
           </Heading>
         </Center>
+        <Stack align={"center"}>
+          <Text color={"gray.500"} fontSize={"sm"} textTransform={"uppercase"}>
+            via NFT Anvil
+          </Text>
+          <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
+            (Coming Soon)
+          </Heading>
+          <Stack direction={"row"} align={"center"}></Stack>
+        </Stack>
         <Box
           bg="#fff"
           border="solid 1px"
@@ -137,6 +146,23 @@ const NFT = () => {
                 backgroundSize="auto"
                 backgroundImage={`url(${card.image})`}
               >
+                <a
+                  href="https://nftanvil.com/mint"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Center>
+                    <Image
+                      zIndex={2}
+                      top="10%"
+                      pos={"absolute"}
+                      rounded={"lg"}
+                      height={230}
+                      width={282}
+                      src={anvillogo}
+                    />
+                  </Center>
+                </a>
                 {/* This is the block you need to change, to customize the caption */}
                 <Container
                   size="container.lg"
@@ -164,62 +190,6 @@ const NFT = () => {
           </Slider>
         </Box>
       </Container>
-      {/* nft anvil logo */}
-      <Center py={5}>
-        <Box
-          role={"group"}
-          p={6}
-          maxW={"330px"}
-          w={"full"}
-          rounded={"lg"}
-          pos={"relative"}
-          zIndex={1}
-        >
-          <Box
-            rounded={"lg"}
-            pos={"relative"}
-            height={"230px"}
-            _after={{
-              transition: "all .3s ease",
-              content: '""',
-              w: "full",
-              h: "full",
-              pos: "absolute",
-              top: 5,
-              left: 0,
-              backgroundImage: `url(${anvillogo})`,
-              filter: "blur(15px)",
-              zIndex: -1,
-            }}
-            _groupHover={{
-              _after: {
-                filter: "blur(20px)",
-              },
-            }}
-          >
-            <a
-              href="https://nftanvil.com/mint"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Image rounded={"lg"} height={230} width={282} src={anvillogo} />
-            </a>
-          </Box>
-          <Stack pt={10} align={"center"}>
-            <Text
-              color={"gray.500"}
-              fontSize={"sm"}
-              textTransform={"uppercase"}
-            >
-              via NFT Anvil
-            </Text>
-            <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-              (Coming Soon)
-            </Heading>
-            <Stack direction={"row"} align={"center"}></Stack>
-          </Stack>
-        </Box>
-      </Center>
     </div>
   );
 };

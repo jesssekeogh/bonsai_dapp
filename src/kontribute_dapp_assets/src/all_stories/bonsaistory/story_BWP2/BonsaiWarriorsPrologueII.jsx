@@ -191,7 +191,7 @@ const BonsaiWarriorsPrologueII = () => {
           <h1>Bonsai Warriors</h1>
         </Center>
         <Center>
-          <h5>Prologue</h5>
+          <h5>Prologue II</h5>
         </Center>
       </div>
       <Fade>
