@@ -13,5 +13,7 @@ service : {
   getBonsaiVote2II: () -> (nat) query;
   getBonsaiVote3: () -> (nat) query;
   getBonsaiVote3II: () -> (nat) query;
+  prologueGetAll: () -> (nat) query;
+  prologueIIGetAll: () -> (nat) query;
   readBonsaiVotesII: (principal) -> (Profile);
 }

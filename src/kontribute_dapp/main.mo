@@ -43,6 +43,10 @@ actor {
         await Bonsai.getBonsaiVote3II()
     };
 
+    public func getAllII() : async Nat {
+        await Bonsai.prologueIIGetAll()
+    };
+
     // call the votes for the prologue
     public func getVote1() : async Nat {
         await Bonsai.getBonsaiVote1()
@@ -54,6 +58,10 @@ actor {
 
     public func getVote3() : async Nat {
         await Bonsai.getBonsaiVote3()
+    };
+
+    public func getAll() : async Nat {
+        await Bonsai.prologueGetAll()
     };
 
     // functions for the create feature

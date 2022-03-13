@@ -152,6 +152,10 @@ actor Bonsai {
         return vote3II;
     };
 
+    public query func prologueIIGetAll() : async Nat {
+        return vote1II + vote2II + vote3II
+    };
+
     // call the votes for prologue
     public query func getBonsaiVote1() : async Nat {
         return vote1;
@@ -163,6 +167,10 @@ actor Bonsai {
 
     public query func getBonsaiVote3() : async Nat {
         return vote3;
+    };
+
+    public query func prologueGetAll() : async Nat {
+        return vote1 + vote2 + vote3
     };
 
     // utility func

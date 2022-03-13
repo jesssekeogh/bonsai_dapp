@@ -240,7 +240,7 @@ const BonsaiWarriorsPrologueII = () => {
       </Fade>
       <div className="bonsai__vote">
         <Center>
-          <h5>Who is your name?</h5>
+          <h5>What is your name?</h5>
         </Center>
       </div>
       <Container mt="4">

@@ -10,5 +10,7 @@ export interface _SERVICE {
   'getBonsaiVote2II' : () => Promise<bigint>,
   'getBonsaiVote3' : () => Promise<bigint>,
   'getBonsaiVote3II' : () => Promise<bigint>,
+  'prologueGetAll' : () => Promise<bigint>,
+  'prologueIIGetAll' : () => Promise<bigint>,
   'readBonsaiVotesII' : (arg_0: Principal) => Promise<Profile>,
 }
