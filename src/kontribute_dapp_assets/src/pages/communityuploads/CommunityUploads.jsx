@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { NavBar } from "./containers";
+import { NavBar } from "../../containers";
 import {
   Box,
   Center,
@@ -11,7 +11,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { UserContext } from "./Context";
+import { UserContext } from "../../Context";
 
 const CommunityUploads = () => {
   const { signActor } = useContext(UserContext);

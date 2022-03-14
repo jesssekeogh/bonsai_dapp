@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import "../assets/main.css";
-import { NavBar, HomeList } from "./containers";
+import "../../../assets/main.css";
+import { NavBar, HomeList } from "../../containers";
 
 // needs a redesign
 const Home = () => {

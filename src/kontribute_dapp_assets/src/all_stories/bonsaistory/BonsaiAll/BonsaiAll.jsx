@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { NavBar } from "../../../containers";
 import "./BonsaiAll.css";
 import {
@@ -15,7 +15,10 @@ import {
   StatArrow,
   Grid,
   GridItem,
+  Spinner,
+  VStack,
 } from "@chakra-ui/react";
+import { MdHowToVote } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Delayed } from "../../../containers/index";
 
@@ -37,7 +40,7 @@ function Feature({ title, desc, link, total, ...rest }) {
       <Heading color="#a7884a" fontSize="xl">
         {title}
       </Heading>
-      <Text mb="3" color="#f0e6d3" mt={4}>
+      <Text mb="3" fontWeight={600} color="#f0e6d3" mt={4}>
         {desc}
       </Text>
       <Grid templateColumns="repeat(5, 1fr)">
@@ -48,14 +51,20 @@ function Feature({ title, desc, link, total, ...rest }) {
             </Link>
           </div>
         </GridItem>
-        <GridItem colStart={5} h="10" w="10">
-          <Stat color="#f0e6d3" fontWeight="bold">
-            <StatLabel>Votes</StatLabel>
-            <StatHelpText>
-              <StatArrow type="increase" />
-              {total}
-            </StatHelpText>
-          </Stat>
+        <GridItem colStart={5} h="10">
+          <Box ms="33%" mb="3px" color="#fff">
+            <MdHowToVote />
+          </Box>
+          <Box
+            as="button"
+            borderRadius="md"
+            bg="#0fbdde"
+            color="black"
+            fontWeight="semibold"
+            px="1"
+          >
+            {total}
+          </Box>
         </GridItem>
       </Grid>
     </Box>
@@ -65,7 +74,12 @@ function Feature({ title, desc, link, total, ...rest }) {
 function StackEx(props) {
   return (
     <Stack spacing={8}>
-      <Feature title={props.title1} desc={props.body1} link={props.link1} total={props.total1} />
+      <Feature
+        title={props.title1}
+        desc={props.body1}
+        link={props.link1}
+        total={props.total1}
+      />
     </Stack>
   );
 }
@@ -77,22 +91,27 @@ const BonsaiAll = () => {
   const [totalPrologue, setPrologue] = useState();
   const [totalPrologueII, setPrologueII] = useState();
 
+  // for loading spinner
+  const [isLoaded, setLoaded] = useState(false);
+
   const getAllPrologue = async () => {
     const user = await signActor();
     const allVotesPrologue = await user.getAll();
-    setPrologue(allVotesPrologue.toString())
-  }
+    setPrologue(allVotesPrologue.toString());
+    setLoaded(true);
+  };
 
   const getAllPrologueII = async () => {
     const user = await signActor();
     const allVotesPrologue = await user.getAllII();
-    setPrologueII(allVotesPrologue.toString())
-  }
+    setPrologueII(allVotesPrologue.toString());
+    setLoaded(true);
+  };
 
   useEffect(() => {
-    getAllPrologueII()
-    getAllPrologue()
-  }, [])
+    getAllPrologueII();
+    getAllPrologue();
+  }, []);
 
   return (
     <div>
@@ -100,34 +119,49 @@ const BonsaiAll = () => {
       <Center>
         <Heading color="#a7884a">Bonsai Warriors</Heading>
       </Center>
-      <div className="bonsai_all-container">
-        <Center>
-          <Delayed>
-            <SlideFade in={true}>
-              <StackEx
-                title1={"PROLOGUE II"}
-                body1={"You are an Artisan, now you must choose your name"}
-                link1={"/bonsai-warriors-prologueII"}
-                total1={totalPrologueII}
-              />
-            </SlideFade>
-          </Delayed>
-        </Center>
-        <Center mt="2rem">
-          <Delayed waitBeforeShow={200}>
-            <SlideFade in={true}>
-              <StackEx
-                title1={"PROLOGUE"}
-                body1={
-                  "Introduction and character creation in the Bonsai Warriors story"
-                }
-                link1={"/bonsai-warriors-prologue"}
-                total1={totalPrologue}
-              />
-            </SlideFade>
-          </Delayed>
-        </Center>
-      </div>
+      {isLoaded ? (
+        <div className="bonsai__spinner">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="#17191e"
+            color="#9d8144"
+            size="xl"
+          />
+        </div>
+      ) : null}
+      {!isLoaded ? (
+        <div className="bonsai_all-container">
+          <Center>
+            <Delayed>
+              <SlideFade in={true}>
+                <StackEx
+                  title1={"PROLOGUE II"}
+                  body1={
+                    "You are an Artisan, now you must vote to choose your name"
+                  }
+                  link1={"/bonsai-warriors-prologueII"}
+                  total1={totalPrologueII}
+                />
+              </SlideFade>
+            </Delayed>
+          </Center>
+          <Center mt="2rem">
+            <Delayed waitBeforeShow={200}>
+              <SlideFade in={true}>
+                <StackEx
+                  title1={"PROLOGUE"}
+                  body1={
+                    "Introduction and character creation in the Bonsai Warriors story"
+                  }
+                  link1={"/bonsai-warriors-prologue"}
+                  total1={378}
+                />
+              </SlideFade>
+            </Delayed>
+          </Center>
+        </div>
+      ) : null}
     </div>
   );
 };

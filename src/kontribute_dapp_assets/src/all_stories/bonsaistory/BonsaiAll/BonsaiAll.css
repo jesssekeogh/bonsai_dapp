@@ -2,8 +2,6 @@
     gap: 1.5rem;
     padding: 2rem;
     text-align: center;
-    font-size: 15pt;
-    font-family: 'Times New Roman', Times, serif;
 }
 
 .bonsai__button button{
@@ -23,6 +21,16 @@
 .bonsai__button button:hover{
     opacity: 0.8;
 }
+
+/* for the loading spinner */
+.bonsai__spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
 /* Iphone X css */
 @media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
     .bonsai_all-container {

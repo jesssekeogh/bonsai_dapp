@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { NavBar } from "./containers";
+import { NavBar } from "../../containers";
 import {
   Alert,
   AlertIcon,
@@ -22,7 +22,7 @@ import {
   useToast
 } from "@chakra-ui/react";
 
-import { UserContext } from "./Context";
+import { UserContext } from "../../Context";
 
 const Create = () => {
   const { signActor } = useContext(UserContext);

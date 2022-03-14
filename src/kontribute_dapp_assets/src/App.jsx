@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // pages:
-import Home from "./Home";
-import Stories from "./Stories";
-import NFT from "./NFT";
-import Create from "./Create";
+import Home from "./pages/home/Home";
+import Stories from "./pages/stories/Stories";
+import NFT from "./pages/nft/NFT";
+import Create from "./pages/create/Create";
 import { Footer } from "./containers";
-import CommunityUploads from "./CommunityUploads";
+import CommunityUploads from "./pages/communityuploads/CommunityUploads";
 
 // design
 import klogo from "../assets/kontribute_logo.png";

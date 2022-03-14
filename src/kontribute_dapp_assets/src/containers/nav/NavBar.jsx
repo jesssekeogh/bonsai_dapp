@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { CgInfinity } from "react-icons/cg";
 import { MdHowToVote } from "react-icons/md";
+import { FaBook, FaImages } from "react-icons/fa";
 import "./NavBar.css";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
@@ -15,14 +16,9 @@ import {
   useClipboard,
   IconButton,
   Spinner,
+  Tooltip,
 } from "@chakra-ui/react";
-import {
-  CopyIcon,
-  LockIcon,
-  HamburgerIcon,
-  EditIcon,
-  ViewIcon,
-} from "@chakra-ui/icons";
+import { CopyIcon, LockIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 // user context from auth
 import { UserContext } from "../../Context.jsx";
@@ -104,12 +100,16 @@ const NavBar = () => {
               Profile
             </MenuButton>
             <MenuList>
-              <MenuGroup title="Principal ID" />
+              <Tooltip label="Your unique ID">
+                <MenuGroup title="Principal ID" />
+              </Tooltip>
               <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
-                {hasCopied ? alert("Copied to clipboard!") : principal}
+                {hasCopied ? "Copied to clipboard!" : principal.substring(0, 20) + "..."}
               </MenuItem>
               <MenuDivider />
-              <MenuGroup title="Bonsai Warriors Vote History" />
+              <Tooltip label="Your recent vote selection">
+                <MenuGroup title="Bonsai Warriors Vote History" />
+              </Tooltip>
               <Link to="/bonsai-warriors-prologueII">
                 <MenuItem
                   icon={<MdHowToVote />}
@@ -119,10 +119,7 @@ const NavBar = () => {
                 </MenuItem>
               </Link>
               <Link to="/bonsai-warriors-prologue">
-                <MenuItem
-                  icon={<MdHowToVote />}
-                  command="Unavailable"
-                >
+                <MenuItem icon={<MdHowToVote />} command="Unavailable">
                   Prologue:
                 </MenuItem>
               </Link>
@@ -148,10 +145,10 @@ const NavBar = () => {
                 {/* for mobile view */}
                 <MenuGroup title="Kontribute" />
                 <Link to="/stories">
-                  <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
+                  <MenuItem icon={<FaBook />}>Stories</MenuItem>
                 </Link>
                 <Link to="/nft">
-                  <MenuItem icon={<ViewIcon />}>NFT</MenuItem>
+                  <MenuItem icon={<FaImages />}>NFT</MenuItem>
                 </Link>
                 {/* <Link to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>

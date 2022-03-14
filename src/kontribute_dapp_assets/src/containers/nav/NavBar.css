@@ -63,12 +63,17 @@
     font-size: 18px;
     line-height: 25px;
     text-transform: capitalize;
+    padding: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
 
-    margin: 0 1rem;
+    margin: 0 0.5rem;
     cursor: pointer;
 }
 .bonsai__navbar-links p:hover {
     opacity: 0.8;
+    background-color: #282828;
+    border-radius: 10px;
 }
 
 .bonsai__link-dropdown {
@@ -97,6 +102,6 @@
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1224px) {
     .bonsai__navbar {
-        padding: 3rem 4rem;
+        padding: 1.2rem 6rem;
     }
 }
