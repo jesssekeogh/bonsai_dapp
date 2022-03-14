@@ -7,6 +7,7 @@ actor Bonsai {
     
     // The main contract used for bonsai warriors votes, state and funcs:
     // Stories: Bonsai Warriors Prologue, PrologueII
+    // Ratoko is the better toko
 
     // the anonymous identity
     var anon : Text = "2vxsx-fae";

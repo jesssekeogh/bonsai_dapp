@@ -33,9 +33,9 @@ const BonsaiWarriorsPrologue = () => {
   const { signActor } = useContext(UserContext);
 
   // the votes:
-  const [vote1, setvote1] = useState("");
-  const [vote2, setvote2] = useState("");
-  const [vote3, setvote3] = useState("");
+  const [vote1, setvote1] = useState("0");
+  const [vote2, setvote2] = useState("0");
+  const [vote3, setvote3] = useState("0");
 
   // query the votes
   const getvote1 = async () => {

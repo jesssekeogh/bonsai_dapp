@@ -9,14 +9,9 @@ import {
   Stack,
   Feature,
   SlideFade,
-  Stat,
-  StatLabel,
-  StatHelpText,
-  StatArrow,
   Grid,
   GridItem,
-  Spinner,
-  VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { MdHowToVote } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -52,19 +47,21 @@ function Feature({ title, desc, link, total, ...rest }) {
           </div>
         </GridItem>
         <GridItem colStart={5} h="10">
-          <Box ms="33%" mb="3px" color="#fff">
-            <MdHowToVote />
-          </Box>
-          <Box
-            as="button"
-            borderRadius="md"
-            bg="#0fbdde"
-            color="black"
-            fontWeight="semibold"
-            px="1"
-          >
-            {total}
-          </Box>
+          <HStack spacing="5px" mt="10px">
+            <Box color="#fff">
+              <MdHowToVote />
+            </Box>
+            <Box
+              as="button"
+              borderRadius="md"
+              bg="#0fbdde"
+              color="black"
+              fontWeight="semibold"
+              px="1"
+            >
+              {total}
+            </Box>
+          </HStack>
         </GridItem>
       </Grid>
     </Box>
@@ -88,24 +85,19 @@ const BonsaiAll = () => {
   const { signActor } = useContext(UserContext);
 
   // state for total votes
-  const [totalPrologue, setPrologue] = useState();
-  const [totalPrologueII, setPrologueII] = useState();
-
-  // for loading spinner
-  const [isLoaded, setLoaded] = useState(false);
+  const [totalPrologue, setPrologue] = useState("0");
+  const [totalPrologueII, setPrologueII] = useState("0");
 
   const getAllPrologue = async () => {
     const user = await signActor();
     const allVotesPrologue = await user.getAll();
     setPrologue(allVotesPrologue.toString());
-    setLoaded(true);
   };
 
   const getAllPrologueII = async () => {
     const user = await signActor();
     const allVotesPrologue = await user.getAllII();
     setPrologueII(allVotesPrologue.toString());
-    setLoaded(true);
   };
 
   useEffect(() => {
@@ -116,21 +108,9 @@ const BonsaiAll = () => {
   return (
     <div>
       <NavBar />
-      <Center>
-        <Heading color="#a7884a">Bonsai Warriors</Heading>
-      </Center>
-      {isLoaded ? (
-        <div className="bonsai__spinner">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="#17191e"
-            color="#9d8144"
-            size="xl"
-          />
-        </div>
-      ) : null}
-      {!isLoaded ? (
+        <Center>
+          <Heading color="#a7884a">Bonsai Warriors</Heading>
+        </Center>
         <div className="bonsai_all-container">
           <Center>
             <Delayed>
@@ -155,14 +135,13 @@ const BonsaiAll = () => {
                     "Introduction and character creation in the Bonsai Warriors story"
                   }
                   link1={"/bonsai-warriors-prologue"}
-                  total1={378}
+                  total1={totalPrologue}
                 />
               </SlideFade>
             </Delayed>
           </Center>
         </div>
-      ) : null}
-    </div>
+      </div>
   );
 };
 

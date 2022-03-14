@@ -174,6 +174,7 @@ const Stories = () => {
                           bg="#17191e"
                           rounded={"full"}
                           px={6}
+                          _hover={{ opacity: "0.8" }}
                         >
                           View All Chapters
                         </Button>

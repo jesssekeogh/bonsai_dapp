@@ -20,8 +20,19 @@ import {
   Container,
   Spinner,
 } from "@chakra-ui/react";
+import {
+  Flex,
+  Stack,
+  Heading,
+  Text,
+  Input,
+  Button,
+  Icon,
+  useColorModeValue,
+  createIcon,
+} from "@chakra-ui/react";
 
-import {Image as ChakraImage} from "@chakra-ui/react";
+import { Image as ChakraImage } from "@chakra-ui/react";
 
 // And react-slick as our Carousel Lib
 import Slider from "react-slick";
@@ -96,7 +107,6 @@ const NFT = () => {
   return (
     <div>
       <NavBar />
-      {/* the courousal */}
       {!imageIsReady ? (
         <div className="bonsai__spinner">
           <Spinner
@@ -109,117 +119,91 @@ const NFT = () => {
         </div>
       ) : null}
       {imageIsReady ? (
-        <Container mt="-2rem">
-          <Center>
-            <Heading
-              fontWeight={600}
-              fontSize={{ base: "2xl", sm: "2xl", md: "2xl" }}
-              lineHeight={"110%"}
-              mb={"1rem"}
-            >
-              <Text
-                as={"span"}
-                bgGradient="linear(to-t, #705025, #a7884a)"
-                bgClip="text"
+        <Container mt="-5rem">
+          <Flex align={"center"} justify={"center"} p={1}>
+            <Stack rounded={"xl"} p={10} spacing={8} align={"center"}>
+              <Center>
+                <ChakraImage
+                  zIndex={2}
+                  top="15%"
+                  pos={"absolute"}
+                  rounded={"lg"}
+                  height={230}
+                  width={282}
+                  src={anvillogo}
+                />
+              </Center>
+              <Box
+                bg="#fff"
+                border="solid 1px"
+                borderColor="#9d8144"
+                mb={"5rem"}
+                borderRadius={"xl"}
+                position={"relative"}
+                height={"280px"}
+                width={"280px"}
+                overflow={"hidden"}
               >
-                Bonsai Warriors NFTs
-              </Text>
-            </Heading>
-          </Center>
-          <Stack align={"center"}>
-            <Text
-              color={"gray.500"}
-              fontSize={"sm"}
-              textTransform={"uppercase"}
-            >
-              via NFT Anvil
-            </Text>
-            <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-              (Coming Soon)
-            </Heading>
-            <Stack direction={"row"} align={"center"}></Stack>
-          </Stack>
-          <Box
-            bg="#fff"
-            border="solid 1px"
-            borderColor="#9d8144"
-            mb={"5rem"}
-            borderRadius={"xl"}
-            position={"relative"}
-            height={"520px"}
-            width={"full"}
-            overflow={"hidden"}
-          >
-            {/* CSS files for react-slick */}
-            <link
-              rel="stylesheet"
-              type="text/css"
-              charSet="UTF-8"
-              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-            />
-            <link
-              rel="stylesheet"
-              type="text/css"
-              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-            />
-            {/* Slider */}
-            <Slider {...settings} ref={(slider) => setSlider(slider)}>
-              {cards.map((card, index) => (
-                <Box
-                  key={index}
-                  height={"6xl"}
-                  position="relative"
-                  backgroundPosition="center"
-                  backgroundRepeat="no-repeat"
-                  backgroundSize="auto"
-                  backgroundImage={`url(${card.image})`}
+                {/* CSS files for react-slick */}
+                <link
+                  rel="stylesheet"
+                  type="text/css"
+                  charSet="UTF-8"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+                />
+                <link
+                  rel="stylesheet"
+                  type="text/css"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+                />
+                {/* Slider */}
+                <Slider {...settings} ref={(slider) => setSlider(slider)}>
+                  {cards.map((card, index) => (
+                    <Box
+                      key={index}
+                      height={"6xl"}
+                      position="relative"
+                      backgroundPosition="50% 50%"
+                      backgroundRepeat="no-repeat"
+                      backgroundSize="none"
+                      backgroundImage={`url(${card.image})`}
+                    ></Box>
+                  ))}
+                </Slider>
+              </Box>
+              {/* the box content*/}
+              <Stack align={"center"} spacing={2}>
+                <Heading
+                  textTransform={"uppercase"}
+                  fontSize={"3xl"}
+                  bgGradient="linear(to-t, #705025, #a7884a)"
+                  bgClip="text"
                 >
-                  <a
-                    href="https://nftanvil.com/mint"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Center>
-                      <ChakraImage
-                        zIndex={2}
-                        top="10%"
-                        pos={"absolute"}
-                        rounded={"lg"}
-                        height={230}
-                        width={282}
-                        src={anvillogo}
-                      />
-                    </Center>
-                  </a>
-                  {/* This is the block you need to change, to customize the caption */}
-                  <Container
-                    size="container.lg"
-                    height="600px"
-                    position="relative"
-                  >
-                    <Stack
-                      spacing={6}
-                      w={"full"}
-                      maxW={"lg"}
-                      position="absolute"
-                      top="50%"
-                      transform="translate(0, -50%)"
-                    >
-                      <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
-                        {card.title}
-                      </Heading>
-                      <Text
-                        fontSize={{ base: "md", lg: "lg" }}
-                        color="GrayText"
-                      >
-                        {card.text}
-                      </Text>
-                    </Stack>
-                  </Container>
-                </Box>
-              ))}
-            </Slider>
-          </Box>
+                  Bonsai Warriors
+                </Heading>
+                <Text fontSize={"lg"} color="#f0e6d3">
+                  Purchase a Bonsai Warrior NFT now on NFT Anvil!
+                </Text>
+              </Stack>
+              <Stack
+                spacing={4}
+                direction={{ base: "column", md: "row" }}
+                w={"full"}
+              >
+                <Button
+                  bg={"blue.400"}
+                  rounded={"full"}
+                  color={"white"}
+                  flex={"1 0 auto"}
+                  bgGradient="linear(to-r, #c61682, #ee670d)"
+                  _hover={{ opacity: "0.8" }}
+                >
+                  Bonsai Warriors NFTs
+                </Button>
+              </Stack>
+            </Stack>
+          </Flex>
+          {/* carousal */}
         </Container>
       ) : null}
     </div>
