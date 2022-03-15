@@ -22,9 +22,12 @@
     border: 1px solid #9d8144;
     border-radius: 5px;
     background-color: #17191e;
+    transition: all .2s ease-in-out;
 }
+
 .bonsai__navbar-links_logo:hover {
     opacity: 0.8;
+    transform: scale(1.1);
 }
 
 .bonsai__navbar-links_logo img {

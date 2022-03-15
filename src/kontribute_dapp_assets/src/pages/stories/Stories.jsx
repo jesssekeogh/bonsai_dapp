@@ -18,7 +18,7 @@ import {
   Button,
   Stack,
 } from "@chakra-ui/react";
-import {Image as ChakraImage} from "@chakra-ui/react";
+import { Image as ChakraImage } from "@chakra-ui/react";
 
 // genre tags
 const BlogTags = (props) => {
@@ -60,7 +60,6 @@ export const BlogAuthor = (props) => {
 };
 
 const Stories = () => {
-
   // optimise image loading
   const [imageIsReady, setIsReady] = useState(false);
 
@@ -151,11 +150,11 @@ const Stories = () => {
                       Bonsai Warriors
                     </Heading>
                     <Text as="p" marginTop="2" color="#f0e6d3" fontSize="lg">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book.
+                      In the Celestial Empire, a land ruled by Immortal Warriors
+                      of peerless skill and furiosity, a young talent is
+                      discovered. Born from humble beginnings can they learn not
+                      just to survive but to thrive in the new world opening up
+                      before them. The first story on Kontribute
                     </Text>
                     <Stack
                       mt="1rem"
@@ -170,8 +169,8 @@ const Stories = () => {
                         <Button
                           w="100%"
                           mt="1rem"
-                          colorScheme="#17191e"
-                          bg="#17191e"
+                          colorScheme="#282828"
+                          bg="#282828"
                           rounded={"full"}
                           px={6}
                           _hover={{ opacity: "0.8" }}

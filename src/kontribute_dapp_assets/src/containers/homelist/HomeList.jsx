@@ -81,8 +81,8 @@ const HomeList = () => {
           >
             <Link to="bonsai-all">
               <Button
-                colorScheme="#17191e"
-                bg="#17191e"
+                colorScheme="#282828"
+                bg="#282828"
                 rounded={"full"}
                 px={6}
               >
@@ -91,8 +91,8 @@ const HomeList = () => {
             </Link>
             <Link to="/nft">
               <Button
-                colorScheme="#17191e"
-                bg="#17191e"
+                colorScheme="#282828"
+                bg="#282828"
                 rounded={"full"}
                 px={6}
               >

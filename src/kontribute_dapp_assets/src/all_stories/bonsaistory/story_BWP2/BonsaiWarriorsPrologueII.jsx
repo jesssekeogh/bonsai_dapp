@@ -252,7 +252,7 @@ const BonsaiWarriorsPrologueII = () => {
           </Box>
           <Spacer />
           <Box>
-            <Button onClick={onOpen1} mr="2" colorScheme="#f0e6d3" bg="#282828">
+            <Button onClick={onOpen1} mr="2" colorScheme="#f0e6d3" bg="#282828" rounded={"full"}>
               Read Option 1&nbsp;
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
@@ -344,7 +344,7 @@ const BonsaiWarriorsPrologueII = () => {
           </Box>
           <Spacer />
           <Box>
-            <Button onClick={onOpen2} mr="2" colorScheme="#f0e6d3" bg="#282828">
+            <Button onClick={onOpen2} mr="2" colorScheme="#f0e6d3" bg="#282828" rounded={"full"}>
               Read Option 2
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
@@ -437,7 +437,7 @@ const BonsaiWarriorsPrologueII = () => {
           </Box>
           <Spacer />
           <Box>
-            <Button onClick={onOpen3} mr="2" colorScheme="#f0e6d3" bg="#282828">
+            <Button onClick={onOpen3} mr="2" colorScheme="#f0e6d3" bg="#282828" rounded={"full"}>
               Read Option 3
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
