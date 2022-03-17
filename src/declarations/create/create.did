@@ -1,8 +1,9 @@
 type Story = 
  record {
    body: text;
-   chapter: text;
+   genre: text;
    title: text;
+   user_discord: text;
  };
 type List = 
  opt record {

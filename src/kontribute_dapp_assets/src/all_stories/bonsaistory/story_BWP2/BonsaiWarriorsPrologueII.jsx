@@ -20,6 +20,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   useToast,
+  Spinner
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Fade, Bounce } from "react-awesome-reveal";
@@ -35,9 +36,9 @@ const BonsaiWarriorsPrologueII = () => {
   const toast = useToast();
 
   // the votes:
-  const [vote1, setvote1] = useState("0");
-  const [vote2, setvote2] = useState("0");
-  const [vote3, setvote3] = useState("0");
+  const [vote1, setvote1] = useState(<Spinner size="xs" />);
+  const [vote2, setvote2] = useState(<Spinner size="xs" />);
+  const [vote3, setvote3] = useState(<Spinner size="xs" />);
 
   const voteoption1 = async () => {
     setClick1(true);

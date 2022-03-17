@@ -21,6 +21,7 @@ import {
   useDisclosure,
   Alert,
   AlertIcon,
+  Spinner
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Fade } from "react-awesome-reveal";
@@ -33,9 +34,9 @@ const BonsaiWarriorsPrologue = () => {
   const { signActor } = useContext(UserContext);
 
   // the votes:
-  const [vote1, setvote1] = useState("0");
-  const [vote2, setvote2] = useState("0");
-  const [vote3, setvote3] = useState("0");
+  const [vote1, setvote1] = useState(<Spinner size="xs" />);
+  const [vote2, setvote2] = useState(<Spinner size="xs" />);
+  const [vote3, setvote3] = useState(<Spinner size="xs" />);
 
   // query the votes
   const getvote1 = async () => {

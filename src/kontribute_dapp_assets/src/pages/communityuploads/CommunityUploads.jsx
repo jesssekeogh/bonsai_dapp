@@ -17,16 +17,18 @@ const CommunityUploads = () => {
   const { signActor } = useContext(UserContext);
 
   const [storytitle, setTitle] = useState("");
-  const [storychapter, setChapter] = useState("");
+  const [storygenre, setGenre] = useState("");
   const [storybody, setBody] = useState("");
+  const [discord, setDiscord] = useState("");
 
   const getStories = async () => {
     const user = await signActor();
     const result = await user.getAllStories(10);
     // for the second story:
     setTitle(result[0][1][0][0][1].title);
-    setChapter(result[0][1][0][0][1].chapter);
+    setGenre(result[0][1][0][0][1].genre);
     setBody(result[0][1][0][0][1].body);
+    setDiscord(result[0][1][0][0][1].user_discord)
     //// for the first story
     // setTitle(result[0][0][1].title);
     // setChapter(result[0][0][1].chapter);
@@ -56,7 +58,7 @@ const CommunityUploads = () => {
               fontSize={"sm"}
               letterSpacing={1.1}
             >
-              {storychapter}
+              {storygenre}
             </Text>
             <Heading
               color={useColorModeValue("gray.700", "white")}
@@ -73,7 +75,7 @@ const CommunityUploads = () => {
               alt={"Author"}
             />
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-              <Text fontWeight={600}>Achim Rolle</Text>
+              <Text fontWeight={600}>{discord}</Text>
               <Text color={"gray.500"}>Feb 08, 2021 · 6min read</Text>
             </Stack>
           </Stack>

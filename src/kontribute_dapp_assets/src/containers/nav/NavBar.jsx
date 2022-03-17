@@ -18,7 +18,7 @@ import {
   Spinner,
   Tooltip,
 } from "@chakra-ui/react";
-import { CopyIcon, LockIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { CopyIcon, LockIcon, HamburgerIcon, EditIcon } from "@chakra-ui/icons";
 
 // user context from auth
 import { UserContext } from "../../Context.jsx";
@@ -31,9 +31,9 @@ const MenuLinks = () => (
     <Link to="/NFT">
       <p>NFT</p>
     </Link>
-    {/* <Link to="/Create">
+    <Link to="/Create">
       <p>CREATE</p>
-    </Link> */}
+    </Link>
   </>
 );
 
@@ -118,11 +118,6 @@ const NavBar = () => {
                   Prologue II:
                 </MenuItem>
               </Link>
-              <Link to="/bonsai-warriors-prologue">
-                <MenuItem icon={<MdHowToVote />} command="Unavailable">
-                  Prologue:
-                </MenuItem>
-              </Link>
               <MenuDivider />
               <MenuItem icon={<LockIcon />} onClick={signOut}>
                 Sign Out
@@ -150,9 +145,9 @@ const NavBar = () => {
                 <Link to="/nft">
                   <MenuItem icon={<FaImages />}>NFT</MenuItem>
                 </Link>
-                {/* <Link to="/create">
+                <Link to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>
-                </Link> */}
+                </Link>
               </MenuList>
             </Menu>
           </div>

@@ -1,7 +1,12 @@
 import type { Principal } from '@dfinity/principal';
 export type List = [] | [[[Principal, Story], List]];
 export interface Profile { 'hasVoted' : boolean, 'whichOption' : string }
-export interface Story { 'title' : string, 'body' : string, 'chapter' : string }
+export interface Story {
+  'title' : string,
+  'body' : string,
+  'genre' : string,
+  'user_discord' : string,
+}
 export interface _SERVICE {
   'VoteOption1' : () => Promise<string>,
   'VoteOption2' : () => Promise<string>,

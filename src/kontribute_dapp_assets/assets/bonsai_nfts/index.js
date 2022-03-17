@@ -35,7 +35,7 @@ const IMAGES = {
     bonsai_34: require('./bonsai_34.png').default,
     bonsai_35: require('./bonsai_35.png').default,
     bonsai_36: require('./bonsai_36.png').default,
-    bosnai_37: require('./bonsai_37.png').default,
+    bonsai_37: require('./bonsai_37.png').default,
     bonsai_38: require('./bonsai_38.png').default,
     bonsai_39: require('./bonsai_39.png').default,
     bonsai_40: require('./bonsai_40.png').default,

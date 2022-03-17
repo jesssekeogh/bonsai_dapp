@@ -10,8 +10,9 @@ module {
     // for creating stories
     public type Story = {
         title: Text;
-        chapter: Text;
+        genre: Text;
         body: Text;
+        user_discord: Text;
     }
 
 }

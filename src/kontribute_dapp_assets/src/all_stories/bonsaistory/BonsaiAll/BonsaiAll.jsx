@@ -12,6 +12,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Spinner
 } from "@chakra-ui/react";
 import { MdHowToVote } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -85,8 +86,8 @@ const BonsaiAll = () => {
   const { signActor } = useContext(UserContext);
 
   // state for total votes
-  const [totalPrologue, setPrologue] = useState("0");
-  const [totalPrologueII, setPrologueII] = useState("0");
+  const [totalPrologue, setPrologue] = useState(<Spinner size="xs" />);
+  const [totalPrologueII, setPrologueII] = useState(<Spinner size="xs" />);
 
   const getAllPrologue = async () => {
     const user = await signActor();

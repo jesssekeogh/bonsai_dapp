@@ -19,10 +19,69 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  useToast
+  useToast,
+} from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { UserContext } from "../../Context";
+
+const ModalButton = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <Button
+        onClick={onOpen}
+        colorScheme="#f0e6d3"
+        bg="#282828"
+        rounded={"full"}
+      >
+        Read Prizes
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Community Story Challenge Prizes</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <br></br>
+            <b>Prizes for the 1st place Winner</b>
+            <br></br>
+            1. Story will be featured in its own section on Kontribute.
+            <br></br>
+            2. We will personally create some NFT art for your story and list it
+            in "Community NFTs" on Kontribute (You will receive all proceeds
+            from its sale, minus fees).
+            <br></br>
+            <b>Prizes for 3 runner ups</b>
+            <br></br>1 Bonsai Warrior NFT each
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              colorScheme="black"
+              color="black"
+              variant="outline"
+              mr={3}
+              onClick={onClose}
+            >
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
 
 const Create = () => {
   const { signActor } = useContext(UserContext);
@@ -42,7 +101,8 @@ const Create = () => {
     const post = await user.uploadStory({
       title: Title.value,
       body: Body.value,
-      chapter: Chapter.value,
+      genre: Genre.value,
+      user_discord: Discord.value
     });
     if (post.toString() === "Story Created!") {
       toast({
@@ -54,14 +114,14 @@ const Create = () => {
           marginTop: "5.5rem",
         },
       });
-    }else{
+    } else {
       toast({
         title: `Failed! A field was invalid`,
         status: "error",
         isClosable: true,
-        position: 'top-right',
+        position: "top-right",
         containerStyle: {
-          marginTop: "5.5rem"
+          marginTop: "5.5rem",
         },
       });
     }
@@ -74,22 +134,24 @@ const Create = () => {
         {alert ? (
           <Alert
             mt="3rem"
-            status="error"
+            status="warning"
             variant="subtle"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
             textAlign="center"
-            height="200px"
+            height="250px"
           >
             <AlertIcon boxSize="40px" mr={0} />
             <AlertTitle mt={4} mb={1} fontSize="lg">
-              Create functionality is still in testing!
+              Community Story Challenge
             </AlertTitle>
             <AlertDescription maxWidth="sm">
-              For now 1 user may upload 1 story, these will appear in community
-              stories. Stories may be deleted as we upgrade the appearence and
-              functionality of the create feature.
+              You may upload one story for the community story challenge. Please
+              attach your Discord Handle to your story so we may contact the
+              winner.
+              <br></br>
+              <ModalButton />
             </AlertDescription>
             <CloseButton
               position="absolute"
@@ -100,7 +162,7 @@ const Create = () => {
           </Alert>
         ) : null}
         <Flex align={"center"} justify={"center"}>
-          <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+          <Stack spacing={8} mx={"auto"} maxW={"lg"} py={2} px={6}>
             <Stack align={"center"}>
               <Heading fontSize={"4xl"} textAlign={"center"} color="#c8aa6e">
                 Web 3.0 Story Creation
@@ -124,9 +186,9 @@ const Create = () => {
                     </FormControl>
                   </Box>
                   <Box>
-                    <FormControl id="Chapter" isRequired>
-                      <FormLabel>Chapter</FormLabel>
-                      <Input type="text" placeholder="Chapter 1" />
+                    <FormControl id="Genre" isRequired>
+                      <FormLabel>Genre</FormLabel>
+                      <Input type="text" placeholder="Fantasy" />
                     </FormControl>
                   </Box>
                 </HStack>
@@ -137,6 +199,12 @@ const Create = () => {
                     height="10rem"
                   />
                 </FormControl>
+                <Box>
+                    <FormControl id="Discord" isRequired>
+                      <FormLabel>Discord Handle</FormLabel>
+                      <Input type="text" placeholder="#jes1" />
+                    </FormControl>
+                  </Box>
                 <Stack spacing={10} pt={2}>
                   <Button
                     loadingText="Submitting"
