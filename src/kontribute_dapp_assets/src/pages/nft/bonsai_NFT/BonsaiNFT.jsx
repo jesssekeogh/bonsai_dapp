@@ -1,9 +1,4 @@
-import React, { lazy } from 'react'
 import React, { useState, useEffect } from "react";
-import anvillogo from "../../../assets/anvillogo.svg"; // get logo from site
-import React from "react";
-import { Box, Stack, Heading, Text, Spinner } from "@chakra-ui/react";
-import { Stack, Heading, Text } from "@chakra-ui/react";
 import {
   Box,
   Center,
@@ -13,7 +8,7 @@ import {
   Button,
   SimpleGrid,
   GridItem,
-  Wrap
+  Spinner
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 
@@ -26,8 +21,8 @@ import { LazyLoadComponent } from 'react-lazy-load-image-component';
 import "../../stories/stories.css";
 const GridComponent = (props) => {
     return (
+      <div href={props.pagepos}>
       <GridItem>
-        {/* turn this into a component with names as props and the option to have a sold out button(true or false?) */}
         <Box
           role={"group"}
           p={4}
@@ -73,12 +68,13 @@ const GridComponent = (props) => {
                 bgGradient="linear(to-r, #c61682, #ee670d)"
                 _hover={{ opacity: "0.8" }}
               >
-                Buy Now
+                Minting Soon
               </Button>
               </a>
           </Stack>
         </Box>
       </GridItem>
+      </div>
     );
   };
 
@@ -95,11 +91,14 @@ const BonsaiNFT = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    const myRef = React.createRef();
+
     return (
         <div>
         {!imageIsReady ? (
           <div className="bonsai__spinner">
             <Spinner
+              mt="5rem"
               thickness="4px"
               speed="0.65s"
               emptyColor="#17191e"
@@ -110,69 +109,68 @@ const BonsaiNFT = () => {
         ) : null}
         {imageIsReady ? (
           <Center>
-            {/* add in lazy load here test when deployed but remove nft link */}
           <SimpleGrid columns={[1, null, 4]} pb={5} px={10} gap={4} maxW="1500px">
           <LazyLoadComponent>
-            <GridComponent name="Demon General" imgsrc={IMAGES.bonsai_1} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_2} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_3} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_4} anvillink={}/>
+            <GridComponent name="The Veteran" imgsrc={IMAGES.bonsai_1} anvillink={} />
+            <GridComponent name="Agent of Magic" imgsrc={IMAGES.bonsai_2} anvillink={}/>
+            <GridComponent name="Blood Dancer" imgsrc={IMAGES.bonsai_3} anvillink={}/>
+            <GridComponent name="Brash Woman" imgsrc={IMAGES.bonsai_4} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_5} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_6} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_7} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_8} anvillink={}/>
+            <GridComponent name="Buddhist Monk" imgsrc={IMAGES.bonsai_5} anvillink={}/>
+            <GridComponent name="Red Rumbler" imgsrc={IMAGES.bonsai_6} anvillink={}/>
+            <GridComponent name="Cloaked Angel" imgsrc={IMAGES.bonsai_7} anvillink={}/>
+            <GridComponent name="Conquering Empress" imgsrc={IMAGES.bonsai_8} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_9} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_10} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_11} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_12} anvillink={}/>
+            <GridComponent name="Dark Witch" imgsrc={IMAGES.bonsai_9} anvillink={}/>
+            <GridComponent name="Lady Gold" imgsrc={IMAGES.bonsai_10} anvillink={}/>
+            <GridComponent name="Eagle Warrior" imgsrc={IMAGES.bonsai_11} anvillink={}/>
+            <GridComponent name="Fierce Knight" imgsrc={IMAGES.bonsai_12} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_13} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_14} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_15} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_16} anvillink={}/>
+            <GridComponent name="Fierce Warrior" imgsrc={IMAGES.bonsai_13} anvillink={}/>
+            <GridComponent name="Handmaiden" imgsrc={IMAGES.bonsai_14} anvillink={}/>
+            <GridComponent name="Icy Beauty" imgsrc={IMAGES.bonsai_15} anvillink={}/>
+            <GridComponent name="Lady Bear" imgsrc={IMAGES.bonsai_16} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_17} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_18} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_19} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_20} anvillink={}/>
+            <GridComponent name="Lady Rosette" imgsrc={IMAGES.bonsai_17} anvillink={}/>
+            <GridComponent name="Holy Angel" imgsrc={IMAGES.bonsai_18} anvillink={}/>
+            <GridComponent name="Noble Swordswoman" imgsrc={IMAGES.bonsai_19} anvillink={}/>
+            <GridComponent name="Lady of Styx" imgsrc={IMAGES.bonsai_20} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_21} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_22} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_23} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_24} anvillink={}/>
+            <GridComponent name="Lady Knight" imgsrc={IMAGES.bonsai_21} anvillink={}/>
+            <GridComponent name="Spear Goddess" imgsrc={IMAGES.bonsai_22} anvillink={}/>
+            <GridComponent name="Spear Lady" imgsrc={IMAGES.bonsai_23} anvillink={}/>
+            <GridComponent name="Sultry Lady" imgsrc={IMAGES.bonsai_24} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_25} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_26} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_27} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_28} anvillink={}/>
+            <GridComponent name="Swordsman Student" imgsrc={IMAGES.bonsai_25} anvillink={}/>
+            <GridComponent name="Temple Guard" imgsrc={IMAGES.bonsai_26} anvillink={}/>
+            <GridComponent name="Ancient Headmaster" imgsrc={IMAGES.bonsai_27} anvillink={}/>
+            <GridComponent name="Demon General" imgsrc={IMAGES.bonsai_28} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_29} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_30} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_31} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_32} anvillink={}/>
+            <GridComponent name="Dread Knight" imgsrc={IMAGES.bonsai_29} anvillink={}/>
+            <GridComponent name="Lioness of Praag" imgsrc={IMAGES.bonsai_30} anvillink={}/>
+            <GridComponent name="Swords Master" imgsrc={IMAGES.bonsai_31} anvillink={}/>
+            <GridComponent name="The Warlord" imgsrc={IMAGES.bonsai_32} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_33} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_34} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_35} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_36} anvillink={}/>
+            <GridComponent name="Warlords Bodyguard" imgsrc={IMAGES.bonsai_33} anvillink={}/>
+            <GridComponent name="Prince of Sand" imgsrc={IMAGES.bonsai_34} anvillink={}/>
+            <GridComponent name="Warrior Abbess" imgsrc={IMAGES.bonsai_35} anvillink={}/>
+            <GridComponent name="Warrior Nun" imgsrc={IMAGES.bonsai_36} anvillink={}/>
             </LazyLoadComponent>
             <LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_37} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_38} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_39} anvillink={}/>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_40} anvillink={}/>
+            <GridComponent name="Water Witch" imgsrc={IMAGES.bonsai_37} anvillink={}/>
+            <GridComponent name="River Lady" imgsrc={IMAGES.bonsai_38} anvillink={}/>
+            <GridComponent name="Prince of the Hills" imgsrc={IMAGES.bonsai_39} anvillink={}/>
+            <GridComponent name="Spellcaster Student" imgsrc={IMAGES.bonsai_40} anvillink={}/>
             </LazyLoadComponent>
-            <GridComponent name="the name" imgsrc={IMAGES.bonsai_41} anvillink={}/>
+            <GridComponent name="Swordswoman Student" imgsrc={IMAGES.bonsai_41} anvillink={} pagepos={'#test'}/>
           </SimpleGrid>
           </Center>
         ) : null}

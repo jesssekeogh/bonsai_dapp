@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { NavBar } from "../../containers";
 import React from "react";
 import BonsaiNFT from "./bonsai_NFT/BonsaiNFT";
 import CommunityNFT from "./community_NFT/communityNFT";
-import IMAGES from "../../../assets/bonsai_nfts";
-// optimise loading
-import { LazyLoadComponent } from "react-lazy-load-image-component";
 
 import anvillogo from "../../../assets/anvillogo.svg"; // get logo from site
 
@@ -61,7 +58,7 @@ const NFT = () => {
                   NFT Anvil
                 </Text>
               </Text>
-              <ChakraImage src={anvillogo} h={{ base: "30px", md: "50px" }} />
+              <ChakraImage src={anvillogo} h="50px" />
             </HStack>
           </Center>
         </Stack>

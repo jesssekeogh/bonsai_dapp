@@ -104,7 +104,9 @@ const NavBar = () => {
                 <MenuGroup title="Principal ID" />
               </Tooltip>
               <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
-                {hasCopied ? "Copied to clipboard!" : principal.substring(0, 20) + "..."}
+                {hasCopied
+                  ? "Copied to clipboard!"
+                  : principal.substring(0, 20) + "..."}
               </MenuItem>
               <MenuDivider />
               <Tooltip label="Your recent vote selection">

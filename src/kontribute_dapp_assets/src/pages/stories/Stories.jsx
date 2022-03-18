@@ -63,26 +63,20 @@ export const BlogAuthor = (props) => {
 const Stories = () => {
   // optimise image loading
   const [imageIsReady, setIsReady] = useState(false);
-  const [imageIsReady2, setIsReady2] = useState(false);
 
   useEffect(() => {
     const img = new Image();
-    const img2 = new Image();
     img.onload = () => {
       setIsReady(true);
     };
-    img2.onload = () => {
-      setIsReady2(true)
-    }
     img.src = bonsai_bg;
-    img2.src = placeholder;
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <div>
       <NavBar />
-      {!imageIsReady && !imageIsReady2 ? (
+      {!imageIsReady ? (
         <div className="bonsai__spinner">
           <Spinner
             thickness="4px"
@@ -93,7 +87,7 @@ const Stories = () => {
           />
         </div>
       ) : null}
-      {imageIsReady && imageIsReady2 ? (
+      {imageIsReady ? (
         <div>
           <Delayed>
             <SlideFade in={true} offsetY="20px">

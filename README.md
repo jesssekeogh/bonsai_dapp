@@ -10,6 +10,6 @@ In heavy development:
 We are working on new NFT and Interactive story solutions to bring these features to fruition.
 
 ## Some notes:
-Local Internt Identity is placed in App.jsx line 47 - replace this in Prod
-
+- Local Internt Identity is placed in App.jsx line 47 - replace this in Prod
+- we have a set of test canister IDs that we launch as a (Test Net)
 ### Made by Team Bonsai

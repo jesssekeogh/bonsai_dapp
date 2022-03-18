@@ -14,7 +14,7 @@
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    z-index:1; /*Add this*/
+    z-index:999; /*Add this*/
 }
 
 .bonsai__navbar-links_logo {
@@ -27,7 +27,7 @@
 
 .bonsai__navbar-links_logo:hover {
     opacity: 0.8;
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .bonsai__navbar-links_logo img {
