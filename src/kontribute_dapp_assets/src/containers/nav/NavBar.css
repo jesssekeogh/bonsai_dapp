@@ -2,6 +2,10 @@
     margin-top: 8rem;
 }
 
+.nav-active p{
+    background-color: #282828;
+    border-radius: 10px;
+}
 .bonsai__navbar {
     display: flex;
     justify-content: space-between;
@@ -74,7 +78,6 @@
     cursor: pointer;
 }
 .bonsai__navbar-links p:hover {
-    opacity: 0.8;
     background-color: #282828;
     border-radius: 10px;
 }

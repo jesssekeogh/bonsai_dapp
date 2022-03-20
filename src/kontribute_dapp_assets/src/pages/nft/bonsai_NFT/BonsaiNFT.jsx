@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import {
   Box,
   Center,
@@ -8,7 +8,8 @@ import {
   Button,
   SimpleGrid,
   GridItem,
-  Spinner
+  Spinner,
+  useToast
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 
@@ -19,7 +20,23 @@ import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 // stories page css for spinner
 import "../../stories/stories.css";
+
 const GridComponent = (props) => {
+
+    // for toasts:
+    const toast = useToast();
+  
+    const BuyNFT = () => {
+      toast({
+        title: `Bonsai Warriors minting has not begun!`,
+        isClosable: true,
+        position: 'top-right',
+        containerStyle: {
+          marginTop: "5.5rem"
+        },
+      });
+    }
+
     return (
       <div href={props.pagepos}>
       <GridItem>
@@ -61,15 +78,18 @@ const GridComponent = (props) => {
                 href={props.anvillink} 
                 target="_blank"
                 rel="noreferrer">
+              <div className="nft_button_hover">
               <Button
+                onClick={() => BuyNFT()}
                 maxW="120px"
                 rounded={"full"}
                 color={"white"}
                 bgGradient="linear(to-r, #c61682, #ee670d)"
-                _hover={{ opacity: "0.8" }}
+                _hover={{ opacity: "0.8", transform: "scale(1.05)"}}
               >
                 Minting Soon
               </Button>
+              </div>
               </a>
           </Stack>
         </Box>
@@ -78,6 +98,7 @@ const GridComponent = (props) => {
     );
   };
 
+// not all NFTs have been added
 const BonsaiNFT = () => {
     // optimise image loading
     const [imageIsReady, setIsReady] = useState(false);
@@ -90,8 +111,6 @@ const BonsaiNFT = () => {
         img.src = IMAGES.bonsai_1;
         window.scrollTo(0, 0);
     }, []);
-
-    const myRef = React.createRef();
 
     return (
         <div>
@@ -170,7 +189,7 @@ const BonsaiNFT = () => {
             <GridComponent name="Prince of the Hills" imgsrc={IMAGES.bonsai_39} anvillink={}/>
             <GridComponent name="Spellcaster Student" imgsrc={IMAGES.bonsai_40} anvillink={}/>
             </LazyLoadComponent>
-            <GridComponent name="Swordswoman Student" imgsrc={IMAGES.bonsai_41} anvillink={} pagepos={'#test'}/>
+            <GridComponent name="Swordswoman Student" imgsrc={IMAGES.bonsai_41} anvillink={}/>
           </SimpleGrid>
           </Center>
         ) : null}

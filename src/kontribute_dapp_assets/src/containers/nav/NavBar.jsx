@@ -3,7 +3,7 @@ import { CgInfinity } from "react-icons/cg";
 import { MdHowToVote } from "react-icons/md";
 import { FaBook, FaImages } from "react-icons/fa";
 import "./NavBar.css";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
 import {
   Button,
@@ -25,15 +25,24 @@ import { UserContext } from "../../Context.jsx";
 
 const MenuLinks = () => (
   <>
-    <Link to="/stories">
+    <NavLink
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+      to="/stories"
+    >
       <p>STORIES</p>
-    </Link>
-    <Link to="/NFT">
+    </NavLink>
+    <NavLink
+      to="/NFT"
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
       <p>NFT</p>
-    </Link>
-    <Link to="/Create">
+    </NavLink>
+    <NavLink
+      to="/Create"
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
       <p>CREATE</p>
-    </Link>
+    </NavLink>
   </>
 );
 
@@ -75,9 +84,9 @@ const NavBar = () => {
       <div className="bonsai__navbar">
         <div className="bonsai__navbar-links">
           <div className="bonsai__navbar-links_logo">
-            <Link to="/">
+            <NavLink to="/">
               <img src={logo} alt="Kontribute" />
-            </Link>
+            </NavLink>
           </div>
 
           <div className="bonsai__navbar-links_container">
@@ -112,14 +121,14 @@ const NavBar = () => {
               <Tooltip label="Your recent vote selection">
                 <MenuGroup title="Bonsai Warriors Vote History" />
               </Tooltip>
-              <Link to="/bonsai-warriors-prologueII">
+              <NavLink to="/bonsai-warriors-prologueII">
                 <MenuItem
                   icon={<MdHowToVote />}
                   command={isReady ? recentvoteII : <Spinner size="xs" />}
                 >
                   Prologue II:
                 </MenuItem>
-              </Link>
+              </NavLink>
               <MenuDivider />
               <MenuItem icon={<LockIcon />} onClick={signOut}>
                 Sign Out
@@ -141,15 +150,15 @@ const NavBar = () => {
               <MenuList>
                 {/* for mobile view */}
                 <MenuGroup title="Kontribute" />
-                <Link to="/stories">
+                <NavLink to="/stories">
                   <MenuItem icon={<FaBook />}>Stories</MenuItem>
-                </Link>
-                <Link to="/nft">
+                </NavLink>
+                <NavLink to="/nft">
                   <MenuItem icon={<FaImages />}>NFT</MenuItem>
-                </Link>
-                <Link to="/create">
+                </NavLink>
+                <NavLink to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>
-                </Link>
+                </NavLink>
               </MenuList>
             </Menu>
           </div>

@@ -50,7 +50,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app", //"http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
+        identityProvider: "https://identity.ic0.app", //"http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/"
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -139,13 +139,13 @@ function App() {
             <UserContext.Provider value={{ principal, signOut, signActor }}>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/stories" element={<Stories />} />
                 <Route path="/nft" element={<NFT />} />
                 <Route path="/create" element={<Create />} />
-                <Route path="/bonsai-all" element={<BonsaiAll />} />
-                <Route path="/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
-                <Route path="/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
-                <Route path="/community-stories" element={<CommunityUploads />} />
+                <Route path="/stories" element={<Stories />} />
+                <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
+                <Route path="/stories/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
+                <Route path="/stories/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
+                <Route path="/stories/community-stories" element={<CommunityUploads />} />
               </Routes>
             </UserContext.Provider>
           </Router>

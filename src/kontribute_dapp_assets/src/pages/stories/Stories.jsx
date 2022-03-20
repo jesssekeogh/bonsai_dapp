@@ -166,7 +166,7 @@ const Stories = () => {
                       position={"relative"}
                     >
                       <BlogAuthor name="Team Bonsai" img={BonsaiLogo} />
-                      <Link to="/bonsai-all">
+                      <Link to="/stories/bonsai-all">
                         <Button
                           w="100%"
                           mt="1rem"
@@ -262,7 +262,7 @@ const Stories = () => {
                       position={"relative"}
                     >
                       <BlogAuthor name="Community" img={people} />
-                      <Link to="/community-stories">
+                      <Link to="/stories/community-stories">
                         <Button
                           w="100%"
                           mt="1rem"

@@ -1,86 +1,78 @@
-import React, { useContext, useState, useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { NavBar } from "../../../containers";
-import { Link } from "react-router-dom";
-
-// Styling
 import {
   Container,
   Center,
-  Button,
-  Flex,
-  Box,
-  Heading,
-  Spacer,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  Alert,
-  AlertIcon,
-  Spinner
 } from "@chakra-ui/react";
-import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Fade } from "react-awesome-reveal";
 import "../BonsaiStory.css";
+import BonsaiVote from "../Bonsai_Vote_Func/BonsaiVote";
 
-// user context from auth
-import { UserContext } from "../../../Context.jsx";
+const Option1Details = () => {
+  return (
+    <>
+      Child of a working family, owners of a fairly prosperous Spirit Herb farm,
+      local to the academy. This will be the furthest you have ever traveled.
+      <br></br>
+      <br></br>
+      Advantages:
+      <br></br>
+      Some resources, Average starting ability. Numerous miscellaneous skills.
+      Above-average innate talent.
+      <br></br>
+      <br></br>
+      Disadvantages:
+      <br></br>
+      No real disadvantages
+    </>
+  );
+};
 
+const Option2Details = () => {
+  return (
+    <>
+      You are the child of a military family, more than commoners, less than
+      nobles. You are proud of your heritage among the fighting men of the
+      Empire and ready to prove your worth.
+      <br></br>
+      <br></br>
+      Advantages:
+      <br></br>
+      Some resources, Higher physical ability. Begins with a weapon-based
+      martial skill. Above-average talent.
+      <br></br>
+      <br></br>
+      Disadvantages:
+      <br></br>
+      Lower mental ability. Lack of non-combat-related skills
+    </>
+  );
+};
+const Option3Details = () => {
+  return (
+    <>
+      You have nothing and you are nothing. Child of a prostitute and an unknown
+      father, you have always lived by your wits, stealing from others to
+      survive day by day. Yet you were still discovered by an Agent as a budding
+      talent, and now everything has changed.
+      <br></br>
+      <br></br>
+      Advantages:
+      <br></br>
+      High innate talent, ‘practical’ skills, decent physical and mental
+      abilities, Possible hidden ability?
+      <br></br>
+      <br></br>
+      Disadvantages:
+      <br></br>
+      No resources. Very low social ability. Compulsory Military Service.
+    </>
+  );
+};
 const BonsaiWarriorsPrologue = () => {
-  const { signActor } = useContext(UserContext);
-
-  // the votes:
-  const [vote1, setvote1] = useState(<Spinner size="xs" />);
-  const [vote2, setvote2] = useState(<Spinner size="xs" />);
-  const [vote3, setvote3] = useState(<Spinner size="xs" />);
-
-  // query the votes
-  const getvote1 = async () => {
-    const user = await signActor();
-    const votes = await user.getVote1();
-    setvote1(votes.toString());
-  };
-
-  const getvote2 = async () => {
-    const user = await signActor();
-    const votes = await user.getVote2();
-    setvote2(votes.toString());
-  };
-
-  const getvote3 = async () => {
-    const user = await signActor();
-    const votes = await user.getVote3();
-    setvote3(votes.toString());
-  };
-
-  // for modals
-  const {
-    isOpen: isOpen1,
-    onOpen: onOpen1,
-    onClose: onClose1,
-  } = useDisclosure();
-  const {
-    isOpen: isOpen2,
-    onOpen: onOpen2,
-    onClose: onClose2,
-  } = useDisclosure();
-  const {
-    isOpen: isOpen3,
-    onOpen: onOpen3,
-    onClose: onClose3,
-  } = useDisclosure();
-
   useEffect(() => {
-    getvote1();
-    getvote2();
-    getvote3();
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
   }, []);
-
   return (
     <div>
       <NavBar />
@@ -148,249 +140,19 @@ const BonsaiWarriorsPrologue = () => {
           </div>
         </Container>
       </Fade>
-      <div className="bonsai__vote">
-        <Center>
-          <h5>Who are you?</h5>
-        </Center>
-      </div>
-      <Container mt="4">
-        <Alert status="warning" mb="2rem" borderRadius="10px">
-          <AlertIcon />
-          Voting for this chapter has ended! <b>&nbsp;Winner: Artisan</b>
-        </Alert>
-        <Flex mb="4">
-          <Box p="2">
-            <Heading size="md" color="#c8aa6e">
-              Artisan
-            </Heading>
-          </Box>
-          <Spacer />
-          <Box>
-            <Button onClick={onOpen1} mr="2" colorScheme="#f0e6d3" bg="#282828" rounded={"full"}>
-              Read Option 1&nbsp;
-            </Button>
-            <Modal isOpen={isOpen1} onClose={onClose1}>
-              <ModalOverlay />
-              <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Artisan</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <div className="bonsai__story">
-                    Child of a working family, owners of a fairly prosperous
-                    Spirit Herb farm, local to the academy. This will be the
-                    furthest you have ever traveled.
-                    <br></br>
-                    <br></br>
-                    Advantages:
-                    <br></br>
-                    Some resources, Average starting ability. Numerous
-                    miscellaneous skills. Above-average innate talent.
-                    <br></br>
-                    <br></br>
-                    Disadvantages:
-                    <br></br>
-                    No real disadvantages
-                  </div>
-                </ModalBody>
-
-                <ModalFooter>
-                  <Button
-                    disabled
-                    rightIcon={<PlusSquareIcon />}
-                    bg="#17191e"
-                    border="1px"
-                    borderColor="#9d8144"
-                    color="#f0e6d3"
-                    colorScheme="#17191e"
-                    mr="4"
-                  >
-                    Place Vote
-                  </Button>
-                  <Button
-                    colorScheme="black"
-                    color="#f0e6d3"
-                    variant="outline"
-                    mr={3}
-                    onClick={onClose1}
-                  >
-                    Close
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-
-            <Box
-              as="button"
-              borderRadius="md"
-              bg="#0fbdde"
-              color="black"
-              fontWeight="semibold"
-              px={4}
-              h={8}
-            >
-              {vote1}
-            </Box>
-          </Box>
-        </Flex>
-
-        <Flex mb="4">
-          <Box p="2">
-            <Heading size="md" color="#c8aa6e">
-              Soldier
-            </Heading>
-          </Box>
-          <Spacer />
-          <Box>
-            <Button onClick={onOpen2} mr="2" colorScheme="#f0e6d3" bg="#282828" rounded={"full"}>
-              Read Option 2
-            </Button>
-            <Modal isOpen={isOpen2} onClose={onClose2}>
-              <ModalOverlay />
-              <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Soldier</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <div className="bonsai__story">
-                    You are the child of a military family, more than commoners,
-                    less than nobles. You are proud of your heritage among the
-                    fighting men of the Empire and ready to prove your worth.
-                    <br></br>
-                    <br></br>
-                    Advantages:
-                    <br></br>
-                    Some resources, Higher physical ability. Begins with a
-                    weapon-based martial skill. Above-average talent.
-                    <br></br>
-                    <br></br>
-                    Disadvantages:
-                    <br></br>
-                    Lower mental ability. Lack of non-combat-related skills
-                  </div>
-                </ModalBody>
-
-                <ModalFooter>
-                  <Button
-                    disabled
-                    rightIcon={<PlusSquareIcon />}
-                    bg="#17191e"
-                    border="1px"
-                    borderColor="#9d8144"
-                    color="#f0e6d3"
-                    colorScheme="#17191e"
-                    mr="4"
-                  >
-                    Place Vote
-                  </Button>
-                  <Button
-                    colorScheme="black"
-                    color="#f0e6d3"
-                    variant="outline"
-                    mr={3}
-                    onClick={onClose2}
-                  >
-                    Close
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-
-            <Box
-              as="button"
-              borderRadius="md"
-              bg="#0fbdde"
-              color="black"
-              fontWeight="semibold"
-              px={4}
-              h={8}
-            >
-              {vote2}
-            </Box>
-          </Box>
-        </Flex>
-
-        <Flex mb="4">
-          <Box p="2">
-            <Heading size="md" color="#c8aa6e">
-              Street Rat
-            </Heading>
-          </Box>
-          <Spacer />
-          <Box>
-            <Button onClick={onOpen3} mr="2" colorScheme="#f0e6d3" bg="#282828" rounded={"full"}>
-              Read Option 3
-            </Button>
-            <Modal isOpen={isOpen3} onClose={onClose3}>
-              <ModalOverlay />
-              <ModalContent bg="#0a0a0d">
-                <ModalHeader color="#c8aa6e">Street Rat</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <div className="bonsai__story">
-                    You have nothing and you are nothing. Child of a prostitute
-                    and an unknown father, you have always lived by your wits,
-                    stealing from others to survive day by day. Yet you were
-                    still discovered by an Agent as a budding talent, and now
-                    everything has changed.
-                    <br></br>
-                    <br></br>
-                    Advantages:
-                    <br></br>
-                    High innate talent, ‘practical’ skills, decent physical and
-                    mental abilities, Possible hidden ability?
-                    <br></br>
-                    <br></br>
-                    Disadvantages:
-                    <br></br>
-                    No resources. Very low social ability. Compulsory Military
-                    Service.
-                  </div>
-                </ModalBody>
-
-                <ModalFooter>
-                  <Button
-                    disabled
-                    rightIcon={<PlusSquareIcon />}
-                    bg="#17191e"
-                    border="1px"
-                    borderColor="#9d8144"
-                    color="#f0e6d3"
-                    colorScheme="#17191e"
-                    mr="4"
-                  >
-                    Place Vote
-                  </Button>
-                  <Button
-                    colorScheme="black"
-                    color="#f0e6d3"
-                    variant="outline"
-                    mr={3}
-                    onClick={onClose3}
-                  >
-                    Close
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-
-            <Box
-              as="button"
-              borderRadius="md"
-              bg="#0fbdde"
-              color="black"
-              fontWeight="semibold"
-              px={4}
-              h={8}
-            >
-              {vote3}
-            </Box>
-          </Box>
-        </Flex>
-      </Container>
-      <div className="bonsai__story_back-button">
-        <Link to="/bonsai-all">
-          <button type="button">Go back</button>
-        </Link>
-      </div>
+      <BonsaiVote
+        BackendVoteQuery1={"user.getVote1()"}
+        BackendVoteQuery2={"user.getVote2()"}
+        BackendVoteQuery3={"user.getVote3()"}
+        Question={"Who are you?"}
+        Option1Title={"Artisan"}
+        Option1Details={Option1Details()}
+        Option2Title={"Soldier"}
+        Option2Details={Option2Details()}
+        Option3Title={"Street Rat"}
+        Option3Details={Option3Details()}
+        VoteEnded={true}
+      />
     </div>
   );
 };

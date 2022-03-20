@@ -12,12 +12,12 @@ import {
   Grid,
   GridItem,
   HStack,
-  Spinner
+  Spinner,
+  Tooltip,
 } from "@chakra-ui/react";
 import { MdHowToVote } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Delayed } from "../../../containers/index";
-
 // for calling user data
 import { UserContext } from "../../../Context";
 
@@ -52,16 +52,17 @@ function Feature({ title, desc, link, total, ...rest }) {
             <Box color="#fff">
               <MdHowToVote />
             </Box>
-            <Box
-              as="button"
-              borderRadius="md"
-              bg="#0fbdde"
-              color="black"
-              fontWeight="semibold"
-              px="1"
-            >
-              {total}
-            </Box>
+            <Tooltip label="Total Votes">
+              <Box
+                borderRadius="md"
+                bg="#0fbdde"
+                color="black"
+                fontWeight="semibold"
+                px="1"
+              >
+                {total}
+              </Box>
+            </Tooltip>
           </HStack>
         </GridItem>
       </Grid>
@@ -109,40 +110,40 @@ const BonsaiAll = () => {
   return (
     <div>
       <NavBar />
+      <Center>
+        <Heading color="#a7884a">Bonsai Warriors</Heading>
+      </Center>
+      <div className="bonsai_all-container">
         <Center>
-          <Heading color="#a7884a">Bonsai Warriors</Heading>
+          <Delayed>
+            <SlideFade in={true}>
+              <StackEx
+                title1={"PROLOGUE II"}
+                body1={
+                  "You are an Artisan, now you must vote to choose your name"
+                }
+                link1={"/stories/bonsai-warriors-prologueII"}
+                total1={totalPrologueII}
+              />
+            </SlideFade>
+          </Delayed>
         </Center>
-        <div className="bonsai_all-container">
-          <Center>
-            <Delayed>
-              <SlideFade in={true}>
-                <StackEx
-                  title1={"PROLOGUE II"}
-                  body1={
-                    "You are an Artisan, now you must vote to choose your name"
-                  }
-                  link1={"/bonsai-warriors-prologueII"}
-                  total1={totalPrologueII}
-                />
-              </SlideFade>
-            </Delayed>
-          </Center>
-          <Center mt="2rem">
-            <Delayed waitBeforeShow={200}>
-              <SlideFade in={true}>
-                <StackEx
-                  title1={"PROLOGUE"}
-                  body1={
-                    "Introduction and character creation in the Bonsai Warriors story"
-                  }
-                  link1={"/bonsai-warriors-prologue"}
-                  total1={totalPrologue}
-                />
-              </SlideFade>
-            </Delayed>
-          </Center>
-        </div>
+        <Center mt="2rem">
+          <Delayed waitBeforeShow={200}>
+            <SlideFade in={true}>
+              <StackEx
+                title1={"PROLOGUE"}
+                body1={
+                  "Introduction and character creation in the Bonsai Warriors story"
+                }
+                link1={"/stories/bonsai-warriors-prologue"}
+                total1={totalPrologue}
+              />
+            </SlideFade>
+          </Delayed>
+        </Center>
       </div>
+    </div>
   );
 };
 
