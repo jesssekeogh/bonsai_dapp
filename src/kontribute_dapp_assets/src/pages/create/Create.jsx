@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavBar } from "../../containers";
 import {
   Alert,
@@ -30,6 +30,9 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Progress,
+  Spinner,
+  HStack
 } from "@chakra-ui/react";
 
 import { UserContext } from "../../Context";
@@ -95,8 +98,49 @@ const Create = () => {
   // for toasts:
   const toast = useToast();
 
+  const SuccessToast = () => {
+    toast({
+      title: `Success! Story posted`,
+      status: "success",
+      isClosable: true,
+      position: "top-right",
+      containerStyle: {
+        marginTop: "5.5rem",
+      },
+    });
+  }
+
+  const FailedToast = () => {
+    toast({
+      title: `Failed! A field was invalid`,
+      status: "error",
+      isClosable: true,
+      position: "top-right",
+      containerStyle: {
+        marginTop: "5.5rem",
+      },
+    });
+  }
+
+  const LoadingToast = () => {
+    toast({
+      title: <HStack><Text>Loading</Text> <Spinner size='xs' /></HStack>,
+      description: <Progress size='xs' isIndeterminate />,
+      position: "top-right",
+      variant: 'subtle',
+      isClosable: true,
+      containerStyle: {
+        marginTop: "5.5rem",
+      },
+    })
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
   // post story to backend
   const postStory = async () => {
+    LoadingToast()
     const user = await signActor();
     const post = await user.uploadStory({
       title: Title.value,
@@ -105,25 +149,9 @@ const Create = () => {
       user_discord: Discord.value
     });
     if (post.toString() === "Story Created!") {
-      toast({
-        title: `Success! Story posted`,
-        status: "success",
-        isClosable: true,
-        position: "top-right",
-        containerStyle: {
-          marginTop: "5.5rem",
-        },
-      });
+      return SuccessToast()
     } else {
-      toast({
-        title: `Failed! A field was invalid`,
-        status: "error",
-        isClosable: true,
-        position: "top-right",
-        containerStyle: {
-          marginTop: "5.5rem",
-        },
-      });
+      return FailedToast()
     }
   };
 

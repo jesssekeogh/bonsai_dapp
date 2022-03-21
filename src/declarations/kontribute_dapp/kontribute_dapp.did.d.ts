@@ -11,6 +11,7 @@ export interface _SERVICE {
   'VoteOption1' : () => Promise<string>,
   'VoteOption2' : () => Promise<string>,
   'VoteOption3' : () => Promise<string>,
+  'findStory' : (arg_0: string) => Promise<string>,
   'getAll' : () => Promise<bigint>,
   'getAllII' : () => Promise<bigint>,
   'getAllStories' : (arg_0: bigint) => Promise<List>,

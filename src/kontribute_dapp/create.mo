@@ -56,4 +56,21 @@ actor Create {
         return new_list // unwrap list and return the records only
     };
 
+    // find story function to get a specific story
+    public func findStory(userId : Text) : async Text {
+        var my_list = Iter.toList(Trie.iter(Writers)); // maps all trie entries to List
+
+        let pId = Principal.fromText(userId);
+
+        var foundStory = "";
+
+        let result = List.find<(Principal, Types.Story)>(my_list, func (listid : Principal, story : Types.Story) : Bool{
+            if (listid == pId){
+                foundStory := story.title; // place all the story pieces in variables
+            };
+            return true
+        });
+
+        return foundStory
+    };
 }

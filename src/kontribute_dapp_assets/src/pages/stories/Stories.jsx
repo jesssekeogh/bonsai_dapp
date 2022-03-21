@@ -67,7 +67,7 @@ const Stories = () => {
   useEffect(() => {
     const img = new Image();
     img.onload = () => {
-      setIsReady(true);
+      setTimeout(() => {setIsReady(true)}, 2000)
     };
     img.src = bonsai_bg;
     window.scrollTo(0, 0);

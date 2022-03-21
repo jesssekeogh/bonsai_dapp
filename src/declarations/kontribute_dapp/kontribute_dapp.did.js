@@ -15,6 +15,7 @@ export const idlFactory = ({ IDL }) => {
     'VoteOption1' : IDL.Func([], [IDL.Text], []),
     'VoteOption2' : IDL.Func([], [IDL.Text], []),
     'VoteOption3' : IDL.Func([], [IDL.Text], []),
+    'findStory' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getAll' : IDL.Func([], [IDL.Nat], []),
     'getAllII' : IDL.Func([], [IDL.Nat], []),
     'getAllStories' : IDL.Func([IDL.Nat], [List], []),

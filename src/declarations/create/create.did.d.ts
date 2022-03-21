@@ -9,4 +9,5 @@ export interface Story {
 export interface _SERVICE {
   'allStories' : (arg_0: bigint) => Promise<List>,
   'create' : (arg_0: Principal, arg_1: Story) => Promise<string>,
+  'findStory' : (arg_0: string) => Promise<string>,
 }

@@ -25,6 +25,7 @@ import { UserContext } from "./Context";
 import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
 import { BonsaiWarriorsPrologueII } from "./all_stories/bonsaistory"
 import { BonsaiAll } from "./all_stories/bonsaistory";
+import UniqueStory from "./pages/uniquestories/UniqueStory";
 
 // this is the launch page:
 
@@ -50,7 +51,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app", //"http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/"
+        identityProvider: "http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/", //"https://identity.ic0.app",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -139,13 +140,14 @@ function App() {
             <UserContext.Provider value={{ principal, signOut, signActor }}>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/stories" element={<Stories />} />
                 <Route path="/nft" element={<NFT />} />
                 <Route path="/create" element={<Create />} />
-                <Route path="/stories" element={<Stories />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
                 <Route path="/stories/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
                 <Route path="/stories/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
-                <Route path="/stories/community-stories" element={<CommunityUploads />} />
+                <Route path="/stories/community-stories/" element={<CommunityUploads />} />
+                <Route path="/stories/community-stories/:storyid" element={<UniqueStory />} />
               </Routes>
             </UserContext.Provider>
           </Router>

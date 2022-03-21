@@ -2,6 +2,7 @@ import Bonsai "canister:bonsai";
 import Create "canister:create";
 import Types "types";
 import List "mo:base/List";
+import Principal "mo:base/Principal";
 
 actor {
 
@@ -73,5 +74,9 @@ actor {
 
     public func getAllStories(amount : Nat) : async List.List<(Principal, Types.Story)>{
         await Create.allStories(amount)
-    }
+    };
+
+    public func findStory(userId : Text) : async Text {
+        await Create.findStory(userId)
+    };
 }

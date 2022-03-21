@@ -22,6 +22,7 @@ service : {
   VoteOption1: () -> (text);
   VoteOption2: () -> (text);
   VoteOption3: () -> (text);
+  findStory: (text) -> (text);
   getAll: () -> (nat);
   getAllII: () -> (nat);
   getAllStories: (nat) -> (List);

@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 import { UserContext } from "../../Context";
+import { Link } from "../../../../../node_modules/react-router-dom/index";
 
 const CommunityUploads = () => {
   const { signActor } = useContext(UserContext);
@@ -21,20 +22,23 @@ const CommunityUploads = () => {
   const [storybody, setBody] = useState("");
   const [discord, setDiscord] = useState("");
 
+  const [userId, setId] = useState("");
+
   const getStories = async () => {
     const user = await signActor();
     const result = await user.getAllStories(10);
     // for the second story:
-    setTitle(result[0][1][0][0][1].title);
-    setGenre(result[0][1][0][0][1].genre);
-    setBody(result[0][1][0][0][1].body);
-    setDiscord(result[0][1][0][0][1].user_discord)
+    // setTitle(result[0][1][0][0][1].title);
+    // setGenre(result[0][1][0][0][1].genre);
+    // setBody(result[0][1][0][0][1].body);
+    // setDiscord(result[0][1][0][0][1].user_discord)
     //// for the first story
-    // setTitle(result[0][0][1].title);
-    // setChapter(result[0][0][1].chapter);
-    // setBody(result[0][0][1].body);
+    setTitle(result[0][0][1].title);
+    setGenre(result[0][0][1].genre);
+    setBody(result[0][0][1].body);
 
-    console.log(result[0][1][0][0][1])
+    // TODO: needs to show all story titles and userIds : need a loop
+    setId(result[0][0][0].toString())
   };
 
   return (
@@ -69,16 +73,10 @@ const CommunityUploads = () => {
             </Heading>
             <Text color={"gray.500"}>{storybody}</Text>
           </Stack>
-          <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-            <Avatar
-              src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-              alt={"Author"}
-            />
-            <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-              <Text fontWeight={600}>{discord}</Text>
-              <Text color={"gray.500"}>Feb 08, 2021 · 6min read</Text>
-            </Stack>
-          </Stack>
+          {/* dynamic link */}
+          <Link to={userId}>
+          <Button >load story</Button>
+          </Link>
         </Box>
         <Button onClick={() => getStories()}>load story</Button>
       </Center>

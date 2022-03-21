@@ -16,4 +16,5 @@ type List =
 service : {
   allStories: (nat) -> (List);
   create: (principal, Story) -> (text);
+  findStory: (text) -> (text);
 }
