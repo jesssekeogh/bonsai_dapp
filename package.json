@@ -56,6 +56,7 @@
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.1",
     "react-slick": "^0.28.1",
+    "request": "^2.79.0",
     "url-loader": "^4.1.1"
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavBar } from "../../containers";
 import React from "react";
 import BonsaiNFT from "./bonsai_NFT/BonsaiNFT";
@@ -15,40 +15,46 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Heading,
   Text,
-  Stack,
-  Box,
   HStack,
+  Input,
+  Grid,
+  GridItem,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 
 const NFT = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const [value, setValue] = useState("");
+  const handleChange = (event) => setValue(event.target.value);
+
   return (
     <div>
       <NavBar />
       <Center>
-        <Stack as={Box} textAlign={"center"} spacing={3} py={2} mb={5} mt="-2rem">
-          <Heading
-            fontWeight={600}
-            fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
-            lineHeight={"110%"}
-          >
-            <Text
-              as={"span"}
-              bgGradient="linear(to-t, #705025, #a7884a)"
-              bgClip="text"
-            >
-              Kontribute NFTs
-            </Text>
-          </Heading>
-          <Center>
-            <HStack>
-              <Text color="#f0e6d3">
+        <Grid templateColumns="repeat(4, 1fr)" mb={5}>
+          <GridItem colStart={2} colSpan={2}>
+            <InputGroup>
+              <Input
+                color="#f0e6d3"
+                placeholder="NFT Search..."
+                variant="outline"
+                size="lg"
+                value={value}
+                onChange={handleChange}
+              />
+              <InputRightElement _hover={{ cursor: "pointer" }} onClick={() => {setValue("")}} mt={1} children={<CloseIcon color={"#f0e6d3"} />} />
+            </InputGroup>
+          </GridItem>
+          <GridItem colStart={4} ms={2}>
+            <HStack w="220px">
+              <Text color="#f0e6d3" fontSize="xs">
                 Powered by{" "}
                 <Text
                   bgGradient="linear(to-t, #c61682, #ee670d)"
@@ -58,10 +64,10 @@ const NFT = () => {
                   NFT Anvil
                 </Text>
               </Text>
-              <ChakraImage src={anvillogo} h="50px" />
+              <ChakraImage src={anvillogo} h="40px" />
             </HStack>
-          </Center>
-        </Stack>
+          </GridItem>
+        </Grid>
       </Center>
       <Tabs variant="soft-rounded">
         <div className="sticky_tabs">
@@ -87,7 +93,7 @@ const NFT = () => {
         </div>
         <TabPanels>
           <TabPanel>
-            <BonsaiNFT />
+            <BonsaiNFT value={value} />
           </TabPanel>
           <TabPanel>
             <CommunityNFT />

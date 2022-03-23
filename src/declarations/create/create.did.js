@@ -10,6 +10,7 @@ export const idlFactory = ({ IDL }) => {
   return IDL.Service({
     'allStories' : IDL.Func([IDL.Nat], [List], []),
     'create' : IDL.Func([IDL.Principal, Story], [IDL.Text], []),
+    'findStory' : IDL.Func([IDL.Text], [IDL.Text], []),
   });
 };
 export const init = ({ IDL }) => { return []; };

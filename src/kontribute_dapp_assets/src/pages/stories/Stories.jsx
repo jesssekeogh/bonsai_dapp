@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./stories.css";
 import bonsai_bg from "../../../assets/beauty_render3_5.png";
-import placeholder from "../../../assets/4000x2250.png";
+import placeholder from "../../../assets/576x324.png";
 import people from "../../../assets/undraw_People.png";
 import BonsaiLogo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import { NavBar, Delayed } from "../../containers";
@@ -67,7 +67,7 @@ const Stories = () => {
   useEffect(() => {
     const img = new Image();
     img.onload = () => {
-      setTimeout(() => {setIsReady(true)}, 2000)
+      setIsReady(true)
     };
     img.src = bonsai_bg;
     window.scrollTo(0, 0);
