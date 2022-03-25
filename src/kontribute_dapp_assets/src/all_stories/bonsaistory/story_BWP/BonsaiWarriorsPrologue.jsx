@@ -141,9 +141,7 @@ const BonsaiWarriorsPrologue = () => {
         </Container>
       </Fade>
       <BonsaiVote
-        BackendVoteQuery1={"user.getVote1()"}
-        BackendVoteQuery2={"user.getVote2()"}
-        BackendVoteQuery3={"user.getVote3()"}
+        BackendVoteQuery={"user.getVotes()"}
         Question={"Who are you?"}
         Option1Title={"Artisan"}
         Option1Details={Option1Details()}

@@ -1,3 +1,11 @@
+type StoryVotes = 
+ record {
+   total: nat;
+   userOption: Profile;
+   vote1: nat;
+   vote2: nat;
+   vote3: nat;
+ };
 type Story = 
  record {
    body: text;
@@ -23,15 +31,9 @@ service : {
   VoteOption2: () -> (text);
   VoteOption3: () -> (text);
   findStory: (text) -> (text);
-  getAll: () -> (nat);
-  getAllII: () -> (nat);
   getAllStories: (nat) -> (List);
-  getVote1: () -> (nat);
-  getVote1II: () -> (nat);
-  getVote2: () -> (nat);
-  getVote2II: () -> (nat);
-  getVote3: () -> (nat);
-  getVote3II: () -> (nat);
-  readVotesII: () -> (Profile);
+  getVotes: () -> (StoryVotes);
+  getVotesII: () -> (StoryVotes);
+  getVotesIII: () -> (StoryVotes);
   uploadStory: (Story) -> (text);
 }

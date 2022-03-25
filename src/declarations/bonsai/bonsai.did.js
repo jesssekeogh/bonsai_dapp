@@ -3,19 +3,20 @@ export const idlFactory = ({ IDL }) => {
     'hasVoted' : IDL.Bool,
     'whichOption' : IDL.Text,
   });
+  const StoryVotes = IDL.Record({
+    'total' : IDL.Nat,
+    'userOption' : Profile,
+    'vote1' : IDL.Nat,
+    'vote2' : IDL.Nat,
+    'vote3' : IDL.Nat,
+  });
   return IDL.Service({
     'BonsaiOption1' : IDL.Func([IDL.Principal], [IDL.Text], []),
     'BonsaiOption2' : IDL.Func([IDL.Principal], [IDL.Text], []),
     'BonsaiOption3' : IDL.Func([IDL.Principal], [IDL.Text], []),
-    'getBonsaiVote1' : IDL.Func([], [IDL.Nat], ['query']),
-    'getBonsaiVote1II' : IDL.Func([], [IDL.Nat], ['query']),
-    'getBonsaiVote2' : IDL.Func([], [IDL.Nat], ['query']),
-    'getBonsaiVote2II' : IDL.Func([], [IDL.Nat], ['query']),
-    'getBonsaiVote3' : IDL.Func([], [IDL.Nat], ['query']),
-    'getBonsaiVote3II' : IDL.Func([], [IDL.Nat], ['query']),
-    'prologueGetAll' : IDL.Func([], [IDL.Nat], ['query']),
-    'prologueIIGetAll' : IDL.Func([], [IDL.Nat], ['query']),
-    'readBonsaiVotesII' : IDL.Func([IDL.Principal], [Profile], []),
+    'getBonsaiVotes' : IDL.Func([], [StoryVotes], ['query']),
+    'getBonsaiVotesII' : IDL.Func([IDL.Principal], [StoryVotes], ['query']),
+    'getBonsaiVotesIII' : IDL.Func([IDL.Principal], [StoryVotes], ['query']),
   });
 };
 export const init = ({ IDL }) => { return []; };

@@ -89,20 +89,31 @@ const BonsaiAll = () => {
   // state for total votes
   const [totalPrologue, setPrologue] = useState(<Spinner size="xs" />);
   const [totalPrologueII, setPrologueII] = useState(<Spinner size="xs" />);
+  const [totalPrologueIII, setPrologueIII] = useState(<Spinner size="xs" />);
 
   const getAllPrologue = async () => {
     const user = await signActor();
-    const allVotesPrologue = await user.getAll();
-    setPrologue(allVotesPrologue.toString());
+    const result = await user.getVotes();
+    const votesTotal = result.total.toString()
+    setPrologue(votesTotal);
   };
 
   const getAllPrologueII = async () => {
     const user = await signActor();
-    const allVotesPrologue = await user.getAllII();
-    setPrologueII(allVotesPrologue.toString());
+    const result = await user.getVotesII();
+    const votesTotal = result.total.toString()
+    setPrologueII(votesTotal);
+  };
+
+  const getAllPrologueIII = async () => {
+    const user = await signActor();
+    const result = await user.getVotesIII();
+    const votesTotal = result.total.toString()
+    setPrologueIII(votesTotal);
   };
 
   useEffect(() => {
+    getAllPrologueIII();
     getAllPrologueII();
     getAllPrologue();
   }, []);
@@ -114,7 +125,21 @@ const BonsaiAll = () => {
         <Heading color="#a7884a">Bonsai Warriors</Heading>
       </Center>
       <div className="bonsai_all-container">
-        <Center>
+          <Center mb="1rem">
+            <Delayed>
+              <SlideFade in={true}>
+                <StackEx
+                  title1={"PROLOGUE III"}
+                  body1={
+                    "Now we must choose our school, the place of learning that Tang Wei shall study at."
+                  }
+                  link1={"/stories/bonsai-warriors-prologueIII"}
+                  total1={totalPrologueIII}
+                />
+              </SlideFade>
+            </Delayed>
+          </Center>
+        <Center mb="1rem">
           <Delayed>
             <SlideFade in={true}>
               <StackEx
@@ -128,7 +153,7 @@ const BonsaiAll = () => {
             </SlideFade>
           </Delayed>
         </Center>
-        <Center mt="2rem">
+        <Center mb="1rem">
           <Delayed waitBeforeShow={200}>
             <SlideFade in={true}>
               <StackEx

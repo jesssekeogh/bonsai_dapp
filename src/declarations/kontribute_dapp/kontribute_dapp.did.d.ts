@@ -7,20 +7,21 @@ export interface Story {
   'genre' : string,
   'user_discord' : string,
 }
+export interface StoryVotes {
+  'total' : bigint,
+  'userOption' : Profile,
+  'vote1' : bigint,
+  'vote2' : bigint,
+  'vote3' : bigint,
+}
 export interface _SERVICE {
   'VoteOption1' : () => Promise<string>,
   'VoteOption2' : () => Promise<string>,
   'VoteOption3' : () => Promise<string>,
   'findStory' : (arg_0: string) => Promise<string>,
-  'getAll' : () => Promise<bigint>,
-  'getAllII' : () => Promise<bigint>,
   'getAllStories' : (arg_0: bigint) => Promise<List>,
-  'getVote1' : () => Promise<bigint>,
-  'getVote1II' : () => Promise<bigint>,
-  'getVote2' : () => Promise<bigint>,
-  'getVote2II' : () => Promise<bigint>,
-  'getVote3' : () => Promise<bigint>,
-  'getVote3II' : () => Promise<bigint>,
-  'readVotesII' : () => Promise<Profile>,
+  'getVotes' : () => Promise<StoryVotes>,
+  'getVotesII' : () => Promise<StoryVotes>,
+  'getVotesIII' : () => Promise<StoryVotes>,
   'uploadStory' : (arg_0: Story) => Promise<string>,
 }

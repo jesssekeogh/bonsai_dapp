@@ -12,7 +12,7 @@ actor Bonsai {
     // the anonymous identity
     var anon : Text = "2vxsx-fae";
 
-    // vote tally
+    // vote tally for prologue
     let vote1 : Nat = 206;
     let vote2 : Nat = 103;
     let vote3 : Nat = 69;
@@ -23,6 +23,17 @@ actor Bonsai {
     stable var vote2II : Nat = 0;
     stable var vote3II : Nat = 0;
 
+    // PrologueIII user state and vote tally
+    stable var uniqueUserIII : Trie.Trie<Principal, Types.Profile> = Trie.empty();
+    stable var vote1III : Nat = 0;
+    stable var vote2III : Nat = 0;
+    stable var vote3III : Nat = 0;
+
+    // utility func
+    private func key(x : Principal) : Trie.Key<Principal> {
+        return { key = x; hash = Principal.hash(x) }
+    };
+
     // vote options,check anon, get the value of principal (null if no vote)
     public shared(msg) func BonsaiOption1 (callerId : Principal) : async Text {
 
@@ -31,7 +42,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUserII, // changed for chapter
+            uniqueUserIII, // changed for chapter
             key(callerId),
             Principal.equal
         );
@@ -41,13 +52,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote1";
             };
-            uniqueUserII := Trie.replace(
-                uniqueUserII,
+            uniqueUserIII := Trie.replace( // change for chapter
+                uniqueUserIII,
                 key(callerId),
                 Principal.equal,
                 ?userchoice
             ).0;
-            vote1II += 1;
+            vote1III += 1; // change for chapter
             return "user has voted successfully on vote1"
         };
 
@@ -62,7 +73,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUserII,
+            uniqueUserIII,
             key(callerId),
             Principal.equal
         );
@@ -72,13 +83,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote2";
             };
-            uniqueUserII := Trie.replace(
-                uniqueUserII,
+            uniqueUserIII := Trie.replace(
+                uniqueUserIII,
                 key(callerId),
                 Principal.equal,
                 ?userchoice
             ).0;
-            vote2II += 1;
+            vote2III += 1;
             return "user has voted successfully on vote2"
         };
 
@@ -93,7 +104,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUserII,
+            uniqueUserIII,
             key(callerId),
             Principal.equal
         );
@@ -103,13 +114,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote3";
             };
-            uniqueUserII := Trie.replace(
-                uniqueUserII,
+            uniqueUserIII := Trie.replace(
+                uniqueUserIII,
                 key(callerId),
                 Principal.equal,
                 ?userchoice,
             ).0;
-            vote3II += 1;
+            vote3III += 1;
             return "user has voted successfully on vote3"
         };
 
@@ -117,8 +128,21 @@ actor Bonsai {
 
     };
 
-    // check if user has voted yet and on which option for Prologue II
-    public shared(msg) func readBonsaiVotesII(callerId : Principal) : async Types.Profile {
+    // query the vote results
+    public query func getBonsaiVotes() : async Types.StoryVotes {
+        let votes : Types.StoryVotes= {
+            vote1 = vote1;
+            vote2 = vote2;
+            vote3 = vote3;
+            total = vote1 + vote2 + vote3;
+            userOption = {hasVoted = false; whichOption = "novote"}
+        };
+        return votes
+    };
+
+    // query results for Prologue II
+    public query func getBonsaiVotesII(callerId : Principal) : async Types.StoryVotes {
+        var option : Types.Profile = { hasVoted = false; whichOption = "novote"};
 
         let result = Trie.get(
             uniqueUserII,
@@ -132,51 +156,52 @@ actor Bonsai {
                 hasVoted = false;
                 whichOption = "novote"; 
                 };
-            return userchoice
+                option := userchoice
             };
             case (?result){
-                return result
+                option := result
             };
         };
-    };
 
-    // call the votes for prologueII
-    public query func getBonsaiVote1II() : async Nat {
-        return vote1II;
-    };
-
-    public query func getBonsaiVote2II() : async Nat {
-        return vote2II;
-    };
-
-    public query func getBonsaiVote3II() : async Nat {
-        return vote3II;
-    };
-
-    public query func prologueIIGetAll() : async Nat {
-        return vote1II + vote2II + vote3II
-    };
-
-    // call the votes for prologue
-    public query func getBonsaiVote1() : async Nat {
-        return vote1;
-    };
-
-    public query func getBonsaiVote2() : async Nat {
-        return vote2;
-    };
-
-    public query func getBonsaiVote3() : async Nat {
-        return vote3;
-    };
-
-    public query func prologueGetAll() : async Nat {
-        return vote1 + vote2 + vote3
-    };
-
-    // utility func
-    private func key(x : Principal) : Trie.Key<Principal> {
-        return { key = x; hash = Principal.hash(x) }
+        let votes : Types.StoryVotes= {
+            vote1 = vote1II;
+            vote2 = vote2II;
+            vote3 = vote3II;
+            total = vote1II + vote2II + vote3II;
+            userOption = option
+        };
+        return votes
     };
     
+    // query results for prologue III
+    public query func getBonsaiVotesIII(callerId : Principal) : async Types.StoryVotes {
+        var option : Types.Profile = { hasVoted = false; whichOption = "novote"};
+        
+        let result = Trie.get(
+            uniqueUserIII,
+            key(callerId),
+            Principal.equal
+        );
+
+        switch (result){
+            case (null){
+                let userchoice : Types.Profile = {
+                hasVoted = false;
+                whichOption = "novote"; 
+                };
+                option := userchoice
+            };
+            case (?result){
+                option := result
+            };
+        };
+        let votes : Types.StoryVotes= {
+            vote1 = vote1III;
+            vote2 = vote2III;
+            vote3 = vote3III;
+            total = vote1III + vote2III + vote3III;
+            userOption = option
+        };
+        return votes
+    };
 }

@@ -24,7 +24,9 @@ import { UserContext } from "./Context";
 // bonsai links:
 import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
 import { BonsaiWarriorsPrologueII } from "./all_stories/bonsaistory"
+import { BonsaiWarriorsPrologueIII } from "./all_stories/bonsaistory";
 import { BonsaiAll } from "./all_stories/bonsaistory";
+
 import UniqueStory from "./pages/uniquestories/UniqueStory";
 
 // this is the launch page:
@@ -142,10 +144,12 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/nft" element={<NFT />} />
+                <Route path="/nft/:nftname" element={<NFT />} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
                 <Route path="/stories/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
                 <Route path="/stories/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
+                <Route path="/stories/bonsai-warriors-prologueIII" element={<BonsaiWarriorsPrologueIII />} />
                 <Route path="/stories/community-stories/" element={<CommunityUploads />} />
                 <Route path="/stories/community-stories/:storyid" element={<UniqueStory />} />
               </Routes>

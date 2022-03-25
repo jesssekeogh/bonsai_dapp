@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { NavBar } from "../../containers";
 import React from "react";
 import BonsaiNFT from "./bonsai_NFT/BonsaiNFT";
@@ -31,9 +32,18 @@ const NFT = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  let nftname = useParams();
   const [value, setValue] = useState("");
+
   const handleChange = (event) => setValue(event.target.value);
 
+  useEffect(() => {
+    if(Object.keys(nftname).length === 1){
+      setValue(nftname.nftname)
+    }else{
+      setValue("")
+    }
+  }, [])
   return (
     <div>
       <NavBar />

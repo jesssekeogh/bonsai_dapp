@@ -51,32 +51,41 @@ const NavBar = () => {
   const { principal, signOut, signActor } = useContext(UserContext);
   const { hasCopied, onCopy } = useClipboard(principal);
 
-  // for loading spinner while fetching vote
-  const [isReady, setReady] = useState(false);
-
   // for the recent votes in the Profile
-  const [recentvoteII, setrecentvoteII] = useState("");
+  const [recentvoteII, setrecentvoteII] = useState(<Spinner size="xs" />);
+  const [recentvoteIII, setrecentvoteIII] = useState(<Spinner size="xs" />);
 
   const readVotesII = async () => {
     const user = await signActor();
-    const result = await user.readVotesII();
-    if (result.whichOption.toString() === "vote1") {
-      setReady(true);
+    const result = await user.getVotesII();
+    if (result.userOption.whichOption.toString() === "vote1") {
       setrecentvoteII("Option 1");
-    } else if (result.whichOption.toString() === "vote2") {
-      setReady(true);
+    } else if (result.userOption.whichOption.toString() === "vote2") {
       setrecentvoteII("Option 2");
-    } else if (result.whichOption.toString() === "vote3") {
-      setReady(true);
+    } else if (result.userOption.whichOption.toString() === "vote3") {
       setrecentvoteII("Option 3");
     } else {
-      setReady(true);
       setrecentvoteII("No Vote");
+    }
+  };
+
+  const readVotesIII = async () => {
+    const user = await signActor();
+    const result = await user.getVotesIII();
+    if (result.userOption.whichOption.toString() === "vote1") {
+      setrecentvoteIII("Option 1");
+    } else if (result.userOption.whichOption.toString() === "vote2") {
+      setrecentvoteIII("Option 2");
+    } else if (result.userOption.whichOption.toString() === "vote3") {
+      setrecentvoteIII("Option 3");
+    } else {
+      setrecentvoteIII("No Vote");
     }
   };
 
   useEffect(() => {
     readVotesII();
+    readVotesIII();
   }, []);
 
   return (
@@ -121,10 +130,18 @@ const NavBar = () => {
               <Tooltip label="Your recent vote selection">
                 <MenuGroup title="Bonsai Warriors Vote History" />
               </Tooltip>
-              <NavLink to="/bonsai-warriors-prologueII">
+              <NavLink to="/stories/bonsai-warriors-prologueIII">
                 <MenuItem
                   icon={<MdHowToVote />}
-                  command={isReady ? recentvoteII : <Spinner size="xs" />}
+                  command={recentvoteIII}
+                >
+                  Prologue III:
+                </MenuItem>
+              </NavLink>
+              <NavLink to="/stories/bonsai-warriors-prologueII">
+                <MenuItem
+                  icon={<MdHowToVote />}
+                  command={recentvoteII}
                 >
                   Prologue II:
                 </MenuItem>

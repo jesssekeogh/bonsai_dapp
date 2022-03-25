@@ -11,21 +11,22 @@ export const idlFactory = ({ IDL }) => {
     'hasVoted' : IDL.Bool,
     'whichOption' : IDL.Text,
   });
+  const StoryVotes = IDL.Record({
+    'total' : IDL.Nat,
+    'userOption' : Profile,
+    'vote1' : IDL.Nat,
+    'vote2' : IDL.Nat,
+    'vote3' : IDL.Nat,
+  });
   return IDL.Service({
     'VoteOption1' : IDL.Func([], [IDL.Text], []),
     'VoteOption2' : IDL.Func([], [IDL.Text], []),
     'VoteOption3' : IDL.Func([], [IDL.Text], []),
     'findStory' : IDL.Func([IDL.Text], [IDL.Text], []),
-    'getAll' : IDL.Func([], [IDL.Nat], []),
-    'getAllII' : IDL.Func([], [IDL.Nat], []),
     'getAllStories' : IDL.Func([IDL.Nat], [List], []),
-    'getVote1' : IDL.Func([], [IDL.Nat], []),
-    'getVote1II' : IDL.Func([], [IDL.Nat], []),
-    'getVote2' : IDL.Func([], [IDL.Nat], []),
-    'getVote2II' : IDL.Func([], [IDL.Nat], []),
-    'getVote3' : IDL.Func([], [IDL.Nat], []),
-    'getVote3II' : IDL.Func([], [IDL.Nat], []),
-    'readVotesII' : IDL.Func([], [Profile], []),
+    'getVotes' : IDL.Func([], [StoryVotes], []),
+    'getVotesII' : IDL.Func([], [StoryVotes], []),
+    'getVotesIII' : IDL.Func([], [StoryVotes], []),
     'uploadStory' : IDL.Func([Story], [IDL.Text], []),
   });
 };

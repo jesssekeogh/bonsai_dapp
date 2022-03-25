@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Center,
@@ -7,13 +7,10 @@ import {
   Stack,
   Button,
   SimpleGrid,
-  GridItem,
-  Spinner,
+  GridItem
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import nftdata from "./nftdata.json";
-// stories page css for spinner
-import "../../stories/stories.css";
 
 const GridComponent = ({ name, imgsrc, anvillink, value }) => {
   if (name.toLowerCase().match(value.toLowerCase())) {
@@ -84,43 +81,19 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
 
 // not all NFTs have been added
 const BonsaiNFT = ({ value }) => {
-  // optimise image loading
-  const [imageIsReady, setIsReady] = useState(false);
-
   useEffect(() => {
-    setTimeout(() => {setIsReady(true)}, 1000);
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <>
-      {!imageIsReady ? (
-        <div className="bonsai__spinner">
-          <Spinner
-            mt="5rem"
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="#17191e"
-            color="#9d8144"
-            size="xl"
-          />
-        </div>
-      ) : null}
-      {imageIsReady ? (
-        <Center>
-          <SimpleGrid
-            columns={[1, null, 4]}
-            pb={5}
-            px={10}
-            gap={4}
-            maxW="1500px"
-          >
-            {nftdata.map((item) => (
-              <GridComponent {...item} value={value} />
-            ))}
-          </SimpleGrid>
-        </Center>
-      ) : null}
+      <Center>
+        <SimpleGrid columns={[1, null, 4]} pb={5} px={10} gap={4} maxW="1500px">
+          {nftdata.map((item) => (
+            <GridComponent {...item} value={value} />
+          ))}
+        </SimpleGrid>
+      </Center>
     </>
   );
 };

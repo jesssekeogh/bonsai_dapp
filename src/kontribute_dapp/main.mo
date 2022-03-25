@@ -25,44 +25,22 @@ actor {
         await Bonsai.BonsaiOption3(callerId)
     };
 
-    // read to see which option for Prologue II
-    public shared(msg) func readVotesII() : async Types.Profile {
+    // query the voted data such as totals and voted option for that user
+    // for prologue
+    public func getVotes() : async Types.StoryVotes {
+        await Bonsai.getBonsaiVotes()
+    };
+
+    // for PrologueII
+    public shared(msg) func getVotesII() : async Types.StoryVotes {
         let callerId = msg.caller;
-        await Bonsai.readBonsaiVotesII(callerId)
+        await Bonsai.getBonsaiVotesII(callerId)
     };
 
-    // call the votes for PrologueII
-    public func getVote1II() : async Nat {
-        await Bonsai.getBonsaiVote1II()
-    };
-
-    public func getVote2II() : async Nat {
-        await Bonsai.getBonsaiVote2II()
-    };
-
-    public func getVote3II() : async Nat {
-        await Bonsai.getBonsaiVote3II()
-    };
-
-    public func getAllII() : async Nat {
-        await Bonsai.prologueIIGetAll()
-    };
-
-    // call the votes for the prologue
-    public func getVote1() : async Nat {
-        await Bonsai.getBonsaiVote1()
-    };
-
-    public func getVote2() : async Nat {
-        await Bonsai.getBonsaiVote2()
-    };
-
-    public func getVote3() : async Nat {
-        await Bonsai.getBonsaiVote3()
-    };
-
-    public func getAll() : async Nat {
-        await Bonsai.prologueGetAll()
+    // for PrologueIII
+    public shared(msg) func getVotesIII() : async Types.StoryVotes {
+        let callerId = msg.caller;
+        await Bonsai.getBonsaiVotesIII(callerId)
     };
 
     // functions for the create feature

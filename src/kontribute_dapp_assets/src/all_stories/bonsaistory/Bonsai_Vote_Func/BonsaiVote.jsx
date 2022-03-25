@@ -24,15 +24,14 @@ import {
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Bounce } from "react-awesome-reveal";
 import { UserContext } from "../../../Context.jsx";
+import "../BonsaiStory.css";
 
 /* This component is used for dynamic voting on the bonsai story, 
 The Vote options funcs stay the same as these are updated on the backend
 as new chapters roll out, only query votes are updated by props
 It does not need to be updated and props may be passed to it in the following form:
 <BonsaiVote
-BackendVoteQuery1={"user.getVote1II()"} -- getVote*name of chapter* - comes from the backend
-BackendVoteQuery2={"user.getVote2II()"}
-BackendVoteQuery3={"user.getVote2II()"}
+BackendVoteQuery={"user.getVotesIII()"} -- get the votes data
 Question={"What is your name?"} -- The question for the options (string)
 Option1Title={"Jiang Zhe"} -- The option title (string)
 Option1Details={Option1Details()} -- The option details defined in the story component (function)
@@ -62,7 +61,7 @@ const BonsaiVote = (props) => {
         marginTop: "5.5rem",
       },
     });
-  }
+  };
 
   const FailedToast = () => {
     return toast({
@@ -74,21 +73,21 @@ const BonsaiVote = (props) => {
         marginTop: "5.5rem",
       },
     });
-  }
+  };
 
   const voteoption1 = async () => {
     setClick1(true);
     const user = await signActor();
     const vote = await user.VoteOption1();
     if (vote.toString() === "user has voted successfully on vote1") {
-      getvote1();
       setClick1(false);
       onClose1();
-      return SuccessToast()
+      SuccessToast();
+      return getVotes();
     } else {
       setClick1(false);
       onClose1();
-      return FailedToast()
+      return FailedToast();
     }
   };
 
@@ -97,14 +96,14 @@ const BonsaiVote = (props) => {
     const user = await signActor();
     const vote = await user.VoteOption2();
     if (vote.toString() === "user has voted successfully on vote2") {
-      getvote2();
       setClick2(false);
       onClose2();
-      return SuccessToast()
+      SuccessToast();
+      return getVotes();
     } else {
       setClick2(false);
       onClose2();
-      return FailedToast()
+      return FailedToast();
     }
   };
 
@@ -113,36 +112,26 @@ const BonsaiVote = (props) => {
     const user = await signActor();
     const vote = await user.VoteOption3();
     if (vote.toString() === "user has voted successfully on vote3") {
-      getvote3();
       setClick3(false);
       onClose3();
-      return SuccessToast()
+      SuccessToast();
+      return getVotes();
     } else {
       setClick3(false);
       onClose3();
-      return FailedToast()
+      return FailedToast();
     }
   };
 
   // query the votes
   // get the specific vote from backend motoko query (with prop)
-  const getvote1 = async () => {
+  const getVotes = async () => {
     const user = await signActor();
-    const votes = await eval(props.BackendVoteQuery1);
-    setvote1(votes.toString());
-  };
-
-  const getvote2 = async () => {
-    const user = await signActor();
-    const votes = await eval(props.BackendVoteQuery2);
-    setvote2(votes.toString());
-  };
-
-  const getvote3 = async () => {
-    const user = await signActor();
-    const votes = await eval(props.BackendVoteQuery3);
-    setvote3(votes.toString());
-  };
+    const result = await eval(props.BackendVoteQuery);
+    setvote1(result.vote1.toString());
+    setvote2(result.vote2.toString());
+    setvote3(result.vote3.toString());
+  }
 
   // for modals
   const {
@@ -162,9 +151,7 @@ const BonsaiVote = (props) => {
   } = useDisclosure();
 
   useEffect(() => {
-    getvote1();
-    getvote2();
-    getvote3();
+    getVotes()
     window.scrollTo(0, 0);
   }, []);
 
@@ -305,9 +292,11 @@ const BonsaiVote = (props) => {
       <Container mt="4">
         <Flex mb="4">
           <Box p="2">
-            <Heading size="md" color="#c8aa6e">
-              {props.Option1Title}
-            </Heading>
+            <div className="bonsai__vote">
+              <Heading size="md" color="#c8aa6e">
+                <h3>{props.Option1Title}</h3>
+              </Heading>
+            </div>
           </Box>
           <Spacer />
           <Box>
@@ -318,7 +307,7 @@ const BonsaiVote = (props) => {
               bg="#282828"
               rounded={"full"}
             >
-              Read Option 1&nbsp;
+              Option 1&nbsp;
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
@@ -360,9 +349,11 @@ const BonsaiVote = (props) => {
 
         <Flex mb="4">
           <Box p="2">
-            <Heading size="md" color="#c8aa6e">
-              {props.Option2Title}
-            </Heading>
+            <div className="bonsai__vote">
+              <Heading size="md" color="#c8aa6e">
+                <h3>{props.Option2Title}</h3>
+              </Heading>
+            </div>
           </Box>
           <Spacer />
           <Box>
@@ -373,7 +364,7 @@ const BonsaiVote = (props) => {
               bg="#282828"
               rounded={"full"}
             >
-              Read Option 2
+              Option 2
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
@@ -415,9 +406,11 @@ const BonsaiVote = (props) => {
 
         <Flex mb="4">
           <Box p="2">
-            <Heading size="md" color="#c8aa6e">
-              {props.Option3Title}
-            </Heading>
+            <div className="bonsai__vote">
+              <Heading size="md" color="#c8aa6e">
+                <h3>{props.Option3Title}</h3>
+              </Heading>
+            </div>
           </Box>
           <Spacer />
           <Box>
@@ -428,7 +421,7 @@ const BonsaiVote = (props) => {
               bg="#282828"
               rounded={"full"}
             >
-              Read Option 3
+              Option 3
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
               <ModalOverlay />
