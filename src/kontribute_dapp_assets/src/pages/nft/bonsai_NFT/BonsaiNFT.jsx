@@ -90,7 +90,7 @@ const BonsaiNFT = ({ value }) => {
       <Center>
         <SimpleGrid columns={[1, null, 4]} pb={5} px={10} gap={4} maxW="1500px">
           {nftdata.map((item) => (
-            <GridComponent {...item} value={value} />
+            <GridComponent {...item} value={value} key={item.name}/>
           ))}
         </SimpleGrid>
       </Center>

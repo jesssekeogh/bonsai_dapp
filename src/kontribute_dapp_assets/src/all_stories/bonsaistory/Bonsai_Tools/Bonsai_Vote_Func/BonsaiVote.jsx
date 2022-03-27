@@ -16,15 +16,15 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  useToast,
   Spinner,
   Alert,
   AlertIcon,
+  useToast,
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Bounce } from "react-awesome-reveal";
-import { UserContext } from "../../../Context.jsx";
-import "../BonsaiStory.css";
+import { UserContext } from "../../../../Context.jsx";
+import "../../BonsaiStory.css";
 
 /* This component is used for dynamic voting on the bonsai story, 
 The Vote options funcs stay the same as these are updated on the backend
@@ -42,13 +42,10 @@ Option3Details={Option3Details()}
 VoteEnded={false} -- Has the voted ended ? will automatically update depending
 /> */
 
-const BonsaiVote = (props) => {
-  // the votes:
-  const [vote1, setvote1] = useState(<Spinner size="xs" />);
-  const [vote2, setvote2] = useState(<Spinner size="xs" />);
-  const [vote3, setvote3] = useState(<Spinner size="xs" />);
-
+const VoteButton1 = (props) => {
+  const [isClicked1, setClick1] = useState(false);
   const { signActor } = useContext(UserContext);
+
   const toast = useToast();
   // for toasts:
   const SuccessToast = () => {
@@ -81,14 +78,79 @@ const BonsaiVote = (props) => {
     const vote = await user.VoteOption1();
     if (vote.toString() === "user has voted successfully on vote1") {
       setClick1(false);
-      onClose1();
+      props.close();
       SuccessToast();
-      return getVotes();
+      return props.getVotes();
     } else {
       setClick1(false);
-      onClose1();
+      props.close();
       return FailedToast();
     }
+  };
+  return (
+    <>
+      {!isClicked1 ? (
+        <Button
+          onClick={() => voteoption1()}
+          rightIcon={<PlusSquareIcon />}
+          bg="#17191e"
+          border="1px"
+          borderColor="#9d8144"
+          color="#f0e6d3"
+          colorScheme="#17191e"
+          mr="4"
+        >
+          Place Vote
+        </Button>
+      ) : null}
+      {isClicked1 ? (
+        <Bounce>
+          <Button
+            isLoading
+            onClick={() => voteoption1()}
+            rightIcon={<PlusSquareIcon />}
+            bg="#17191e"
+            border="1px"
+            borderColor="#9d8144"
+            color="#f0e6d3"
+            colorScheme="#17191e"
+            mr="4"
+          >
+            Place Vote
+          </Button>
+        </Bounce>
+      ) : null}
+    </>
+  );
+};
+
+const VoteButton2 = (props) => {
+  const [isClicked2, setClick2] = useState(false);
+  const { signActor } = useContext(UserContext);
+  const toast = useToast();
+  // for toasts:
+  const SuccessToast = () => {
+    return toast({
+      title: `Success! Thanks for voting`,
+      status: "success",
+      isClosable: true,
+      position: "top-right",
+      containerStyle: {
+        marginTop: "5.5rem",
+      },
+    });
+  };
+
+  const FailedToast = () => {
+    return toast({
+      title: `Failed! You have already voted`,
+      status: "error",
+      isClosable: true,
+      position: "top-right",
+      containerStyle: {
+        marginTop: "5.5rem",
+      },
+    });
   };
 
   const voteoption2 = async () => {
@@ -97,14 +159,79 @@ const BonsaiVote = (props) => {
     const vote = await user.VoteOption2();
     if (vote.toString() === "user has voted successfully on vote2") {
       setClick2(false);
-      onClose2();
+      props.close();
       SuccessToast();
-      return getVotes();
+      return props.getVotes();
     } else {
       setClick2(false);
-      onClose2();
+      props.close();
       return FailedToast();
     }
+  };
+  return (
+    <>
+      {!isClicked2 ? (
+        <Button
+          onClick={() => voteoption2()}
+          rightIcon={<PlusSquareIcon />}
+          bg="#17191e"
+          border="1px"
+          borderColor="#9d8144"
+          color="#f0e6d3"
+          colorScheme="#17191e"
+          mr="4"
+        >
+          Place Vote
+        </Button>
+      ) : null}
+      {isClicked2 ? (
+        <Bounce>
+          <Button
+            isLoading
+            onClick={() => voteoption2()}
+            rightIcon={<PlusSquareIcon />}
+            bg="#17191e"
+            border="1px"
+            borderColor="#9d8144"
+            color="#f0e6d3"
+            colorScheme="#17191e"
+            mr="4"
+          >
+            Place Vote
+          </Button>
+        </Bounce>
+      ) : null}
+    </>
+  );
+};
+
+const VoteButton3 = (props) => {
+  const [isClicked3, setClick3] = useState(false);
+  const { signActor } = useContext(UserContext);
+  const toast = useToast();
+  // for toasts:
+  const SuccessToast = () => {
+    return toast({
+      title: `Success! Thanks for voting`,
+      status: "success",
+      isClosable: true,
+      position: "top-right",
+      containerStyle: {
+        marginTop: "5.5rem",
+      },
+    });
+  };
+
+  const FailedToast = () => {
+    return toast({
+      title: `Failed! You have already voted`,
+      status: "error",
+      isClosable: true,
+      position: "top-right",
+      containerStyle: {
+        marginTop: "5.5rem",
+      },
+    });
   };
 
   const voteoption3 = async () => {
@@ -113,16 +240,59 @@ const BonsaiVote = (props) => {
     const vote = await user.VoteOption3();
     if (vote.toString() === "user has voted successfully on vote3") {
       setClick3(false);
-      onClose3();
+      props.close();
       SuccessToast();
-      return getVotes();
+      return props.getVotes();
     } else {
       setClick3(false);
-      onClose3();
+      props.close();
       return FailedToast();
     }
   };
+  return (
+    <>
+      {!isClicked3 ? (
+        <Button
+          onClick={() => voteoption3()}
+          rightIcon={<PlusSquareIcon />}
+          bg="#17191e"
+          border="1px"
+          borderColor="#9d8144"
+          color="#f0e6d3"
+          colorScheme="#17191e"
+          mr="4"
+        >
+          Place Vote
+        </Button>
+      ) : null}
+      {isClicked3 ? (
+        <Bounce>
+          <Button
+            isLoading
+            onClick={() => voteoption3()}
+            rightIcon={<PlusSquareIcon />}
+            bg="#17191e"
+            border="1px"
+            borderColor="#9d8144"
+            color="#f0e6d3"
+            colorScheme="#17191e"
+            mr="4"
+          >
+            Place Vote
+          </Button>
+        </Bounce>
+      ) : null}
+    </>
+  );
+};
 
+const BonsaiVote = (props) => {
+  // the votes:
+  const [vote1, setvote1] = useState(<Spinner size="xs" />);
+  const [vote2, setvote2] = useState(<Spinner size="xs" />);
+  const [vote3, setvote3] = useState(<Spinner size="xs" />);
+
+  const { signActor } = useContext(UserContext);
   // query the votes
   // get the specific vote from backend motoko query (with prop)
   const getVotes = async () => {
@@ -131,7 +301,7 @@ const BonsaiVote = (props) => {
     setvote1(result.vote1.toString());
     setvote2(result.vote2.toString());
     setvote3(result.vote3.toString());
-  }
+  };
 
   // for modals
   const {
@@ -151,127 +321,10 @@ const BonsaiVote = (props) => {
   } = useDisclosure();
 
   useEffect(() => {
-    getVotes()
+    getVotes();
     window.scrollTo(0, 0);
   }, []);
 
-  // button state for clicks
-  const [isClicked1, setClick1] = useState(false);
-  const [isClicked2, setClick2] = useState(false);
-  const [isClicked3, setClick3] = useState(false);
-
-  const VoteButton1 = () => {
-    return (
-      <>
-        {!isClicked1 ? (
-          <Button
-            onClick={() => voteoption1()}
-            rightIcon={<PlusSquareIcon />}
-            bg="#17191e"
-            border="1px"
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
-            mr="4"
-          >
-            Place Vote
-          </Button>
-        ) : null}
-        {isClicked1 ? (
-          <Bounce>
-            <Button
-              isLoading
-              onClick={() => voteoption1()}
-              rightIcon={<PlusSquareIcon />}
-              bg="#17191e"
-              border="1px"
-              borderColor="#9d8144"
-              color="#f0e6d3"
-              colorScheme="#17191e"
-              mr="4"
-            >
-              Place Vote
-            </Button>
-          </Bounce>
-        ) : null}
-      </>
-    );
-  };
-
-  const VoteButton2 = () => {
-    return (
-      <>
-        {!isClicked2 ? (
-          <Button
-            onClick={() => voteoption2()}
-            rightIcon={<PlusSquareIcon />}
-            bg="#17191e"
-            border="1px"
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
-            mr="4"
-          >
-            Place Vote
-          </Button>
-        ) : null}
-        {isClicked2 ? (
-          <Bounce>
-            <Button
-              isLoading
-              onClick={() => voteoption2()}
-              rightIcon={<PlusSquareIcon />}
-              bg="#17191e"
-              border="1px"
-              borderColor="#9d8144"
-              color="#f0e6d3"
-              colorScheme="#17191e"
-              mr="4"
-            >
-              Place Vote
-            </Button>
-          </Bounce>
-        ) : null}
-      </>
-    );
-  };
-  const VoteButton3 = () => {
-    return (
-      <>
-        {!isClicked3 ? (
-          <Button
-            onClick={() => voteoption3()}
-            rightIcon={<PlusSquareIcon />}
-            bg="#17191e"
-            border="1px"
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
-            mr="4"
-          >
-            Place Vote
-          </Button>
-        ) : null}
-        {isClicked3 ? (
-          <Bounce>
-            <Button
-              isLoading
-              onClick={() => voteoption3()}
-              rightIcon={<PlusSquareIcon />}
-              bg="#17191e"
-              border="1px"
-              borderColor="#9d8144"
-              color="#f0e6d3"
-              colorScheme="#17191e"
-              mr="4"
-            >
-              Place Vote
-            </Button>
-          </Bounce>
-        ) : null}
-      </>
-    );
-  };
   return (
     <div>
       {props.VoteEnded ? (
@@ -293,8 +346,11 @@ const BonsaiVote = (props) => {
         <Flex mb="4">
           <Box p="2">
             <div className="bonsai__vote">
-              <Heading size="md" color="#c8aa6e">
-                <h3>{props.Option1Title}</h3>
+              <Heading
+                fontSize={{ base: "1rem", md: "1.5rem" }}
+                color="#c8aa6e"
+              >
+                {props.Option1Title}
               </Heading>
             </div>
           </Box>
@@ -319,7 +375,9 @@ const BonsaiVote = (props) => {
                 </ModalBody>
 
                 <ModalFooter>
-                  {!props.VoteEnded ? <VoteButton1 /> : null}
+                  {!props.VoteEnded ? (
+                    <VoteButton1 close={onClose1} getVotes={getVotes} />
+                  ) : null}
                   <Button
                     colorScheme="black"
                     color="#f0e6d3"
@@ -350,8 +408,11 @@ const BonsaiVote = (props) => {
         <Flex mb="4">
           <Box p="2">
             <div className="bonsai__vote">
-              <Heading size="md" color="#c8aa6e">
-                <h3>{props.Option2Title}</h3>
+              <Heading
+                fontSize={{ base: "1rem", md: "1.5rem" }}
+                color="#c8aa6e"
+              >
+                {props.Option2Title}
               </Heading>
             </div>
           </Box>
@@ -376,7 +437,9 @@ const BonsaiVote = (props) => {
                 </ModalBody>
 
                 <ModalFooter>
-                  {!props.VoteEnded ? <VoteButton2 /> : null}
+                  {!props.VoteEnded ? (
+                    <VoteButton2 close={onClose2} getVotes={getVotes} />
+                  ) : null}
                   <Button
                     colorScheme="black"
                     color="#f0e6d3"
@@ -407,8 +470,11 @@ const BonsaiVote = (props) => {
         <Flex mb="4">
           <Box p="2">
             <div className="bonsai__vote">
-              <Heading size="md" color="#c8aa6e">
-                <h3>{props.Option3Title}</h3>
+              <Heading
+                fontSize={{ base: "1rem", md: "1.5rem" }}
+                color="#c8aa6e"
+              >
+                {props.Option3Title}
               </Heading>
             </div>
           </Box>
@@ -433,7 +499,9 @@ const BonsaiVote = (props) => {
                 </ModalBody>
 
                 <ModalFooter>
-                  {!props.VoteEnded ? <VoteButton3 /> : null}
+                  {!props.VoteEnded ? (
+                    <VoteButton3 close={onClose3} getVotes={getVotes} />
+                  ) : null}
                   <Button
                     colorScheme="black"
                     color="#f0e6d3"

@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { NavBar } from "../../containers";
 import {
   Box,
   Center,
@@ -43,7 +42,6 @@ const CommunityUploads = () => {
 
   return (
     <div>
-      <NavBar />
       <Center py={6}>
         <Box
           maxW={"445px"}

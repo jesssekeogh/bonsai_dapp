@@ -4,7 +4,7 @@ import bonsai_bg from "../../../assets/beauty_render3_5.png";
 import placeholder from "../../../assets/576x324.png";
 import people from "../../../assets/undraw_People.png";
 import BonsaiLogo from "../../../assets/Bonsai-Team-ICON-Black.png";
-import { NavBar, Delayed } from "../../containers";
+import { Delayed } from "../../containers";
 import { Link } from "react-router-dom";
 import {
   SlideFade,
@@ -14,7 +14,6 @@ import {
   Text,
   HStack,
   Tag,
-  useColorModeValue,
   Container,
   Button,
   Stack,
@@ -38,6 +37,18 @@ const BlogTags = (props) => {
 
 // Author image and name
 export const BlogAuthor = (props) => {
+  // optimise image loading
+  const [imageIsReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      setIsReady(true);
+    };
+    img.src = bonsai_bg;
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <HStack
       marginTop="2"
@@ -67,7 +78,7 @@ const Stories = () => {
   useEffect(() => {
     const img = new Image();
     img.onload = () => {
-      setIsReady(true)
+      setIsReady(true);
     };
     img.src = bonsai_bg;
     window.scrollTo(0, 0);
@@ -75,7 +86,6 @@ const Stories = () => {
 
   return (
     <div>
-      <NavBar />
       {!imageIsReady ? (
         <div className="bonsai__spinner">
           <Spinner
@@ -125,10 +135,7 @@ const Stories = () => {
                       height="100%"
                     >
                       <Box
-                        bgGradient={useColorModeValue(
-                          "radial(blue.600 1px, transparent 1px)",
-                          "radial(blue.300 1px, transparent 1px)"
-                        )}
+                        bgGradient={"radial(blue.600 1px, transparent 1px)"}
                         backgroundSize="20px 20px"
                         opacity="0.4"
                         height="100%"
@@ -155,7 +162,8 @@ const Stories = () => {
                       of peerless skill and furiosity, a young talent is
                       discovered. Born from humble beginnings can they learn not
                       just to survive but to thrive in the new world opening up
-                      before them. Vote on the next evolution in this interactive story.
+                      before them. Vote on the next evolution in this
+                      interactive story.
                     </Text>
                     <Stack
                       mt="1rem"
@@ -185,7 +193,7 @@ const Stories = () => {
               </Container>
             </SlideFade>
           </Delayed>
-          {/* <Delayed waitBeforeShow={200}>
+          <Delayed waitBeforeShow={200}>
             <SlideFade in={true} offsetY="20px">
               <Container maxW={"7xl"} p="10" pt="0">
                 <Box
@@ -221,10 +229,7 @@ const Stories = () => {
                       height="100%"
                     >
                       <Box
-                        bgGradient={useColorModeValue(
-                          "radial(blue.600 1px, transparent 1px)",
-                          "radial(blue.300 1px, transparent 1px)"
-                        )}
+                        bgGradient={"radial(blue.600 1px, transparent 1px)"}
                         backgroundSize="20px 20px"
                         opacity="0.4"
                         height="100%"
@@ -250,8 +255,9 @@ const Stories = () => {
                       Read through some of the community stories that have been
                       posted on Kontribute for our "Community Story Challenge".
                       The story with the most votes will be featured in its own
-                      section in the dapp, and we will personally create some NFTs for the
-                      winning story and list them on our dapp for public sale.
+                      section in the dapp, and we will personally create some
+                      NFTs for the winning story and list them on our dapp for
+                      public sale.
                     </Text>
                     <Stack
                       mt="1rem"
@@ -280,7 +286,7 @@ const Stories = () => {
                 </Box>
               </Container>
             </SlideFade>
-          </Delayed> */}
+          </Delayed>
         </div>
       ) : null}
     </div>

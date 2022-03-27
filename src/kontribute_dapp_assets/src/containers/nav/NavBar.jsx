@@ -31,7 +31,7 @@ const MenuLinks = () => (
     >
       <p>STORIES</p>
     </NavLink>
-    {/* <NavLink
+    <NavLink
       to="/NFT"
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
@@ -42,7 +42,7 @@ const MenuLinks = () => (
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>CREATE</p>
-    </NavLink> */}
+    </NavLink>
   </>
 );
 
@@ -170,12 +170,12 @@ const NavBar = () => {
                 <NavLink to="/stories">
                   <MenuItem icon={<FaBook />}>Stories</MenuItem>
                 </NavLink>
-                {/* <NavLink to="/nft">
+                <NavLink to="/nft">
                   <MenuItem icon={<FaImages />}>NFT</MenuItem>
                 </NavLink>
                 <NavLink to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>
-                </NavLink> */}
+                </NavLink>
               </MenuList>
             </Menu>
           </div>

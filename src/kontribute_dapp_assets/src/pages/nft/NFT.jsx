@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { NavBar } from "../../containers";
 import React from "react";
 import BonsaiNFT from "./bonsai_NFT/BonsaiNFT";
 import CommunityNFT from "./community_NFT/communityNFT";
 
 import anvillogo from "../../../assets/anvillogo.svg"; // get logo from site
-
-//design
 import "./NFT.css";
 import {
   Center,
@@ -23,6 +20,7 @@ import {
   GridItem,
   InputGroup,
   InputRightElement,
+  Heading
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
@@ -46,7 +44,6 @@ const NFT = () => {
   }, [])
   return (
     <div>
-      <NavBar />
       <Center>
         <Grid templateColumns="repeat(4, 1fr)" mb={5}>
           <GridItem colStart={2} colSpan={2}>
@@ -64,7 +61,7 @@ const NFT = () => {
           </GridItem>
           <GridItem colStart={4} ms={2}>
             <HStack w="220px">
-              <Text color="#f0e6d3" fontSize="xs">
+              <Heading color="#f0e6d3" fontSize="xs">
                 Powered by{" "}
                 <Text
                   bgGradient="linear(to-t, #c61682, #ee670d)"
@@ -73,7 +70,7 @@ const NFT = () => {
                 >
                   NFT Anvil
                 </Text>
-              </Text>
+              </Heading>
               <ChakraImage src={anvillogo} h="40px" />
             </HStack>
           </GridItem>

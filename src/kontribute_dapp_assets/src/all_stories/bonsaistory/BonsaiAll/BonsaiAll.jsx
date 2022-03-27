@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import { NavBar } from "../../../containers";
 import "./BonsaiAll.css";
 import {
   Heading,
@@ -94,51 +93,50 @@ const BonsaiAll = () => {
   const getAllPrologue = async () => {
     const user = await signActor();
     const result = await user.getVotes();
-    const votesTotal = result.total.toString()
+    const votesTotal = result.total.toString();
     setPrologue(votesTotal);
   };
 
   const getAllPrologueII = async () => {
     const user = await signActor();
     const result = await user.getVotesII();
-    const votesTotal = result.total.toString()
+    const votesTotal = result.total.toString();
     setPrologueII(votesTotal);
   };
 
   const getAllPrologueIII = async () => {
     const user = await signActor();
     const result = await user.getVotesIII();
-    const votesTotal = result.total.toString()
+    const votesTotal = result.total.toString();
     setPrologueIII(votesTotal);
   };
 
-  useEffect(() => {
-    getAllPrologueIII();
-    getAllPrologueII();
+  useEffect(async () => {
     getAllPrologue();
+    getAllPrologueII();
+    getAllPrologueIII();
   }, []);
 
   return (
     <div>
-      <NavBar />
       <Center>
         <Heading color="#a7884a">Bonsai Warriors</Heading>
       </Center>
       <div className="bonsai_all-container">
-          <Center mb="1rem">
-            <Delayed>
-              <SlideFade in={true}>
-                <StackEx
-                  title1={"PROLOGUE III"}
-                  body1={
-                    "Now we must choose our school, the place of learning that Tang Wei shall study at."
-                  }
-                  link1={"/stories/bonsai-warriors-prologueIII"}
-                  total1={totalPrologueIII}
-                />
-              </SlideFade>
-            </Delayed>
-          </Center>
+        <Center mb="1rem">
+          <Delayed>
+            <SlideFade in={true}>
+              <StackEx
+                title1={"PROLOGUE III"}
+                body1={
+                  "Now we must choose our school, the place of learning that Tang Wei shall study at."
+                }
+                link1={"/stories/bonsai-warriors-prologueIII"}
+                total1={totalPrologueIII}
+              />
+            </SlideFade>
+          </Delayed>
+        </Center>
         <Center mb="1rem">
           <Delayed waitBeforeShow={200}>
             <SlideFade in={true}>

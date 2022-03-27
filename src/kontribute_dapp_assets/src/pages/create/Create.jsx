@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavBar } from "../../containers";
 import {
   Alert,
   AlertIcon,
@@ -157,7 +156,6 @@ const Create = () => {
 
   return (
     <div>
-      <NavBar />
       <Container>
         {alert ? (
           <Alert
