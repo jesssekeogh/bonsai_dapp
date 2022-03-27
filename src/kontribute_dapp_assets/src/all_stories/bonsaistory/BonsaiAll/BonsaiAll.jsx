@@ -140,7 +140,7 @@ const BonsaiAll = () => {
             </Delayed>
           </Center>
         <Center mb="1rem">
-          <Delayed>
+          <Delayed waitBeforeShow={200}>
             <SlideFade in={true}>
               <StackEx
                 title1={"PROLOGUE II"}
@@ -154,7 +154,7 @@ const BonsaiAll = () => {
           </Delayed>
         </Center>
         <Center mb="1rem">
-          <Delayed waitBeforeShow={200}>
+          <Delayed waitBeforeShow={300}>
             <SlideFade in={true}>
               <StackEx
                 title1={"PROLOGUE"}

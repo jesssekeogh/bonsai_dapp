@@ -128,7 +128,7 @@ actor Bonsai {
 
     };
 
-    // query the vote results
+    // query the vote results for the prologue
     public query func getBonsaiVotes() : async Types.StoryVotes {
         let votes : Types.StoryVotes= {
             vote1 = vote1;

@@ -185,7 +185,7 @@ const Stories = () => {
               </Container>
             </SlideFade>
           </Delayed>
-          <Delayed waitBeforeShow={200}>
+          {/* <Delayed waitBeforeShow={200}>
             <SlideFade in={true} offsetY="20px">
               <Container maxW={"7xl"} p="10" pt="0">
                 <Box
@@ -280,7 +280,7 @@ const Stories = () => {
                 </Box>
               </Container>
             </SlideFade>
-          </Delayed>
+          </Delayed> */}
         </div>
       ) : null}
     </div>

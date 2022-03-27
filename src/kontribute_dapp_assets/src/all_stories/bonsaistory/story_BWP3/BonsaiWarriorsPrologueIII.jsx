@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { NavBar } from "../../../containers";
-import { Container, Center} from "@chakra-ui/react";
+import { Container, Center } from "@chakra-ui/react";
 import { Fade } from "react-awesome-reveal";
 import "../BonsaiStory.css";
 import BonsaiVote from "../Bonsai_Vote_Func/BonsaiVote";
@@ -61,6 +61,18 @@ const BonsaiWarriorsPrologueIII = () => {
       <Fade>
         <Container>
           <div className="bonsai__story">
+            <i>
+              The Final Part of character creation, this is the final step
+              before two major things. Firstly, the arrival at the school you
+              will now choose. Secondly, the first Interlude and first release
+              of the Bonsai Warrior NFTs. An Interlude will not require any
+              voting and will mark the points between different chapters by
+              giving you a sneak peek into the lives of people around the world
+              of Bonsai Warriors.
+            </i>
+            <br></br>
+            <br></br>- - - - - - - - - - - - -<br></br>
+            <br></br>
             Call it the lofty dreams of a child, or wild ambitions, but you
             always dreamed of becoming a great sorceress, wreathed in exotic
             magic spells as you lashed out and reshaped the world as you wished.
@@ -88,13 +100,12 @@ const BonsaiWarriorsPrologueIII = () => {
             of having. The only downside is that your father will lose his only
             daughter, departing for lands and places he will never visit
             himself. Today was the day that it all came together, you had known
-            it was coming but you still felt shocked. It was all real.
+            it was coming but you still felt shocked.
             <br></br>
             <br></br>
-            “Here are the options,” your father raised his hand, a tight bundle
-            of letters in it. He gave a proud yet watery smile and said, “knock
-            em dead tiger, you’ll show them all why the Tang clan is the best
-            out there.”
+            “They sent you the options,” your father raised his hand, a tight
+            bundle of letters in it. He gave a proud yet watery smile, “I’m sure
+            you make us all proud.”
             <br></br>
             <br></br>
             You take them from him and begin to look through them…
