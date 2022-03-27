@@ -54,6 +54,13 @@
     font-weight: 600;
 }
 
+.char__link{
+    color: #e79301;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 17pt;
+}
+
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
     .bonsai__story_heading {
         font-size: 2.5rem;
@@ -66,7 +73,7 @@
         justify-content: center;
     
     }
-    .bonsai__vote h5 {
-        font-size: 1.5rem;
+    .bonsai__vote h3 {
+        font-size: 1rem;
     }
 }

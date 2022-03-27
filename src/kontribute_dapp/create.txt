@@ -1,0 +1,67 @@
+import Trie "mo:base/Trie";
+import Iter "mo:base/Iter";
+import List "mo:base/List";
+import Principal "mo:base/Principal";
+
+//testing file for new create functionality
+
+actor {
+
+    // utility func
+    private func key(x : Principal) : Trie.Key<Principal> {
+        return { key = x; hash = Principal.hash(x) }
+    };
+
+    public type voted = Bool; // attached to the newly created trie
+    var voted = false; // set false in the func and true in the update when user clicks vote
+
+    public type Votes = {
+        allvoters : Trie.Trie<Principal, voted>; // a new trie for the story that takes in users id and have they voted
+        total : Nat; // a new variable to be incremented
+    };
+
+    public type Story = {
+        title : Text;
+        body : Text;
+        votes : Votes; // contains a trie of user votes and a total
+    };
+
+    var writers : Trie.Trie<Principal, Story> = Trie.empty();
+
+    public shared(msg) func create( story: Story) : async Text {
+        let callerId = msg.caller;
+
+        // create a new trie for storing votes (need to make dynamic so it creates a new one(callerid to text?))
+        let allVotes : Trie.Trie<Principal, voted> = Trie.empty();
+
+        let newStory : Story = {
+            title = story.title;
+            body = story.body;
+            votes = {
+                allvoters = Trie.replace(allVotes, key(callerId), Principal.equal, ?voted).0; // new trie with for the user data
+                total = 0; //total votes start at 0
+            }
+        };
+
+        writers := Trie.replace(
+            writers, 
+            key(callerId), 
+            Principal.equal, 
+            ?newStory
+            ).0;
+
+        return "Story Created"
+    };
+
+        // get the last n stories
+    public func allStories(amount : Nat): async List.List<(Principal, Story)>{
+        // return all key and values:
+        var my_list = Iter.toList(Trie.iter(writers)); // maps all trie entries to List
+
+        var new_list = List.nil<(Principal, Story)>();
+
+        new_list := List.take(my_list, amount); // a new list to return the newest n entries
+
+        return new_list // unwrap list and return the records only
+    };
+}

@@ -2,6 +2,10 @@
     margin-top: 8rem;
 }
 
+.nav-active p{
+    background-color: #282828;
+    border-radius: 10px;
+}
 .bonsai__navbar {
     display: flex;
     justify-content: space-between;
@@ -14,7 +18,7 @@
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    z-index:1; /*Add this*/
+    z-index:999; /*Add this*/
 }
 
 .bonsai__navbar-links_logo {
@@ -22,9 +26,12 @@
     border: 1px solid #9d8144;
     border-radius: 5px;
     background-color: #17191e;
+    transition: all .2s ease-in-out;
 }
+
 .bonsai__navbar-links_logo:hover {
     opacity: 0.8;
+    transform: scale(1.05);
 }
 
 .bonsai__navbar-links_logo img {
@@ -63,12 +70,16 @@
     font-size: 18px;
     line-height: 25px;
     text-transform: capitalize;
+    padding: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
 
-    margin: 0 1rem;
+    margin: 0 0.5rem;
     cursor: pointer;
 }
 .bonsai__navbar-links p:hover {
-    opacity: 0.8;
+    background-color: #282828;
+    border-radius: 10px;
 }
 
 .bonsai__link-dropdown {
@@ -97,6 +108,6 @@
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1224px) {
     .bonsai__navbar {
-        padding: 3rem 4rem;
+        padding: 1.2rem 6rem;
     }
 }

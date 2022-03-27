@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { CgInfinity } from "react-icons/cg";
 import { MdHowToVote } from "react-icons/md";
+import { FaBook, FaImages } from "react-icons/fa";
 import "./NavBar.css";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
 import {
   Button,
@@ -15,29 +16,33 @@ import {
   useClipboard,
   IconButton,
   Spinner,
+  Tooltip,
 } from "@chakra-ui/react";
-import {
-  CopyIcon,
-  LockIcon,
-  HamburgerIcon,
-  EditIcon,
-  ViewIcon,
-} from "@chakra-ui/icons";
+import { CopyIcon, LockIcon, HamburgerIcon, EditIcon } from "@chakra-ui/icons";
 
 // user context from auth
 import { UserContext } from "../../Context.jsx";
 
 const MenuLinks = () => (
   <>
-    <Link to="/stories">
+    <NavLink
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+      to="/stories"
+    >
       <p>STORIES</p>
-    </Link>
-    <Link to="/NFT">
+    </NavLink>
+    {/* <NavLink
+      to="/NFT"
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
       <p>NFT</p>
-    </Link>
-    {/* <Link to="/Create">
+    </NavLink>
+    <NavLink
+      to="/Create"
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
       <p>CREATE</p>
-    </Link> */}
+    </NavLink> */}
   </>
 );
 
@@ -46,32 +51,41 @@ const NavBar = () => {
   const { principal, signOut, signActor } = useContext(UserContext);
   const { hasCopied, onCopy } = useClipboard(principal);
 
-  // for loading spinner while fetching vote
-  const [isReady, setReady] = useState(false);
-
   // for the recent votes in the Profile
-  const [recentvoteII, setrecentvoteII] = useState("");
+  const [recentvoteII, setrecentvoteII] = useState(<Spinner size="xs" />);
+  const [recentvoteIII, setrecentvoteIII] = useState(<Spinner size="xs" />);
 
   const readVotesII = async () => {
     const user = await signActor();
-    const result = await user.readVotesII();
-    if (result.whichOption.toString() === "vote1") {
-      setReady(true);
+    const result = await user.getVotesII();
+    if (result.userOption.whichOption.toString() === "vote1") {
       setrecentvoteII("Option 1");
-    } else if (result.whichOption.toString() === "vote2") {
-      setReady(true);
+    } else if (result.userOption.whichOption.toString() === "vote2") {
       setrecentvoteII("Option 2");
-    } else if (result.whichOption.toString() === "vote3") {
-      setReady(true);
+    } else if (result.userOption.whichOption.toString() === "vote3") {
       setrecentvoteII("Option 3");
     } else {
-      setReady(true);
       setrecentvoteII("No Vote");
+    }
+  };
+
+  const readVotesIII = async () => {
+    const user = await signActor();
+    const result = await user.getVotesIII();
+    if (result.userOption.whichOption.toString() === "vote1") {
+      setrecentvoteIII("Option 1");
+    } else if (result.userOption.whichOption.toString() === "vote2") {
+      setrecentvoteIII("Option 2");
+    } else if (result.userOption.whichOption.toString() === "vote3") {
+      setrecentvoteIII("Option 3");
+    } else {
+      setrecentvoteIII("No Vote");
     }
   };
 
   useEffect(() => {
     readVotesII();
+    readVotesIII();
   }, []);
 
   return (
@@ -79,9 +93,9 @@ const NavBar = () => {
       <div className="bonsai__navbar">
         <div className="bonsai__navbar-links">
           <div className="bonsai__navbar-links_logo">
-            <Link to="/">
+            <NavLink to="/">
               <img src={logo} alt="Kontribute" />
-            </Link>
+            </NavLink>
           </div>
 
           <div className="bonsai__navbar-links_container">
@@ -104,28 +118,34 @@ const NavBar = () => {
               Profile
             </MenuButton>
             <MenuList>
-              <MenuGroup title="Principal ID" />
+              <Tooltip label="Your unique ID">
+                <MenuGroup title="Principal ID" />
+              </Tooltip>
               <MenuItem onClick={onCopy} icon={<CopyIcon />} maxW="240px">
-                {hasCopied ? alert("Copied to clipboard!") : principal}
+                {hasCopied
+                  ? "Copied to clipboard!"
+                  : principal.substring(0, 20) + "..."}
               </MenuItem>
               <MenuDivider />
-              <MenuGroup title="Bonsai Warriors Vote History" />
-              <Link to="/bonsai-warriors-prologueII">
+              <Tooltip label="Your recent vote selection">
+                <MenuGroup title="Bonsai Warriors Vote History" />
+              </Tooltip>
+              <NavLink to="/stories/bonsai-warriors-prologueIII">
                 <MenuItem
                   icon={<MdHowToVote />}
-                  command={isReady ? recentvoteII : <Spinner size="xs" />}
+                  command={recentvoteIII}
+                >
+                  Prologue III:
+                </MenuItem>
+              </NavLink>
+              <NavLink to="/stories/bonsai-warriors-prologueII">
+                <MenuItem
+                  icon={<MdHowToVote />}
+                  command={recentvoteII}
                 >
                   Prologue II:
                 </MenuItem>
-              </Link>
-              <Link to="/bonsai-warriors-prologue">
-                <MenuItem
-                  icon={<MdHowToVote />}
-                  command="Unavailable"
-                >
-                  Prologue:
-                </MenuItem>
-              </Link>
+              </NavLink>
               <MenuDivider />
               <MenuItem icon={<LockIcon />} onClick={signOut}>
                 Sign Out
@@ -147,15 +167,15 @@ const NavBar = () => {
               <MenuList>
                 {/* for mobile view */}
                 <MenuGroup title="Kontribute" />
-                <Link to="/stories">
-                  <MenuItem icon={<HamburgerIcon />}>Stories</MenuItem>
-                </Link>
-                <Link to="/nft">
-                  <MenuItem icon={<ViewIcon />}>NFT</MenuItem>
-                </Link>
-                {/* <Link to="/create">
+                <NavLink to="/stories">
+                  <MenuItem icon={<FaBook />}>Stories</MenuItem>
+                </NavLink>
+                {/* <NavLink to="/nft">
+                  <MenuItem icon={<FaImages />}>NFT</MenuItem>
+                </NavLink>
+                <NavLink to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>
-                </Link> */}
+                </NavLink> */}
               </MenuList>
             </Menu>
           </div>

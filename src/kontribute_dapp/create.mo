@@ -21,16 +21,19 @@ actor Create {
     public shared(msg) func create(callerId : Principal, story : Types.Story) : async Text {
         if(story.title == ""){
             return "Failed, one or more fields empty"
-        }else if(story.chapter == ""){
+        }else if(story.genre == ""){
             return "Failed, one or more fields empty"
         }else if(story.body == ""){
+            return "Failed, one or more fields empty"
+        }else if(story.user_discord == ""){
             return "Failed, one or more fields empty"
         };
         
         let newStory : Types.Story = {
             title = story.title;
-            chapter = story.chapter;
+            genre = story.genre;
             body = story.body;
+            user_discord = story.user_discord;
         };
         Writers := Trie.replace(
             Writers,
@@ -50,7 +53,24 @@ actor Create {
 
         new_list := List.take(my_list, amount); // a new list to return the newest n entries
 
-        return new_list
+        return new_list // unwrap list and return the records only
     };
 
+    // find story function to get a specific story
+    public func findStory(userId : Text) : async Text {
+        var my_list = Iter.toList(Trie.iter(Writers)); // maps all trie entries to List
+
+        let pId = Principal.fromText(userId);
+
+        var foundStory = "";
+
+        let result = List.find<(Principal, Types.Story)>(my_list, func (listid : Principal, story : Types.Story) : Bool{
+            if (listid == pId){
+                foundStory := story.title; // place all the story pieces in variables
+            };
+            return true
+        });
+
+        return foundStory
+    };
 }

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // pages:
-import Home from "./Home";
-import Stories from "./Stories";
-import NFT from "./NFT";
-import Create from "./Create";
+import Home from "./pages/home/Home";
+import Stories from "./pages/stories/Stories";
+import NFT from "./pages/nft/NFT";
+import Create from "./pages/create/Create";
 import { Footer } from "./containers";
-import CommunityUploads from "./CommunityUploads";
+import CommunityUploads from "./pages/communityuploads/CommunityUploads";
 
 // design
 import klogo from "../assets/kontribute_logo.png";
@@ -24,7 +24,10 @@ import { UserContext } from "./Context";
 // bonsai links:
 import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
 import { BonsaiWarriorsPrologueII } from "./all_stories/bonsaistory"
+import { BonsaiWarriorsPrologueIII } from "./all_stories/bonsaistory";
 import { BonsaiAll } from "./all_stories/bonsaistory";
+
+import UniqueStory from "./pages/uniquestories/UniqueStory";
 
 // this is the launch page:
 
@@ -50,7 +53,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app",//"http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
+        identityProvider: "https://identity.ic0.app", //"http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -141,11 +144,14 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/nft" element={<NFT />} />
+                <Route path="/nft/:nftname" element={<NFT />} />
                 <Route path="/create" element={<Create />} />
-                <Route path="/bonsai-all" element={<BonsaiAll />} />
-                <Route path="/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
-                <Route path="/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
-                <Route path="/community-stories" element={<CommunityUploads />} />
+                <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
+                <Route path="/stories/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
+                <Route path="/stories/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
+                <Route path="/stories/bonsai-warriors-prologueIII" element={<BonsaiWarriorsPrologueIII />} />
+                <Route path="/stories/community-stories/" element={<CommunityUploads />} />
+                <Route path="/stories/community-stories/:storyid" element={<UniqueStory />} />
               </Routes>
             </UserContext.Provider>
           </Router>
