@@ -83,6 +83,7 @@ function StackEx(props) {
 }
 
 const BonsaiAll = () => {
+  let isMounted = true; // memory leak fix
   const { signActor } = useContext(UserContext);
 
   // state for total votes
@@ -90,31 +91,39 @@ const BonsaiAll = () => {
   const [totalPrologueII, setPrologueII] = useState(<Spinner size="xs" />);
   const [totalPrologueIII, setPrologueIII] = useState(<Spinner size="xs" />);
 
-  const getAllPrologue = async () => {
+  // async promise, returns votes from API calls only if component is mounted
+  const getAllTotals = async () => {
     const user = await signActor();
-    const result = await user.getVotes();
-    const votesTotal = result.total.toString();
-    setPrologue(votesTotal);
+    await Promise.all([
+      (async () => {
+        await user.getVotes().then((result) => {
+          if (isMounted) {
+            setPrologue(result.total.toString());
+          }
+        });
+      })(),
+      (async () => {
+        await user.getVotesII().then((result) => {
+          if (isMounted) {
+            setPrologueII(result.total.toString());
+          }
+        });
+      })(),
+      (async () => {
+        await user.getVotesIII().then((result) => {
+          if (isMounted) {
+            setPrologueIII(result.total.toString());
+          }
+        });
+      })()
+    ]);
   };
 
-  const getAllPrologueII = async () => {
-    const user = await signActor();
-    const result = await user.getVotesII();
-    const votesTotal = result.total.toString();
-    setPrologueII(votesTotal);
-  };
-
-  const getAllPrologueIII = async () => {
-    const user = await signActor();
-    const result = await user.getVotesIII();
-    const votesTotal = result.total.toString();
-    setPrologueIII(votesTotal);
-  };
-
-  useEffect(async () => {
-    getAllPrologue();
-    getAllPrologueII();
-    getAllPrologueIII();
+  useEffect(() => {
+    getAllTotals();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (

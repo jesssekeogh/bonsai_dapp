@@ -32,16 +32,23 @@ const MenuLinks = () => (
       <p>STORIES</p>
     </NavLink>
     <NavLink
-      to="/NFT"
+      to="/nft"
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>NFT</p>
     </NavLink>
     <NavLink
-      to="/Create"
+      to="/create"
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>CREATE</p>
+    </NavLink>
+    {/* for anvil test */}
+    <NavLink
+      to="/anvil"
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
+      <p>ANVIL</p>
     </NavLink>
   </>
 );

@@ -31,8 +31,9 @@ import {
   useDisclosure,
   Progress,
   Spinner,
-  HStack
+  HStack,
 } from "@chakra-ui/react";
+import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 import { UserContext } from "../../Context";
 
@@ -107,7 +108,7 @@ const Create = () => {
         marginTop: "5.5rem",
       },
     });
-  }
+  };
 
   const FailedToast = () => {
     toast({
@@ -119,27 +120,28 @@ const Create = () => {
         marginTop: "5.5rem",
       },
     });
-  }
+  };
 
   const LoadingToast = () => {
     toast({
-      title: <HStack><Text>Loading</Text> <Spinner size='xs' /></HStack>,
-      description: <Progress size='xs' isIndeterminate />,
+      title: ("Submitting..."),
+      description: <Progress mt={2} colorScheme="gray" size="xs" isIndeterminate />,
       position: "top-right",
-      variant: 'subtle',
       isClosable: true,
+      status: "warning",
+      duration: 10000,
       containerStyle: {
         marginTop: "5.5rem",
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [])
+  }, []);
   // post story to backend
   const postStory = async () => {
-    LoadingToast()
+    LoadingToast();
     const user = await signActor();
     const post = await user.uploadStory({
       title: Title.value,
@@ -147,6 +149,7 @@ const Create = () => {
       genre: Genre.value,
       user_discord: Discord.value
     });
+    toast.closeAll()
     if (post.toString() === "Story Created!") {
       return SuccessToast()
     } else {
@@ -226,11 +229,11 @@ const Create = () => {
                   />
                 </FormControl>
                 <Box>
-                    <FormControl id="Discord" isRequired>
-                      <FormLabel>Discord Handle</FormLabel>
-                      <Input type="text" placeholder="#jes1" />
-                    </FormControl>
-                  </Box>
+                  <FormControl id="Discord" isRequired>
+                    <FormLabel>Discord Handle</FormLabel>
+                    <Input type="text" placeholder="#jes1" />
+                  </FormControl>
+                </Box>
                 <Stack spacing={10} pt={2}>
                   <Button
                     loadingText="Submitting"

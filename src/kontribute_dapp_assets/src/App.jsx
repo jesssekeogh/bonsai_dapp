@@ -20,6 +20,9 @@ import {
 } from "./all_stories/bonsaistory";
 import { AuthPage, NavBar } from "./containers/index";
 
+// for test
+import Anvil from "./Anvil";
+
 // this is the launch page:
 function App() {
   const [signedIn, setSignedIn] = useState(false);
@@ -117,6 +120,8 @@ function App() {
                   path="/stories/bonsai-warriors-prologueIII"
                   element={<BonsaiWarriorsPrologueIII />}
                 />
+                {/* anvil test */}
+                <Route path="/anvil" element={<Anvil/>} />
               </Routes>
             </UserContext.Provider>
           </Router>

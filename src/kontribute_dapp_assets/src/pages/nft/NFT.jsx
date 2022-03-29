@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import React from "react";
 import BonsaiNFT from "./bonsai_NFT/BonsaiNFT";
 import CommunityNFT from "./community_NFT/communityNFT";
-
 import anvillogo from "../../../assets/anvillogo.svg"; // get logo from site
 import "./NFT.css";
 import {
@@ -20,7 +19,8 @@ import {
   GridItem,
   InputGroup,
   InputRightElement,
-  Heading
+  Heading,
+  Hide,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
@@ -36,12 +36,12 @@ const NFT = () => {
   const handleChange = (event) => setValue(event.target.value);
 
   useEffect(() => {
-    if(Object.keys(nftname).length === 1){
-      setValue(nftname.nftname)
-    }else{
-      setValue("")
+    if (Object.keys(nftname).length === 1) {
+      setValue(nftname.nftname);
+    } else {
+      setValue("");
     }
-  }, [])
+  }, []);
   return (
     <div>
       <Center>
@@ -56,24 +56,38 @@ const NFT = () => {
                 value={value}
                 onChange={handleChange}
               />
-              <InputRightElement _hover={{ cursor: "pointer" }} onClick={() => {setValue("")}} mt={1} children={<CloseIcon color={"#f0e6d3"} />} />
+              <InputRightElement
+                _hover={{ cursor: "pointer" }}
+                onClick={() => {
+                  setValue("");
+                }}
+                mt={1}
+                children={
+                  <CloseIcon _hover={{ opacity: "0.8" }} color={"#f0e6d3"} />
+                }
+              />
             </InputGroup>
           </GridItem>
-          <GridItem colStart={4} ms={2}>
-            <HStack w="220px">
-              <Heading color="#f0e6d3" fontSize="xs">
-                Powered by{" "}
-                <Text
-                  bgGradient="linear(to-t, #c61682, #ee670d)"
-                  bgClip="text"
-                  fontWeight={800}
-                >
-                  NFT Anvil
-                </Text>
-              </Heading>
-              <ChakraImage src={anvillogo} h="40px" />
-            </HStack>
-          </GridItem>
+          <Hide above="md">
+            <ChakraImage ms={2} pt={2} src={anvillogo} h="40px" />
+          </Hide>
+          <Hide below="md">
+            <GridItem colStart={4} ms={2}>
+              <HStack w="220px">
+                <Heading color="#f0e6d3" fontSize="xs">
+                  Powered by{" "}
+                  <Text
+                    bgGradient="linear(to-t, #c61682, #ee670d)"
+                    bgClip="text"
+                    fontWeight={800}
+                  >
+                    NFT Anvil
+                  </Text>
+                </Heading>
+                <ChakraImage src={anvillogo} h="40px" />
+              </HStack>
+            </GridItem>
+          </Hide>
         </Grid>
       </Center>
       <Tabs variant="soft-rounded">
@@ -84,6 +98,7 @@ const NFT = () => {
                 _selected={{ bgGradient: "linear(to-r, #6190E8, #A7BFE8)" }}
                 color="white"
                 bg="#282828"
+                _hover={{ opacity: "0.8" }}
               >
                 Bonsai Warriors
               </Tab>
@@ -92,6 +107,7 @@ const NFT = () => {
                 bg="#282828"
                 color="white"
                 ms={2}
+                _hover={{ opacity: "0.8" }}
               >
                 Community
               </Tab>

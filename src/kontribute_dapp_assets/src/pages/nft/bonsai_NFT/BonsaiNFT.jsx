@@ -7,7 +7,8 @@ import {
   Stack,
   Button,
   SimpleGrid,
-  GridItem
+  GridItem,
+  useBreakpointValue
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import nftdata from "./nftdata.json";
@@ -30,7 +31,7 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
             <ChakraImage
               bg="#fff"
               rounded={"lg"}
-              height={"300px"}
+              height={["200px", null, "300px"]}
               width={"auto"}
               objectFit={"cover"}
               src={require(`${imgsrc}`).default}
@@ -51,7 +52,7 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
             justify="space-between"
           >
             <Heading
-              fontSize={{ base: "lg", sm: "md", md: "lg" }}
+              fontSize={{ base: "xs", sm: "xs", md: "md" }}
               color={"white"}
             >
               {name}
@@ -59,7 +60,8 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
             <a href={anvillink} target="_blank" rel="noreferrer">
               <div className="nft_button_hover">
                 <Button
-                  onClick={() => BuyNFT()}
+                  size={useBreakpointValue(['xs', 'md'])}
+                  fontSize={{ base: "xs", sm: "xs", md: "md" }}
                   maxW="120px"
                   rounded={"full"}
                   color={"white"}
@@ -88,9 +90,9 @@ const BonsaiNFT = ({ value }) => {
   return (
     <>
       <Center>
-        <SimpleGrid columns={[1, null, 4]} pb={5} px={10} gap={4} maxW="1500px">
+        <SimpleGrid columns={[2, null, 4]} pb={5} gap={2} maxW="1250px">
           {nftdata.map((item) => (
-            <GridComponent {...item} value={value} key={item.name}/>
+            <GridComponent {...item} value={value} key={item.name} />
           ))}
         </SimpleGrid>
       </Center>

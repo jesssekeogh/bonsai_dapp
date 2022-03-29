@@ -20,6 +20,8 @@ import {
   Alert,
   AlertIcon,
   useToast,
+  Progress,
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Bounce } from "react-awesome-reveal";
@@ -42,35 +44,35 @@ Option3Details={Option3Details()}
 VoteEnded={false} -- Has the voted ended ? will automatically update depending
 /> */
 
+// for toasts
+const toast = createStandaloneToast();
+const SuccessToast = () => {
+  return toast({
+    title: `Success! Thanks for voting`,
+    status: "success",
+    isClosable: true,
+    position: "top-right",
+    containerStyle: {
+      marginTop: "5.5rem",
+    },
+  });
+};
+
+const FailedToast = () => {
+  return toast({
+    title: `Failed! You have already voted`,
+    status: "error",
+    isClosable: true,
+    position: "top-right",
+    containerStyle: {
+      marginTop: "5.5rem",
+    },
+  });
+};
+
 const VoteButton1 = (props) => {
   const [isClicked1, setClick1] = useState(false);
   const { signActor } = useContext(UserContext);
-
-  const toast = useToast();
-  // for toasts:
-  const SuccessToast = () => {
-    return toast({
-      title: `Success! Thanks for voting`,
-      status: "success",
-      isClosable: true,
-      position: "top-right",
-      containerStyle: {
-        marginTop: "5.5rem",
-      },
-    });
-  };
-
-  const FailedToast = () => {
-    return toast({
-      title: `Failed! You have already voted`,
-      status: "error",
-      isClosable: true,
-      position: "top-right",
-      containerStyle: {
-        marginTop: "5.5rem",
-      },
-    });
-  };
 
   const voteoption1 = async () => {
     setClick1(true);
@@ -127,31 +129,6 @@ const VoteButton1 = (props) => {
 const VoteButton2 = (props) => {
   const [isClicked2, setClick2] = useState(false);
   const { signActor } = useContext(UserContext);
-  const toast = useToast();
-  // for toasts:
-  const SuccessToast = () => {
-    return toast({
-      title: `Success! Thanks for voting`,
-      status: "success",
-      isClosable: true,
-      position: "top-right",
-      containerStyle: {
-        marginTop: "5.5rem",
-      },
-    });
-  };
-
-  const FailedToast = () => {
-    return toast({
-      title: `Failed! You have already voted`,
-      status: "error",
-      isClosable: true,
-      position: "top-right",
-      containerStyle: {
-        marginTop: "5.5rem",
-      },
-    });
-  };
 
   const voteoption2 = async () => {
     setClick2(true);
@@ -208,31 +185,6 @@ const VoteButton2 = (props) => {
 const VoteButton3 = (props) => {
   const [isClicked3, setClick3] = useState(false);
   const { signActor } = useContext(UserContext);
-  const toast = useToast();
-  // for toasts:
-  const SuccessToast = () => {
-    return toast({
-      title: `Success! Thanks for voting`,
-      status: "success",
-      isClosable: true,
-      position: "top-right",
-      containerStyle: {
-        marginTop: "5.5rem",
-      },
-    });
-  };
-
-  const FailedToast = () => {
-    return toast({
-      title: `Failed! You have already voted`,
-      status: "error",
-      isClosable: true,
-      position: "top-right",
-      containerStyle: {
-        marginTop: "5.5rem",
-      },
-    });
-  };
 
   const voteoption3 = async () => {
     setClick3(true);
@@ -287,6 +239,7 @@ const VoteButton3 = (props) => {
 };
 
 const BonsaiVote = (props) => {
+  let isMounted = true;
   // the votes:
   const [vote1, setvote1] = useState(<Spinner size="xs" />);
   const [vote2, setvote2] = useState(<Spinner size="xs" />);
@@ -298,9 +251,11 @@ const BonsaiVote = (props) => {
   const getVotes = async () => {
     const user = await signActor();
     const result = await eval(props.BackendVoteQuery);
-    setvote1(result.vote1.toString());
-    setvote2(result.vote2.toString());
-    setvote3(result.vote3.toString());
+    if (isMounted) {
+      setvote1(result.vote1.toString());
+      setvote2(result.vote2.toString());
+      setvote3(result.vote3.toString());
+    }
   };
 
   // for modals
@@ -323,6 +278,9 @@ const BonsaiVote = (props) => {
   useEffect(() => {
     getVotes();
     window.scrollTo(0, 0);
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
