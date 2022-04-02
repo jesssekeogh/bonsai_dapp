@@ -180,7 +180,7 @@ const NavBar = () => {
       return FailedToast("Invalid ICP Address!") // verbose errors for the user
     } else if (Amount == 0 || isNaN(Amount)){
       return FailedToast("Invalid Amount")
-    } else if (send.amount >= user_e8sICP) {
+    } else if (Amount >= user_icp) {
       return FailedToast("Insufficient Balance!");
     } else {
       onClose();
