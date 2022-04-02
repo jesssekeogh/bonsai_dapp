@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import nftdata from "./nftdata.json";
+import { NavLink } from "react-router-dom";
 
 const GridComponent = ({ name, imgsrc, anvillink, value }) => {
   if (name.toLowerCase().match(value.toLowerCase())) {
@@ -57,7 +58,7 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
             >
               {name}
             </Heading>
-            <a href={anvillink} target="_blank" rel="noreferrer">
+            <NavLink to={anvillink}>
               <div className="nft_button_hover">
                 <Button
                   size={useBreakpointValue(['xs', 'md'])}
@@ -68,10 +69,10 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
                   bgGradient="linear(to-r, #c61682, #ee670d)"
                   _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
                 >
-                  Minting Soon
+                  View NFT
                 </Button>
               </div>
-            </a>
+            </NavLink>
           </Stack>
         </Box>
       </GridItem>

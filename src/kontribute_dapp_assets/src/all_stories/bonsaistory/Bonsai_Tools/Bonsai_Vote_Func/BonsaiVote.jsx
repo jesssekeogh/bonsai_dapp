@@ -101,6 +101,7 @@ const VoteButton1 = (props) => {
           color="#f0e6d3"
           colorScheme="#17191e"
           mr="4"
+          _hover={{ opacity: "0.8" }}
         >
           Place Vote
         </Button>
@@ -109,7 +110,6 @@ const VoteButton1 = (props) => {
         <Bounce>
           <Button
             isLoading
-            onClick={() => voteoption1()}
             rightIcon={<PlusSquareIcon />}
             bg="#17191e"
             border="1px"
@@ -157,6 +157,7 @@ const VoteButton2 = (props) => {
           color="#f0e6d3"
           colorScheme="#17191e"
           mr="4"
+          _hover={{ opacity: "0.8" }}
         >
           Place Vote
         </Button>
@@ -165,7 +166,6 @@ const VoteButton2 = (props) => {
         <Bounce>
           <Button
             isLoading
-            onClick={() => voteoption2()}
             rightIcon={<PlusSquareIcon />}
             bg="#17191e"
             border="1px"
@@ -213,6 +213,7 @@ const VoteButton3 = (props) => {
           color="#f0e6d3"
           colorScheme="#17191e"
           mr="4"
+          _hover={{ opacity: "0.8" }}
         >
           Place Vote
         </Button>
@@ -221,7 +222,6 @@ const VoteButton3 = (props) => {
         <Bounce>
           <Button
             isLoading
-            onClick={() => voteoption3()}
             rightIcon={<PlusSquareIcon />}
             bg="#17191e"
             border="1px"
@@ -320,12 +320,13 @@ const BonsaiVote = (props) => {
               colorScheme="#f0e6d3"
               bg="#282828"
               rounded={"full"}
+              _hover={{ opacity: "0.8" }}
             >
               Option 1&nbsp;
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
-              <ModalContent bg="#0a0a0d">
+              <ModalContent bg="#0a0a0d" mt="10%" mx="10%">
                 <ModalHeader color="#c8aa6e">{props.Option1Title}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -341,6 +342,7 @@ const BonsaiVote = (props) => {
                     color="#f0e6d3"
                     variant="outline"
                     mr={3}
+                    _hover={{ opacity: "0.8" }}
                     onClick={onClose1}
                   >
                     Close
@@ -382,12 +384,13 @@ const BonsaiVote = (props) => {
               colorScheme="#f0e6d3"
               bg="#282828"
               rounded={"full"}
+              _hover={{ opacity: "0.8" }}
             >
               Option 2
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
-              <ModalContent bg="#0a0a0d">
+              <ModalContent bg="#0a0a0d" mt="10%" mx="10%">
                 <ModalHeader color="#c8aa6e">{props.Option2Title}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -403,6 +406,7 @@ const BonsaiVote = (props) => {
                     color="#f0e6d3"
                     variant="outline"
                     mr={3}
+                    _hover={{ opacity: "0.8" }}
                     onClick={onClose2}
                   >
                     Close
@@ -444,12 +448,13 @@ const BonsaiVote = (props) => {
               colorScheme="#f0e6d3"
               bg="#282828"
               rounded={"full"}
+              _hover={{ opacity: "0.8" }}
             >
               Option 3
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
               <ModalOverlay />
-              <ModalContent bg="#0a0a0d">
+              <ModalContent bg="#0a0a0d" mt="10%" mx="10%">
                 <ModalHeader color="#c8aa6e">{props.Option3Title}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -465,6 +470,7 @@ const BonsaiVote = (props) => {
                     color="#f0e6d3"
                     variant="outline"
                     mr={3}
+                    _hover={{ opacity: "0.8" }}
                     onClick={onClose3}
                   >
                     Close

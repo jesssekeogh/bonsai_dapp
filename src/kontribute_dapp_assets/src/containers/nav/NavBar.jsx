@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { CgInfinity } from "react-icons/cg";
-import { MdHowToVote, MdPerson } from "react-icons/md";
+import { MdHowToVote, MdPerson, MdSend } from "react-icons/md";
 import { FaBook, FaImages } from "react-icons/fa";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
@@ -18,11 +18,29 @@ import {
   Spinner,
   Tooltip,
   createStandaloneToast,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+  Progress,
+  Text,
 } from "@chakra-ui/react";
 import { CopyIcon, LockIcon, HamburgerIcon, EditIcon } from "@chakra-ui/icons";
 import { UserContext } from "../../Context.jsx";
 // Anvil tools:
-import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
+import {
+  useAnvilSelector,
+  useAnvilDispatch,
+  user_login,
+  user_transfer_icp,
+} from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 
 const toast = createStandaloneToast();
@@ -38,6 +56,48 @@ const CopyToast = () => {
     },
   });
 };
+
+const SendingToast = () => {
+  return toast({
+    title: "sending ICP...",
+    description: (
+      <Progress mt={2} colorScheme="gray" size="xs" isIndeterminate />
+    ),
+    status: "info",
+    isClosable: true,
+    position: "top-right",
+    duration: null,
+    containerStyle: {
+      marginTop: "5.5rem",
+    },
+  });
+};
+
+const FailedToast = (msg) => {
+  return toast({
+    title: msg,
+    status: "error",
+    isClosable: true,
+    position: "top-right",
+    duration: 1200,
+    containerStyle: {
+      marginTop: "5.5rem",
+    },
+  });
+};
+
+const SuccessToast = (amount, to) => {
+  return toast({
+    title: `${amount} ICP Sent to ${to.substring(0,5)}...${to.substring(60, 64)}`,
+    status: "success",
+    isClosable: true,
+    position: "top-right",
+    containerStyle: {
+      marginTop: "5.5rem",
+    },
+  });
+};
+
 const MenuLinks = () => (
   <>
     <NavLink
@@ -71,49 +131,69 @@ const MenuLinks = () => (
 const NavBar = () => {
   // context for the user profile
   const { principal, signOut, signActor } = useContext(UserContext);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // NFT anvil tools
+  const dispatch = useAnvilDispatch(); // anvil dispatch to initate login
   const address = useAnvilSelector((state) => state.user.address); // Retrieve NFT Anvil ICP address
-  const icp = AccountIdentifier.e8sToIcp( // Retrieve NFT Anvil Address ICP Balance
-    useAnvilSelector((state) => state.user.icp)
+  const user_icp = AccountIdentifier.e8sToIcp(
+    useAnvilSelector((state) => state.user.icp) // Retrieve NFT Anvil Address ICP Balance
   );
 
+  const user_e8sICP = useAnvilSelector((state) => state.user.icp);
+
   const { hasCopied, onCopy } = useClipboard(address);
+
   // for the recent votes in the Profile
   const [recentvoteII, setrecentvoteII] = useState(<Spinner size="xs" />);
   const [recentvoteIII, setrecentvoteIII] = useState(<Spinner size="xs" />);
 
-  const readVotesII = async () => {
+  const getOptions = async () => {
     const user = await signActor();
-    const result = await user.getVotesII();
-    if (result.userOption.whichOption.toString() === "vote1") {
-      setrecentvoteII("Option 1");
-    } else if (result.userOption.whichOption.toString() === "vote2") {
-      setrecentvoteII("Option 2");
-    } else if (result.userOption.whichOption.toString() === "vote3") {
-      setrecentvoteII("Option 3");
-    } else {
-      setrecentvoteII("No Vote");
-    }
+    await Promise.all([
+      (async () => {
+        await user.getVotesII().then((result) => {
+          setrecentvoteII(result.userOption.whichOption);
+        });
+      })(),
+      (async () => {
+        await user.getVotesIII().then((result) => {
+          setrecentvoteIII(result.userOption.whichOption);
+        });
+      })(),
+    ]);
   };
 
-  const readVotesIII = async () => {
-    const user = await signActor();
-    const result = await user.getVotesIII();
-    if (result.userOption.whichOption.toString() === "vote1") {
-      setrecentvoteIII("Option 1");
-    } else if (result.userOption.whichOption.toString() === "vote2") {
-      setrecentvoteIII("Option 2");
-    } else if (result.userOption.whichOption.toString() === "vote3") {
-      setrecentvoteIII("Option 3");
+  const [To, setTo] = useState("");
+  const [Amount, setAmount] = useState(0);
+
+  //  1 icp= 100000000 e8s
+  // 0.1icp= 010000000 e8s
+
+  const sendICP = async () => {
+    let amounticp = AccountIdentifier.icpToE8s(Amount);
+    let send = {
+      to: To,
+      amount: amounticp,
+    };
+
+    if(send.to.length !== 64){
+      return FailedToast("Invalid ICP Address!") // verbose errors for the user
+    } else if (Amount == 0 || isNaN(Amount)){
+      return FailedToast("Invalid Amount")
+    } else if (send.amount >= user_e8sICP) {
+      return FailedToast("Insufficient Balance!");
     } else {
-      setrecentvoteIII("No Vote");
+      onClose();
+      SendingToast();
+      await dispatch(user_transfer_icp(send));
+      toast.closeAll();
+      SuccessToast(Amount, To);
     }
   };
 
   useEffect(() => {
-    readVotesII();
-    readVotesIII();
+    getOptions();
+    dispatch(user_login());
   }, []);
 
   return (
@@ -149,11 +229,13 @@ const NavBar = () => {
               <MenuGroup title="User Profile" />
               <Tooltip label="Your unique profile ID">
                 <MenuItem icon={<MdPerson />} maxW="240px">
-                  {principal.substring(0, 20) + "..."}
+                  {principal.substring(0, 10) +
+                    "......" +
+                    principal.substring(54, 63)}
                 </MenuItem>
               </Tooltip>
               <MenuDivider />
-              <MenuGroup title="ICP Address" />
+              <MenuGroup title="ICP Account" />
               <Tooltip label="Send ICP to this address">
                 <MenuItem
                   closeOnSelect
@@ -163,10 +245,16 @@ const NavBar = () => {
                   icon={<CopyIcon />}
                   maxW="240px"
                 >
-                  {address ? address.substring(0, 20) + "..." : null}
+                  {address
+                    ? address.substring(0, 10) +
+                      "......" +
+                      address.substring(56, 64)
+                    : null}
                 </MenuItem>
               </Tooltip>
-              <MenuItem command={icp}>Send ICP</MenuItem>
+              <MenuItem icon={<MdSend />} command={user_icp} closeOnSelect onClick={onOpen}>
+                Send ICP
+              </MenuItem>
               <MenuDivider />
               <Tooltip label="Your recent vote selection">
                 <MenuGroup title="Bonsai Warriors Vote History" />
@@ -216,6 +304,75 @@ const NavBar = () => {
           </div>
         </div>
       </div>
+      {/* sending ICP UI */}
+      <>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent bg="#141414" color="#fff" mt="10%">
+            <ModalHeader
+              as="kbd"
+              bgGradient="linear(to-l, #ed1f79, #2dade2)"
+              bgClip="text"
+            >
+              ICP:{" "}
+              <Tooltip label="ICP Balance">
+                <Text
+                  as="kbd"
+                  bgGradient="linear(to-r, #ed1f79, #f15b25)"
+                  bgClip="text"
+                >
+                  {user_icp}
+                </Text>
+              </Tooltip>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl>
+                <FormLabel>To</FormLabel>
+                <Tooltip label="ICP Address (NOT PRINCIPAL ID)">
+                  <Input
+                    placeholder="8bc2fb98c39618....."
+                    onChange={(event) => setTo(event.target.value)}
+                  />
+                </Tooltip>
+              </FormControl>
+
+              <FormControl mt={4}>
+                <FormLabel>Amount</FormLabel>
+                <Input
+                  placeholder="0.1"
+                  onChange={(event) => setAmount(event.target.value)}
+                />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                bg="#17191e"
+                border="1px"
+                borderColor="#9d8144"
+                color="#f0e6d3"
+                colorScheme="#17191e"
+                rightIcon={<MdSend />}
+                mr={3}
+                _hover={{ opacity: "0.8" }}
+                onClick={() => sendICP()}
+              >
+                Send
+              </Button>
+              <Button
+                colorScheme="black"
+                color="#f0e6d3"
+                variant="outline"
+                _hover={{ opacity: "0.8" }}
+                onClick={onClose}
+              >
+                Cancel
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
     </div>
   );
 };

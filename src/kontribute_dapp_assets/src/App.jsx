@@ -11,6 +11,7 @@ import {
   NFT,
   Stories,
   UniqueStory,
+  UniqueNft,
 } from "./pages";
 import {
   BonsaiAll,
@@ -22,6 +23,7 @@ import { AuthPage, NavBar } from "./containers/index";
 
 // for test
 import Anvil from "./Anvil";
+import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 
 // this is the launch page:
 function App() {
@@ -46,7 +48,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app",//"http://renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
+        identityProvider: "https://identity.ic0.app", //"http://renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -79,7 +81,9 @@ function App() {
   useEffect(() => {
     initAuth();
   }, []);
-
+  const loaded = useAnvilSelector((state) => state.user.map.history);
+  if (!loaded) return null;
+  
   return (
     <div>
       {!signedIn && client ? (
@@ -98,6 +102,7 @@ function App() {
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/nft" element={<NFT />} />
                 <Route path="/nft/:nftname" element={<NFT />} />
+                <Route path="/nft/char/:nftname" element={<UniqueNft />} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
                 <Route
@@ -121,7 +126,7 @@ function App() {
                   element={<BonsaiWarriorsPrologueIII />}
                 />
                 {/* anvil test */}
-                <Route path="/anvil" element={<Anvil/>} />
+                <Route path="/anvil" element={<Anvil />} />
               </Routes>
             </UserContext.Provider>
           </Router>
