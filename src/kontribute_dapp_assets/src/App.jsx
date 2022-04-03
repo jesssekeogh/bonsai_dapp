@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthClient } from "@dfinity/auth-client"; // for the actor
 import { createActor, canisterId } from "../../declarations/kontribute_dapp"; // for Bonsai Warriors votes:
 import { UserContext } from "./Context"; // for storing the user
-// pages:
 import {
   CommunityUploads,
   Create,
@@ -19,10 +18,8 @@ import {
   BonsaiWarriorsPrologueII,
   BonsaiWarriorsPrologueIII,
 } from "./all_stories/bonsaistory";
-import { AuthPage, NavBar } from "./containers/index";
+import { AuthPage, NavBar, LoadingSpinner } from "./containers";
 
-// for test
-import Anvil from "./Anvil";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 
 // this is the launch page:
@@ -81,8 +78,9 @@ function App() {
   useEffect(() => {
     initAuth();
   }, []);
+
   const loaded = useAnvilSelector((state) => state.user.map.history);
-  if (!loaded) return null;
+  if (!loaded) return <LoadingSpinner />;
   
   return (
     <div>
@@ -125,8 +123,6 @@ function App() {
                   path="/stories/bonsai-warriors-prologueIII"
                   element={<BonsaiWarriorsPrologueIII />}
                 />
-                {/* anvil test */}
-                <Route path="/anvil" element={<Anvil />} />
               </Routes>
             </UserContext.Provider>
           </Router>

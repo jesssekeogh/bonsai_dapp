@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CgInfinity } from "react-icons/cg";
 import { MdHowToVote, MdPerson, MdSend } from "react-icons/md";
 import { FaBook, FaImages } from "react-icons/fa";
@@ -17,7 +17,6 @@ import {
   IconButton,
   Spinner,
   Tooltip,
-  createStandaloneToast,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -29,7 +28,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Progress,
   Text,
 } from "@chakra-ui/react";
 import { CopyIcon, LockIcon, HamburgerIcon, EditIcon } from "@chakra-ui/icons";
@@ -42,61 +40,7 @@ import {
   user_transfer_icp,
 } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-
-const toast = createStandaloneToast();
-const CopyToast = () => {
-  return toast({
-    title: `Copied to clipboard!`,
-    status: "info",
-    isClosable: true,
-    position: "top-right",
-    duration: 1500,
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
-  });
-};
-
-const SendingToast = () => {
-  return toast({
-    title: "sending ICP...",
-    description: (
-      <Progress mt={2} colorScheme="gray" size="xs" isIndeterminate />
-    ),
-    status: "info",
-    isClosable: true,
-    position: "top-right",
-    duration: null,
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
-  });
-};
-
-const FailedToast = (msg) => {
-  return toast({
-    title: msg,
-    status: "error",
-    isClosable: true,
-    position: "top-right",
-    duration: 1200,
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
-  });
-};
-
-const SuccessToast = (amount, to) => {
-  return toast({
-    title: `${amount} ICP Sent to ${to.substring(0,5)}...${to.substring(60, 64)}`,
-    status: "success",
-    isClosable: true,
-    position: "top-right",
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
-  });
-};
+import { CopyToast, SendingToast, FailedToast, SuccessICPToast } from "../toasts/Toasts";
 
 const MenuLinks = () => (
   <>
@@ -112,19 +56,12 @@ const MenuLinks = () => (
     >
       <p>NFT</p>
     </NavLink>
-    <NavLink
+    {/* <NavLink
       to="/create"
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>CREATE</p>
-    </NavLink>
-    {/* for anvil test */}
-    <NavLink
-      to="/anvil"
-      className={(navData) => (navData.isActive ? "nav-active" : "")}
-    >
-      <p>ANVIL</p>
-    </NavLink>
+    </NavLink> */}
   </>
 );
 
@@ -138,8 +75,6 @@ const NavBar = () => {
   const user_icp = AccountIdentifier.e8sToIcp(
     useAnvilSelector((state) => state.user.icp) // Retrieve NFT Anvil Address ICP Balance
   );
-
-  const user_e8sICP = useAnvilSelector((state) => state.user.icp);
 
   const { hasCopied, onCopy } = useClipboard(address);
 
@@ -187,7 +122,7 @@ const NavBar = () => {
       SendingToast();
       await dispatch(user_transfer_icp(send));
       toast.closeAll();
-      SuccessToast(Amount, To);
+      SuccessICPToast(Amount, To);
     }
   };
 
@@ -296,9 +231,9 @@ const NavBar = () => {
                 <NavLink to="/nft">
                   <MenuItem icon={<FaImages />}>NFT</MenuItem>
                 </NavLink>
-                <NavLink to="/create">
+                {/* <NavLink to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>
-                </NavLink>
+                </NavLink> */}
               </MenuList>
             </Menu>
           </div>
@@ -308,7 +243,7 @@ const NavBar = () => {
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent bg="#141414" color="#fff" mt="10%">
+          <ModalContent bg="#141414" color="#fff" mt={["40%", null, "10%"]} mx="10%">
             <ModalHeader
               as="kbd"
               bgGradient="linear(to-l, #ed1f79, #2dade2)"

@@ -18,15 +18,13 @@ import {
   useDisclosure,
   Spinner,
   Alert,
-  AlertIcon,
-  useToast,
-  Progress,
-  createStandaloneToast,
+  AlertIcon
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Bounce } from "react-awesome-reveal";
 import { UserContext } from "../../../../Context.jsx";
 import "../../BonsaiStory.css";
+import { SuccessToast, FailedToast } from "../../../../containers/toasts/Toasts";
 
 /* This component is used for dynamic voting on the bonsai story, 
 The Vote options funcs stay the same as these are updated on the backend
@@ -44,32 +42,6 @@ Option3Details={Option3Details()}
 VoteEnded={false} -- Has the voted ended ? will automatically update depending
 /> */
 
-// for toasts
-const toast = createStandaloneToast();
-const SuccessToast = () => {
-  return toast({
-    title: `Success! Thanks for voting`,
-    status: "success",
-    isClosable: true,
-    position: "top-right",
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
-  });
-};
-
-const FailedToast = () => {
-  return toast({
-    title: `Failed! You have already voted`,
-    status: "error",
-    isClosable: true,
-    position: "top-right",
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
-  });
-};
-
 const VoteButton1 = (props) => {
   const [isClicked1, setClick1] = useState(false);
   const { signActor } = useContext(UserContext);
@@ -81,12 +53,12 @@ const VoteButton1 = (props) => {
     if (vote.toString() === "user has voted successfully on vote1") {
       setClick1(false);
       props.close();
-      SuccessToast();
+      SuccessToast("Success! Thanks for voting");
       return props.getVotes();
     } else {
       setClick1(false);
       props.close();
-      return FailedToast();
+      return FailedToast("Failed! you have already voted");
     }
   };
   return (
@@ -137,12 +109,12 @@ const VoteButton2 = (props) => {
     if (vote.toString() === "user has voted successfully on vote2") {
       setClick2(false);
       props.close();
-      SuccessToast();
+      SuccessToast("Success! Thanks for voting");
       return props.getVotes();
     } else {
       setClick2(false);
       props.close();
-      return FailedToast();
+      return FailedToast("Failed! you have already voted");
     }
   };
   return (
@@ -193,12 +165,12 @@ const VoteButton3 = (props) => {
     if (vote.toString() === "user has voted successfully on vote3") {
       setClick3(false);
       props.close();
-      SuccessToast();
+      SuccessToast("Success! Thanks for voting");
       return props.getVotes();
     } else {
       setClick3(false);
       props.close();
-      return FailedToast();
+      return FailedToast("Failed! you have already voted");
     }
   };
   return (
@@ -326,7 +298,7 @@ const BonsaiVote = (props) => {
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
-              <ModalContent bg="#0a0a0d" mt="10%" mx="10%">
+              <ModalContent bg="#0a0a0d" mt={["25%", null, "10%"]} mx="10%">
                 <ModalHeader color="#c8aa6e">{props.Option1Title}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -390,7 +362,7 @@ const BonsaiVote = (props) => {
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
-              <ModalContent bg="#0a0a0d" mt="10%" mx="10%">
+              <ModalContent bg="#0a0a0d" mt={["25%", null, "10%"]} mx="10%">
                 <ModalHeader color="#c8aa6e">{props.Option2Title}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -454,7 +426,7 @@ const BonsaiVote = (props) => {
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
               <ModalOverlay />
-              <ModalContent bg="#0a0a0d" mt="10%" mx="10%">
+              <ModalContent bg="#0a0a0d" mt={["25%", null, "10%"]} mx="10%">
                 <ModalHeader color="#c8aa6e">{props.Option3Title}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
