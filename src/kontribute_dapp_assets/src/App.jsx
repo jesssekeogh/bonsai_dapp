@@ -10,7 +10,7 @@ import {
   NFT,
   Stories,
   UniqueStory,
-  UniqueNft,
+  Inventory,
 } from "./pages";
 import {
   BonsaiAll,
@@ -21,7 +21,7 @@ import {
 import { AuthPage, NavBar, LoadingSpinner } from "./containers";
 
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
-
+import CommunityNft from "./pages/nft/community_NFT/CommunityNft"; //test
 // this is the launch page:
 function App() {
   const [signedIn, setSignedIn] = useState(false);
@@ -81,7 +81,7 @@ function App() {
 
   const loaded = useAnvilSelector((state) => state.user.map.history);
   if (!loaded) return <LoadingSpinner />;
-  
+
   return (
     <div>
       {!signedIn && client ? (
@@ -98,9 +98,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
+                <Route path="/inventory" element={<Inventory />} />
                 <Route path="/nft" element={<NFT />} />
                 <Route path="/nft/:nftname" element={<NFT />} />
-                <Route path="/nft/char/:nftname" element={<UniqueNft />} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
                 <Route
@@ -123,6 +123,8 @@ function App() {
                   path="/stories/bonsai-warriors-prologueIII"
                   element={<BonsaiWarriorsPrologueIII />}
                 />
+                {/* testing */}
+                <Route path="/community" element={<CommunityNft />} />
               </Routes>
             </UserContext.Provider>
           </Router>

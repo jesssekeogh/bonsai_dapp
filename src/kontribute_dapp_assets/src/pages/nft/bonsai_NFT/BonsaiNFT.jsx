@@ -8,13 +8,17 @@ import {
   Button,
   SimpleGrid,
   GridItem,
-  useBreakpointValue
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import nftdata from "./nftdata.json";
+import nftdata from "../../../data/nftdata_release.json";
 import { NavLink } from "react-router-dom";
+import { tokenUrl } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
+import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
+import ViewNft from "../nft_functions/ViewNft";
 
 const GridComponent = ({ name, imgsrc, anvillink, value }) => {
+  const map = useAnvilSelector((state) => state.user.map); //anvil mapper
+
   if (name.toLowerCase().match(value.toLowerCase())) {
     return (
       <GridItem>
@@ -35,7 +39,7 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
               height={["200px", null, "300px"]}
               width={"auto"}
               objectFit={"cover"}
-              src={require(`${imgsrc}`).default}
+              src={tokenUrl(map.space, imgsrc, "content")}
             />
           </Box>
           <Stack pt={3} align={"start"}>
@@ -59,19 +63,7 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
               {name}
             </Heading>
             <NavLink to={anvillink}>
-              <div className="nft_button_hover">
-                <Button
-                  size={useBreakpointValue(['xs', 'md'])}
-                  fontSize={{ base: "xs", sm: "xs", md: "md" }}
-                  maxW="120px"
-                  rounded={"full"}
-                  color={"white"}
-                  bgGradient="linear(to-r, #c61682, #ee670d)"
-                  _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
-                >
-                  View NFT
-                </Button>
-              </div>
+              <ViewNft tokenId={imgsrc} />
             </NavLink>
           </Stack>
         </Box>
@@ -93,7 +85,7 @@ const BonsaiNFT = ({ value }) => {
       <Center>
         <SimpleGrid columns={[2, null, 4]} pb={5} gap={2} maxW="1250px">
           {nftdata.map((item) => (
-            <GridComponent {...item} value={value} key={item.name} />
+            <GridComponent {...item} value={value} key={item.name} /> // value for search
           ))}
         </SimpleGrid>
       </Center>

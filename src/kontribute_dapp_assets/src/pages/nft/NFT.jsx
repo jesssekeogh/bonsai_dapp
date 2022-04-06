@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import React from "react";
 import BonsaiNFT from "./bonsai_NFT/BonsaiNFT";
-import CommunityNFT from "./community_NFT/communityNFT";
+import CommunityNft from "./community_NFT/CommunityNft";
 import anvillogo from "../../../assets/anvillogo.svg"; // get logo from site
 import "./NFT.css";
 import {
@@ -21,11 +21,18 @@ import {
   InputRightElement,
   Heading,
   Hide,
+  Button,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
+// Anvil tools
+import { buy } from "./nft_functions/Purchase.js"
+import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 
 const NFT = () => {
+  const dispatch = useAnvilDispatch();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -91,6 +98,22 @@ const NFT = () => {
         </Grid>
       </Center>
       <Tabs variant="soft-rounded">
+        <Center>
+          <Button
+            size={useBreakpointValue(["md", "lg"])}
+            fontSize={{ base: "xs", sm: "xs", md: "md" }}
+            rounded={"full"}
+            color={"white"}
+            bgGradient="linear(to-r, #c61682, #ee670d)"
+            _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
+            mb={3}
+            onClick={async () => {
+              dispatch(buy(40000));
+            }}
+          >
+            <Text as="kbd">MINT BONSAI WARRIOR NFT: 2.00 ICP</Text>
+          </Button>
+        </Center>
         <div className="sticky_tabs">
           <Center>
             <TabList>
@@ -100,16 +123,16 @@ const NFT = () => {
                 bg="#282828"
                 _hover={{ opacity: "0.8" }}
               >
-                Bonsai Warriors
+                Newly Added
               </Tab>
               <Tab
                 _selected={{ bgGradient: "linear(to-r, #6190E8, #A7BFE8)" }}
                 bg="#282828"
                 color="white"
-                ms={2}
+                ms={3}
                 _hover={{ opacity: "0.8" }}
               >
-                Community
+                Community Listed
               </Tab>
             </TabList>
           </Center>
@@ -119,7 +142,7 @@ const NFT = () => {
             <BonsaiNFT value={value} />
           </TabPanel>
           <TabPanel>
-            <CommunityNFT />
+            <CommunityNft />
           </TabPanel>
         </TabPanels>
       </Tabs>

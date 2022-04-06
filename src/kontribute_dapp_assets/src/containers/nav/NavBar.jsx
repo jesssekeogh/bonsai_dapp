@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { CgInfinity } from "react-icons/cg";
-import { MdHowToVote, MdPerson, MdSend } from "react-icons/md";
+import { MdPerson, MdSend } from "react-icons/md";
 import { FaBook, FaImages } from "react-icons/fa";
+import { IoIosImages } from "react-icons/io";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
@@ -15,7 +16,7 @@ import {
   MenuDivider,
   useClipboard,
   IconButton,
-  Spinner,
+  createStandaloneToast,
   Tooltip,
   useDisclosure,
   Modal,
@@ -40,7 +41,12 @@ import {
   user_transfer_icp,
 } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import { CopyToast, SendingToast, FailedToast, SuccessICPToast } from "../toasts/Toasts";
+import {
+  CopyToast,
+  SendingToast,
+  FailedToast,
+  SuccessICPToast,
+} from "../toasts/Toasts";
 
 const MenuLinks = () => (
   <>
@@ -56,6 +62,13 @@ const MenuLinks = () => (
     >
       <p>NFT</p>
     </NavLink>
+    {/* test */}
+    <NavLink
+      to="/community"
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
+      <p>community nft</p>
+    </NavLink>
     {/* <NavLink
       to="/create"
       className={(navData) => (navData.isActive ? "nav-active" : "")}
@@ -64,6 +77,8 @@ const MenuLinks = () => (
     </NavLink> */}
   </>
 );
+
+const toast = createStandaloneToast();
 
 const NavBar = () => {
   // context for the user profile
@@ -78,26 +93,6 @@ const NavBar = () => {
 
   const { hasCopied, onCopy } = useClipboard(address);
 
-  // for the recent votes in the Profile
-  const [recentvoteII, setrecentvoteII] = useState(<Spinner size="xs" />);
-  const [recentvoteIII, setrecentvoteIII] = useState(<Spinner size="xs" />);
-
-  const getOptions = async () => {
-    const user = await signActor();
-    await Promise.all([
-      (async () => {
-        await user.getVotesII().then((result) => {
-          setrecentvoteII(result.userOption.whichOption);
-        });
-      })(),
-      (async () => {
-        await user.getVotesIII().then((result) => {
-          setrecentvoteIII(result.userOption.whichOption);
-        });
-      })(),
-    ]);
-  };
-
   const [To, setTo] = useState("");
   const [Amount, setAmount] = useState(0);
 
@@ -111,10 +106,10 @@ const NavBar = () => {
       amount: amounticp,
     };
 
-    if(send.to.length !== 64){
-      return FailedToast("Invalid ICP Address!") // verbose errors for the user
-    } else if (Amount == 0 || isNaN(Amount)){
-      return FailedToast("Invalid Amount")
+    if (send.to.length !== 64) {
+      return FailedToast("Invalid ICP Address!"); // verbose errors for the user
+    } else if (Amount == 0 || isNaN(Amount)) {
+      return FailedToast("Invalid Amount");
     } else if (Amount >= user_icp) {
       return FailedToast("Insufficient Balance!");
     } else {
@@ -127,7 +122,6 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    getOptions();
     dispatch(user_login());
   }, []);
 
@@ -187,22 +181,16 @@ const NavBar = () => {
                     : null}
                 </MenuItem>
               </Tooltip>
-              <MenuItem icon={<MdSend />} command={user_icp} closeOnSelect onClick={onOpen}>
+              <MenuItem
+                icon={<MdSend />}
+                command={user_icp}
+                closeOnSelect
+                onClick={onOpen}
+              >
                 Send ICP
               </MenuItem>
-              <MenuDivider />
-              <Tooltip label="Your recent vote selection">
-                <MenuGroup title="Bonsai Warriors Vote History" />
-              </Tooltip>
-              <NavLink to="/stories/bonsai-warriors-prologueIII">
-                <MenuItem icon={<MdHowToVote />} command={recentvoteIII}>
-                  Prologue III:
-                </MenuItem>
-              </NavLink>
-              <NavLink to="/stories/bonsai-warriors-prologueII">
-                <MenuItem icon={<MdHowToVote />} command={recentvoteII}>
-                  Prologue II:
-                </MenuItem>
+              <NavLink to="/inventory">
+                <MenuItem closeOnSelect icon={<IoIosImages />}>NFT Inventory</MenuItem>
               </NavLink>
               <MenuDivider />
               <MenuItem icon={<LockIcon />} onClick={signOut}>
@@ -243,7 +231,12 @@ const NavBar = () => {
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent bg="#141414" color="#fff" mt={["40%", null, "10%"]} mx="10%">
+          <ModalContent
+            bg="#141414"
+            color="#fff"
+            mt={["40%", null, "10%"]}
+            mx="10%"
+          >
             <ModalHeader
               as="kbd"
               bgGradient="linear(to-l, #ed1f79, #2dade2)"

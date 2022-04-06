@@ -12,6 +12,10 @@
       "main": "src/kontribute_dapp/bonsai.mo",
       "type": "motoko"
     },
+    "collection": {
+      "main": "src/kontribute_dapp/collection.mo",
+      "type": "motoko"
+    },
     "kontribute_dapp_assets": {
       "dependencies": [
         "kontribute_dapp"
@@ -29,7 +33,7 @@
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "vessel sources"
     }
   },
   "dfx": "0.8.4",

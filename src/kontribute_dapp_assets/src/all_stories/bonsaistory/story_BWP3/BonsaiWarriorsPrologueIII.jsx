@@ -3,6 +3,7 @@ import { Container, Center } from "@chakra-ui/react";
 import { Fade } from "react-awesome-reveal";
 import "../BonsaiStory.css";
 import { BonsaiVote } from "../Bonsai_Tools";
+import { BonsaiCharLink } from "../Bonsai_Tools/index";
 
 const Option1Details = () => {
   return (
