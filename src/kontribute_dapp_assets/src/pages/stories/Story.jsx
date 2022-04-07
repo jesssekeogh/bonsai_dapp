@@ -116,7 +116,7 @@ const BlogTags = (props) => {
                 >
                   {title}
                 </Heading>
-                <Text as="p" marginTop="2" color="#f0e6d3" fontSize="lg">
+                <Text as="p" marginTop="2" fontWeight={600} color="#f0e6d3" fontSize="lg">
                   {description}
                 </Text>
                 <Stack

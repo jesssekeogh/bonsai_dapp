@@ -1,23 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
   Heading,
   Text,
   Stack,
-  Button,
   SimpleGrid,
   GridItem,
+  SkeletonCircle
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import nftdata from "../../../data/nftdata_release.json";
-import { NavLink } from "react-router-dom";
 import { tokenUrl } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import ViewNft from "../nft_functions/ViewNft";
 
-const GridComponent = ({ name, imgsrc, anvillink, value }) => {
+const GridComponent = ({ name, imgsrc, value }) => {
   const map = useAnvilSelector((state) => state.user.map); //anvil mapper
+
+  const [img, setImg] = useState();
+  const [Loaded, setLoaded] = useState(false);
+
+  const load = async () => {
+    let src = await tokenUrl(map.space, imgsrc, "thumb");
+    setImg(src);
+    setLoaded(true);
+  };
+
+  useEffect(() => {
+    load();
+  }, [imgsrc]);
 
   if (name.toLowerCase().match(value.toLowerCase())) {
     return (
@@ -33,14 +45,18 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
           pos={"relative"}
         >
           <Box rounded={"lg"} pos={"relative"}>
-            <ChakraImage
-              bg="#fff"
-              rounded={"lg"}
-              height={["200px", null, "300px"]}
-              width={"auto"}
-              objectFit={"cover"}
-              src={tokenUrl(map.space, imgsrc, "content")}
-            />
+            {Loaded ? (
+              <ChakraImage
+                bg="#fff"
+                rounded={"lg"}
+                height={["180px", null, "300px"]}
+                width={"auto"}
+                objectFit={"cover"}
+                src={img}
+              />
+            ) : (
+              <SkeletonCircle size={["150", null, "250"]} />
+            )}
           </Box>
           <Stack pt={3} align={"start"}>
             <Text
@@ -62,9 +78,7 @@ const GridComponent = ({ name, imgsrc, anvillink, value }) => {
             >
               {name}
             </Heading>
-            <NavLink to={anvillink}>
-              <ViewNft tokenId={imgsrc} />
-            </NavLink>
+            <ViewNft tokenId={imgsrc} />
           </Stack>
         </Box>
       </GridItem>

@@ -60,7 +60,10 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
       _tmpAccount := [];
   };
 
-
+  public query func getInstaller(): async Principal {
+    return _installer
+  };
+  
   // installer sets an admin, which can add nfts
   public shared({caller}) func set_admin(x: Principal) : () {
     assert(caller == _installer);

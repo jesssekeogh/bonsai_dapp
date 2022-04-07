@@ -30,8 +30,10 @@ import {
   FormLabel,
   Input,
   Text,
+  FormControl,
+  FormHelperText,
 } from "@chakra-ui/react";
-import { CopyIcon, LockIcon, HamburgerIcon, EditIcon } from "@chakra-ui/icons";
+import { CopyIcon, LockIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { UserContext } from "../../Context.jsx";
 // Anvil tools:
 import {
@@ -111,10 +113,10 @@ const NavBar = () => {
     } else if (Amount == 0 || isNaN(Amount)) {
       return FailedToast("Invalid Amount");
     } else if (Amount >= user_icp) {
-      return FailedToast("Insufficient Balance!");
+      return FailedToast("Insufficient funds!");
     } else {
       onClose();
-      SendingToast();
+      SendingToast("Sending ICP...");
       await dispatch(user_transfer_icp(send));
       toast.closeAll();
       SuccessICPToast(Amount, To);
@@ -190,7 +192,9 @@ const NavBar = () => {
                 Send ICP
               </MenuItem>
               <NavLink to="/inventory">
-                <MenuItem closeOnSelect icon={<IoIosImages />}>NFT Inventory</MenuItem>
+                <MenuItem closeOnSelect icon={<IoIosImages />}>
+                  NFT Inventory
+                </MenuItem>
               </NavLink>
               <MenuDivider />
               <MenuItem icon={<LockIcon />} onClick={signOut}>
@@ -252,6 +256,11 @@ const NavBar = () => {
                   {user_icp}
                 </Text>
               </Tooltip>
+              <FormControl>
+                <FormHelperText>
+                  + 0.0001 ICP in transfer fees paid to IC
+                </FormHelperText>
+              </FormControl>
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>

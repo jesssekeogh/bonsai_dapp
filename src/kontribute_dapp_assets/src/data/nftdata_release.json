@@ -1,42 +1,34 @@
 [
     {
-        "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
+        "name":"Nightbreaker",
+        "imgsrc": 394609
+    },
+    {
+        "name":"Wild Gaze",
+        "imgsrc": 263545
+    },
+    {
+        "name":"Dragonshield",
+        "imgsrc": 198017
+    },
+    {
+        "name":"Darkhead",
+        "imgsrc": 132440
+    },
+    {
+        "name":"Rumble Sorrow",
+        "imgsrc": 329024
+    },
+    {
+        "name":"Embercrest",
+        "imgsrc": 66881
     },
     {
         "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
+        "imgsrc": 460111
     },
     {
-        "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
-    },
-    {
-        "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
-    },
-    {
-        "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
-    },
-    {
-        "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
-    },
-    {
-        "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
-    },
-    {
-        "name":"The OG",
-        "imgsrc": 458755,
-        "anvillink": ""
+        "name":"Wild Cut",
+        "imgsrc": 460112
     }
 ]

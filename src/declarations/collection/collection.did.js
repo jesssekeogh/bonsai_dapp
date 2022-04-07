@@ -19,6 +19,7 @@ export const idlFactory = ({ IDL }) => {
         [Result_1],
         [],
       ),
+    'getInstaller' : IDL.Func([], [IDL.Principal], ['query']),
     'gift_code_add' : IDL.Func([IDL.Vec(IDL.Nat8)], [Result_1], []),
     'owned' : IDL.Func([AccountIdentifier], [Result], ['query']),
     'set_admin' : IDL.Func([IDL.Principal], [], ['oneway']),

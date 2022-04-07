@@ -23,7 +23,7 @@ export const FailedToast = (msg) => {
         status: "error",
         isClosable: true,
         position: "top-right",
-        duration: 1200,
+        duration: 1500,
         containerStyle: {
           marginTop: "5.5rem",
         },
@@ -43,9 +43,9 @@ export const CopyToast = () => {
     });
 };
 
-export const SendingToast = () => {
+export const SendingToast = (msg) => {
   return toast({
-    title: "sending ICP...",
+    title: msg,
     description: (
       <Progress mt={2} colorScheme="gray" size="xs" isIndeterminate />
     ),

@@ -16,6 +16,7 @@ type Class =
    add: (TokenIdentifier) -> ();
    buy_tx: (TransactionId, opt SubAccount) -> (Result_1);
    claim: (AccountIdentifier, opt SubAccount, TokenIdentifier) -> (Result_1);
+   getInstaller: () -> (principal) query;
    gift_code_add: (blob) -> (Result_1);
    owned: (AccountIdentifier) -> (Result) query;
    set_admin: (principal) -> () oneway;

@@ -20,18 +20,13 @@ import {
   InputGroup,
   InputRightElement,
   Heading,
-  Hide,
-  Button,
-  useBreakpointValue,
+  Hide
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
-// Anvil tools
-import { buy } from "./nft_functions/Purchase.js"
-import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
+import Purchase from "./nft_functions/Purchase"
 
 const NFT = () => {
-  const dispatch = useAnvilDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -99,20 +94,7 @@ const NFT = () => {
       </Center>
       <Tabs variant="soft-rounded">
         <Center>
-          <Button
-            size={useBreakpointValue(["md", "lg"])}
-            fontSize={{ base: "xs", sm: "xs", md: "md" }}
-            rounded={"full"}
-            color={"white"}
-            bgGradient="linear(to-r, #c61682, #ee670d)"
-            _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
-            mb={3}
-            onClick={async () => {
-              dispatch(buy(40000));
-            }}
-          >
-            <Text as="kbd">MINT BONSAI WARRIOR NFT: 2.00 ICP</Text>
-          </Button>
+          <Purchase />
         </Center>
         <div className="sticky_tabs">
           <Center>
