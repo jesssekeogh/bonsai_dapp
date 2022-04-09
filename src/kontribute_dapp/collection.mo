@@ -293,4 +293,3 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
   };
 
 };
-

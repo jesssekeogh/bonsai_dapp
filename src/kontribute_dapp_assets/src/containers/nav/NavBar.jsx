@@ -64,13 +64,6 @@ const MenuLinks = () => (
     >
       <p>NFT</p>
     </NavLink>
-    {/* test */}
-    <NavLink
-      to="/community"
-      className={(navData) => (navData.isActive ? "nav-active" : "")}
-    >
-      <p>community nft</p>
-    </NavLink>
     {/* <NavLink
       to="/create"
       className={(navData) => (navData.isActive ? "nav-active" : "")}

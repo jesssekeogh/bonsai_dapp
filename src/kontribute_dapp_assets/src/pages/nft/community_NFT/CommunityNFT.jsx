@@ -4,6 +4,8 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { tokenUrl } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import { LoadingSpinner } from "../../../containers";
+import { Box, Heading, Text } from '@chakra-ui/react';
+import { InfoIcon } from '@chakra-ui/icons';
 
 // query all nfts from author that have a price listed
 
@@ -35,7 +37,7 @@ const CommunityNft = () => {
     ]);
 
     for (var i = 0; i < respPrice.length; i++) {
-      if (respPrice[i][2] !== null) {
+      if (respPrice[i][2] > 0) {
         let tokenId = respPrice[i][0];
         arrayOfTokens.push(tokenId);
       }
@@ -52,9 +54,15 @@ const CommunityNft = () => {
   }
   return (
     <div>
-      {loadedTokens.map((token) => (
+      {/* {loadedTokens.map((token) => (
         <SingleNFT imgsrc={token} key={token} />
-      ))}
+      ))} */}
+      <Box textAlign="center" py={10} px={6}>
+        <InfoIcon boxSize={"50px"} color={"white"} />
+        <Heading color="white" size="xl" mt={6} mb={2}>
+          Community NFTs will be listed here
+        </Heading>
+      </Box>
     </div>
   );
 };

@@ -72,7 +72,7 @@ const BonsaiWarriorsPrologueIII = () => {
             <br></br>
             <br></br>- - - - - - - - - - - - -<br></br>
             <br></br>
-            Call it the lofty dreams of a child, or wild ambitions, but you
+            <BonsaiCharLink name="Dragonshield" tokenId={394737}/> Call it the lofty dreams of a child, or wild ambitions, but you
             always dreamed of becoming a great sorceress, wreathed in exotic
             magic spells as you lashed out and reshaped the world as you wished.
             Even for a daughter of the Tang clan, this seemed impossible, but

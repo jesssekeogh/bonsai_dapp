@@ -21,7 +21,7 @@ import {
 import { AuthPage, NavBar, LoadingSpinner } from "./containers";
 
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
-import CommunityNft from "./pages/nft/community_NFT/CommunityNft"; //test
+
 // this is the launch page:
 function App() {
   const [signedIn, setSignedIn] = useState(false);
@@ -123,8 +123,6 @@ function App() {
                   path="/stories/bonsai-warriors-prologueIII"
                   element={<BonsaiWarriorsPrologueIII />}
                 />
-                {/* testing */}
-                <Route path="/community" element={<CommunityNft />} />
               </Routes>
             </UserContext.Provider>
           </Router>

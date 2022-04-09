@@ -16,13 +16,14 @@ import {
   Stack,
   SimpleGrid,
   GridItem,
-  SkeletonCircle
+  SkeletonCircle,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import ViewNft from "../nft/nft_functions/ViewNft.jsx";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { get_mine, claim } from "../nft/nft_functions/GetMine";
+import SellNft from "../nft/nft_functions/SellNft.jsx";
 
 const Inventory = () => {
   const [data, setData] = useState([]);
@@ -34,13 +35,12 @@ const Inventory = () => {
   const load = async () => {
     setData(await dispatch(get_mine()));
     setLoaded(true);
-    // setData([394609]);
+    // setData([394609, 263545, 263545, 263545]);
   };
 
   useEffect(() => {
     if (loaded) {
-      dispatch(claim());
-      load();
+      dispatch(claim()).then(() => load());
     }
   }, []);
 
@@ -111,7 +111,9 @@ const SingleNft = ({ tokenId }) => {
                 objectFit={"cover"}
                 src={img}
               />
-            ) : <SkeletonCircle size="150" />}
+            ) : (
+              <SkeletonCircle size="150" />
+            )}
           </Box>
           <Stack pt={3} align={"start"}>
             <Text
@@ -134,6 +136,7 @@ const SingleNft = ({ tokenId }) => {
               {name}
             </Heading>
             <ViewNft tokenId={tokenId} />
+            <SellNft tokenId={tokenId}/>
           </Stack>
         </Box>
       </GridItem>
