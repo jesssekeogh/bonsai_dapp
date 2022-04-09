@@ -11,6 +11,7 @@ export interface Class {
       arg_1: [] | [SubAccount],
       arg_2: TokenIdentifier,
     ) => Promise<Result_1>,
+  'getInstaller' : () => Promise<Principal>,
   'gift_code_add' : (arg_0: Array<number>) => Promise<Result_1>,
   'owned' : (arg_0: AccountIdentifier) => Promise<Result>,
   'set_admin' : (arg_0: Principal) => Promise<undefined>,

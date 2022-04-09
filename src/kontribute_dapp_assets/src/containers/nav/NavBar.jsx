@@ -233,12 +233,11 @@ const NavBar = () => {
       </div>
       {/* sending ICP UI */}
       <>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay />
           <ModalContent
             bg="#141414"
             color="#fff"
-            mt={["40%", null, "10%"]}
             mx="10%"
           >
             <ModalHeader

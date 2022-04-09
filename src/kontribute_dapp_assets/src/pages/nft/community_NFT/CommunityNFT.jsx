@@ -11,7 +11,7 @@ const urlAuthor = // api for author address
   "https://nftpkg.com/api/v1/author/a00dcee3d64e4daaa34ebfa7b95fba5f095e234d32a4770958e3f8e8818cafe1"; //change to minter address
 
 const urlAuthorPrices =
-  "https://nftpkg.com/api/v1/prices/a00dcee3d64e4daaa34ebfa7b95fba5f095e234d32a4770958e3f8e8818cafe1"; // change to minter address
+  "https://nftpkg.com/api/v1/prices/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; // change to minter address
 
 const CommunityNft = () => {
   const [iDs, setIds] = useState([]);

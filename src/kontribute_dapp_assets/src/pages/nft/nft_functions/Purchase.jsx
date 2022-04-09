@@ -26,7 +26,11 @@ import {
 import { principalToAccountIdentifier } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import {SendingToast, SuccessToast, FailedToast} from "../../../containers/toasts/Toasts"
+import {
+  SendingToast,
+  SuccessToast,
+  FailedToast,
+} from "../../../containers/toasts/Toasts";
 
 const toast = createStandaloneToast();
 
@@ -34,7 +38,9 @@ const Purchase = () => {
   const dispatch = useAnvilDispatch();
 
   const buy = (amount) => async (dispatch, getState) => {
-    SendingToast("Transferring ICP...")
+    
+    SendingToast("Transferring ICP...");
+
     const s = getState();
 
     let address = AccountIdentifier.TextToArray(s.user.address);
@@ -46,36 +52,48 @@ const Purchase = () => {
     let destination = principalToAccountIdentifier(
       process.env.REACT_APP_COLLECTION_CANISTER_ID
     );
-    // make pwr transfer and get tx
-    let dres = await dispatch(
-      user_pwr_transfer({ to: destination, amount, memo: [] }) // fails and traps if no balance --TODO show toast
-    );
-    toast.closeAll()
-    console.log("user_pwr_transfer", dres);
 
-    if ("err" in dres){
+    let dres;
+    try {
+      dres = await dispatch(
+        user_pwr_transfer({ to: destination, amount, memo: [] }) // traps on error so we use catch
+      );
+    }
+    catch (err){
+      toast.closeAll();
       return FailedToast("Insufficient funds");
     }
+
+    toast.closeAll();
+
+    // make pwr transfer and get tx
+    console.log("user_pwr_transfer", dres);
 
     let txid = dres.ok.transactionId;
 
     let collection = createCollectionActor({
       agentOptions: authentication.getAgentOptions(),
     });
-    SendingToast("Purchasing NFT...")
+
+    SendingToast("Purchasing NFT...");
+
     // send tx_id to our custom collection.mo contract
     let brez = await collection.buy_tx(txid, subaccount);
     console.log("buy_tx", brez);
-    toast.closeAll()
+
+    toast.closeAll();
+
     dispatch(user_refresh_balances());
-    if( "err" in brez ){
-      return FailedToast("Not enough NFTs, ICP refunded")
+
+    if ("err" in brez) {
+      return FailedToast("Not enough NFTs, ICP refunded");
     }
-    SuccessToast("1 NFT successfully added to inventory!")
+
+    SuccessToast("1 NFT successfully added to inventory!");
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // toast.closeAll();
+  
   return (
     <>
       <Button
@@ -90,12 +108,11 @@ const Purchase = () => {
       >
         <Text as="kbd">MINT BONSAI WARRIOR NFT: 0.0004 ICP</Text>
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent
           bg="#141414"
           color="#fff"
-          mt={["40%", null, "10%"]}
           mx="10%"
         >
           <ModalHeader
@@ -139,7 +156,7 @@ const Purchase = () => {
               mr={3}
               _hover={{ opacity: "0.8" }}
               onClick={async () => {
-                onClose()
+                onClose();
                 dispatch(buy(40000));
               }}
             >
