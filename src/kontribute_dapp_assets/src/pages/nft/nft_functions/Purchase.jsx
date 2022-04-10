@@ -141,7 +141,7 @@ const Purchase = () => {
               fontSize={{ base: "xs", sm: "xs", md: "md" }}
               color={"white"}
             >
-              You will be randomly allocated a 1 Bonsai Warrior from the the
+              You will be randomly allocated 1 Bonsai Warrior from the
               collection!
             </Heading>
           </ModalBody>

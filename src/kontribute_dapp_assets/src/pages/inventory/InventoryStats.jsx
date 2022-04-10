@@ -7,7 +7,10 @@ import {
   StatLabel,
   StatNumber,
   useColorModeValue,
-  Center
+  Center,
+  Button,
+  useClipboard,
+  Text,
 } from "@chakra-ui/react";
 import {
   useAnvilSelector,
@@ -29,13 +32,15 @@ const InventoryStats = () => {
 
   const load = async () => {
     let arrayOfTokens = [];
-    setData(await dispatch(get_mine()));
+    let loadedData = await dispatch(get_mine());
+    setData(loadedData);
     setLoaded(true);
     // setData([394609]);
 
     let resp = await fetch(urlAuthorPrices).then((x) => x.json());
 
-    for (var i = 0; i < resp.length; i++) { //checks which are for sale
+    for (var i = 0; i < resp.length; i++) {
+      //checks which are for sale
       if (resp[i][2] > 0) {
         let tokenId = resp[i][0];
         arrayOfTokens.push(tokenId);
@@ -43,8 +48,8 @@ const InventoryStats = () => {
     }
     let Owned = [];
 
-    for (var i = 0; i < arrayOfTokens.length; i++) { // if users owned is for sale
-      if (data.includes(arrayOfTokens[i])) {
+    for (var i = 0; i < arrayOfTokens.length; i++) {
+      if (loadedData.includes(arrayOfTokens[i])) {
         Owned.push(arrayOfTokens[i]);
       }
     }
@@ -105,12 +110,27 @@ function BasicStatistics({ nftsTotal, selling }) {
     useAnvilSelector((state) => state.user.icp) // Retrieve NFT Anvil Address ICP Balance
   );
 
+  const { hasCopied, onCopy } = useClipboard(address);
+
   return (
-    <Box maxW="7xl" mx={"auto"} py={{ base: 0, sm: null, md: 5 }} mt={{ base: -8, sm: null, md: -10 }} px={{ base: 2, sm: 12, md: 17 }}>
-      <Center>
+    <Box
+      maxW="7xl"
+      mx={"auto"}
+      py={{ base: 0, sm: null, md: 5 }}
+      mt={{ base: -8, sm: null, md: -10 }}
+      px={{ base: 2, sm: 12, md: 17 }}
+    >
+      <Center
+        mb={2}
+        shadow={"xl"}
+        border={"1px solid"}
+        borderColor={useColorModeValue("gray.800", "gray.500")}
+        rounded={"lg"}
+        p={2}
+      >
         <chakra.h1
           textAlign={"center"}
-          fontSize={{ base: "xl", sm: "2xl", md: "4xl" }}
+          fontSize={{ base: "lg", sm: "2xl", md: "4xl" }}
           fontWeight={"bold"}
           py={{ base: 1, sm: null, md: 2 }}
           as="kbd"
@@ -121,6 +141,16 @@ function BasicStatistics({ nftsTotal, selling }) {
             ? address.substring(0, 10) + "......" + address.substring(56, 64)
             : null}
         </chakra.h1>
+        <Button
+          size={"sm"}
+          onClick={onCopy}
+          ml={2}
+          colorScheme="#282828"
+          bg="#282828"
+          rounded={"full"}
+        >
+          <Text as="kbd">{hasCopied ? "Copied" : "Copy"}</Text>
+        </Button>
       </Center>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
         <StatsCard title={"ICP Balance"} stat={user_icp} />

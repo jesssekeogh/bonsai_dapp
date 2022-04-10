@@ -19,11 +19,10 @@ import {
   SkeletonCircle,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import ViewNft from "../nft/nft_functions/ViewNft.jsx";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { get_mine, claim } from "../nft/nft_functions/GetMine";
-import SellNft from "../nft/nft_functions/SellNft.jsx";
+import InventoryNft from "../nft/nft_functions/InventoryNft.jsx";
 
 const Inventory = () => {
   const [data, setData] = useState([]);
@@ -35,12 +34,13 @@ const Inventory = () => {
   const load = async () => {
     setData(await dispatch(get_mine()));
     setLoaded(true);
-    // setData([394609, 263545, 263545, 263545]);
+    // setData([394737]);
   };
 
   useEffect(() => {
     if (loaded) {
       dispatch(claim()).then(() => load());
+      // load()
     }
   }, []);
 
@@ -120,7 +120,7 @@ const SingleNft = ({ tokenId }) => {
               color={"gray.500"}
               fontSize={{ base: "sm", sm: "xs", md: "md" }}
             >
-              Bonsai Warrior (Not Listed)
+              Bonsai Warrior
             </Text>
           </Stack>
           <Stack
@@ -135,8 +135,7 @@ const SingleNft = ({ tokenId }) => {
             >
               {name}
             </Heading>
-            <ViewNft tokenId={tokenId} />
-            <SellNft tokenId={tokenId}/>
+            <InventoryNft tokenId={tokenId}/>
           </Stack>
         </Box>
       </GridItem>

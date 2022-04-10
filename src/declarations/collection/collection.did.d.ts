@@ -1,44 +1,24 @@
 import type { Principal } from '@dfinity/principal';
 export type AccountIdentifier = Array<number>;
 export interface AccountRecordSerialized { 'tokens' : Array<TokenIdentifier> }
-export type Balance = bigint;
 export interface Class {
-  'add' : (arg_0: TokenIdentifier) => Promise<Result_3>,
-  'airdrop_add' : (arg_0: Array<number>) => Promise<Result_3>,
-  'airdrop_use' : (arg_0: AccountIdentifier, arg_1: Array<number>) => Promise<
-      Result_3
-    >,
+  'add' : (arg_0: TokenIdentifier) => Promise<undefined>,
   'buy_tx' : (arg_0: TransactionId, arg_1: [] | [SubAccount]) => Promise<
-      Result_3
+      Result_1
     >,
   'claim' : (
       arg_0: AccountIdentifier,
       arg_1: [] | [SubAccount],
       arg_2: TokenIdentifier,
-    ) => Promise<Result_3>,
+    ) => Promise<Result_1>,
   'getInstaller' : () => Promise<Principal>,
-  'icp_balance' : () => Promise<Result_2>,
-  'icp_transfer' : (arg_0: AccountIdentifier, arg_1: Balance) => Promise<
-      Result_1
-    >,
+  'gift_code_add' : (arg_0: Array<number>) => Promise<Result_1>,
   'owned' : (arg_0: AccountIdentifier) => Promise<Result>,
   'set_admin' : (arg_0: Principal) => Promise<undefined>,
-  'stats' : () => Promise<
-      {
-        'total' : bigint,
-        'available' : bigint,
-        'airdrop' : bigint,
-        'purchase' : bigint,
-      }
-    >,
 }
 export type Result = { 'ok' : AccountRecordSerialized } |
   { 'err' : string };
-export type Result_1 = { 'ok' : Array<number> } |
-  { 'err' : string };
-export type Result_2 = { 'ok' : Balance } |
-  { 'err' : string };
-export type Result_3 = { 'ok' : null } |
+export type Result_1 = { 'ok' : null } |
   { 'err' : string };
 export type SubAccount = Array<number>;
 export type TokenIdentifier = bigint;

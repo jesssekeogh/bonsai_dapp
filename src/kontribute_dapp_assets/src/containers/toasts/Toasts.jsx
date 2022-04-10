@@ -9,6 +9,7 @@ export const SuccessToast = (msg) => {
         title: msg,
         status: "success",
         isClosable: true,
+        duration: 2500,
         position: "top-right",
         containerStyle: {
           marginTop: "5.5rem",

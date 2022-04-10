@@ -20,14 +20,13 @@ import {
   InputGroup,
   InputRightElement,
   Heading,
-  Hide
+  Hide,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
-import Purchase from "./nft_functions/Purchase"
+import Purchase from "./nft_functions/Purchase";
 
 const NFT = () => {
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -59,6 +58,7 @@ const NFT = () => {
                 onChange={handleChange}
               />
               <InputRightElement
+                zIndex={1}
                 _hover={{ cursor: "pointer" }}
                 onClick={() => {
                   setValue("");

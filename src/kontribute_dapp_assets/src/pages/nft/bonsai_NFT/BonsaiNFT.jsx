@@ -7,8 +7,14 @@ import {
   Stack,
   SimpleGrid,
   GridItem,
-  SkeletonCircle
+  SkeletonCircle,
+  Menu,
+  MenuButton,
+  MenuList,
+  IconButton,
+  MenuItem
 } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import nftdata from "../../../data/nftdata_release.json";
 import { tokenUrl } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
@@ -78,7 +84,27 @@ const GridComponent = ({ name, imgsrc, value }) => {
             >
               {name}
             </Heading>
-            <ViewNft tokenId={imgsrc} />
+            <>
+              <Menu>
+                <MenuButton
+                  size={"sm"}
+                  backgroundColor={"#1e212b"}
+                  as={IconButton}
+                  aria-label="Options"
+                  icon={<HamburgerIcon />}
+                  color="#fff"
+                  colorScheme="#1e212b"
+                  variant="outline"
+                  me={0}
+                  ms={-5}
+                />
+                <MenuList>
+                  <MenuItem closeOnSelect={false}>
+                    <ViewNft tokenId={imgsrc} />
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </>
           </Stack>
         </Box>
       </GridItem>

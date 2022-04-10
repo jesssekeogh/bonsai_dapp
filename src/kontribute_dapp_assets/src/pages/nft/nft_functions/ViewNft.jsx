@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   useBreakpointValue,
   Skeleton,
   SkeletonCircle,
@@ -12,7 +11,9 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Icon
 } from "@chakra-ui/react";
+import { ViewIcon } from "@chakra-ui/icons";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
   tokenUrl,
@@ -46,7 +47,7 @@ const NftTags = (props) => {
   );
 };
 
-const ViewNft = ({ tokenId }) => {
+const ViewNft = ({ tokenId, popover }) => {
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
 
@@ -75,17 +76,7 @@ const ViewNft = ({ tokenId }) => {
     <>
       <Popover placement="top-end" isLazy>
         <PopoverTrigger>
-          <Button
-            size={useBreakpointValue(["xs", "md"])}
-            fontSize={{ base: "0.6rem", sm: "xs", md: "md" }}
-            maxW="120px"
-            rounded={"full"}
-            color={"white"}
-            bgGradient="linear(to-r, #6190E8, #A7BFE8)"
-            _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
-          >
-            View NFT
-          </Button>
+          <Text w={"100%"}><Icon as={ViewIcon} me={2}/>View NFT</Text>
         </PopoverTrigger>
         <PopoverContent width={"auto"} mx={2} backgroundColor={"#1e212b"}>
           <PopoverArrow />
