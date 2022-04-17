@@ -13,5 +13,12 @@
 # frontend code
 node_modules/
 dist/
-./.env
-./canister_ids.json
+
+.vessel/
+Project_Minting/
+
+canister_ids.json
+identity.json
+input.js
+minted.json
+.env
