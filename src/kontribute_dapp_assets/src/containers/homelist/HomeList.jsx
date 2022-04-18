@@ -156,7 +156,7 @@ const HomeList = () => {
             <FaRedditAlien />
           </a>
           <a
-            href="https://github.com/jesssekeogh/bonsai_dapp"
+            href="https://github.com/teambonsai/bonsai_dapp"
             target="_blank"
             rel="noreferrer"
           >
