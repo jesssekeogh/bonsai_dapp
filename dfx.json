@@ -12,8 +12,8 @@
       "main": "src/kontribute_dapp/bonsai.mo",
       "type": "motoko"
     },
-    "collection": {
-      "main": "src/kontribute_dapp/collection.mo",
+    "ito": {
+      "main": "src/kontribute_dapp/ito.mo",
       "type": "motoko"
     },
     "kontribute_dapp_assets": {

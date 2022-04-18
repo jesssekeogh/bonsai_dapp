@@ -1,6 +1,0 @@
-.sticky_tabs {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 90px;
-    z-index: 1;
-}

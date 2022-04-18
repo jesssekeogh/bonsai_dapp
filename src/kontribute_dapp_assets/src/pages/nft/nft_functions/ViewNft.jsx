@@ -47,7 +47,7 @@ const NftTags = (props) => {
   );
 };
 
-const ViewNft = ({ tokenId, popover }) => {
+const ViewNft = ({ tokenId }) => {
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
 

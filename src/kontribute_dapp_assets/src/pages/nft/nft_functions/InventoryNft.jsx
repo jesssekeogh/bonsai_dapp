@@ -60,7 +60,7 @@ const InventoryNft = ({ tokenId }) => {
   //   marketplace: [
   //     {
   //       address: AccountIdentifier.TextToArray(
-  //         "a00c26536f73f0add51dddd5ef3220bb1842b2783e8ba1c4dd4a2da172b1727a"
+  //         "a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"
   //       ),
   //       share: 50,
   //     },
@@ -177,7 +177,7 @@ const InventoryNft = ({ tokenId }) => {
                       marketplace: [
                         {
                           address: AccountIdentifier.TextToArray(
-                            "a00c26536f73f0add51dddd5ef3220bb1842b2783e8ba1c4dd4a2da172b1727a"
+                            "8bc2fb99c396187cf54ea081b9055ea64c8f613ad70baf55426116da84733801"
                           ),
                           share: 50,
                         },

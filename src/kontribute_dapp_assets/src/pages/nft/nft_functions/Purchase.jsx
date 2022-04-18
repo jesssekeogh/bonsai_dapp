@@ -17,7 +17,7 @@ import {
   createStandaloneToast,
 } from "@chakra-ui/react";
 import { GiConfirmed } from "react-icons/gi";
-import { createCollectionActor } from "../../../../../declarations/collection.js";
+import { createItoActor } from "../../../../../declarations/ito.js";
 import {
   user_pwr_transfer,
   user_refresh_balances,
@@ -34,11 +34,10 @@ import {
 
 const toast = createStandaloneToast();
 
-const Purchase = () => {
+const Purchase = ({ nfts, amount }) => {
   const dispatch = useAnvilDispatch();
 
   const buy = (amount) => async (dispatch, getState) => {
-    
     SendingToast("Transferring ICP...");
 
     const s = getState();
@@ -50,7 +49,7 @@ const Purchase = () => {
     ].filter(Boolean);
 
     let destination = principalToAccountIdentifier(
-      process.env.REACT_APP_COLLECTION_CANISTER_ID
+      process.env.REACT_APP_ITO_CANISTER_ID
     );
 
     let dres;
@@ -58,8 +57,7 @@ const Purchase = () => {
       dres = await dispatch(
         user_pwr_transfer({ to: destination, amount, memo: [] }) // traps on error so we use catch
       );
-    }
-    catch (err){
+    } catch (err) {
       toast.closeAll();
       return FailedToast("Insufficient funds");
     }
@@ -71,11 +69,11 @@ const Purchase = () => {
 
     let txid = dres.ok.transactionId;
 
-    let collection = createCollectionActor({
+    let collection = createItoActor({
       agentOptions: authentication.getAgentOptions(),
     });
 
-    SendingToast("Purchasing NFT...");
+    SendingToast("Purchasing NFT(s)...");
 
     // send tx_id to our custom collection.mo contract
     let brez = await collection.buy_tx(txid, subaccount);
@@ -89,16 +87,16 @@ const Purchase = () => {
       return FailedToast("Not enough NFTs, ICP refunded");
     }
 
-    SuccessToast("1 NFT successfully added to inventory!");
+    SuccessToast({nfts} + " NFT(s) successfully added to inventory!");
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   return (
     <>
       <Button
         size={useBreakpointValue(["md", "lg"])}
-        fontSize={{ base: "xs", sm: "xs", md: "md" }}
+        fontSize={{ base: "sm", sm: "sm", md: "md" }}
         rounded={"full"}
         color={"white"}
         bgGradient="linear(to-r, #c61682, #ee670d)"
@@ -106,15 +104,11 @@ const Purchase = () => {
         mb={3}
         onClick={onOpen}
       >
-        <Text as="kbd">MINT BONSAI WARRIOR NFT: 0.0004 ICP</Text>
+        <Text as="kbd">BUY NOW</Text>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent
-          bg="#141414"
-          color="#fff"
-          mx="10%"
-        >
+        <ModalContent bg="#141414" color="#fff" mx="10%">
           <ModalHeader
             as="kbd"
             bgGradient="linear(to-l, #ed1f79, #2dade2)"
@@ -126,7 +120,7 @@ const Purchase = () => {
               bgGradient="linear(to-r, #ed1f79, #f15b25)"
               bgClip="text"
             >
-              0.0004
+              {AccountIdentifier.e8sToIcp(amount)} ICP
             </Text>
             <FormControl>
               <FormHelperText>
@@ -141,7 +135,7 @@ const Purchase = () => {
               fontSize={{ base: "xs", sm: "xs", md: "md" }}
               color={"white"}
             >
-              You will be randomly allocated 1 Bonsai Warrior from the
+              You will be randomly allocated {nfts} Bonsai Warrior(s) from the
               collection!
             </Heading>
           </ModalBody>
@@ -157,7 +151,7 @@ const Purchase = () => {
               _hover={{ opacity: "0.8" }}
               onClick={async () => {
                 onClose();
-                dispatch(buy(40000));
+                dispatch(buy(amount));
               }}
             >
               Confirm Payment

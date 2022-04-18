@@ -49,7 +49,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@reduxjs/toolkit": "^1.8.0",
-    "@vvv-interactive/nftanvil-react": "^0.22.0",
+    "@vvv-interactive/nftanvil-react": "^0.32.0",
     "@vvv-interactive/nftanvil-tools": "^0.22.0",
     "dotenv": "^16.0.0",
     "file-loader": "^6.2.0",

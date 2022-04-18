@@ -25,8 +25,7 @@ function Feature({ title, desc, link, total, ...rest }) {
     <Box
       p={5}
       shadow="md"
-      borderWidth="1px"
-      borderColor="#9d8144"
+      border={"double"}
       borderRadius="5px"
       bgColor="#16171b"
       maxW="400px"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { NavLink } from "react-router-dom";
 import { tokenUrl } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
@@ -14,9 +14,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const BonsaiCharLink = ({ name, tokenId }) => {
+const BonsaiCharLink = ({ name }) => {
   const map = useAnvilSelector((state) => state.user.map);
 
+  // loop through nfts and get id
   return (
     <>
       <Popover placement="top-end" isLazy>

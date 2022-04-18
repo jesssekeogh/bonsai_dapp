@@ -2,7 +2,7 @@ import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { accountCanister } from "@vvv-interactive/nftanvil-canisters/cjs/account.js";
 import { PrincipalFromSlot } from "@vvv-interactive/nftanvil-tools/cjs/principal.js";
-import { createCollectionActor } from "../../../../../declarations/collection.js";
+import { createItoActor } from "../../../../../declarations/ito.js";
 
 export const get_mine = () => async (dispatch, getState) => {
   let s = getState();
@@ -48,7 +48,7 @@ export const claim = () => async (dispatch, getState) => {
     AccountIdentifier.TextToArray(s.user.subaccount) || null,
   ].filter(Boolean);
 
-  let collection = createCollectionActor({
+  let collection = createItoActor({
     agentOptions: authentication.getAgentOptions(),
   });
 

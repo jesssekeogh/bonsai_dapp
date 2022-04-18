@@ -22,6 +22,26 @@ import {
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import BuyNft from "../nft_functions/BuyNft";
+import anvillogo from "../../../../assets/anvillogo.svg"; // get logo from site
+import {
+  Center,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Text,
+  HStack,
+  Input,
+  Grid,
+  GridItem,
+  InputGroup,
+  InputRightElement,
+  Heading,
+  Hide,
+} from "@chakra-ui/react";
+import { Image as ChakraImage } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 
 const urlAuthor = // api for author address
   "https://nftpkg.com/api/v1/author/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; //change to minter address
@@ -68,6 +88,54 @@ const CommunityNft = () => {
   }
   return (
     <>
+    {/* search bar */}
+      {/* <Center>
+        <Grid templateColumns="repeat(4, 1fr)" mb={5}>
+          <GridItem colStart={2} colSpan={2}>
+            <InputGroup>
+              <Input
+                color="#f0e6d3"
+                placeholder="NFT Search..."
+                variant="outline"
+                size="lg"
+                value={value}
+                onChange={handleChange}
+              />
+              <InputRightElement
+                zIndex={1}
+                _hover={{ cursor: "pointer" }}
+                onClick={() => {
+                  setValue("");
+                }}
+                mt={1}
+                children={
+                  <CloseIcon _hover={{ opacity: "0.8" }} color={"#f0e6d3"} />
+                }
+              />
+            </InputGroup>
+          </GridItem>
+          <Hide above="md">
+            <ChakraImage ms={2} pt={2} src={anvillogo} h="40px" />
+          </Hide>
+          <Hide below="md">
+            <GridItem colStart={4} ms={2}>
+              <HStack w="220px">
+                <Heading color="#f0e6d3" fontSize="xs">
+                  Powered by{" "}
+                  <Text
+                    bgGradient="linear(to-t, #c61682, #ee670d)"
+                    bgClip="text"
+                    fontWeight={800}
+                  >
+                    NFT Anvil
+                  </Text>
+                </Heading>
+                <ChakraImage src={anvillogo} h="40px" />
+              </HStack>
+            </GridItem>
+          </Hide>
+        </Grid>
+      </Center> */}
       <Center>
         <SimpleGrid columns={[2, null, 4]} pb={5} gap={2} maxW="1250px">
           {loadedTokens.map((token) => (
@@ -154,7 +222,7 @@ const SingleNFT = ({ imgsrc }) => {
           >
             {name}
           </Heading>
-          <BuyNft tokenId={imgsrc} price={price}/>
+          <BuyNft tokenId={imgsrc} price={price} />
         </Stack>
       </Box>
     </GridItem>
