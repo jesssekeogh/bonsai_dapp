@@ -15,7 +15,8 @@ node_modules/
 dist/
 
 .vessel/
-Project_Minting/
+project_minting/
+notes/
 
 canister_ids.json
 identity.json
