@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { CgInfinity } from "react-icons/cg";
 import { MdPerson, MdSend } from "react-icons/md";
-import { FaBook, FaImages } from "react-icons/fa";
+import { FaBook, FaRocket } from "react-icons/fa";
+import { GiShop } from "react-icons/gi";
 import { IoIosImages } from "react-icons/io";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
@@ -56,13 +57,19 @@ const MenuLinks = () => (
       className={(navData) => (navData.isActive ? "nav-active" : "")}
       to="/stories"
     >
-      <p>STORIES</p>
+      <p>Stories</p>
     </NavLink>
     <NavLink
       to="/nft"
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
-      <p>NFT</p>
+      <p>Launchpad</p>
+    </NavLink>
+    <NavLink
+      to="/marketplace"
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
+      <p>Marketplace</p>
     </NavLink>
     {/* <NavLink
       to="/create"
@@ -214,8 +221,11 @@ const NavBar = () => {
                   <MenuItem icon={<FaBook />}>Stories</MenuItem>
                 </NavLink>
                 <NavLink to="/nft">
-                  <MenuItem icon={<FaImages />}>NFT</MenuItem>
+                  <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
                 </NavLink>
+                {/* <NavLink to="/marketplace">
+                  <MenuItem icon={<GiShop />}>Marketplace</MenuItem>
+                </NavLink> */}
                 {/* <NavLink to="/create">
                   <MenuItem icon={<EditIcon />}>Create</MenuItem>
                 </NavLink> */}

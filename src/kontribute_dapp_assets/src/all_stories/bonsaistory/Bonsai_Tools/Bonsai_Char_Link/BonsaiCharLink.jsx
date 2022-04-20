@@ -46,7 +46,7 @@ const BonsaiCharLink = ({ name }) => {
                 bgGradient="linear(to-r, #6190E8, #A7BFE8)"
                 _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
               >
-                <Text as="samp">View in Marketplace</Text>
+                <Text as="samp">Buy Now</Text>
               </Button>
             </NavLink>
           </Stack>

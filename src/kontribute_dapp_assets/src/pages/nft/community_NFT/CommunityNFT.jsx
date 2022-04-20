@@ -21,7 +21,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import BuyNft from "../nft_functions/BuyNft";
+import { BuyNft } from "../../components";
 import anvillogo from "../../../../assets/anvillogo.svg"; // get logo from site
 import {
   Center,

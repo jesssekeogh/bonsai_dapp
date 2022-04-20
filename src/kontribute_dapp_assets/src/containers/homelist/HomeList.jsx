@@ -78,7 +78,7 @@ const HomeList = () => {
             alignSelf={"center"}
             position={"relative"}
           >
-            <Link to="stories">
+            <Link to="stories/bonsai-all">
               <Button
                 colorScheme="#282828"
                 bg="#282828"
@@ -88,7 +88,7 @@ const HomeList = () => {
                 Bonsai Story
               </Button>
             </Link>
-            <Link to="/nft">
+            <Link to="/nft/bonsai-nft">
               <Button
                 colorScheme="#282828"
                 bg="#282828"

@@ -2,9 +2,8 @@ import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { accountCanister } from "@vvv-interactive/nftanvil-canisters/cjs/account.js";
 import { PrincipalFromSlot } from "@vvv-interactive/nftanvil-tools/cjs/principal.js";
-import { createItoActor } from "../../../../../declarations/ito.js";
 
-export const get_mine = () => async (dispatch, getState) => {
+const GetMine = () => async (dispatch, getState) => {
   let s = getState();
   if (!s.user.map.account?.length) return null;
   let address = s.user.address;
@@ -39,29 +38,4 @@ export const get_mine = () => async (dispatch, getState) => {
   return final;
 };
 
-export const claim = () => async (dispatch, getState) => {
-  const s = getState();
-
-  let address = AccountIdentifier.TextToArray(s.user.address);
-
-  let subaccount = [
-    AccountIdentifier.TextToArray(s.user.subaccount) || null,
-  ].filter(Boolean);
-
-  let collection = createItoActor({
-    agentOptions: authentication.getAgentOptions(),
-  });
-
-  let owned = await collection.owned(address);
-  if (owned.err) throw new Error(owned.err);
-
-  let tokens = owned.ok.tokens.filter(Boolean);
-
-  let claimed = await Promise.all(
-    tokens.map((tid) => {
-      return collection.claim(address, subaccount, tid);
-    })
-  );
-
-  // console.log(tokens, claimed);
-};
+export default GetMine;

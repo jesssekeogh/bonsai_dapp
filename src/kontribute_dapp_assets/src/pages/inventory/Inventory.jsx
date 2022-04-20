@@ -21,8 +21,8 @@ import {
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
-import { get_mine, claim } from "../nft/nft_functions/GetMine";
-import InventoryNft from "../nft/nft_functions/InventoryNft.jsx";
+import { GetMine, Claim } from "../components";
+import InventoryNft from "../components/nft_functions/InventoryNft.jsx";
 
 const Inventory = () => {
   const [data, setData] = useState([]);
@@ -32,14 +32,14 @@ const Inventory = () => {
   const [Loaded, setLoaded] = useState(false);
 
   const load = async () => {
-    setData(await dispatch(get_mine()));
+    setData(await dispatch(GetMine()));
     setLoaded(true);
     // setData([394737]);
   };
 
   useEffect(() => {
     if (loaded) {
-      dispatch(claim()).then(() => load());
+      dispatch(Claim()).then(() => load());
       // load()
     }
   }, []);

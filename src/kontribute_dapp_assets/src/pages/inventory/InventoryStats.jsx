@@ -17,7 +17,7 @@ import {
   useAnvilDispatch,
 } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import { get_mine } from "../nft/nft_functions/GetMine";
+import { GetMine } from "../components";
 
 const InventoryStats = () => {
   const [data, setData] = useState([]);
@@ -32,7 +32,7 @@ const InventoryStats = () => {
 
   const load = async () => {
     let arrayOfTokens = [];
-    let loadedData = await dispatch(get_mine());
+    let loadedData = await dispatch(GetMine());
     setData(loadedData);
     setLoaded(true);
     // setData([394609]);

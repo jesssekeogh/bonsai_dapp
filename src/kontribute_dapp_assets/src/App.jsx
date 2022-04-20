@@ -21,6 +21,8 @@ import {
 import { AuthPage, NavBar, LoadingSpinner } from "./containers";
 
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
+import BonsaiNFT from "./pages/nft/bonsai_NFT/BonsaiNFT";
+import CommunityNft from "./pages/nft/community_NFT/CommunityNft";
 
 // this is the launch page:
 function App() {
@@ -100,7 +102,8 @@ function App() {
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/nft" element={<NFT />} />
-                <Route path="/nft/:nftname" element={<NFT />} />
+                <Route path="/nft/bonsai-nft" element={<BonsaiNFT />} />
+                <Route path="/marketplace" element={<CommunityNft />} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
                 <Route

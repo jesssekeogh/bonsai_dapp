@@ -10,10 +10,11 @@ import {
   useColorModeValue,
   Container,
   Flex,
+  SlideFade
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import logo from "../../../../assets/Bonsai-Team-ICON-Black.png";
-import Purchase from "../nft_functions/Purchase";
+import { Purchase } from "../../components";
 
 // not all NFTs have been added
 const BonsaiNFT = () => {
@@ -56,46 +57,48 @@ const BonsaiNFT = () => {
           </Stack>
         </Box>
         <Box as="section" py="10" px={{ base: "4", md: "8" }}>
-          <SimpleGrid
-            columns={{ base: 1, lg: 3 }}
-            spacing={{ base: "8", lg: "2" }}
-            maxW="7xl"
-            mx="auto"
-            justifyItems="center"
-            alignItems="center"
-          >
-            <PricingCard
-              isMain={"auto"}
-              data={{
-                price: "3.00 ICP",
-                name: "Recruit",
-                details: "1 Bonsai Warrior NFT",
-              }}
-              button={<Purchase nfts={1} amount={300000000} />}
-            />
-            <PricingCard
-              discount2
-              isMain={"110%"}
-              zIndex={-1}
-              data={{
-                price: "12.00 ICP",
-                name: "Emperor",
-                details: "5 Bonsai Warrior NFTs",
-              }}
-              button={<Purchase nfts={5} amount={1200000000} />}
-            />
-            <PricingCard
-              discount1
-              isMain={"auto"}
-              transform={{ lg: "scale(1.05)" }}
-              data={{
-                price: "8.00 ICP",
-                name: "Warrior",
-                details: "3 Bonsai Warrior NFTs",
-              }}
-              button={<Purchase nfts={3} amount={800000000} />}
-            />
-          </SimpleGrid>
+          <SlideFade in={true} offsetY="20px">
+            <SimpleGrid
+              columns={{ base: 1, lg: 3 }}
+              spacing={{ base: "8", lg: "2" }}
+              maxW="7xl"
+              mx="auto"
+              justifyItems="center"
+              alignItems="center"
+            >
+              <PricingCard
+                isMain={"auto"}
+                data={{
+                  price: "3.00 ICP",
+                  name: "Warrior",
+                  details: "1 Bonsai Warrior NFT",
+                }}
+                button={<Purchase nfts={1} amount={300000000} />}
+              />
+              <PricingCard
+                discount2
+                isMain={"110%"}
+                zIndex={-1}
+                data={{
+                  price: "21.00 ICP",
+                  name: "Emperor",
+                  details: "10 Bonsai Warrior NFTs",
+                }}
+                button={<Purchase nfts={10} amount={2100000000} />}
+              />
+              <PricingCard
+                discount1
+                isMain={"auto"}
+                transform={{ lg: "scale(1.05)" }}
+                data={{
+                  price: "12.00 ICP",
+                  name: "Grandmaster",
+                  details: "5 Bonsai Warrior NFTs",
+                }}
+                button={<Purchase nfts={5} amount={1200000000} />}
+              />
+            </SimpleGrid>
+          </SlideFade>
         </Box>
       </Container>
     </>
@@ -151,8 +154,8 @@ export const Card = (props) => {
       borderRadius="lg"
       bgColor="#16171b"
     >
-      {discount1 && <CardBadge>10% Discount</CardBadge>}
-      {discount2 && <CardBadge>20% Discount</CardBadge>}
+      {discount1 && <CardBadge>20% Discount</CardBadge>}
+      {discount2 && <CardBadge>30% Discount</CardBadge>}
       {children}
     </Box>
   );

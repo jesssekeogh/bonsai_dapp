@@ -312,14 +312,14 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
                 };
               };
               // pricing option two
-              case (800000000) {
+              case (1200000000) {
                 switch(use(tx_id)) {
                   case (#ok()) {
-                    switch(give(from, 3, #buy)) {
+                    switch(give(from, 5, #buy)) {
                       case (#ok(basket)) {
                         #ok(basket);
                       };
-                      case (#err(e)) { 
+                      case (#err(e)) {
                         #refund(e);
                       };
                     };
@@ -328,10 +328,10 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
                 };
               };
               // pricing option three
-              case (1200000000) {
+              case (2100000000) {
                 switch(use(tx_id)) {
                   case (#ok()) {
-                    switch(give(from, 5, #buy)) { 
+                    switch(give(from, 10, #buy)) { 
                       case (#ok(basket)) {
                         #ok(basket);
                       };
