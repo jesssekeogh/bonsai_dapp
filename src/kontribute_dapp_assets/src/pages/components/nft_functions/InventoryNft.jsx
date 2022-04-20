@@ -129,7 +129,7 @@ const InventoryNft = ({ tokenId }) => {
         />
         <MenuList>
           <MenuItem closeOnSelect={false}>
-            <ViewNft tokenId={tokenId} />
+            <ViewNft tokenId={tokenId} trigger={"top-end"} />
           </MenuItem>
           <MenuItem icon={<ImPriceTag />} onClick={onOpen}>
             Sell NFT

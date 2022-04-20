@@ -21,7 +21,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { BuyNft } from "../../components";
+import { MarketplaceNft } from "../../components";
 import anvillogo from "../../../../assets/anvillogo.svg"; // get logo from site
 import {
   Center,
@@ -43,8 +43,7 @@ import {
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 
-const urlAuthor = // api for author address
-  "https://nftpkg.com/api/v1/author/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; //change to minter address
+// TODO: needs to loop through all IDs and find prices over 0 then use SingleNft component to render all them NFTs
 
 const urlAuthorPrices =
   "https://nftpkg.com/api/v1/prices/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; // change to minter address
@@ -222,7 +221,7 @@ const SingleNFT = ({ imgsrc }) => {
           >
             {name}
           </Heading>
-          <BuyNft tokenId={imgsrc} price={price} />
+          <MarketplaceNft tokenId={imgsrc} price={price} />
         </Stack>
       </Box>
     </GridItem>

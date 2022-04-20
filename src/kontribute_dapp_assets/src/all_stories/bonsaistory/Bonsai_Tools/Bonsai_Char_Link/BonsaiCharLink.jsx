@@ -1,57 +1,39 @@
-import React, {useState} from "react";
-import { NavLink } from "react-router-dom";
-import { tokenUrl } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
+import React, { useState, useEffect } from "react";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
-import { Image as ChakraImage } from "@chakra-ui/react";
-import {
-  PopoverBody,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
-  useBreakpointValue,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { ViewNft } from "../../../../pages/components";
+import "../../BonsaiStory.css";
+
+const urlAuthor = // api for author address
+  "https://nftpkg.com/api/v1/author/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; //change to minter address
 
 const BonsaiCharLink = ({ name }) => {
   const map = useAnvilSelector((state) => state.user.map);
+  const [tokenId, setId] = useState();
+  const [Loaded, setLoaded] = useState(false);
 
-  // loop through nfts and get id
+  const load = async () => {
+    const resp = await fetch(urlAuthor).then((x) => x.json());
+
+    for (var i = 0; i < resp.length; i++) {
+      if (resp[i][2] == name) {
+        setId(resp[i][0]);
+        console.log("id", resp[i][0]);
+        break;
+      }
+    }
+
+    setLoaded(true);
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
   return (
     <>
-      <Popover placement="top-end" isLazy>
-        <PopoverTrigger>
-          <u className="char__link">{name}</u>
-        </PopoverTrigger>
-        <PopoverContent width={"auto"} mx={2} backgroundColor={"#1e212b"}>
-          <PopoverBody>
-            <ChakraImage
-              bg="#fff"
-              rounded={"lg"}
-              height={["200px", null, "300px"]}
-              width={"auto"}
-              objectFit={"cover"}
-              src={tokenUrl(map.space, tokenId, "thumb")}
-            />
-          </PopoverBody>
-          <Stack my={2} direction={"row"} align={"center"} justify="center">
-            <NavLink to={`${"/nft/"}${name}`}>
-              <Button
-                size={useBreakpointValue(["xs", "md"])}
-                fontSize={{ base: "0.6rem", sm: "xs", md: "md" }}
-                // maxW={"50%"}
-                rounded={"full"}
-                color={"white"}
-                bgGradient="linear(to-r, #6190E8, #A7BFE8)"
-                _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
-              >
-                <Text as="samp">Buy Now</Text>
-              </Button>
-            </NavLink>
-          </Stack>
-        </PopoverContent>
-      </Popover>
+      {Loaded ? (
+          <ViewNft trigger={"auto"} tokenId={tokenId} storyview={true} name={name} />
+      ) : null}
     </>
   );
 };

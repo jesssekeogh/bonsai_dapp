@@ -11,7 +11,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Icon
+  Icon,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { Image as ChakraImage } from "@chakra-ui/react";
@@ -24,6 +24,7 @@ import {
   nft_fetch,
   useAnvilDispatch,
 } from "@vvv-interactive/nftanvil-react";
+import "../../../../assets/main.css";
 
 const NftTags = (props) => {
   return (
@@ -47,7 +48,7 @@ const NftTags = (props) => {
   );
 };
 
-const ViewNft = ({ tokenId }) => {
+const ViewNft = ({ trigger, tokenId, storyview, name }) => {
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
 
@@ -74,13 +75,20 @@ const ViewNft = ({ tokenId }) => {
 
   return (
     <>
-      <Popover placement="top-end" isLazy>
+      <Popover placement={trigger} isLazy>
         <PopoverTrigger>
-          <Text w={"100%"}><Icon as={ViewIcon} me={2}/>View NFT</Text>
+          {storyview ? (
+            <u className="char__link">{name}</u>
+          ) : (
+            <Text w={"100%"}>
+              <Icon as={ViewIcon} me={2} />
+              View NFT
+            </Text>
+          )}
         </PopoverTrigger>
         <PopoverContent width={"auto"} mx={2} backgroundColor={"#1e212b"}>
           <PopoverArrow />
-          <PopoverBody>
+          <PopoverBody >
             {Loaded ? (
               <ChakraImage
                 bg="#fff"

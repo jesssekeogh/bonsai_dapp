@@ -31,7 +31,7 @@ import { tokenToText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import ViewNft from "./ViewNft";
 
-const BuyNft = ({ tokenId, price }) => {
+const MarketplaceNft = ({ tokenId, price }) => {
   const dispatch = useAnvilDispatch();
 
   const buy = async () => {
@@ -135,4 +135,4 @@ const BuyNft = ({ tokenId, price }) => {
   );
 };
 
-export default BuyNft;
+export default MarketplaceNft;
