@@ -69,7 +69,7 @@ const HomeList = () => {
           <Text color="#f0e6d3">
             Kontribute is an interactive dapp built on the Internet Computer
             Protocol (ICP). Kontribute brings readers, writers and NFTs
-            together. Check out the Bonsai Warriors story
+            together. Check out the Bonsai Warriors story and accompanying NFT collection
           </Text>
           <Stack
             direction={"row"}
@@ -78,7 +78,7 @@ const HomeList = () => {
             alignSelf={"center"}
             position={"relative"}
           >
-            <Link to="stories">
+            <Link to="stories/bonsai-all">
               <Button
                 colorScheme="#282828"
                 bg="#282828"
@@ -88,7 +88,7 @@ const HomeList = () => {
                 Bonsai Story
               </Button>
             </Link>
-            {/* <Link to="/nft">
+            <Link to="/nft/bonsai-nft">
               <Button
                 colorScheme="#282828"
                 bg="#282828"
@@ -97,7 +97,7 @@ const HomeList = () => {
               >
                 Bonsai NFT
               </Button>
-            </Link> */}
+            </Link>
           </Stack>
         </Stack>
         {/* feature: */}
@@ -156,7 +156,7 @@ const HomeList = () => {
             <FaRedditAlien />
           </a>
           <a
-            href="https://github.com/jesssekeogh/bonsai_dapp"
+            href="https://github.com/teambonsai/bonsai_dapp"
             target="_blank"
             rel="noreferrer"
           >

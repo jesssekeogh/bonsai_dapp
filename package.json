@@ -16,9 +16,9 @@
     "copy:types": "rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/** --exclude='assets/' --exclude='idl/' --exclude='*.wasm' --delete src/declarations"
   },
   "devDependencies": {
-    "@dfinity/agent": "^0.10.2",
-    "@dfinity/candid": "0.10.2",
-    "@dfinity/principal": "0.10.2",
+    "@dfinity/agent": "^0.10.4",
+    "@dfinity/candid": "0.10.4",
+    "@dfinity/principal": "0.10.4",
     "assert": "2.0.0",
     "buffer": "6.0.3",
     "copy-webpack-plugin": "^9.0.1",
@@ -48,6 +48,10 @@
     "@dfinity/auth-client": "^0.10.2",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@reduxjs/toolkit": "^1.8.0",
+    "@vvv-interactive/nftanvil-react": "^0.32.0",
+    "@vvv-interactive/nftanvil-tools": "^0.22.0",
+    "dotenv": "^16.0.0",
     "file-loader": "^6.2.0",
     "framer-motion": "^5.6.0",
     "react": "^17.0.2",

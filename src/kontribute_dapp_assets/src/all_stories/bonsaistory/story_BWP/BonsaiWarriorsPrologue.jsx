@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { NavBar } from "../../../containers";
 import {
   Container,
   Center,
 } from "@chakra-ui/react";
 import { Fade } from "react-awesome-reveal";
 import "../BonsaiStory.css";
-import BonsaiVote from "../Bonsai_Vote_Func/BonsaiVote";
+import { BonsaiVote } from "../Bonsai_Tools";
 
 const Option1Details = () => {
   return (
@@ -75,7 +74,6 @@ const BonsaiWarriorsPrologue = () => {
   }, []);
   return (
     <div>
-      <NavBar />
       <div className="bonsai__story_heading">
         <Center>
           <h1>Bonsai Warriors</h1>
@@ -141,7 +139,7 @@ const BonsaiWarriorsPrologue = () => {
         </Container>
       </Fade>
       <BonsaiVote
-        BackendVoteQuery={"user.getVotes()"}
+        BackendVoteQuery={"user.getBonsaiVotes()"}
         Question={"Who are you?"}
         Option1Title={"Artisan"}
         Option1Details={Option1Details()}

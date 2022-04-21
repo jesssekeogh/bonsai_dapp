@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Noto+Sans+JP:wght@700&family=Orienta&family=Risque&display=swap');
 
+.char__link{
+    color: #e79301;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 17pt;
+    cursor: pointer;
+}
+
+.bonsai__spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
 .bonsai__home{
     font-family: 'Noto Sans JP', sans-serif;
 }

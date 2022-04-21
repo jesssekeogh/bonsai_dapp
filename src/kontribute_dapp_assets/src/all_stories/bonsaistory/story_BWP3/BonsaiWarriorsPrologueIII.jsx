@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { NavBar } from "../../../containers";
 import { Container, Center } from "@chakra-ui/react";
 import { Fade } from "react-awesome-reveal";
 import "../BonsaiStory.css";
-import BonsaiVote from "../Bonsai_Vote_Func/BonsaiVote";
+import { BonsaiVote } from "../Bonsai_Tools";
+import { BonsaiCharLink } from "../Bonsai_Tools/index";
 
 const Option1Details = () => {
   return (
@@ -49,7 +49,6 @@ const BonsaiWarriorsPrologueIII = () => {
   }, []);
   return (
     <div>
-      <NavBar />
       <div className="bonsai__story_heading">
         <Center>
           <h1>Bonsai Warriors</h1>
@@ -113,7 +112,7 @@ const BonsaiWarriorsPrologueIII = () => {
         </Container>
       </Fade>
       <BonsaiVote
-        BackendVoteQuery={"user.getVotesIII()"}
+        BackendVoteQuery={"user.getBonsaiVotesIII()"}
         Question={"Choose your School!"}
         Option1Title={"Starlight Sect"}
         Option1Details={Option1Details()}

@@ -1,0 +1,26 @@
+type TransactionId = blob;
+type TokenIdentifier = nat64;
+type SubAccount = blob;
+type Result_1 = 
+ variant {
+   err: text;
+   ok;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: AccountRecordSerialized;
+ };
+type Class = 
+ service {
+   add: (TokenIdentifier) -> ();
+   buy_tx: (TransactionId, opt SubAccount) -> (Result_1);
+   claim: (AccountIdentifier, opt SubAccount, TokenIdentifier) -> (Result_1);
+   getInstaller: () -> (principal) query;
+   gift_code_add: (blob) -> (Result_1);
+   owned: (AccountIdentifier) -> (Result) query;
+   set_admin: (principal) -> () oneway;
+ };
+type AccountRecordSerialized = record {tokens: vec TokenIdentifier;};
+type AccountIdentifier = blob;
+service : () -> Class

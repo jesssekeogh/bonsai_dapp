@@ -1,20 +1,16 @@
 {
   "canisters": {
-    "kontribute_dapp": {
-      "main": "src/kontribute_dapp/main.mo",
-      "type": "motoko"
-    },
-    "create": {
-      "main": "src/kontribute_dapp/create.mo",
-      "type": "motoko"
-    },
     "bonsai": {
       "main": "src/kontribute_dapp/bonsai.mo",
       "type": "motoko"
     },
+    "ito": {
+      "main": "src/kontribute_dapp/ito.mo",
+      "type": "motoko"
+    },
     "kontribute_dapp_assets": {
       "dependencies": [
-        "kontribute_dapp"
+        "bonsai"
       ],
       "frontend": {
         "entrypoint": "src/kontribute_dapp_assets/src/index.html"
@@ -29,7 +25,7 @@
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "vessel sources"
     }
   },
   "dfx": "0.8.4",

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import { NavBar } from "../../../containers";
 import "./BonsaiAll.css";
 import {
   Heading,
@@ -26,8 +25,7 @@ function Feature({ title, desc, link, total, ...rest }) {
     <Box
       p={5}
       shadow="md"
-      borderWidth="1px"
-      borderColor="#9d8144"
+      border={"double"}
       borderRadius="5px"
       bgColor="#16171b"
       maxW="400px"
@@ -84,6 +82,7 @@ function StackEx(props) {
 }
 
 const BonsaiAll = () => {
+  let isMounted = true; // memory leak fix
   const { signActor } = useContext(UserContext);
 
   // state for total votes
@@ -91,54 +90,61 @@ const BonsaiAll = () => {
   const [totalPrologueII, setPrologueII] = useState(<Spinner size="xs" />);
   const [totalPrologueIII, setPrologueIII] = useState(<Spinner size="xs" />);
 
-  const getAllPrologue = async () => {
+  // async promise, returns votes from API calls only if component is mounted
+  const getAllTotals = async () => {
     const user = await signActor();
-    const result = await user.getVotes();
-    const votesTotal = result.total.toString()
-    setPrologue(votesTotal);
-  };
-
-  const getAllPrologueII = async () => {
-    const user = await signActor();
-    const result = await user.getVotesII();
-    const votesTotal = result.total.toString()
-    setPrologueII(votesTotal);
-  };
-
-  const getAllPrologueIII = async () => {
-    const user = await signActor();
-    const result = await user.getVotesIII();
-    const votesTotal = result.total.toString()
-    setPrologueIII(votesTotal);
+    await Promise.all([
+      (async () => {
+        await user.getBonsaiVotes().then((result) => {
+          if (isMounted) {
+            setPrologue(result.total.toString());
+          }
+        });
+      })(),
+      (async () => {
+        await user.getBonsaiVotesII().then((result) => {
+          if (isMounted) {
+            setPrologueII(result.total.toString());
+          }
+        });
+      })(),
+      (async () => {
+        await user.getBonsaiVotesIII().then((result) => {
+          if (isMounted) {
+            setPrologueIII(result.total.toString());
+          }
+        });
+      })()
+    ]);
   };
 
   useEffect(() => {
-    getAllPrologueIII();
-    getAllPrologueII();
-    getAllPrologue();
+    getAllTotals();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
     <div>
-      <NavBar />
       <Center>
         <Heading color="#a7884a">Bonsai Warriors</Heading>
       </Center>
       <div className="bonsai_all-container">
-          <Center mb="1rem">
-            <Delayed>
-              <SlideFade in={true}>
-                <StackEx
-                  title1={"PROLOGUE III"}
-                  body1={
-                    "Now we must choose our school, the place of learning that Tang Wei shall study at."
-                  }
-                  link1={"/stories/bonsai-warriors-prologueIII"}
-                  total1={totalPrologueIII}
-                />
-              </SlideFade>
-            </Delayed>
-          </Center>
+        <Center mb="1rem">
+          <Delayed>
+            <SlideFade in={true}>
+              <StackEx
+                title1={"PROLOGUE III"}
+                body1={
+                  "Now we must choose our school, the place of learning that Tang Wei shall study at."
+                }
+                link1={"/stories/bonsai-warriors-prologueIII"}
+                total1={totalPrologueIII}
+              />
+            </SlideFade>
+          </Delayed>
+        </Center>
         <Center mb="1rem">
           <Delayed waitBeforeShow={200}>
             <SlideFade in={true}>

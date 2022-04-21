@@ -1,36 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-// pages:
-import Home from "./pages/home/Home";
-import Stories from "./pages/stories/Stories";
-import NFT from "./pages/nft/NFT";
-import Create from "./pages/create/Create";
-import { Footer } from "./containers";
-import CommunityUploads from "./pages/communityuploads/CommunityUploads";
-
-// design
-import klogo from "../assets/kontribute_logo.png";
-import { CgInfinity } from "react-icons/cg";
-import { Box, Image, Center, Button, Image } from "@chakra-ui/react";
-
-// for the actor
-import { AuthClient } from "@dfinity/auth-client";
-// for Bonsai Warriors votes:
-import { createActor, canisterId } from "../../declarations/kontribute_dapp";
-// for storing the user
-import { UserContext } from "./Context";
-
-// bonsai links:
-import { BonsaiWarriorsPrologue } from "./all_stories/bonsaistory";
-import { BonsaiWarriorsPrologueII } from "./all_stories/bonsaistory"
-import { BonsaiWarriorsPrologueIII } from "./all_stories/bonsaistory";
-import { BonsaiAll } from "./all_stories/bonsaistory";
-
-import UniqueStory from "./pages/uniquestories/UniqueStory";
+import { AuthClient } from "@dfinity/auth-client"; // for the actor
+import { createActor, canisterId } from "../../declarations/bonsai"; // for Bonsai Warriors votes:
+import { UserContext } from "./Context"; // for storing the user
+import {
+  Home,
+  LaunchPad,
+  Stories,
+  Inventory,
+  BonsaiNft,
+  MarketPlace,
+} from "./pages";
+import {
+  BonsaiAll,
+  BonsaiWarriorsPrologue,
+  BonsaiWarriorsPrologueII,
+  BonsaiWarriorsPrologueIII,
+} from "./all_stories/bonsaistory";
+import { AuthPage, NavBar, LoadingSpinner } from "./containers";
+import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 
 // this is the launch page:
-
 function App() {
   const [signedIn, setSignedIn] = useState(false);
   const [principal, setPrincipal] = useState("");
@@ -53,7 +43,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app", //"http:/renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
+        identityProvider: "https://identity.ic0.app", //"http://rno2w-sqaaa-aaaaa-aaacq-cai.localhost:8000/",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -87,52 +77,14 @@ function App() {
     initAuth();
   }, []);
 
+  const loaded = useAnvilSelector((state) => state.user.map.history);
+  if (!loaded) return <LoadingSpinner />;
+
   return (
     <div>
       {!signedIn && client ? (
         <div>
-          <Center mt="10%">
-            <Box
-              maxW="sm"
-              borderWidth="1px"
-              borderColor="#9d8144"
-              borderRadius="lg"
-              overflow="hidden"
-            >
-              <Center>
-                <Image p="5" maxH="300px" src={klogo} alt="kontribute" />
-              </Center>
-              <Box p="3">
-                <Box display="flex" alignItems="baseline">
-                  <Box
-                    color="gray.500"
-                    fontWeight="semibold"
-                    letterSpacing="wide"
-                    fontSize="xs"
-                    textTransform="uppercase"
-                  >
-                    Please Authenticate to enter Kontribute
-                  </Box>
-                </Box>
-
-                <Box mt="3">
-                  <Center>
-                    <div className="bonsai__auth-button">
-                      <Button
-                        onClick={signIn}
-                        rightIcon={<CgInfinity />}
-                        colorScheme="#0a0a0d"
-                        bg="#9d8144"
-                      >
-                        Authenticate
-                      </Button>
-                    </div>
-                  </Center>
-                </Box>
-              </Box>
-            </Box>
-            </Center>
-          <Footer />
+          <AuthPage signIn={signIn} />
         </div>
       ) : null}
 
@@ -140,18 +92,27 @@ function App() {
         <>
           <Router>
             <UserContext.Provider value={{ principal, signOut, signActor }}>
+              <NavBar />
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
-                <Route path="/nft" element={<NFT />} />
-                <Route path="/nft/:nftname" element={<NFT />} />
-                <Route path="/create" element={<Create />} />
+                <Route path="/inventory" element={<Inventory />} />
+                <Route path="/nft" element={<LaunchPad />} />
+                <Route path="/nft/bonsai-nft" element={<BonsaiNft />} />
+                <Route path="/marketplace" element={<MarketPlace />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
-                <Route path="/stories/bonsai-warriors-prologue" element={<BonsaiWarriorsPrologue />} />
-                <Route path="/stories/bonsai-warriors-prologueII" element={<BonsaiWarriorsPrologueII />} />
-                <Route path="/stories/bonsai-warriors-prologueIII" element={<BonsaiWarriorsPrologueIII />} />
-                <Route path="/stories/community-stories/" element={<CommunityUploads />} />
-                <Route path="/stories/community-stories/:storyid" element={<UniqueStory />} />
+                <Route
+                  path="/stories/bonsai-warriors-prologue"
+                  element={<BonsaiWarriorsPrologue />}
+                />
+                <Route
+                  path="/stories/bonsai-warriors-prologueII"
+                  element={<BonsaiWarriorsPrologueII />}
+                />
+                <Route
+                  path="/stories/bonsai-warriors-prologueIII"
+                  element={<BonsaiWarriorsPrologueIII />}
+                />
               </Routes>
             </UserContext.Provider>
           </Router>

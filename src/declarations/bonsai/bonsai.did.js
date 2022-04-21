@@ -11,12 +11,12 @@ export const idlFactory = ({ IDL }) => {
     'vote3' : IDL.Nat,
   });
   return IDL.Service({
-    'BonsaiOption1' : IDL.Func([IDL.Principal], [IDL.Text], []),
-    'BonsaiOption2' : IDL.Func([IDL.Principal], [IDL.Text], []),
-    'BonsaiOption3' : IDL.Func([IDL.Principal], [IDL.Text], []),
+    'BonsaiOption1' : IDL.Func([], [IDL.Text], []),
+    'BonsaiOption2' : IDL.Func([], [IDL.Text], []),
+    'BonsaiOption3' : IDL.Func([], [IDL.Text], []),
     'getBonsaiVotes' : IDL.Func([], [StoryVotes], ['query']),
-    'getBonsaiVotesII' : IDL.Func([IDL.Principal], [StoryVotes], ['query']),
-    'getBonsaiVotesIII' : IDL.Func([IDL.Principal], [StoryVotes], ['query']),
+    'getBonsaiVotesII' : IDL.Func([], [StoryVotes], ['query']),
+    'getBonsaiVotesIII' : IDL.Func([], [StoryVotes], ['query']),
   });
 };
 export const init = ({ IDL }) => { return []; };
