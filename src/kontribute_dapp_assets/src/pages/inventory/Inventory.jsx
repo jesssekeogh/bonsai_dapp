@@ -22,13 +22,13 @@ const Inventory = () => {
   const load = async () => {
     setData(await dispatch(GetMine()));
     setLoaded(true);
-    setData([394737, 394736]);
+    // setData([394737, 394736]);
   };
 
   useEffect(() => {
     if (loaded) {
-      // dispatch(Claim()).then(() => load());
-      load()
+      dispatch(Claim()).then(() => load());
+      // load()
     }
   }, []);
 

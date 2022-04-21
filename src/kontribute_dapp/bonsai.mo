@@ -35,7 +35,8 @@ actor Bonsai {
     };
 
     // vote options,check anon, get the value of principal (null if no vote)
-    public shared(msg) func BonsaiOption1 (callerId : Principal) : async Text {
+    public shared(msg) func BonsaiOption1 () : async Text {
+        let callerId = msg.caller;
 
         if(Principal.toText(callerId) == anon) {
             return "Anonymous user: Invalid";
@@ -66,7 +67,8 @@ actor Bonsai {
 
     };
 
-    public shared(msg) func BonsaiOption2 (callerId : Principal) : async Text {
+    public shared(msg) func BonsaiOption2 () : async Text {
+        let callerId = msg.caller;
 
         if(Principal.toText(callerId) == anon) {
             return "Anonymous user: Invalid";
@@ -97,7 +99,8 @@ actor Bonsai {
 
     };
 
-    public shared(msg) func BonsaiOption3 (callerId : Principal) : async Text {
+    public shared(msg) func BonsaiOption3 () : async Text {
+        let callerId = msg.caller;
 
         if(Principal.toText(callerId) == anon) {
             return "Anonymous user: Invalid";
@@ -129,7 +132,7 @@ actor Bonsai {
     };
 
     // query the vote results for the prologue
-    public query func getBonsaiVotes() : async Types.StoryVotes {
+    public shared query(msg) func getBonsaiVotes() : async Types.StoryVotes {
         let votes : Types.StoryVotes= {
             vote1 = vote1;
             vote2 = vote2;
@@ -141,7 +144,9 @@ actor Bonsai {
     };
 
     // query results for Prologue II
-    public query func getBonsaiVotesII(callerId : Principal) : async Types.StoryVotes {
+    public shared query(msg) func getBonsaiVotesII() : async Types.StoryVotes {
+        let callerId = msg.caller;
+
         var option : Types.Profile = { hasVoted = false; whichOption = "novote"};
 
         let result = Trie.get(
@@ -174,7 +179,9 @@ actor Bonsai {
     };
     
     // query results for prologue III
-    public query func getBonsaiVotesIII(callerId : Principal) : async Types.StoryVotes {
+    public shared query(msg) func getBonsaiVotesIII() : async Types.StoryVotes {
+        let callerId = msg.caller;
+        
         var option : Types.Profile = { hasVoted = false; whichOption = "novote"};
         
         let result = Trie.get(

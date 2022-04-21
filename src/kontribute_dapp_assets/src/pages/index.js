@@ -1,7 +1,6 @@
-export { default as CommunityUploads } from './communityuploads/CommunityUploads';
-export { default as Create } from './create/Create';
 export { default as Home } from './home/Home';
-export { default as NFT } from './nft/NFT';
+export { default as LaunchPad } from './launchpad/LaunchPad';
+export { default as BonsaiNft } from './launchpad/bonsai_Nft/BonsaiNft'
 export { default as Inventory } from './inventory/Inventory';
 export { default as Stories } from './stories/Stories';
-export { default as UniqueStory } from './communityuploads/uniquestories/UniqueStory';
+export { default as MarketPlace } from './marketplace/MarketPlace';

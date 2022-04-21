@@ -95,21 +95,21 @@ const BonsaiAll = () => {
     const user = await signActor();
     await Promise.all([
       (async () => {
-        await user.getVotes().then((result) => {
+        await user.getBonsaiVotes().then((result) => {
           if (isMounted) {
             setPrologue(result.total.toString());
           }
         });
       })(),
       (async () => {
-        await user.getVotesII().then((result) => {
+        await user.getBonsaiVotesII().then((result) => {
           if (isMounted) {
             setPrologueII(result.total.toString());
           }
         });
       })(),
       (async () => {
-        await user.getVotesIII().then((result) => {
+        await user.getBonsaiVotesIII().then((result) => {
           if (isMounted) {
             setPrologueIII(result.total.toString());
           }

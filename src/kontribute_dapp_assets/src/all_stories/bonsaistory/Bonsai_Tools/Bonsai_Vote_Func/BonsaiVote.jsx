@@ -49,7 +49,7 @@ const VoteButton1 = (props) => {
   const voteoption1 = async () => {
     setClick1(true);
     const user = await signActor();
-    const vote = await user.VoteOption1();
+    const vote = await user.BonsaiOption1();
     if (vote.toString() === "user has voted successfully on vote1") {
       setClick1(false);
       props.close();
@@ -105,7 +105,7 @@ const VoteButton2 = (props) => {
   const voteoption2 = async () => {
     setClick2(true);
     const user = await signActor();
-    const vote = await user.VoteOption2();
+    const vote = await user.BonsaiOption2();
     if (vote.toString() === "user has voted successfully on vote2") {
       setClick2(false);
       props.close();
@@ -161,7 +161,7 @@ const VoteButton3 = (props) => {
   const voteoption3 = async () => {
     setClick3(true);
     const user = await signActor();
-    const vote = await user.VoteOption3();
+    const vote = await user.BonsaiOption3();
     if (vote.toString() === "user has voted successfully on vote3") {
       setClick3(false);
       props.close();

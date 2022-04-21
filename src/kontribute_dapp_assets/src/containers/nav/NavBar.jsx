@@ -71,12 +71,6 @@ const MenuLinks = () => (
     >
       <p>Marketplace</p>
     </NavLink>
-    {/* <NavLink
-      to="/create"
-      className={(navData) => (navData.isActive ? "nav-active" : "")}
-    >
-      <p>CREATE</p>
-    </NavLink> */}
   </>
 );
 
@@ -225,9 +219,6 @@ const NavBar = () => {
                 </NavLink>
                 {/* <NavLink to="/marketplace">
                   <MenuItem icon={<GiShop />}>Marketplace</MenuItem>
-                </NavLink> */}
-                {/* <NavLink to="/create">
-                  <MenuItem icon={<EditIcon />}>Create</MenuItem>
                 </NavLink> */}
               </MenuList>
             </Menu>

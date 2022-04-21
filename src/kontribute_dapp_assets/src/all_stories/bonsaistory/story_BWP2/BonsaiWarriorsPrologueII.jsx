@@ -116,7 +116,7 @@ const BonsaiWarriorsPrologueII = () => {
         </Container>
       </Fade>
       <BonsaiVote
-        BackendVoteQuery={"user.getVotesII()"}
+        BackendVoteQuery={"user.getBonsaiVotesII()"}
         Question={"What is your name?"}
         Option1Title={"Jiang Zhe"}
         Option1Details={Option1Details()}

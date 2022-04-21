@@ -1,13 +1,5 @@
 {
   "canisters": {
-    "kontribute_dapp": {
-      "main": "src/kontribute_dapp/main.mo",
-      "type": "motoko"
-    },
-    "create": {
-      "main": "src/kontribute_dapp/create.mo",
-      "type": "motoko"
-    },
     "bonsai": {
       "main": "src/kontribute_dapp/bonsai.mo",
       "type": "motoko"
@@ -18,7 +10,7 @@
     },
     "kontribute_dapp_assets": {
       "dependencies": [
-        "kontribute_dapp"
+        "bonsai"
       ],
       "frontend": {
         "entrypoint": "src/kontribute_dapp_assets/src/index.html"

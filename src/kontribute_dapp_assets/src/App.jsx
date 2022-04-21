@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthClient } from "@dfinity/auth-client"; // for the actor
-import { createActor, canisterId } from "../../declarations/kontribute_dapp"; // for Bonsai Warriors votes:
+import { createActor, canisterId } from "../../declarations/bonsai"; // for Bonsai Warriors votes:
 import { UserContext } from "./Context"; // for storing the user
 import {
-  CommunityUploads,
-  Create,
   Home,
-  NFT,
+  LaunchPad,
   Stories,
-  UniqueStory,
   Inventory,
+  BonsaiNft,
+  MarketPlace,
 } from "./pages";
 import {
   BonsaiAll,
@@ -19,10 +18,7 @@ import {
   BonsaiWarriorsPrologueIII,
 } from "./all_stories/bonsaistory";
 import { AuthPage, NavBar, LoadingSpinner } from "./containers";
-
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
-import BonsaiNFT from "./pages/nft/bonsai_NFT/BonsaiNFT";
-import CommunityNft from "./pages/nft/community_NFT/CommunityNft";
 
 // this is the launch page:
 function App() {
@@ -47,7 +43,7 @@ function App() {
   const signIn = async () => {
     const { identity, principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app", //"http://renrk-eyaaa-aaaaa-aaada-cai.localhost:8000/",
+        identityProvider: "https://identity.ic0.app", //"http://rno2w-sqaaa-aaaaa-aaacq-cai.localhost:8000/",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal().toString();
@@ -101,19 +97,10 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/inventory" element={<Inventory />} />
-                <Route path="/nft" element={<NFT />} />
-                <Route path="/nft/bonsai-nft" element={<BonsaiNFT />} />
-                <Route path="/marketplace" element={<CommunityNft />} />
-                <Route path="/create" element={<Create />} />
+                <Route path="/nft" element={<LaunchPad />} />
+                <Route path="/nft/bonsai-nft" element={<BonsaiNft />} />
+                <Route path="/marketplace" element={<MarketPlace />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
-                <Route
-                  path="/stories/community-stories/"
-                  element={<CommunityUploads />}
-                />
-                <Route
-                  path="/stories/community-stories/:storyid"
-                  element={<UniqueStory />}
-                />
                 <Route
                   path="/stories/bonsai-warriors-prologue"
                   element={<BonsaiWarriorsPrologue />}

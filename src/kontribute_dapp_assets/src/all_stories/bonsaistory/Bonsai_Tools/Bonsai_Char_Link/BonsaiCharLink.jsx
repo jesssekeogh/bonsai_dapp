@@ -3,6 +3,8 @@ import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import { ViewNft } from "../../../../pages/components";
 import "../../BonsaiStory.css";
 
+// use component like this <BonsaiCharLink name="Dragonshield"/>
+
 const urlAuthor = // api for author address
   "https://nftpkg.com/api/v1/author/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; //change to minter address
 

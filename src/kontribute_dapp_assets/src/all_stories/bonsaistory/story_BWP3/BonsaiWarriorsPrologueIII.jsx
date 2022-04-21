@@ -72,7 +72,7 @@ const BonsaiWarriorsPrologueIII = () => {
             <br></br>
             <br></br>- - - - - - - - - - - - -<br></br>
             <br></br>
-            <BonsaiCharLink name="Dragonshield"/> Call it the lofty dreams of a child, or wild ambitions, but you
+            Call it the lofty dreams of a child, or wild ambitions, but you
             always dreamed of becoming a great sorceress, wreathed in exotic
             magic spells as you lashed out and reshaped the world as you wished.
             Even for a daughter of the Tang clan, this seemed impossible, but
@@ -112,7 +112,7 @@ const BonsaiWarriorsPrologueIII = () => {
         </Container>
       </Fade>
       <BonsaiVote
-        BackendVoteQuery={"user.getVotesIII()"}
+        BackendVoteQuery={"user.getBonsaiVotesIII()"}
         Question={"Choose your School!"}
         Option1Title={"Starlight Sect"}
         Option1Details={Option1Details()}

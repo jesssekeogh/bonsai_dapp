@@ -12,10 +12,10 @@ type Profile =
    whichOption: text;
  };
 service : {
-  BonsaiOption1: (principal) -> (text);
-  BonsaiOption2: (principal) -> (text);
-  BonsaiOption3: (principal) -> (text);
+  BonsaiOption1: () -> (text);
+  BonsaiOption2: () -> (text);
+  BonsaiOption3: () -> (text);
   getBonsaiVotes: () -> (StoryVotes) query;
-  getBonsaiVotesII: (principal) -> (StoryVotes) query;
-  getBonsaiVotesIII: (principal) -> (StoryVotes) query;
+  getBonsaiVotesII: () -> (StoryVotes) query;
+  getBonsaiVotesIII: () -> (StoryVotes) query;
 }

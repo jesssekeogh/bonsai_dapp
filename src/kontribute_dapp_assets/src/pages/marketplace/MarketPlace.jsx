@@ -9,7 +9,7 @@ import {
   nft_fetch,
 } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import { LoadingSpinner } from "../../../containers";
+import { LoadingSpinner } from "../../containers";
 import {
   Box,
   Center,
@@ -21,7 +21,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { MarketplaceNft } from "../../components";
+import { MarketplaceNft } from "../components";
 import anvillogo from "../../../../assets/anvillogo.svg"; // get logo from site
 import {
   Center,
@@ -48,7 +48,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 const urlAuthorPrices =
   "https://nftpkg.com/api/v1/prices/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; // change to minter address
 
-const CommunityNft = () => {
+const MarketPlace = () => {
   const [iDs, setIds] = useState([]);
   const [loaded, setLoaded] = useState(false); // allow loading of tokens before rendering
 
@@ -58,16 +58,8 @@ const CommunityNft = () => {
     let arrayOfTokens = [];
     let respInfo = [];
     let respPrice = [];
-    await Promise.all([
-      (async () => {
-        const resp = await fetch(urlAuthor).then((x) => x.json());
-        respInfo = resp;
-      })(),
-      (async () => {
-        const resp1 = await fetch(urlAuthorPrices).then((x) => x.json());
-        respPrice = resp1;
-      })(),
-    ]);
+    const resp1 = await fetch(urlAuthorPrices).then((x) => x.json());
+    respPrice = resp1;
 
     for (var i = 0; i < respPrice.length; i++) {
       if (respPrice[i][2] > 0) {
@@ -228,4 +220,4 @@ const SingleNFT = ({ imgsrc }) => {
   );
 };
 
-export default CommunityNft;
+export default MarketPlace;

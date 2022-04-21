@@ -7,14 +7,6 @@ module {
         whichOption: Text; 
     };
 
-    // for creating stories
-    public type Story = {
-        title: Text;
-        genre: Text;
-        body: Text;
-        user_discord: Text;
-    };
-
     // for returning votes
     public type StoryVotes = {
         vote1: Nat;

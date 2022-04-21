@@ -23,7 +23,7 @@ import PseudoRandom "mo:anvil/lib/PseudoRandom";
 //
 // SETUP: Use `npx anvil ito` to set it up
 // 0) Edit this contract initial parameters. Scroll down to "EDITABLE" and then deploy it on the IC network
-// 1) `npx anvil authorize` will set admin principal
+// 1) `npx anvil init` will set admin principal
 // 2) `npx anvil add 0 1000 will add minted nfts to this contract
 // 3) `npx anvil airdrop 500` will generate 500 airdrop codes
 
