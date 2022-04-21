@@ -11,5 +11,6 @@ We are working on new NFT and Interactive story solutions to bring these feature
 
 ## Some notes:
 - Local Internt Identity is placed in App.jsx line 47 - replace this in Prod
-- we have a set of test canister IDs that we launch as a (Test Net)
+- We have a set of test canister IDs that we launch as a (Test Net)
+- See branch 'Alpha' for recent updates to the dapp
 ### Made by Team Bonsai
