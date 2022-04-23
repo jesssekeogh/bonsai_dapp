@@ -43,15 +43,14 @@ const Stories = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  if(!imageIsReady) return <LoadingSpinner />
   return (
     <div>
-      {!imageIsReady ? <LoadingSpinner /> : null}
-      {imageIsReady ? (
         <div>
           <Story {...bonsai_details} />
-          {/* <Story {...community_details} /> */}
+          {/* <Story {...community_details} />
+          <Story {...community_details} /> */}
         </div>
-      ) : null}
     </div>
   );
 };

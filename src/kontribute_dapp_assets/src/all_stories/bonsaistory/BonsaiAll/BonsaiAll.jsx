@@ -119,6 +119,7 @@ const BonsaiAll = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getAllTotals();
     return () => {
       isMounted = false;

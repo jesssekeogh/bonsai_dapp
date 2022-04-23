@@ -19,6 +19,7 @@ import {
 } from "./all_stories/bonsaistory";
 import { AuthPage, NavBar, LoadingSpinner } from "./containers";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
+import { Footer } from "./containers/index";
 
 // this is the launch page:
 function App() {
@@ -81,7 +82,7 @@ function App() {
   if (!loaded) return <LoadingSpinner />;
 
   return (
-    <div>
+    <>
       {!signedIn && client ? (
         <div>
           <AuthPage signIn={signIn} />
@@ -114,11 +115,12 @@ function App() {
                   element={<BonsaiWarriorsPrologueIII />}
                 />
               </Routes>
+              <Footer />
             </UserContext.Provider>
           </Router>
         </>
       ) : null}
-    </div>
+    </>
   );
 }
 

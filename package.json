@@ -50,7 +50,7 @@
     "@emotion/styled": "^11.6.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@vvv-interactive/nftanvil-react": "^0.32.0",
-    "@vvv-interactive/nftanvil-tools": "^0.22.0",
+    "@vvv-interactive/nftanvil-tools": "^0.35.0",
     "dotenv": "^16.0.0",
     "file-loader": "^6.2.0",
     "framer-motion": "^5.6.0",

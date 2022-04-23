@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -13,12 +13,21 @@ import { Image as ChakraImage } from "@chakra-ui/react";
 import { BlogTags, BlogAuthor } from "../components";
 import logo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import bonsailogo from "../../../assets/BonsaiWarriors.png";
+import { LoadingSpinner } from "../../containers";
 
-const NFT = () => {
+const LaunchPad = () => {
+  const [imageIsReady, setIsReady] = useState(false);
+
   useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      setIsReady(true);
+    };
+    img.src = bonsailogo;
     window.scrollTo(0, 0);
   }, []);
 
+  if(!imageIsReady) return <LoadingSpinner />
   return (
     <div>
       <Center>
@@ -28,7 +37,7 @@ const NFT = () => {
               colimg={bonsailogo}
               title={"Bonsai Warriors NFTs"}
               description={
-                "A collection of 1200 hand drawn NFTs from the Bonsai Warrior Story"
+                "A collection of 1200 hand crafted NFTs from the Bonsai Warrior Story"
               }
               tags={["Fantasy", "Adventure"]}
               author={"Team Bonsai"}
@@ -94,4 +103,4 @@ const Collection = ({
     </Box>
   );
 };
-export default NFT;
+export default LaunchPad;

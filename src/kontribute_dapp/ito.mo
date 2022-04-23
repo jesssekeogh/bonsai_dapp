@@ -47,10 +47,10 @@ import PseudoRandom "mo:anvil/lib/PseudoRandom";
 shared({caller = _installer}) actor class Class() : async IF.Interface = this {
 
   // EDITABLE
-  private let MAX_TOKENS = 10000;
-  private let MAX_CODES = 10000;
-  private stable var LEFT_AIRDROP : Nat = 3000;
-  private stable var LEFT_PURCHASE : Nat = 6000;
+  private let MAX_TOKENS = 1200;
+  private let MAX_CODES = 400;
+  private stable var LEFT_AIRDROP : Nat = 400;
+  private stable var LEFT_PURCHASE : Nat = 1000;
   private let START_TIMESTAMP : Nat32 = 0; //1654951047
   
 

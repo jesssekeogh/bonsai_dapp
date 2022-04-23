@@ -69,7 +69,8 @@ const HomeList = () => {
           <Text color="#f0e6d3">
             Kontribute is an interactive dapp built on the Internet Computer
             Protocol (ICP). Kontribute brings readers, writers and NFTs
-            together. Check out the Bonsai Warriors story and accompanying NFT collection
+            together. Check out the Bonsai Warriors story and accompanying NFT
+            collection
           </Text>
           <Stack
             direction={"row"}
@@ -102,7 +103,7 @@ const HomeList = () => {
         </Stack>
         {/* feature: */}
         <div className="bonsai_features">
-          <Box p={4}>
+          <Box p={4} mb={10}>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
               <Feature
                 icon={<Icon as={FcUpload} w={10} h={10} />}
@@ -129,49 +130,6 @@ const HomeList = () => {
           </Box>
         </div>
       </Container>
-      <div className="bonsai__footer">
-        <div className="bonsai__footer-heading">
-          <h1 className="gradient__text">Stay in touch with us!</h1>
-        </div>
-        <div className="bonsai__footer-icons">
-          <a
-            href="https://discord.gg/S3qRpq8R6e"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaDiscord />
-          </a>
-          <a
-            href="https://mobile.twitter.com/TeamBonsai_ICP"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaTwitter />
-          </a>
-          <a
-            href="https://h5aet-waaaa-aaaab-qaamq-cai.raw.ic0.app/p/bonsai-warriors"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaRedditAlien />
-          </a>
-          <a
-            href="https://github.com/teambonsai/bonsai_dapp"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaGithub />
-          </a>
-        </div>
-
-        <div className="bonsai__footer-copyright">
-          <p>
-            <i>by Team Bonsai</i>
-          </p>
-          <br />
-          <p>©2022 Kontribute</p>
-        </div>
-      </div>
     </div>
   );
 };

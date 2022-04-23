@@ -42,7 +42,6 @@ import { BlogTags, BlogAuthor } from "../components";
               >
                 <Box
                   width={{ base: "100%", sm: "85%" }}
-                  zIndex="2"
                   marginLeft={{ base: "0", sm: "5%" }}
                   marginTop="5%"
                 >
@@ -52,7 +51,7 @@ import { BlogTags, BlogAuthor } from "../components";
                     objectFit="contain"
                   />
                 </Box>
-                <Box zIndex="1" width="100%" position="absolute" height="100%">
+                <Box width="100%" position="absolute" height="100%">
                   <Box
                     bgGradient={"radial(blue.600 1px, transparent 1px)"}
                     backgroundSize="20px 20px"

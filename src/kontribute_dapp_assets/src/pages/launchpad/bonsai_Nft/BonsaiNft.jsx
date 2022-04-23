@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -10,21 +10,60 @@ import {
   useColorModeValue,
   Container,
   Flex,
-  SlideFade
+  SlideFade,
+  Grid,
+  GridItem,
+  IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Heading,
+  Stack,
+  Text,
+  useBreakpointValue,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { Box, Container, SimpleGrid } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import logo from "../../../../assets/Bonsai-Team-ICON-Black.png";
-import { Purchase } from "../../components";
+import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
+import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
+import { Purchase, CollectionStats, Airdrop } from "../../components";
+import { LoadingSpinner } from "../../../containers";
 
 // not all NFTs have been added
+
+const price_1 = 300000000; // 3 ICP
+const price_2 = 2100000000; // 21 ICP
+const price_3 = 1200000000; // 12 ICP
+
+const tokenomics_link = "";
+
 const BonsaiNFT = () => {
+  const dispatch = useAnvilDispatch();
+  const [stats, setStats] = useState();
+  const [loaded, setLoaded] = useState(false);
+
+  const load = async () => {
+    await dispatch(CollectionStats()).then((x) => setStats(x));
+    setLoaded(true);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [])
+  
+  useEffect(() => {
+    load();
+  });
+
+  if (!loaded) return <LoadingSpinner />;
 
   return (
     <>
-      <Container maxW="1250px">
+      <Container maxW="1250px" mb={10}>
         <Box>
           <Center>
             <HStack>
@@ -51,13 +90,10 @@ const BonsaiNFT = () => {
             <Heading bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
               Bonsai Warrior NFTs
             </Heading>
-            <Text fontWeight={600} color="#f0e6d3" fontSize="lg">
-              A collection of 1200 hand drawn NFTs from the Bonsai Warrior Story
-            </Text>
           </Stack>
         </Box>
-        <Box as="section" py="10" px={{ base: "4", md: "8" }}>
-          <SlideFade in={true} offsetY="20px">
+        <SlideFade in={true} offsetY="20px">
+          <Box as="section" py="10" px={{ base: "4", md: "8" }}>
             <SimpleGrid
               columns={{ base: 1, lg: 3 }}
               spacing={{ base: "8", lg: "2" }}
@@ -69,37 +105,44 @@ const BonsaiNFT = () => {
               <PricingCard
                 isMain={"auto"}
                 data={{
-                  price: "3.00 ICP",
+                  price: AccountIdentifier.e8sToIcp(price_1),
                   name: "Warrior",
                   details: "1 Bonsai Warrior NFT",
                 }}
-                button={<Purchase nfts={1} amount={300000000} />}
+                button={<Purchase nfts={1} amount={price_1} />}
               />
               <PricingCard
                 discount2
                 isMain={"110%"}
                 zIndex={-1}
                 data={{
-                  price: "21.00 ICP",
+                  price: AccountIdentifier.e8sToIcp(price_2),
                   name: "Emperor",
                   details: "10 Bonsai Warrior NFTs",
                 }}
-                button={<Purchase nfts={10} amount={2100000000} />}
+                button={<Purchase nfts={10} amount={price_2} />}
               />
               <PricingCard
                 discount1
                 isMain={"auto"}
                 transform={{ lg: "scale(1.05)" }}
                 data={{
-                  price: "12.00 ICP",
+                  price: AccountIdentifier.e8sToIcp(price_3),
                   name: "Grandmaster",
                   details: "5 Bonsai Warrior NFTs",
                 }}
-                button={<Purchase nfts={5} amount={1200000000} />}
+                button={<Purchase nfts={5} amount={price_3} />}
               />
             </SimpleGrid>
-          </SlideFade>
-        </Box>
+          </Box>
+          <Center my={6}>
+            <Airdrop />
+          </Center>
+          <StatGrid
+            total={stats.total.toString()}
+            available={stats.available.toString()}
+          />
+        </SlideFade>
       </Container>
     </>
   );
@@ -107,7 +150,7 @@ const BonsaiNFT = () => {
 
 export default BonsaiNFT;
 
-export const PricingCard = (props) => {
+const PricingCard = (props) => {
   const { data, icon, button, ...rest } = props;
   const { details, price, name } = data;
 
@@ -119,6 +162,13 @@ export const PricingCard = (props) => {
         </Heading>
       </Center>
       <Flex align="flex-end" justify="center" fontWeight="extrabold" my="8">
+        <Text
+          as="kbd"
+          bgGradient="linear(to-l, #ed1f79, #2dade2)"
+          bgClip="text"
+        >
+          ICP:&nbsp;
+        </Text>
         <Text
           as="kbd"
           bgGradient="linear(to-r, #ed1f79, #f15b25)"
@@ -188,3 +238,96 @@ export const CardBadge = (props) => {
     </Flex>
   );
 };
+
+const StatGrid = ({ total, available }) => (
+  <Container py={5} maxW={"container.lg"}>
+    <Grid
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        sm: "repeat(2, 1fr)",
+        md: "repeat(4, 1fr)",
+      }}
+      gap={6}
+    >
+      <GridItem w="100%" colSpan={{ base: 1, sm: 2, md: 2 }}>
+        <Heading as={"h2"} color="#f0e6d3">
+          Tokenomics{" "}
+          <Tooltip label="Read about this collections tokenomics">
+            <a href={tokenomics_link} target="_blank" rel="noreferrer">
+              <IconButton
+                size="sm"
+                bg="#0fbdde"
+                color="white"
+                icon={<InfoIcon />}
+              />
+            </a>
+          </Tooltip>
+        </Heading>
+        <Text fontWeight={600} color="#f0e6d3" fontSize="lg">
+          Team Bonsai's Genesis collection features 1200 hand crafted NFTs from
+          the Bonsai Warrior Story
+        </Text>
+      </GridItem>
+      <GridItem w="100%">
+        <Flex flexDirection={"column"}>
+          <Box
+            px={{ base: "4", md: "6" }}
+            py={{ base: "5", md: "6" }}
+            border={"double"}
+            borderRadius="lg"
+            bgColor="#16171b"
+          >
+            <Stack>
+              <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
+                Total NFTs
+              </Text>
+              <Box
+                as="Box"
+                maxW={"100px"}
+                align={"center"}
+                size={useBreakpointValue({ base: "sm", md: "md" })}
+                borderRadius="md"
+                bg="#0fbdde"
+                color="black"
+                fontWeight="semibold"
+                p={1}
+              >
+                {total}
+              </Box>
+            </Stack>
+          </Box>
+        </Flex>
+      </GridItem>
+      <GridItem w="100%">
+        <Flex flexDirection={"column"}>
+          <Box
+            px={{ base: "4", md: "6" }}
+            py={{ base: "5", md: "6" }}
+            border={"double"}
+            borderRadius="lg"
+            bgColor="#16171b"
+          >
+            <Stack>
+              <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
+                NFTs Available
+              </Text>
+              <Box
+                as="Box"
+                maxW={"100px"}
+                align={"center"}
+                size={useBreakpointValue({ base: "sm", md: "md" })}
+                borderRadius="md"
+                bg="#0fbdde"
+                color="black"
+                fontWeight="semibold"
+                p={1}
+              >
+                {available}
+              </Box>
+            </Stack>
+          </Box>
+        </Flex>
+      </GridItem>
+    </Grid>
+  </Container>
+);

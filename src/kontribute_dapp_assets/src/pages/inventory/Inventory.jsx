@@ -27,8 +27,8 @@ const Inventory = () => {
 
   useEffect(() => {
     if (loaded) {
-      dispatch(Claim()).then(() => load());
-      // load()
+      dispatch(Claim());
+      load()
     }
   }, []);
 

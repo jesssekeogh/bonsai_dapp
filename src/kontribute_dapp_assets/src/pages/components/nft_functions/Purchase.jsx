@@ -31,6 +31,7 @@ import {
   SuccessToast,
   FailedToast,
 } from "../../../containers/toasts/Toasts";
+import Claim from "./Claim";
 
 const toast = createStandaloneToast();
 
@@ -59,7 +60,7 @@ const Purchase = ({ nfts, amount }) => {
       );
     } catch (err) {
       toast.closeAll();
-      return FailedToast("Insufficient funds");
+      return FailedToast("Insufficient Funds");
     }
 
     toast.closeAll();
@@ -79,15 +80,17 @@ const Purchase = ({ nfts, amount }) => {
     let brez = await collection.buy_tx(txid, subaccount);
     console.log("buy_tx", brez);
 
-    toast.closeAll();
-
     dispatch(user_refresh_balances());
 
     if ("err" in brez) {
       return FailedToast("Not enough NFTs, ICP refunded");
     }
+    
+    await dispatch(Claim());
 
-    SuccessToast({nfts} + " NFT(s) successfully added to inventory!");
+    toast.closeAll();
+    
+    SuccessToast("Congratulations! " + {nfts} + " NFT(s) Purchased!");
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -104,7 +107,7 @@ const Purchase = ({ nfts, amount }) => {
         mb={3}
         onClick={onOpen}
       >
-        <Text as="kbd">BUY NOW</Text>
+        <Text as="kbd">Buy Now</Text>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
