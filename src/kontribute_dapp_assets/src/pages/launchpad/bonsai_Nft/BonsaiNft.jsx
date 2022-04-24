@@ -15,6 +15,7 @@ import {
   GridItem,
   IconButton,
   Tooltip,
+  Badge,
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import {
@@ -45,16 +46,21 @@ const BonsaiNFT = () => {
   const dispatch = useAnvilDispatch();
   const [stats, setStats] = useState();
   const [loaded, setLoaded] = useState(false);
+  const [soldOut, setSoldOut] = useState(false); // if the amount available is 0 close the sale
 
   const load = async () => {
-    await dispatch(CollectionStats()).then((x) => setStats(x));
+    let data = await dispatch(CollectionStats());
+    setStats(data);
     setLoaded(true);
+    if (data.purchase === 0) {
+      setSoldOut(true);
+    }
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [])
-  
+  }, []);
+
   useEffect(() => {
     load();
   });
@@ -109,7 +115,20 @@ const BonsaiNFT = () => {
                   name: "Warrior",
                   details: "1 Bonsai Warrior NFT",
                 }}
-                button={<Purchase nfts={1} amount={price_1} />}
+                button={
+                  !soldOut ? (
+                    <Purchase nfts={1} amount={price_1} />
+                  ) : (
+                    <Badge
+                      borderRadius="md"
+                      fontSize="xl"
+                      fontWeight="bold"
+                      colorScheme="red"
+                    >
+                      Sold out!
+                    </Badge>
+                  )
+                }
               />
               <PricingCard
                 discount2
@@ -120,7 +139,20 @@ const BonsaiNFT = () => {
                   name: "Emperor",
                   details: "10 Bonsai Warrior NFTs",
                 }}
-                button={<Purchase nfts={10} amount={price_2} />}
+                button={
+                  !soldOut ? (
+                    <Purchase nfts={10} amount={price_2} />
+                  ) : (
+                    <Badge
+                      borderRadius="md"
+                      fontSize="xl"
+                      fontWeight="bold"
+                      colorScheme="red"
+                    >
+                      Sold out!
+                    </Badge>
+                  )
+                }
               />
               <PricingCard
                 discount1
@@ -131,7 +163,20 @@ const BonsaiNFT = () => {
                   name: "Grandmaster",
                   details: "5 Bonsai Warrior NFTs",
                 }}
-                button={<Purchase nfts={5} amount={price_3} />}
+                button={
+                  !soldOut ? (
+                    <Purchase nfts={5} amount={price_3} />
+                  ) : (
+                    <Badge
+                      borderRadius="md"
+                      fontSize="xl"
+                      fontWeight="bold"
+                      colorScheme="red"
+                    >
+                      Sold out!
+                    </Badge>
+                  )
+                }
               />
             </SimpleGrid>
           </Box>
@@ -252,7 +297,7 @@ const StatGrid = ({ total, available }) => (
       <GridItem w="100%" colSpan={{ base: 1, sm: 2, md: 2 }}>
         <Heading as={"h2"} color="#f0e6d3">
           Tokenomics{" "}
-          <Tooltip label="Read about this collections tokenomics">
+          <Tooltip label="Read more about this collections tokenomics">
             <a href={tokenomics_link} target="_blank" rel="noreferrer">
               <IconButton
                 size="sm"
@@ -279,10 +324,12 @@ const StatGrid = ({ total, available }) => (
           >
             <Stack>
               <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
-                Total NFTs
+                Total NFTs{" "}
+                <Tooltip label="Total NFTs minted">
+                  <InfoIcon boxSize={5} viewBox="0 0 30 30" />
+                </Tooltip>
               </Text>
               <Box
-                as="Box"
                 maxW={"100px"}
                 align={"center"}
                 size={useBreakpointValue({ base: "sm", md: "md" })}
@@ -309,10 +356,12 @@ const StatGrid = ({ total, available }) => (
           >
             <Stack>
               <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
-                NFTs Available
+                NFTs Available{" "}
+                <Tooltip label="Total NFTs left">
+                  <InfoIcon boxSize={5} viewBox="0 0 30 30" />
+                </Tooltip>
               </Text>
               <Box
-                as="Box"
                 maxW={"100px"}
                 align={"center"}
                 size={useBreakpointValue({ base: "sm", md: "md" })}

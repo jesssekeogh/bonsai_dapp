@@ -27,7 +27,7 @@ const LaunchPad = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if(!imageIsReady) return <LoadingSpinner />
+  if (!imageIsReady) return <LoadingSpinner />;
   return (
     <div>
       <Center>
@@ -61,9 +61,9 @@ const Collection = ({
   link,
 }) => {
   return (
-    <Box spacing="30px" marginTop="5">
-      <Box w="100%">
-        <Link to={link}>
+    <Link to={link}>
+      <Box spacing="30px" marginTop="5">
+        <Box w="100%">
           <Box borderRadius="lg" overflow="hidden" mb={3}>
             <ChakraImage
               transform="scale(1.0)"
@@ -78,9 +78,7 @@ const Collection = ({
               }}
             />
           </Box>
-        </Link>
-        <BlogTags tags={tags} />
-        <Link to={link}>
+          <BlogTags tags={tags} />
           <Heading
             marginTop="1"
             bgGradient="linear(to-t, #705025, #a7884a)"
@@ -88,19 +86,19 @@ const Collection = ({
           >
             {title}
           </Heading>
-        </Link>
-        <Text
-          as="p"
-          marginTop="2"
-          fontWeight={600}
-          color="#f0e6d3"
-          fontSize="lg"
-        >
-          {description}
-        </Text>
-        <BlogAuthor name={author} img={authorimg} />
+          <Text
+            as="p"
+            marginTop="2"
+            fontWeight={600}
+            color="#f0e6d3"
+            fontSize="lg"
+          >
+            {description}
+          </Text>
+          <BlogAuthor name={author} img={authorimg} />
+        </Box>
       </Box>
-    </Box>
+    </Link>
   );
 };
 export default LaunchPad;

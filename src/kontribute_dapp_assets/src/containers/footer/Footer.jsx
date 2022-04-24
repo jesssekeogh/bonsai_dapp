@@ -13,26 +13,27 @@ import "../../../assets/main.css";
 
 const SocialButton = ({ children, label, href }) => {
   return (
-    <a href={href} target="_blank" rel="noreferrer">
-      <chakra.button
-        bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-        rounded={"full"}
-        w={8}
-        h={8}
-        cursor={"pointer"}
-        as={"a"}
-        display={"inline-flex"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        transition={"background 0.3s ease"}
-        _hover={{
-          bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-        }}
-      >
-        <VisuallyHidden>{label}</VisuallyHidden>
-        {children}
-      </chakra.button>
-    </a>
+    <chakra.button
+      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+      rounded={"full"}
+      w={8}
+      h={8}
+      cursor={"pointer"}
+      as={"a"}
+      display={"inline-flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      transition={"background 0.3s ease"}
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      _hover={{
+        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+      }}
+    >
+      <VisuallyHidden>{label}</VisuallyHidden>
+      {children}
+    </chakra.button>
   );
 };
 
@@ -53,13 +54,22 @@ const Footer = () => {
             Developed by Team Bonsai
           </Text>
           <Stack direction={"row"} spacing={6}>
-            <SocialButton label={"Discord"} href={"https://discord.gg/S3qRpq8R6e"}>
+            <SocialButton
+              label={"Discord"}
+              href={"https://discord.gg/S3qRpq8R6e"}
+            >
               <FaDiscord />
             </SocialButton>
-            <SocialButton label={"Twitter"} href={"https://mobile.twitter.com/TeamBonsai_ICP"}>
+            <SocialButton
+              label={"Twitter"}
+              href={"https://mobile.twitter.com/TeamBonsai_ICP"}
+            >
               <FaTwitter />
             </SocialButton>
-            <SocialButton label={"Github"} href={"https://github.com/teambonsai/bonsai_dapp"}>
+            <SocialButton
+              label={"Github"}
+              href={"https://github.com/teambonsai/bonsai_dapp"}
+            >
               <FaGithub />
             </SocialButton>
           </Stack>

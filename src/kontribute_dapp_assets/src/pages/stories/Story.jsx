@@ -13,20 +13,21 @@ import {
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { BlogTags, BlogAuthor } from "../components";
 
-  const Story = ({
-    title,
-    description,
-    slideDelay,
-    imgbg,
-    author,
-    authorimg,
-    tags,
-    link,
-  }) => {
-    return (
-      <Delayed waitBeforeShow={slideDelay}>
-        <SlideFade in={true} offsetY="20px">
-          <Container maxW={"7xl"} p="10" pt="0">
+const Story = ({
+  title,
+  description,
+  slideDelay,
+  imgbg,
+  author,
+  authorimg,
+  tags,
+  link,
+}) => {
+  return (
+    <Delayed waitBeforeShow={slideDelay}>
+      <SlideFade in={true} offsetY="20px">
+        <Container maxW={"7xl"} p="10" pt="0">
+          <Link to={link}>
             <Box
               marginTop={{ base: "1", sm: "5" }}
               display="flex"
@@ -46,12 +47,17 @@ import { BlogTags, BlogAuthor } from "../components";
                   marginTop="5%"
                 >
                   <ChakraImage
+                    transform="scale(1.0)"
                     borderRadius="lg"
                     src={imgbg}
                     objectFit="contain"
+                    transition="0.3s ease-in-out"
+                    _hover={{
+                      transform: "scale(1.05)",
+                    }}
                   />
                 </Box>
-                <Box width="100%" position="absolute" height="100%">
+                <Box width="100%" position="absolute" height="100%" zIndex={-1}>
                   <Box
                     bgGradient={"radial(blue.600 1px, transparent 1px)"}
                     backgroundSize="20px 20px"
@@ -75,7 +81,13 @@ import { BlogTags, BlogAuthor } from "../components";
                 >
                   {title}
                 </Heading>
-                <Text as="p" marginTop="2" fontWeight={600} color="#f0e6d3" fontSize="lg">
+                <Text
+                  as="p"
+                  marginTop="2"
+                  fontWeight={600}
+                  color="#f0e6d3"
+                  fontSize="lg"
+                >
                   {description}
                 </Text>
                 <Stack
@@ -87,25 +99,13 @@ import { BlogTags, BlogAuthor } from "../components";
                   position={"relative"}
                 >
                   <BlogAuthor name={author} img={authorimg} />
-                  <Link to={link}>
-                    <Button
-                      w="100%"
-                      mt="1rem"
-                      colorScheme="#282828"
-                      bg="#282828"
-                      rounded={"full"}
-                      px={6}
-                      _hover={{ opacity: "0.8" }}
-                    >
-                      View All Chapters
-                    </Button>
-                  </Link>
                 </Stack>
               </Box>
             </Box>
-          </Container>
-        </SlideFade>
-      </Delayed>
-    );
-  };
-export default Story
+          </Link>
+        </Container>
+      </SlideFade>
+    </Delayed>
+  );
+};
+export default Story;
