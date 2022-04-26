@@ -33,7 +33,7 @@ export const FailedToast = (msg) => {
 
 export const CopyToast = () => {
     return toast({
-      title: `Copied to clipboard!`,
+      title: `Address Copied!`,
       status: "info",
       isClosable: true,
       position: "top-right",

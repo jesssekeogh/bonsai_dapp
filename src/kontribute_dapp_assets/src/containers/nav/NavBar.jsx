@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { CgInfinity } from "react-icons/cg";
+import IcLogo from "../../../assets/ic-logo.png";
 import { MdPerson, MdSend } from "react-icons/md";
 import { FaBook, FaRocket } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
@@ -33,7 +33,9 @@ import {
   Text,
   FormControl,
   FormHelperText,
+  Flex,
 } from "@chakra-ui/react";
+import { Image as ChakraImage } from "@chakra-ui/react";
 import { CopyIcon, LockIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { UserContext } from "../../Context.jsx";
 // Anvil tools:
@@ -146,9 +148,11 @@ const NavBar = () => {
               borderColor="#9d8144"
               color="#f0e6d3"
               colorScheme="#17191e"
-              rightIcon={<CgInfinity />}
             >
-              Profile
+              <Flex align="center">
+                Profile&nbsp;
+                <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+              </Flex>
             </MenuButton>
             <MenuList>
               <MenuGroup title="User Profile" />
@@ -229,11 +233,7 @@ const NavBar = () => {
       <>
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay />
-          <ModalContent
-            bg="#141414"
-            color="#fff"
-            mx="10%"
-          >
+          <ModalContent bg="#141414" color="#fff" mx="10%">
             <ModalHeader
               as="kbd"
               bgGradient="linear(to-l, #ed1f79, #2dade2)"

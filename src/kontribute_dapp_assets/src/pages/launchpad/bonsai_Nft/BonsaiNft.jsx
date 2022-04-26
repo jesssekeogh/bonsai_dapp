@@ -325,7 +325,7 @@ const StatGrid = ({ total, available }) => (
             <Stack>
               <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
                 Total NFTs{" "}
-                <Tooltip label="Total NFTs minted">
+                <Tooltip label="Total NFTs added to the contract">
                   <InfoIcon boxSize={5} viewBox="0 0 30 30" />
                 </Tooltip>
               </Text>
@@ -357,7 +357,7 @@ const StatGrid = ({ total, available }) => (
             <Stack>
               <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
                 NFTs Available{" "}
-                <Tooltip label="Total NFTs left">
+                <Tooltip label="Total NFTs left in the contract">
                   <InfoIcon boxSize={5} viewBox="0 0 30 30" />
                 </Tooltip>
               </Text>

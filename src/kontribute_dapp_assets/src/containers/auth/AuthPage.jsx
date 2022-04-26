@@ -1,8 +1,15 @@
 import React from "react";
 import klogo from "../../../assets/kontribute_logo.png";
 import icBadge from "../../../assets/ic-badge-powered-by_label-stripe-white-text.svg";
-import { CgInfinity } from "react-icons/cg";
-import { Box, Image, Center, Button } from "@chakra-ui/react";
+import IcLogo from "../../../assets/ic-logo.png";
+import {
+  Box,
+  Image,
+  Center,
+  Button,
+  Flex,
+  Image as ChakraImage,
+} from "@chakra-ui/react";
 import "./AuthPage.css";
 
 const AuthPage = ({ signIn }) => {
@@ -37,11 +44,16 @@ const AuthPage = ({ signIn }) => {
                 <div className="bonsai__auth-button">
                   <Button
                     onClick={signIn}
-                    rightIcon={<CgInfinity />}
-                    colorScheme="#0a0a0d"
-                    bg="#9d8144"
+                    bg="#17191e"
+                    border="1px"
+                    borderColor="#9d8144"
+                    color="#f0e6d3"
+                    colorScheme="#17191e"
                   >
-                    Authenticate
+                    <Flex align="center">
+                      Authenticate&nbsp;
+                      <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+                    </Flex>
                   </Button>
                 </div>
               </Center>

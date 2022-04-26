@@ -60,7 +60,7 @@ const Purchase = ({ nfts, amount }) => {
       );
     } catch (err) {
       toast.closeAll();
-      return FailedToast("Insufficient Funds");
+      return FailedToast("Transaction Failed");
     }
 
     toast.closeAll();
@@ -83,14 +83,14 @@ const Purchase = ({ nfts, amount }) => {
     dispatch(user_refresh_balances());
 
     if ("err" in brez) {
-      return FailedToast("Not enough NFTs, ICP refunded");
+      return FailedToast("Transaction Failed");
     }
-    
+
     await dispatch(Claim());
 
     toast.closeAll();
-    
-    SuccessToast("Congratulations! " + {nfts} + " NFT(s) Purchased!");
+
+    SuccessToast("Congratulations! " + { nfts } + " NFT(s) Purchased!");
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -140,6 +140,13 @@ const Purchase = ({ nfts, amount }) => {
             >
               You will be randomly allocated {nfts} Bonsai Warrior(s) from the
               collection!
+              <FormControl>
+                <FormHelperText>
+                  By clicking 'Confrim Payment' you confirm that you have read
+                  the tokenomics paper for this collection and agree to the
+                  terms of using the Kontribute.app launchpad.
+                </FormHelperText>
+              </FormControl>
             </Heading>
           </ModalBody>
           <ModalFooter>

@@ -16,9 +16,10 @@ import {
   ModalBody,
   ModalCloseButton,
   FormControl,
+  FormHelperText,
   createStandaloneToast,
   useDisclosure,
-  FormLabel,
+  Heading,
   Input,
 } from "@chakra-ui/react";
 import { GiConfirmed } from "react-icons/gi";
@@ -97,13 +98,22 @@ const Airdrop = () => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl>
-              <FormLabel>Airdrop Code</FormLabel>
-              <Input
-                placeholder="2q3yzvCiraWf2vAR..."
-                onChange={(event) => setCode(event.target.value)}
-              />
-            </FormControl>
+            <Heading
+              fontSize={{ base: "xs", sm: "xs", md: "md" }}
+              color={"white"}
+            >
+              <FormControl>
+                <Input
+                  placeholder="2q3yzvCiraWf2vAR..."
+                  onChange={(event) => setCode(event.target.value)}
+                />
+                <FormHelperText>
+                  By clicking 'Confrim Airdrop' you confirm that you have read
+                  the tokenomics paper for this collection and agree to the
+                  terms of using the Kontribute.app launchpad.
+                </FormHelperText>
+              </FormControl>
+            </Heading>
           </ModalBody>
           <ModalFooter>
             <Button
@@ -117,7 +127,7 @@ const Airdrop = () => {
               _hover={{ opacity: "0.8" }}
               onClick={() => send_code(code)}
             >
-              Confirm
+              Confirm Airdrop
             </Button>
             <Button
               colorScheme="black"
