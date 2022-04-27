@@ -31,9 +31,11 @@ import {
   SuccessToast,
   FailedToast,
 } from "../../../containers/toasts/Toasts";
-import Claim from "./Claim";
+import Claim from "./Claim.jsx";
 
 const toast = createStandaloneToast();
+
+// purchase component used in Launhpad for inital offering
 
 const Purchase = ({ nfts, amount }) => {
   const dispatch = useAnvilDispatch();
@@ -60,7 +62,7 @@ const Purchase = ({ nfts, amount }) => {
       );
     } catch (err) {
       toast.closeAll();
-      return FailedToast("Transaction Failed");
+      return FailedToast("Transaction failed");
     }
 
     toast.closeAll();
@@ -83,14 +85,19 @@ const Purchase = ({ nfts, amount }) => {
     dispatch(user_refresh_balances());
 
     if ("err" in brez) {
-      return FailedToast("Transaction Failed");
+      return FailedToast("Transaction failed");
     }
 
-    await dispatch(Claim());
+    try {
+      await dispatch(Claim());
+      toast.closeAll();
+      SuccessToast("Congratulations! " + { nfts } + " NFT(s) added to inventory!");
+    } catch(e){
+      toast.closeAll();
+      console.log("error loading nfts from contract")
+      return FailedToast("Error claiming NFT(s)");
+    }
 
-    toast.closeAll();
-
-    SuccessToast("Congratulations! " + { nfts } + " NFT(s) Purchased!");
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();

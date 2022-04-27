@@ -89,7 +89,7 @@ const HomeList = () => {
                 Bonsai Story
               </Button>
             </Link>
-            <Link to="/nft/bonsai-nft">
+            <Link to="/launchpad/bonsai-nft">
               <Button
                 colorScheme="#282828"
                 bg="#282828"

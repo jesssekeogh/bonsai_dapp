@@ -19,13 +19,11 @@ import {
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { GetMine } from "../components";
 
-const InventoryStats = () => {
-  const [data, setData] = useState([]);
+const InventoryStats = ({totalnfts}) => {
   const dispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
 
-  const [Loaded, setLoaded] = useState(false);
-  const [total, setTotal] = useState([]);
+  const [totalselling, setTotal] = useState([]);
 
   const urlAuthorPrices =
     "https://nftpkg.com/api/v1/prices/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418";
@@ -33,8 +31,6 @@ const InventoryStats = () => {
   const load = async () => {
     let arrayOfTokens = [];
     let loadedData = await dispatch(GetMine());
-    setData(loadedData);
-    setLoaded(true);
     // setData([394609]);
 
     let resp = await fetch(urlAuthorPrices).then((x) => x.json());
@@ -61,10 +57,11 @@ const InventoryStats = () => {
     if (loaded) {
       load();
     }
-  }, []);
+  },[]);
+
   return (
     <div>
-      <BasicStatistics nftsTotal={data.length} selling={total} />
+      <BasicStatistics nftsTotal={totalnfts} selling={totalselling} />
     </div>
   );
 };

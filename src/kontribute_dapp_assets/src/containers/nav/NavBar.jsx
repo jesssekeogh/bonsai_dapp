@@ -62,7 +62,7 @@ const MenuLinks = () => (
       <p>Stories</p>
     </NavLink>
     <NavLink
-      to="/nft"
+      to="/launchpad"
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>Launchpad</p>
@@ -105,11 +105,11 @@ const NavBar = () => {
     };
 
     if (send.to.length !== 64) {
-      return FailedToast("Invalid ICP Address!"); // verbose errors for the user
+      return FailedToast("Invalid ICP address"); // verbose errors for the user
     } else if (Amount == 0 || isNaN(Amount)) {
-      return FailedToast("Invalid Amount");
+      return FailedToast("Invalid amount");
     } else if (Amount >= user_icp) {
-      return FailedToast("Insufficient funds!");
+      return FailedToast("Insufficient funds");
     } else {
       onClose();
       SendingToast("Sending ICP...");
@@ -218,7 +218,7 @@ const NavBar = () => {
                 <NavLink to="/stories">
                   <MenuItem icon={<FaBook />}>Stories</MenuItem>
                 </NavLink>
-                <NavLink to="/nft">
+                <NavLink to="/launchpad">
                   <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
                 </NavLink>
                 {/* <NavLink to="/marketplace">

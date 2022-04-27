@@ -27,14 +27,14 @@ const Inventory = () => {
 
   useEffect(() => {
     if (loaded) {
-      dispatch(Claim());
       load()
     }
-  }, []);
+  });
 
+  if (!Loaded) return <LoadingSpinner />
   return (
     <div>
-      <InventoryStats />
+      <InventoryStats totalnfts={data.length}/>
       {Loaded ? (
         <Center>
           <SimpleGrid

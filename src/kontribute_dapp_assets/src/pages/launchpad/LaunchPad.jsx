@@ -42,7 +42,7 @@ const LaunchPad = () => {
               tags={["Fantasy", "Adventure"]}
               author={"Team Bonsai"}
               authorimg={logo}
-              link={"/nft/bonsai-nft"}
+              link={"/launchpad/bonsai-nft"}
             />
           </SlideFade>
         </SimpleGrid>

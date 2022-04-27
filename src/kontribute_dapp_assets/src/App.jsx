@@ -8,8 +8,8 @@ import {
   LaunchPad,
   Stories,
   Inventory,
-  BonsaiNft,
   MarketPlace,
+  BonsaiNft
 } from "./pages";
 import {
   BonsaiAll,
@@ -98,8 +98,8 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/inventory" element={<Inventory />} />
-                <Route path="/nft" element={<LaunchPad />} />
-                <Route path="/nft/bonsai-nft" element={<BonsaiNft />} />
+                <Route path="/launchpad" element={<LaunchPad />} />
+                <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
                 <Route path="/marketplace" element={<MarketPlace />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
                 <Route

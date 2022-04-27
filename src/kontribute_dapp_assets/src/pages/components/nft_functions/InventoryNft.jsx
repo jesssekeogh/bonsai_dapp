@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, ViewIcon } from "@chakra-ui/icons";
 import {
   nft_burn,
   useAnvilDispatch,
@@ -36,10 +36,14 @@ import {
   Input,
   FormControl,
 } from "@chakra-ui/react";
-import ViewNft from "./ViewNft.jsx";
 import { ImPriceTag } from "react-icons/im";
 import { AiFillFire } from "react-icons/ai";
-import { FailedToast, SendingToast, SuccessToast } from "../../../containers/toasts/Toasts.jsx";
+import {
+  FailedToast,
+  SendingToast,
+  SuccessToast,
+} from "../../../containers/toasts/Toasts.jsx";
+import ViewNft from "./ViewNft.jsx";
 
 const toast = createStandaloneToast();
 
@@ -51,7 +55,7 @@ const InventoryNft = ({ tokenId }) => {
   const Burn = async () => {
     let burned = await dispatch(nft_burn({ id: tokenToText(tokenId) }));
     console.log(burned);
-    SuccessToast("NFT burned successfully!")
+    SuccessToast("NFT burned successfully!");
   };
 
   // set to Kontribute
@@ -70,9 +74,9 @@ const InventoryNft = ({ tokenId }) => {
   const SetPrice =
     ({ id, price }) =>
     async (dispatch, getState) => {
-      SendingToast("Setting Price...")
+      SendingToast("Setting Price...");
       console.log(price);
-      onClose()
+      onClose();
 
       let s = getState();
       if (!s.user.map.account?.length) return null;
@@ -102,14 +106,14 @@ const InventoryNft = ({ tokenId }) => {
       });
 
       if (!("ok" in t)) {
-        toast.closeAll()
-        FailedToast("Setting Price Failed!")
+        toast.closeAll();
+        FailedToast("Setting Price Failed!");
         throw t.err;
       }
 
-      toast.closeAll()
+      toast.closeAll();
       dispatch(nft_fetch(id));
-      SuccessToast("NFT Price Set Successfully!")
+      SuccessToast("NFT Price Set Successfully!");
     };
 
   return (
@@ -134,7 +138,9 @@ const InventoryNft = ({ tokenId }) => {
           <MenuItem icon={<ImPriceTag />} onClick={onOpen}>
             Sell NFT
           </MenuItem>
-          <MenuItem icon={<AiFillFire />} onClick={() => Burn()}>Burn NFT</MenuItem>
+          <MenuItem icon={<AiFillFire />} onClick={() => Burn()}>
+            Burn NFT
+          </MenuItem>
         </MenuList>
       </Menu>
       {/* modal for setting price */}

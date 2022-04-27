@@ -56,19 +56,28 @@ const Airdrop = () => {
 
   const send_code = async (code) => {
     if (code.length < 1) {
-      return FailedToast("Airdrop Code Invalid");
+      return FailedToast("Airdrop code invalid");
     }
     onClose();
     SendingToast("Claiming NFT...");
+
     try {
       await dispatch(airdrop_use(code));
-      await dispatch(Claim());
-      toast.closeAll();
-      SuccessToast("Congratulations! 1 NFT Claimed");
     } catch (e) {
       toast.closeAll();
-      FailedToast("Airdrop Code Invalid");
+       return FailedToast("Airdrop code invalid");
     }
+
+    try {
+      await dispatch(Claim());
+      toast.closeAll();
+      SuccessToast("Congratulations! 1 NFT added to inventory");
+    } catch(e){
+      toast.closeAll();
+      console.log("error loading nfts from contract")
+      return FailedToast("Error claiming NFT");
+    }
+
   };
 
   return (
