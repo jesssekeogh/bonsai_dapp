@@ -43,6 +43,8 @@ import {
   SendingToast,
   SuccessToast,
 } from "../../../containers/toasts/Toasts.jsx";
+import { Link } from "react-router-dom";
+import { ViewIcon } from "@chakra-ui/icons";
 import ViewNft from "./ViewNft.jsx";
 
 const toast = createStandaloneToast();
@@ -132,9 +134,12 @@ const InventoryNft = ({ tokenId }) => {
           ms={-5}
         />
         <MenuList>
-          <MenuItem closeOnSelect={false}>
-            <ViewNft tokenId={tokenId} trigger={"top-end"} />
-          </MenuItem>
+          <Link
+            to={"/nft/" + tokenId}
+            state={{ prev: "/inventory", showConfetti: false }}
+          >
+            <MenuItem icon={<ViewIcon />}>View NFT</MenuItem>
+          </Link>
           <MenuItem icon={<ImPriceTag />} onClick={onOpen}>
             Sell NFT
           </MenuItem>

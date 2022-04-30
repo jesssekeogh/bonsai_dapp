@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import bonsai_bg from "../../../assets/beauty_render3_5.png";
-import placeholder from "../../../assets/576x324.png";
-import people from "../../../assets/undraw_People.png";
 import BonsaiLogo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import { LoadingSpinner } from "../../containers";
 import Story from "./Story";
@@ -17,17 +15,6 @@ const bonsai_details = {
   authorimg: BonsaiLogo,
   tags: ["Fantasy", "Adventure"],
   link: "/stories/bonsai-all",
-};
-
-const community_details = {
-  title:"Community Stories",
-  description: "Read through some of the community stories that have been posted on Kontribute for our Community Story Challenge. The story with the most votes will be featured in its own section in the dapp, and we will personally create some NFTs for the winning story and list them on our dapp for public sale.",
-  slideDelay: 200,
-  imgbg: placeholder,
-  author: "Community",
-  authorimg: people,
-  tags: ["All Genres"],
-  link: "/stories/community-stories"
 };
 
 const Stories = () => {
@@ -48,8 +35,6 @@ const Stories = () => {
     <div>
         <div>
           <Story {...bonsai_details} />
-          {/* <Story {...community_details} />
-          <Story {...community_details} /> */}
         </div>
     </div>
   );

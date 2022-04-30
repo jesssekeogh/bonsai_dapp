@@ -9,7 +9,8 @@ import {
   Stories,
   Inventory,
   MarketPlace,
-  BonsaiNft
+  BonsaiNft,
+  LargeNft,
 } from "./pages";
 import {
   BonsaiAll,
@@ -96,6 +97,7 @@ function App() {
               <NavBar />
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/nft/:tokenid" element={<LargeNft />} />
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/launchpad" element={<LaunchPad />} />

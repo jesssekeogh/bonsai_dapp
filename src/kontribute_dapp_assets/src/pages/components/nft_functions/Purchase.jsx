@@ -31,7 +31,7 @@ import {
   SuccessToast,
   FailedToast,
 } from "../../../containers/toasts/Toasts";
-import Claim from "./Claim.jsx";
+import { useNavigate } from "react-router-dom";
 
 const toast = createStandaloneToast();
 
@@ -88,16 +88,12 @@ const Purchase = ({ nfts, amount }) => {
       return FailedToast("Transaction failed");
     }
 
-    try {
-      await dispatch(Claim());
-      toast.closeAll();
-      SuccessToast("Congratulations! " + { nfts } + " NFT(s) added to inventory!");
-    } catch(e){
-      toast.closeAll();
-      console.log("error loading nfts from contract")
-      return FailedToast("Error claiming NFT(s)");
-    }
-
+    toast.closeAll();
+    SuccessToast("Congratulations! " + { nfts } + " NFT(s) added to inventory!");
+    // return token id and navigate to new page
+    // return navigate("/nft/" + brez.ok.map((x) => Number(x))[0].toString(), {
+    //   state: { prev: "/launchpad/bonsai-nft", showConfetti: true },
+    // });
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -150,8 +146,7 @@ const Purchase = ({ nfts, amount }) => {
               <FormControl>
                 <FormHelperText>
                   By clicking 'Confrim Payment' you confirm that you have read
-                  the tokenomics paper for this collection and agree to the
-                  terms of using the Kontribute.app launchpad.
+                  the tokenomics paper for this collection.
                 </FormHelperText>
               </FormControl>
             </Heading>

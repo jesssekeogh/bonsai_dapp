@@ -28,7 +28,7 @@ import {
   SendingToast,
   SuccessToast,
 } from "../../../containers/toasts/Toasts.jsx";
-import Claim from "./Claim.jsx";
+import { useNavigate } from "react-router-dom";
 
 const toast = createStandaloneToast();
 
@@ -36,6 +36,7 @@ const Airdrop = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAnvilDispatch();
   const [code, setCode] = useState("");
+  const navigate = useNavigate();
 
   const airdrop_use = (key) => async (dispatch, getState) => {
     const s = getState();
@@ -51,7 +52,9 @@ const Airdrop = () => {
     console.log("airdrop_use", brez);
     if ("err" in brez) throw new Error(brez.err);
 
-    return brez.ok.map((x) => Number(x));
+    return navigate("/nft/" + brez.ok.map((x) => Number(x))[0].toString(), {
+      state: { prev: "/launchpad/bonsai-nft", showConfetti: true },
+    }); // returns the claimed token
   };
 
   const send_code = async (code) => {
@@ -63,21 +66,12 @@ const Airdrop = () => {
 
     try {
       await dispatch(airdrop_use(code));
-    } catch (e) {
-      toast.closeAll();
-       return FailedToast("Airdrop code invalid");
-    }
-
-    try {
-      await dispatch(Claim());
       toast.closeAll();
       SuccessToast("Congratulations! 1 NFT added to inventory");
-    } catch(e){
+    } catch (e) {
       toast.closeAll();
-      console.log("error loading nfts from contract")
-      return FailedToast("Error claiming NFT");
+      return FailedToast("Airdrop code invalid");
     }
-
   };
 
   return (
@@ -118,8 +112,7 @@ const Airdrop = () => {
                 />
                 <FormHelperText>
                   By clicking 'Confrim Airdrop' you confirm that you have read
-                  the tokenomics paper for this collection and agree to the
-                  terms of using the Kontribute.app launchpad.
+                  the tokenomics paper for this collection.
                 </FormHelperText>
               </FormControl>
             </Heading>

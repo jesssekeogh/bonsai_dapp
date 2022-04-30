@@ -12,7 +12,7 @@ import {
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { BlogTags, BlogAuthor } from "../components";
 import logo from "../../../assets/Bonsai-Team-ICON-Black.png";
-import bonsailogo from "../../../assets/BonsaiWarriors.png";
+import bonsailogo from "../../../assets/Bonsai_Warriors_Background_1.png";
 import { LoadingSpinner } from "../../containers";
 
 const LaunchPad = () => {
@@ -68,10 +68,8 @@ const Collection = ({
             <ChakraImage
               transform="scale(1.0)"
               bg={"#fff"}
-              p={2}
               src={colimg}
               objectFit="contain"
-              width="100%"
               transition="0.3s ease-in-out"
               _hover={{
                 transform: "scale(1.05)",

@@ -21,6 +21,11 @@ const Inventory = () => {
 
   const load = async () => {
     setData(await dispatch(GetMine()));
+    try {
+      await dispatch(Claim());
+    } catch(e){
+      return console.log("Error claiming NFT");
+    }
     setLoaded(true);
     // setData([394737, 394736]);
   };

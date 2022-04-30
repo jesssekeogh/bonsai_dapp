@@ -45,10 +45,11 @@ const Story = ({
                   width={{ base: "100%", sm: "85%" }}
                   marginLeft={{ base: "0", sm: "5%" }}
                   marginTop="5%"
+                  overflow="hidden"
+                  borderRadius="lg"
                 >
                   <ChakraImage
                     transform="scale(1.0)"
-                    borderRadius="lg"
                     src={imgbg}
                     objectFit="contain"
                     transition="0.3s ease-in-out"

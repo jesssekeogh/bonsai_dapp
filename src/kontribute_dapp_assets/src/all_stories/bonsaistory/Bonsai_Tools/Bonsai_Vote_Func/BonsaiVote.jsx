@@ -18,13 +18,16 @@ import {
   useDisclosure,
   Spinner,
   Alert,
-  AlertIcon
+  AlertIcon,
 } from "@chakra-ui/react";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Bounce } from "react-awesome-reveal";
 import { UserContext } from "../../../../Context.jsx";
 import "../../BonsaiStory.css";
-import { SuccessToast, FailedToast } from "../../../../containers/toasts/Toasts";
+import {
+  SuccessToast,
+  FailedToast,
+} from "../../../../containers/toasts/Toasts";
 
 /* This component is used for dynamic voting on the bonsai story, 
 The Vote options funcs stay the same as these are updated on the backend
@@ -467,7 +470,9 @@ const BonsaiVote = (props) => {
       </Container>
       <div className="bonsai__story_back-button">
         <Link to="/stories/bonsai-all">
-          <button type="button">Go back</button>
+          <Button colorScheme="#282828" bg="#282828" rounded={"full"} px={6} _hover={{"opacity":"0.8"}}>
+            Go Back
+          </Button>
         </Link>
       </div>
     </div>
