@@ -3,10 +3,7 @@ import {
   useAnvilDispatch,
   useAnvilSelector,
 } from "@vvv-interactive/nftanvil-react";
-import {
-  Center,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { Center, SimpleGrid } from "@chakra-ui/react";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { GetMine, Claim } from "../components";
@@ -21,43 +18,39 @@ const Inventory = () => {
 
   const load = async () => {
     setData(await dispatch(GetMine()));
-    try {
-      await dispatch(Claim());
-    } catch(e){
-      return console.log("Error claiming NFT");
-    }
     setLoaded(true);
-    // setData([394737, 394736]);
   };
 
   useEffect(() => {
+    try {
+      dispatch(Claim());
+    } catch (e) {
+      console.log("Error claiming NFT");
+    }
+  }, []);
+
+  useEffect(() => {
     if (loaded) {
-      load()
+      load();
     }
   });
 
-  if (!Loaded) return <LoadingSpinner />
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  if (!Loaded) return <LoadingSpinner />;
   return (
-    <div>
-      <InventoryStats totalnfts={data.length}/>
-      {Loaded ? (
-        <Center>
-          <SimpleGrid
-            columns={[2, null, 4]}
-            pb={5}
-            gap={2}
-            mt={2}
-            maxW="1250px"
-          >
-            {data.map((item) => (
-              <SingleNft tokenId={item} key={item} inventory={true} />
-            ))}
-          </SimpleGrid>
-        </Center>
-      ) : (
-        <LoadingSpinner />
-      )}
-    </div>
+    <>
+      <InventoryStats totalnfts={data.length} />
+      <Center>
+        <SimpleGrid columns={[2, null, 4]} pb={5} gap={2} m={2} maxW="1250px">
+          {data.map((item) => (
+            <SingleNft tokenId={item} key={item} inventory={true} />
+          ))}
+        </SimpleGrid>
+      </Center>
+    </>
   );
 };
 

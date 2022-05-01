@@ -13,7 +13,7 @@ import {
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
   tokenUrl,
-  tokenToText,
+  tokenFromText,
 } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import {
   useAnvilSelector,
@@ -36,11 +36,15 @@ const LargeNft = () => {
 
   const [data, setData] = useState({});
   const [src, setSrc] = useState();
-  const [prevPath, setPath] = useState("/");
-  const [showConfetti, setConfetti] = useState(false);
-  
+
+  const [pathData, setPathData] = useState({
+    prevPath: "/",
+    showConfetti: false,
+    amount: 0,
+  });
+
   const load = async () => {
-    const meta = await dispatch(nft_fetch(tokenToText(params.tokenid)));
+    const meta = await dispatch(nft_fetch(params.tokenid));
     let NftData = {
       id: params.tokenid,
       name: meta.name,
@@ -51,31 +55,36 @@ const LargeNft = () => {
       rating: itemQuality.dark[meta.quality].label,
     };
     if (path.state !== null) {
-      setConfetti(path.state.showConfetti)
-      setPath(path.state.prev);
+      setPathData({
+        prevPath: path.state.prev,
+        showConfetti: path.state.showConfetti,
+        amount: path.state.totalNfts,
+      });
     }
-    setSrc(await tokenUrl(map.space, params.tokenid, "content"));
+    setSrc(await tokenUrl(map.space, tokenFromText(params.tokenid), "content"));
     setData(NftData);
     setLoaded(true);
   };
 
   useEffect(() => {
     load();
+    window.scrollTo(0, 0);
   }, []);
 
   if (!Loaded) return <LoadingSpinner />;
   return (
     <>
       <Center px={5}>
-        {showConfetti ? <Confetti /> : null}
+        {pathData.showConfetti ? <Confetti /> : null}
         <Stack
           height={{ sm: "476px", md: "38vw" }}
+          maxH="650px"
           width="auto"
           direction={{ base: "column", md: "row" }}
           padding={4}
         >
           <Flex flex={1}>
-            <ChakraImage objectFit="contain" boxSize="100%" src={src} />
+            <ChakraImage borderRadius="lg" boxSize="100%" src={src} />
           </Flex>
           <Stack
             flex={1}
@@ -99,25 +108,43 @@ const LargeNft = () => {
             <HStack>
               <NftTags tags={data.tags} />
             </HStack>
-            <Text fontWeight={600} color="#f0e6d3" mb={2} maxW="550px">
+            <Text fontWeight={600} color="#f0e6d3" mb={2} maxW="520px">
               {data.lore}
             </Text>
           </Stack>
         </Stack>
       </Center>
       <Center>
-        <Link to={prevPath}>
-          <Button
-            colorScheme="#282828"
-            bg="#282828"
-            rounded={"full"}
-            px={6}
-            mt={3}
-            _hover={{ opacity: "0.8" }}
-          >
-            <Text as="kbd">Go Back</Text>
-          </Button>
-        </Link>
+        <HStack>
+          <Link to={pathData.prevPath}>
+            <Button
+              colorScheme="#282828"
+              bg="#282828"
+              rounded={"full"}
+              px={5}
+              my={5}
+              _hover={{ opacity: "0.8" }}
+            >
+              <Text as="kbd">Go Back</Text>
+            </Button>
+          </Link>
+          {pathData.amount > 1 ? (
+            <Link to="/inventory">
+              <Button
+                colorScheme="#282828"
+                bg="#282828"
+                rounded={"full"}
+                px={5}
+                my={5}
+                _hover={{ opacity: "0.8" }}
+              >
+                <Text as="kbd">
+                  {"+ " + (pathData.amount - 1) + " other NFTs"}
+                </Text>
+              </Button>
+            </Link>
+          ) : null}
+        </HStack>
       </Center>
     </>
   );

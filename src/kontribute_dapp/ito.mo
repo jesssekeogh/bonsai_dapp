@@ -47,10 +47,10 @@ import PseudoRandom "mo:anvil/lib/PseudoRandom";
 shared({caller = _installer}) actor class Class() : async IF.Interface = this {
 
   // EDITABLE
-  private let MAX_TOKENS = 1200; // max amount of NFTs the contract can hold
+  private let MAX_TOKENS = 1260; // max amount of NFTs the contract can hold
   private let MAX_CODES = 2000; // an arbitrary amount of codes
-  private stable var LEFT_AIRDROP : Nat = 200; // max amount for Airdrop
-  private stable var LEFT_PURCHASE : Nat = 1000; // max amount for purchase
+  private stable var LEFT_AIRDROP : Nat = 500; // max amount for Airdrop
+  private stable var LEFT_PURCHASE : Nat = 760; // max amount for purchase
   private let START_TIMESTAMP : Nat32 = 0; //1654951047
   
 

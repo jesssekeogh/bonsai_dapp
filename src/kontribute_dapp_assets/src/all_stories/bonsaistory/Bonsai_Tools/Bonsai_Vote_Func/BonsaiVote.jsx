@@ -297,7 +297,7 @@ const BonsaiVote = (props) => {
               rounded={"full"}
               _hover={{ opacity: "0.8" }}
             >
-              Option 1&nbsp;
+              Read Now
             </Button>
             <Modal isOpen={isOpen1} onClose={onClose1}>
               <ModalOverlay />
@@ -361,7 +361,7 @@ const BonsaiVote = (props) => {
               rounded={"full"}
               _hover={{ opacity: "0.8" }}
             >
-              Option 2
+              Read Now
             </Button>
             <Modal isOpen={isOpen2} onClose={onClose2}>
               <ModalOverlay />
@@ -425,7 +425,7 @@ const BonsaiVote = (props) => {
               rounded={"full"}
               _hover={{ opacity: "0.8" }}
             >
-              Option 3
+              Read Now
             </Button>
             <Modal isOpen={isOpen3} onClose={onClose3}>
               <ModalOverlay />

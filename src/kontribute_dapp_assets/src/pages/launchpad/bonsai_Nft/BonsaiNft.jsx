@@ -43,6 +43,7 @@ const price_3 = 1200000000; // 12 ICP
 const tokenomics_link = "";
 
 const BonsaiNFT = () => {
+  let isMounted = true;
   const dispatch = useAnvilDispatch();
   const [stats, setStats] = useState();
   const [loaded, setLoaded] = useState(false);
@@ -50,10 +51,12 @@ const BonsaiNFT = () => {
 
   const load = async () => {
     let data = await dispatch(CollectionStats());
-    setStats(data);
-    setLoaded(true);
-    if (data.purchase === 0) {
-      setSoldOut(true);
+    if (isMounted) {
+      setStats(data);
+      setLoaded(true);
+      if (data.purchase === 0) {
+        setSoldOut(true);
+      }
     }
   };
 
@@ -63,6 +66,9 @@ const BonsaiNFT = () => {
 
   useEffect(() => {
     load();
+    return () => {
+      isMounted = false;
+    };
   });
 
   if (!loaded) return <LoadingSpinner />;
@@ -313,70 +319,53 @@ const StatGrid = ({ total, available }) => (
           the Bonsai Warrior Story
         </Text>
       </GridItem>
-      <GridItem w="100%">
-        <Flex flexDirection={"column"}>
-          <Box
-            px={{ base: "4", md: "6" }}
-            py={{ base: "5", md: "6" }}
-            border={"double"}
-            borderRadius="lg"
-            bgColor="#16171b"
-          >
-            <Stack>
-              <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
-                Total NFTs{" "}
-                <Tooltip label="Total NFTs added to the contract">
-                  <InfoIcon boxSize={5} viewBox="0 0 30 30" />
-                </Tooltip>
-              </Text>
-              <Box
-                maxW={"100px"}
-                align={"center"}
-                size={useBreakpointValue({ base: "sm", md: "md" })}
-                borderRadius="md"
-                bg="#0fbdde"
-                color="black"
-                fontWeight="semibold"
-                p={1}
-              >
-                {total}
-              </Box>
-            </Stack>
-          </Box>
-        </Flex>
-      </GridItem>
-      <GridItem w="100%">
-        <Flex flexDirection={"column"}>
-          <Box
-            px={{ base: "4", md: "6" }}
-            py={{ base: "5", md: "6" }}
-            border={"double"}
-            borderRadius="lg"
-            bgColor="#16171b"
-          >
-            <Stack>
-              <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
-                NFTs Available{" "}
-                <Tooltip label="Total NFTs left in the contract">
-                  <InfoIcon boxSize={5} viewBox="0 0 30 30" />
-                </Tooltip>
-              </Text>
-              <Box
-                maxW={"100px"}
-                align={"center"}
-                size={useBreakpointValue({ base: "sm", md: "md" })}
-                borderRadius="md"
-                bg="#0fbdde"
-                color="black"
-                fontWeight="semibold"
-                p={1}
-              >
-                {available}
-              </Box>
-            </Stack>
-          </Box>
-        </Flex>
-      </GridItem>
+      <DataBox
+        label="Total NFTs"
+        info={"Total NFTs added to the contract"}
+        data={total}
+      />
+      <DataBox
+        label="NFTs Available"
+        info={"Total NFTs left in the contract"}
+        data={available}
+      />
     </Grid>
   </Container>
 );
+
+const DataBox = ({ label, info, data }) => {
+  return (
+    <GridItem w="100%">
+      <Flex flexDirection={"column"}>
+        <Box
+          px={{ base: "4", md: "6" }}
+          py={{ base: "5", md: "6" }}
+          border={"double"}
+          borderRadius="lg"
+          bgColor="#16171b"
+        >
+          <Stack>
+            <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
+              {label}{" "}
+              <Tooltip label={info}>
+                <InfoIcon boxSize={5} viewBox="0 0 30 30" />
+              </Tooltip>
+            </Text>
+            <Box
+              maxW={"100px"}
+              align={"center"}
+              size={useBreakpointValue({ base: "sm", md: "md" })}
+              borderRadius="md"
+              bg="#0fbdde"
+              color="black"
+              fontWeight="semibold"
+              p={1}
+            >
+              {data}
+            </Box>
+          </Stack>
+        </Box>
+      </Flex>
+    </GridItem>
+  );
+};

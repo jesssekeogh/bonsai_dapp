@@ -4,11 +4,11 @@ import {
   useAnvilSelector,
   nft_fetch,
 } from "@vvv-interactive/nftanvil-react";
-import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import {
   tokenUrl,
   tokenToText,
 } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
+import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import {
   Box,
   Heading,
@@ -20,34 +20,21 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { InventoryNft, MarketplaceNft } from "./index";
+import { InventoryNftButton } from "./index";
 
-const urlAuthorPrices =
-  "https://nftpkg.com/api/v1/prices/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418"; // change to minter address
-
-const SingleNft = ({ tokenId, inventory, marketplace }) => {
+const SingleNft = ({ tokenId }) => {
   const map = useAnvilSelector((state) => state.user.map); //anvil mapper
   const dispatch = useAnvilDispatch();
 
   const [img, setImg] = useState();
-  const [name, setName] = useState();
-  const [price, setPrice] = useState();
+  const [name, setName] = useState({});
   const [loaded, setLoaded] = useState(false);
 
   const load = async () => {
     const meta = await dispatch(nft_fetch(tokenToText(tokenId)));
-    setName(meta.name);
+    setName({ name: meta.name, color: itemQuality.dark[meta.quality].color });
     let src = await tokenUrl(map.space, tokenId, "thumb");
     setImg(src);
-
-    // fetch prices:
-    const resp1 = await fetch(urlAuthorPrices).then((x) => x.json());
-    for (var i = 0; i < resp1.length; i++) {
-      if (resp1[i][0] === tokenId) {
-        let nft_icp = resp1[i][2];
-        setPrice(nft_icp);
-      }
-    }
 
     setLoaded(true);
   };
@@ -65,9 +52,7 @@ const SingleNft = ({ tokenId, inventory, marketplace }) => {
           maxW={"330px"}
           w={"full"}
           backgroundColor={"#1e212b"}
-          boxShadow={"2xl"}
           rounded={"lg"}
-          pos={"relative"}
         >
           <Box rounded={"lg"} pos={"relative"}>
             {loaded ? (
@@ -88,22 +73,14 @@ const SingleNft = ({ tokenId, inventory, marketplace }) => {
               <>
                 <Text
                   color={"gray.500"}
-                  fontSize={{ base: "xs", sm: "sm", md: "md" }}
+                  casing={"uppercase"}
+                  fontSize={{ base: "7pt", sm: "sm", md: "sm" }}
                 >
-                  Id: {tokenId}
-                </Text>
-                <Text
-                  as="kbd"
-                  bgGradient="linear(to-r, #ed1f79, #f15b25)"
-                  bgClip="text"
-                  fontSize={{ base: "xs", sm: "sm", md: "md" }}
-                >
-                  ICP: {price === 0 ? "Not Set": AccountIdentifier.e8sToIcp(price)}
+                  {tokenToText(tokenId)}
                 </Text>
               </>
             ) : (
               <>
-                <Skeleton height="15px" width={"80px"} />
                 <Skeleton height="15px" width={"80px"} />
               </>
             )}
@@ -117,15 +94,14 @@ const SingleNft = ({ tokenId, inventory, marketplace }) => {
             {loaded ? (
               <Heading
                 fontSize={{ base: "xs", sm: "xs", md: "md" }}
-                color={"white"}
+                color={name.color}
               >
-                {name}
+                {name.name}
               </Heading>
             ) : (
               <Skeleton height="15px" width={"100px"} />
             )}
-            {inventory ? <InventoryNft tokenId={tokenId} /> : null}
-            {marketplace ? <MarketplaceNft tokenId={tokenId} /> : null}
+            <InventoryNftButton tokenId={tokenId} />
           </Stack>
         </Box>
       </GridItem>

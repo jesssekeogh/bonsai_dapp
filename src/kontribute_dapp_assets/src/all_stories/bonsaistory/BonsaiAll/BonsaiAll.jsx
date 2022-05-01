@@ -22,49 +22,49 @@ import { UserContext } from "../../../Context";
 
 function Feature({ title, desc, link, total, ...rest }) {
   return (
-    <Box
-      p={5}
-      shadow="md"
-      border={"double"}
-      borderRadius="5px"
-      bgColor="#16171b"
-      maxW="400px"
-      {...rest}
-    >
-      <Heading color="#a7884a" fontSize="xl">
-        {title}
-      </Heading>
-      <Text mb="3" fontWeight={600} color="#f0e6d3" mt={4}>
-        {desc}
-      </Text>
-      <Grid templateColumns="repeat(5, 1fr)">
-        <GridItem colStart={3} rowSpan={2} colSpan={1}>
-          <div className="bonsai__button">
-            <Link to={link}>
+    <Link to={link}>
+      <Box
+        p={5}
+        shadow="md"
+        border={"double"}
+        borderRadius="5px"
+        bgColor="#16171b"
+        maxW="400px"
+        {...rest}
+      >
+        <Heading color="#a7884a" fontSize="xl">
+          {title}
+        </Heading>
+        <Text mb="3" fontWeight={600} color="#f0e6d3" mt={4}>
+          {desc}
+        </Text>
+        <Grid templateColumns="repeat(5, 1fr)">
+          <GridItem colStart={3} rowSpan={2} colSpan={1}>
+            <div className="bonsai__button">
               <button type="button">Read Now</button>
-            </Link>
-          </div>
-        </GridItem>
-        <GridItem colStart={5} h="10">
-          <HStack spacing="5px" mt="10px">
-            <Box color="#fff">
-              <MdHowToVote />
-            </Box>
-            <Tooltip label="Total Votes">
-              <Box
-                borderRadius="md"
-                bg="#0fbdde"
-                color="black"
-                fontWeight="semibold"
-                px="1"
-              >
-                {total}
+            </div>
+          </GridItem>
+          <GridItem colStart={5} h="10">
+            <HStack spacing="5px" mt="10px">
+              <Box color="#fff">
+                <MdHowToVote />
               </Box>
-            </Tooltip>
-          </HStack>
-        </GridItem>
-      </Grid>
-    </Box>
+              <Tooltip label="Total Votes">
+                <Box
+                  borderRadius="md"
+                  bg="#0fbdde"
+                  color="black"
+                  fontWeight="semibold"
+                  px="1"
+                >
+                  {total}
+                </Box>
+              </Tooltip>
+            </HStack>
+          </GridItem>
+        </Grid>
+      </Box>
+    </Link>
   );
 }
 
@@ -114,7 +114,7 @@ const BonsaiAll = () => {
             setPrologueIII(result.total.toString());
           }
         });
-      })()
+      })(),
     ]);
   };
 
@@ -132,50 +132,45 @@ const BonsaiAll = () => {
         <Heading color="#a7884a">Bonsai Warriors</Heading>
       </Center>
       <div className="bonsai_all-container">
-        <Center mb="1rem">
-          <Delayed>
-            <SlideFade in={true}>
-              <StackEx
-                title1={"PROLOGUE III"}
-                body1={
-                  "Now we must choose our school, the place of learning that Tang Wei shall study at."
-                }
-                link1={"/stories/bonsai-warriors-prologueIII"}
-                total1={totalPrologueIII}
-              />
-            </SlideFade>
-          </Delayed>
-        </Center>
-        <Center mb="1rem">
-          <Delayed waitBeforeShow={200}>
-            <SlideFade in={true}>
-              <StackEx
-                title1={"PROLOGUE II"}
-                body1={
-                  "You are an Artisan, now you must vote to choose your name"
-                }
-                link1={"/stories/bonsai-warriors-prologueII"}
-                total1={totalPrologueII}
-              />
-            </SlideFade>
-          </Delayed>
-        </Center>
-        <Center mb="1rem">
-          <Delayed waitBeforeShow={300}>
-            <SlideFade in={true}>
-              <StackEx
-                title1={"PROLOGUE"}
-                body1={
-                  "Introduction and character creation in the Bonsai Warriors story"
-                }
-                link1={"/stories/bonsai-warriors-prologue"}
-                total1={totalPrologue}
-              />
-            </SlideFade>
-          </Delayed>
-        </Center>
+        <ChapterBox
+          wait={100}
+          title={"PROLOGUE III"}
+          body={
+            "Now we must choose our school, the place of learning that Tang Wei shall study at."
+          }
+          link={"/stories/bonsai-warriors-prologueIII"}
+          total={totalPrologueIII}
+        />
+        <ChapterBox
+          wait={200}
+          title={"PROLOGUE II"}
+          body={"You are an Artisan, now you must vote to choose your name"}
+          link={"/stories/bonsai-warriors-prologueII"}
+          total={totalPrologueII}
+        />
+        <ChapterBox
+          wait={300}
+          title={"PROLOGUE"}
+          body={
+            "Introduction and character creation in the Bonsai Warriors story"
+          }
+          link={"/stories/bonsai-warriors-prologue"}
+          total={totalPrologue}
+        />
       </div>
     </div>
+  );
+};
+
+const ChapterBox = ({ wait, title, body, link, total }) => {
+  return (
+    <Center mb="1rem">
+      <Delayed waitBeforeShow={wait}>
+        <SlideFade in={true}>
+          <StackEx title1={title} body1={body} link1={link} total1={total} />
+        </SlideFade>
+      </Delayed>
+    </Center>
   );
 };
 

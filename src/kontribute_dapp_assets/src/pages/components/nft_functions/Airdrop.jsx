@@ -4,6 +4,7 @@ import { base58ToBytes } from "@vvv-interactive/nftanvil-tools/cjs/data.js";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
+import { tokenToText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import {
   Text,
   Button,
@@ -16,7 +17,6 @@ import {
   ModalBody,
   ModalCloseButton,
   FormControl,
-  FormHelperText,
   createStandaloneToast,
   useDisclosure,
   Heading,
@@ -52,8 +52,12 @@ const Airdrop = () => {
     console.log("airdrop_use", brez);
     if ("err" in brez) throw new Error(brez.err);
 
-    return navigate("/nft/" + brez.ok.map((x) => Number(x))[0].toString(), {
-      state: { prev: "/launchpad/bonsai-nft", showConfetti: true },
+    return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
+      state: {
+        prev: "/launchpad/bonsai-nft",
+        showConfetti: true,
+        totalNfts: 1,
+      },
     }); // returns the claimed token
   };
 
@@ -67,7 +71,7 @@ const Airdrop = () => {
     try {
       await dispatch(airdrop_use(code));
       toast.closeAll();
-      SuccessToast("Congratulations! 1 NFT added to inventory");
+      SuccessToast("Congratulations! You got 1 NFT");
     } catch (e) {
       toast.closeAll();
       return FailedToast("Airdrop code invalid");
@@ -110,10 +114,6 @@ const Airdrop = () => {
                   placeholder="2q3yzvCiraWf2vAR..."
                   onChange={(event) => setCode(event.target.value)}
                 />
-                <FormHelperText>
-                  By clicking 'Confrim Airdrop' you confirm that you have read
-                  the tokenomics paper for this collection.
-                </FormHelperText>
               </FormControl>
             </Heading>
           </ModalBody>

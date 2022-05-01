@@ -1,9 +1,8 @@
 export { default as BlogTags } from './BlogTags';
 export { default as BlogAuthor } from './BlogAuthor';
-export { default as MarketplaceNft } from './nft_functions/MarketplaceNft';
 export { default as GetMine} from './nft_functions/GetMine';
 export { default as Claim } from './nft_functions/Claim';
-export { default as InventoryNft } from './nft_functions/InventoryNft';
+export { default as InventoryNftButton } from './InventoryNftButton';
 export { default as Purchase } from './nft_functions/Purchase';
 export { default as Airdrop } from './nft_functions/Airdrop';
 export { default as CollectionStats } from './nft_functions/CollectionStats';

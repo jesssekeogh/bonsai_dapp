@@ -23,7 +23,10 @@ import {
   user_refresh_balances,
   useAnvilDispatch,
 } from "@vvv-interactive/nftanvil-react";
-import { principalToAccountIdentifier } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
+import {
+  principalToAccountIdentifier,
+  tokenToText,
+} from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import {
@@ -39,6 +42,8 @@ const toast = createStandaloneToast();
 
 const Purchase = ({ nfts, amount }) => {
   const dispatch = useAnvilDispatch();
+
+  const navigate = useNavigate();
 
   const buy = (amount) => async (dispatch, getState) => {
     SendingToast("Transferring ICP...");
@@ -85,15 +90,20 @@ const Purchase = ({ nfts, amount }) => {
     dispatch(user_refresh_balances());
 
     if ("err" in brez) {
+      toast.closeAll();
       return FailedToast("Transaction failed");
     }
 
     toast.closeAll();
-    SuccessToast("Congratulations! " + { nfts } + " NFT(s) added to inventory!");
-    // return token id and navigate to new page
-    // return navigate("/nft/" + brez.ok.map((x) => Number(x))[0].toString(), {
-    //   state: { prev: "/launchpad/bonsai-nft", showConfetti: true },
-    // });
+    SuccessToast("Congratulations! You got " + nfts + " NFT(s)");
+
+    return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
+      state: {
+        prev: "/launchpad/bonsai-nft",
+        showConfetti: true,
+        totalNfts: nfts,
+      },
+    }); // returns the claimed token
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -143,12 +153,6 @@ const Purchase = ({ nfts, amount }) => {
             >
               You will be randomly allocated {nfts} Bonsai Warrior(s) from the
               collection!
-              <FormControl>
-                <FormHelperText>
-                  By clicking 'Confrim Payment' you confirm that you have read
-                  the tokenomics paper for this collection.
-                </FormHelperText>
-              </FormControl>
             </Heading>
           </ModalBody>
           <ModalFooter>

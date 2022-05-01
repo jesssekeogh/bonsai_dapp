@@ -33,11 +33,11 @@ export const FailedToast = (msg) => {
 
 export const CopyToast = () => {
     return toast({
-      title: `Address Copied!`,
+      title: `Address Copied`,
       status: "info",
       isClosable: true,
       position: "top-right",
-      duration: 1500,
+      duration: 1000,
       containerStyle: {
         marginTop: "5.5rem",
       },
@@ -62,7 +62,7 @@ export const SendingToast = (msg) => {
 
 export const SuccessICPToast = (amount, to) => {
   return toast({
-    title: `${amount} ICP Sent to ${to.substring(0, 5)}...${to.substring(
+    title: `${amount} sent to ${to.substring(0, 5)}...${to.substring(
       60,
       64
     )}`,

@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import IcLogo from "../../../assets/ic-logo.png";
-import { MdPerson, MdSend } from "react-icons/md";
+import { MdPerson } from "react-icons/md";
 import { FaBook, FaRocket } from "react-icons/fa";
-import { GiShop } from "react-icons/gi";
+import { RiSendPlaneFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
@@ -66,12 +66,6 @@ const MenuLinks = () => (
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>Launchpad</p>
-    </NavLink>
-    <NavLink
-      to="/marketplace"
-      className={(navData) => (navData.isActive ? "nav-active" : "")}
-    >
-      <p>Marketplace</p>
     </NavLink>
   </>
 );
@@ -164,8 +158,8 @@ const NavBar = () => {
                 </MenuItem>
               </Tooltip>
               <MenuDivider />
-              <MenuGroup title="ICP Account" />
-              <Tooltip label="Send ICP to this address">
+              <MenuGroup title="ICP Wallet" />
+              <Tooltip label="Copy address">
                 <MenuItem
                   closeOnSelect
                   onClick={() => {
@@ -182,12 +176,12 @@ const NavBar = () => {
                 </MenuItem>
               </Tooltip>
               <MenuItem
-                icon={<MdSend />}
+                icon={<RiSendPlaneFill />}
                 command={user_icp}
                 closeOnSelect
                 onClick={onOpen}
               >
-                Send ICP
+                Transfer ICP
               </MenuItem>
               <NavLink to="/inventory">
                 <MenuItem closeOnSelect icon={<IoIosImages />}>
@@ -258,7 +252,7 @@ const NavBar = () => {
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
-                <FormLabel>To</FormLabel>
+                <FormLabel>To Address</FormLabel>
                 <Tooltip label="ICP Address (NOT PRINCIPAL ID)">
                   <Input
                     placeholder="8bc2fb98c39618....."
@@ -283,12 +277,12 @@ const NavBar = () => {
                 borderColor="#9d8144"
                 color="#f0e6d3"
                 colorScheme="#17191e"
-                rightIcon={<MdSend />}
+                rightIcon={<RiSendPlaneFill />}
                 mr={3}
                 _hover={{ opacity: "0.8" }}
                 onClick={() => sendICP()}
               >
-                Send
+                Transfer ICP
               </Button>
               <Button
                 colorScheme="black"

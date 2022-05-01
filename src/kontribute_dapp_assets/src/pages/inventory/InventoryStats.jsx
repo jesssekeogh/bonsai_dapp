@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Box,
   chakra,
@@ -6,59 +6,22 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  useColorModeValue,
   Center,
   Button,
   useClipboard,
-  Text,
+  Flex,
+  Wrap,
+  useBreakpointValue,
+  IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
-import {
-  useAnvilSelector,
-  useAnvilDispatch,
-} from "@vvv-interactive/nftanvil-react";
+import { CopyIcon } from "@chakra-ui/icons";
+import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import { GetMine } from "../components";
+import { CopyToast } from "../../containers/toasts/Toasts";
 
-const InventoryStats = ({totalnfts}) => {
-  const dispatch = useAnvilDispatch();
-  const loaded = useAnvilSelector((state) => state.user.map.history);
-
-  const [totalselling, setTotal] = useState([]);
-
-  const urlAuthorPrices =
-    "https://nftpkg.com/api/v1/prices/a001c89f603f36aa5cba0d7f5f6ca9be2298c9e5f8309e2155767752916ef418";
-
-  const load = async () => {
-    let arrayOfTokens = [];
-    let loadedData = await dispatch(GetMine());
-    // setData([394609]);
-
-    let resp = await fetch(urlAuthorPrices).then((x) => x.json());
-
-    for (var i = 0; i < resp.length; i++) {
-      //checks which are for sale
-      if (resp[i][2] > 0) {
-        let tokenId = resp[i][0];
-        arrayOfTokens.push(tokenId);
-      }
-    }
-    let Owned = [];
-
-    for (var i = 0; i < arrayOfTokens.length; i++) {
-      if (loadedData.includes(arrayOfTokens[i])) {
-        Owned.push(arrayOfTokens[i]);
-      }
-    }
-
-    setTotal(Owned.length);
-  };
-
-  useEffect(() => {
-    if (loaded) {
-      load();
-    }
-  },[]);
-
+const InventoryStats = ({ totalnfts }) => {
+  const totalselling = "(Coming Soon)";
   return (
     <div>
       <BasicStatistics nftsTotal={totalnfts} selling={totalselling} />
@@ -71,32 +34,34 @@ export default InventoryStats;
 function StatsCard({ title, stat }) {
   return (
     <Stat
-      px={{ base: 4, md: 8 }}
-      py={"5"}
-      shadow={"xl"}
-      border={"1px solid"}
-      borderColor={useColorModeValue("gray.800", "gray.500")}
-      rounded={"lg"}
+      px={{ base: "2", md: "4" }}
+      py={{ base: "2", md: "4" }}
+      border={"double"}
+      borderRadius="lg"
+      bgColor="#16171b"
     >
-      <StatLabel
-        fontWeight={"bold"}
-        as="kbd"
-        bgGradient="linear(to-l, #ed1f79, #2dade2)"
-        bgClip="text"
-        isTruncated
-      >
-        {title}
-      </StatLabel>
-      <br />
-      <StatNumber
-        fontSize={"2xl"}
-        fontWeight={"medium"}
-        as="kbd"
-        bgGradient="linear(to-r, #ed1f79, #f15b25)"
-        bgClip="text"
-      >
-        {stat}
-      </StatNumber>
+      <Wrap>
+        <StatLabel
+          fontWeight={"bold"}
+          fontSize={{ base: "xs", md: "md" }}
+          as="kbd"
+          bgGradient="linear(to-l, #ed1f79, #2dade2)"
+          bgClip="text"
+          isTruncated
+        >
+          {title}:
+        </StatLabel>
+        <br />
+        <StatNumber
+          fontSize={{ base: "8pt", md: "md" }}
+          fontWeight={"medium"}
+          as="kbd"
+          bgGradient="linear(to-r, #ed1f79, #f15b25)"
+          bgClip="text"
+        >
+          {stat}
+        </StatNumber>
+      </Wrap>
     </Stat>
   );
 }
@@ -109,6 +74,10 @@ function BasicStatistics({ nftsTotal, selling }) {
 
   const { hasCopied, onCopy } = useClipboard(address);
 
+  const copy = () => {
+    onCopy();
+    CopyToast();
+  };
   return (
     <Box
       maxW="7xl"
@@ -119,37 +88,45 @@ function BasicStatistics({ nftsTotal, selling }) {
     >
       <Center
         mb={2}
-        shadow={"xl"}
-        border={"1px solid"}
-        borderColor={useColorModeValue("gray.800", "gray.500")}
-        rounded={"lg"}
-        p={2}
+        px={{ base: "0", md: "2" }}
+        py={{ base: "1", md: "2" }}
+        border={"double"}
+        borderRadius="lg"
+        bgColor="#16171b"
       >
-        <chakra.h1
-          textAlign={"center"}
-          fontSize={{ base: "lg", sm: "2xl", md: "4xl" }}
-          fontWeight={"bold"}
-          py={{ base: 1, sm: null, md: 2 }}
-          as="kbd"
-          bgGradient="linear(to-l, #ed1f79, #2dade2)"
-          bgClip="text"
-        >
-          {address
-            ? address.substring(0, 10) + "......" + address.substring(56, 64)
-            : null}
-        </chakra.h1>
-        <Button
-          size={"sm"}
-          onClick={onCopy}
-          ml={2}
-          colorScheme="#282828"
-          bg="#282828"
-          rounded={"full"}
-        >
-          <Text as="kbd">{hasCopied ? "Copied" : "Copy"}</Text>
-        </Button>
+        <Tooltip label="Copy address (supports ICP and NFTA)">
+          <Box
+            _hover={{ opacity: "0.8", cursor: "pointer" }}
+            py={{ base: 1, sm: null, md: 0 }}
+            onClick={() => copy()}
+          >
+            <Flex align={"center"}>
+              <chakra.h1
+                fontSize={{ base: "md", md: "2xl" }}
+                fontWeight={"bold"}
+                as="kbd"
+                bgGradient="linear(to-l, #ed1f79, #2dade2)"
+                bgClip="text"
+              >
+                {address
+                  ? address.substring(0, 10) +
+                    "......" +
+                    address.substring(56, 64)
+                  : null}
+              </chakra.h1>
+              <Button
+                as={IconButton}
+                icon={<CopyIcon />}
+                size={useBreakpointValue({ base: "sm", md: "md" })}
+                color="#fff"
+                backgroundColor={"#16171b"}
+                _hover={{ "background-color": "#16171b" }}
+              ></Button>
+            </Flex>
+          </Box>
+        </Tooltip>
       </Center>
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
+      <SimpleGrid columns={{ base: 3, md: 3 }} spacing={{ base: 5, lg: 8 }}>
         <StatsCard title={"ICP Balance"} stat={user_icp} />
         <StatsCard title={"NFTs Owned"} stat={nftsTotal} />
         <StatsCard title={"NFTs Listed for Sale"} stat={selling} />
