@@ -18,6 +18,7 @@ dist/
 project_minting/
 notes/
 
+old.js
 canister_ids.json
 identity.json
 input.js

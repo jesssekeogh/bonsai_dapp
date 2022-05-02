@@ -31,7 +31,12 @@ import { Image as ChakraImage } from "@chakra-ui/react";
 import logo from "../../../../assets/Bonsai-Team-ICON-Black.png";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import { Purchase, CollectionStats, Airdrop } from "../../components";
+import {
+  Purchase,
+  CollectionStats,
+  Airdrop,
+  LaunchAlert,
+} from "../../components";
 import { LoadingSpinner } from "../../../containers";
 
 // not all NFTs have been added
@@ -75,6 +80,7 @@ const BonsaiNFT = () => {
 
   return (
     <>
+      <LaunchAlert />
       <Container maxW="1250px" mb={10}>
         <Box>
           <Center>
@@ -315,8 +321,8 @@ const StatGrid = ({ total, available }) => (
           </Tooltip>
         </Heading>
         <Text fontWeight={600} color="#f0e6d3" fontSize="lg">
-          Team Bonsai's Genesis collection features 1200 hand crafted NFTs from
-          the Bonsai Warrior Story
+          Team Bonsai's Genesis collection features 1260 hand crafted NFTs from
+          the Bonsai Warriors story. Read our tokenomics paper for more details about the collection and the NFTs.
         </Text>
       </GridItem>
       <DataBox

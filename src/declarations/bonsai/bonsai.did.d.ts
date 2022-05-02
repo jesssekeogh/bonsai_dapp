@@ -14,4 +14,5 @@ export interface _SERVICE {
   'getBonsaiVotes' : () => Promise<StoryVotes>,
   'getBonsaiVotesII' : () => Promise<StoryVotes>,
   'getBonsaiVotesIII' : () => Promise<StoryVotes>,
+  'getBonsaiVotesIV' : () => Promise<StoryVotes>,
 }

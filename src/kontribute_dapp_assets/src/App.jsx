@@ -16,6 +16,7 @@ import {
   BonsaiWarriorsPrologue,
   BonsaiWarriorsPrologueII,
   BonsaiWarriorsPrologueIII,
+  BonsaiWarriorsC1,
 } from "./all_stories/bonsaistory";
 import { AuthPage, NavBar, LoadingSpinner } from "./containers";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
@@ -113,6 +114,10 @@ function App() {
                 <Route
                   path="/stories/bonsai-warriors-prologueIII"
                   element={<BonsaiWarriorsPrologueIII />}
+                />
+                <Route
+                  path="/stories/bonsai-warriors-chapter-1"
+                  element={<BonsaiWarriorsC1 />}
                 />
               </Routes>
               <Footer />

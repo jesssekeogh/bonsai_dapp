@@ -29,6 +29,12 @@ actor Bonsai {
     stable var vote2III : Nat = 0;
     stable var vote3III : Nat = 0;
 
+    // Chapter1 user state and vote tally
+    stable var uniqueUserIV : Trie.Trie<Principal, Types.Profile> = Trie.empty();
+    stable var vote1IV: Nat = 0;
+    stable var vote2IV : Nat = 0;
+    stable var vote3IV : Nat = 0;
+
     // utility func
     private func key(x : Principal) : Trie.Key<Principal> {
         return { key = x; hash = Principal.hash(x) }
@@ -43,7 +49,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUserIII, // changed for chapter
+            uniqueUserIV, // changed for chapter
             key(callerId),
             Principal.equal
         );
@@ -53,13 +59,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote1";
             };
-            uniqueUserIII := Trie.replace( // change for chapter
-                uniqueUserIII,
+            uniqueUserIV := Trie.replace( // change for chapter
+                uniqueUserIV,
                 key(callerId),
                 Principal.equal,
                 ?userchoice
             ).0;
-            vote1III += 1; // change for chapter
+            vote1IV += 1; // change for chapter
             return "user has voted successfully on vote1"
         };
 
@@ -75,7 +81,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUserIII,
+            uniqueUserIV,
             key(callerId),
             Principal.equal
         );
@@ -85,13 +91,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote2";
             };
-            uniqueUserIII := Trie.replace(
-                uniqueUserIII,
+            uniqueUserIV := Trie.replace(
+                uniqueUserIV,
                 key(callerId),
                 Principal.equal,
                 ?userchoice
             ).0;
-            vote2III += 1;
+            vote2IV += 1;
             return "user has voted successfully on vote2"
         };
 
@@ -107,7 +113,7 @@ actor Bonsai {
         };
 
         let result = Trie.get(
-            uniqueUserIII,
+            uniqueUserIV,
             key(callerId),
             Principal.equal
         );
@@ -117,13 +123,13 @@ actor Bonsai {
                 hasVoted = true;
                 whichOption = "vote3";
             };
-            uniqueUserIII := Trie.replace(
-                uniqueUserIII,
+            uniqueUserIV := Trie.replace(
+                uniqueUserIV,
                 key(callerId),
                 Principal.equal,
                 ?userchoice,
             ).0;
-            vote3III += 1;
+            vote3IV += 1;
             return "user has voted successfully on vote3"
         };
 
@@ -207,6 +213,40 @@ actor Bonsai {
             vote2 = vote2III;
             vote3 = vote3III;
             total = vote1III + vote2III + vote3III;
+            userOption = option
+        };
+        return votes
+    };
+
+    // query votes for chapter 1
+    public shared query(msg) func getBonsaiVotesIV() : async Types.StoryVotes {
+        let callerId = msg.caller;
+        
+        var option : Types.Profile = { hasVoted = false; whichOption = "novote"};
+        
+        let result = Trie.get(
+            uniqueUserIV,
+            key(callerId),
+            Principal.equal
+        );
+
+        switch (result){
+            case (null){
+                let userchoice : Types.Profile = {
+                hasVoted = false;
+                whichOption = "novote"; 
+                };
+                option := userchoice
+            };
+            case (?result){
+                option := result
+            };
+        };
+        let votes : Types.StoryVotes= {
+            vote1 = vote1IV;
+            vote2 = vote2IV;
+            vote3 = vote3IV;
+            total = vote1IV + vote2IV + vote3IV;
             userOption = option
         };
         return votes

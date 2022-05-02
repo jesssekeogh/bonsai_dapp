@@ -120,7 +120,7 @@ const BonsaiWarriorsPrologueIII = () => {
         Option2Details={Option2Details()}
         Option3Title={"Iron Tide School"}
         Option3Details={Option3Details()}
-        VoteEnded={false}
+        VoteEnded={true}
       />
     </div>
   );

@@ -51,9 +51,8 @@ function StatsCard({ title, stat }) {
         >
           {title}:
         </StatLabel>
-        <br />
         <StatNumber
-          fontSize={{ base: "8pt", md: "md" }}
+          fontSize={{ base: "7pt", md: "md" }}
           fontWeight={"medium"}
           as="kbd"
           bgGradient="linear(to-r, #ed1f79, #f15b25)"

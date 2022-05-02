@@ -6,6 +6,6 @@ export { default as InventoryNftButton } from './InventoryNftButton';
 export { default as Purchase } from './nft_functions/Purchase';
 export { default as Airdrop } from './nft_functions/Airdrop';
 export { default as CollectionStats } from './nft_functions/CollectionStats';
-export { default as ViewNft } from './nft_functions/ViewNft';
 export { default as SingleNft } from './SingleNft';
 export { default as Confetti } from './Confetti';
+export { default as LaunchAlert } from './LaunchAlert';

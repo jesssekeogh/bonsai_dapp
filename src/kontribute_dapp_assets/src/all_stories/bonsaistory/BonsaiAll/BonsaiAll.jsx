@@ -13,6 +13,7 @@ import {
   HStack,
   Spinner,
   Tooltip,
+  Badge,
 } from "@chakra-ui/react";
 import { MdHowToVote } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -20,7 +21,7 @@ import { Delayed } from "../../../containers/index";
 // for calling user data
 import { UserContext } from "../../../Context";
 
-function Feature({ title, desc, link, total, ...rest }) {
+function Feature({ title, desc, latest, link, total, ...rest }) {
   return (
     <Link to={link}>
       <Box
@@ -33,7 +34,12 @@ function Feature({ title, desc, link, total, ...rest }) {
         {...rest}
       >
         <Heading color="#a7884a" fontSize="xl">
-          {title}
+          {title}{" "}
+          {latest ? (
+            <Badge mb={1} borderRadius="md" colorScheme="green">
+              New
+            </Badge>
+          ) : null}
         </Heading>
         <Text mb="3" fontWeight={600} color="#f0e6d3" mt={4}>
           {desc}
@@ -72,6 +78,7 @@ function StackEx(props) {
   return (
     <Stack spacing={8}>
       <Feature
+        latest={props.latest}
         title={props.title1}
         desc={props.body1}
         link={props.link1}
@@ -89,6 +96,7 @@ const BonsaiAll = () => {
   const [totalPrologue, setPrologue] = useState(<Spinner size="xs" />);
   const [totalPrologueII, setPrologueII] = useState(<Spinner size="xs" />);
   const [totalPrologueIII, setPrologueIII] = useState(<Spinner size="xs" />);
+  const [totalInterlude, setInterlude] = useState(<Spinner size="xs" />);
 
   // async promise, returns votes from API calls only if component is mounted
   const getAllTotals = async () => {
@@ -115,6 +123,13 @@ const BonsaiAll = () => {
           }
         });
       })(),
+      (async () => {
+        await user.getBonsaiVotesIV().then((result) => {
+          if (isMounted) {
+            setInterlude(result.total.toString());
+          }
+        });
+      })(),
     ]);
   };
 
@@ -133,7 +148,15 @@ const BonsaiAll = () => {
       </Center>
       <div className="bonsai_all-container">
         <ChapterBox
+          latest
           wait={100}
+          title={"INTERLUDE"}
+          body={"The Interlude"}
+          link={"/stories/bonsai-warriors-chapter-1"}
+          total={totalInterlude}
+        />
+        <ChapterBox
+          wait={200}
           title={"PROLOGUE III"}
           body={
             "Now we must choose our school, the place of learning that Tang Wei shall study at."
@@ -142,14 +165,14 @@ const BonsaiAll = () => {
           total={totalPrologueIII}
         />
         <ChapterBox
-          wait={200}
+          wait={300}
           title={"PROLOGUE II"}
           body={"You are an Artisan, now you must vote to choose your name"}
           link={"/stories/bonsai-warriors-prologueII"}
           total={totalPrologueII}
         />
         <ChapterBox
-          wait={300}
+          wait={400}
           title={"PROLOGUE"}
           body={
             "Introduction and character creation in the Bonsai Warriors story"
@@ -162,12 +185,12 @@ const BonsaiAll = () => {
   );
 };
 
-const ChapterBox = ({ wait, title, body, link, total }) => {
+const ChapterBox = ({ wait, title, body, link, total,latest }) => {
   return (
     <Center mb="1rem">
       <Delayed waitBeforeShow={wait}>
         <SlideFade in={true}>
-          <StackEx title1={title} body1={body} link1={link} total1={total} />
+          <StackEx latest={latest} title1={title} body1={body} link1={link} total1={total} />
         </SlideFade>
       </Delayed>
     </Center>

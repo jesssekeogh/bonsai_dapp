@@ -18,4 +18,5 @@ service : {
   getBonsaiVotes: () -> (StoryVotes) query;
   getBonsaiVotesII: () -> (StoryVotes) query;
   getBonsaiVotesIII: () -> (StoryVotes) query;
+  getBonsaiVotesIV: () -> (StoryVotes) query;
 }
