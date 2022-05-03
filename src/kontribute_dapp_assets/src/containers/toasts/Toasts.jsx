@@ -4,12 +4,12 @@ import React from "react";
 const toast = createStandaloneToast();
 
 // general success toast
-export const SuccessToast = (msg) => {
+export const SuccessToast = (msg, desc) => {
     return toast({
         title: msg,
+        description: desc,
         status: "success",
         isClosable: true,
-        duration: 2500,
         position: "top-right",
         containerStyle: {
           marginTop: "5.5rem",
@@ -18,13 +18,13 @@ export const SuccessToast = (msg) => {
 }
 
 // general failed toast
-export const FailedToast = (msg) => {
+export const FailedToast = (msg, err) => {
     return toast({
         title: msg,
+        description: err,
         status: "error",
         isClosable: true,
         position: "top-right",
-        duration: 1500,
         containerStyle: {
           marginTop: "5.5rem",
         },
@@ -62,7 +62,8 @@ export const SendingToast = (msg) => {
 
 export const SuccessICPToast = (amount, to) => {
   return toast({
-    title: `${amount} sent to ${to.substring(0, 5)}...${to.substring(
+    title: "Success",
+    description:`${amount} sent to ${to.substring(0, 5)}...${to.substring(
       60,
       64
     )}`,

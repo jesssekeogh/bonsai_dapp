@@ -23,6 +23,7 @@ import { Image as ChakraImage } from "@chakra-ui/react";
 import { InventoryNftButton } from "./index";
 
 const SingleNft = ({ tokenId }) => {
+  let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map); //anvil mapper
   const dispatch = useAnvilDispatch();
 
@@ -32,15 +33,20 @@ const SingleNft = ({ tokenId }) => {
 
   const load = async () => {
     const meta = await dispatch(nft_fetch(tokenToText(tokenId)));
-    setName({ name: meta.name, color: itemQuality.dark[meta.quality].color });
-    let src = await tokenUrl(map.space, tokenId, "thumb");
-    setImg(src);
-
-    setLoaded(true);
+    if (isMounted){
+      setName({ name: meta.name, color: itemQuality.dark[meta.quality].color });
+      let src = await tokenUrl(map.space, tokenId, "thumb");
+      setImg(src);
+  
+      setLoaded(true);
+    }
   };
 
   useEffect(() => {
     load();
+    return () => {
+      isMounted = false;
+    };
   }, [tokenId]);
 
   return (

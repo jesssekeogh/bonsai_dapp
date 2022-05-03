@@ -159,6 +159,7 @@ const NftTags = (props) => {
             me={1}
             fontStyle={"italic"}
             my={1}
+            p={1}
             size={useBreakpointValue(["sm", "md"])}
             variant="solid"
             colorScheme="blue"

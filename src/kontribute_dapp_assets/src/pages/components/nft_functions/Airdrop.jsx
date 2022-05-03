@@ -63,7 +63,7 @@ const Airdrop = () => {
 
   const send_code = async (code) => {
     if (code.length < 1) {
-      return FailedToast("Airdrop code invalid");
+      return FailedToast("Failed", "Airdrop code Invalid");
     }
     onClose();
     SendingToast("Claiming NFT...");
@@ -71,10 +71,10 @@ const Airdrop = () => {
     try {
       await dispatch(airdrop_use(code));
       toast.closeAll();
-      SuccessToast("Congratulations! You got 1 NFT");
+      SuccessToast("Success","Congratulations! You got 1 NFT");
     } catch (e) {
       toast.closeAll();
-      return FailedToast("Airdrop code invalid");
+      return FailedToast("Failed", e.toString());
     }
   };
 
@@ -89,6 +89,7 @@ const Airdrop = () => {
         _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
         mb={3}
         onClick={onOpen}
+        isDisabled
       >
         <Text as="kbd">Use Airdrop Code</Text>
       </Button>

@@ -38,7 +38,7 @@ function StatsCard({ title, stat }) {
       py={{ base: "2", md: "4" }}
       border={"double"}
       borderRadius="lg"
-      bgColor="#16171b"
+      backgroundColor="#16171b"
     >
       <Wrap>
         <StatLabel
@@ -91,7 +91,7 @@ function BasicStatistics({ nftsTotal, selling }) {
         py={{ base: "1", md: "2" }}
         border={"double"}
         borderRadius="lg"
-        bgColor="#16171b"
+        backgroundColor="#16171b"
       >
         <Tooltip label="Copy address (supports ICP and NFTA)">
           <Box
@@ -119,7 +119,7 @@ function BasicStatistics({ nftsTotal, selling }) {
                 size={useBreakpointValue({ base: "sm", md: "md" })}
                 color="#fff"
                 backgroundColor={"#16171b"}
-                _hover={{ "background-color": "#16171b" }}
+                _hover={{ backgroundColor: "#16171b" }}
               ></Button>
             </Flex>
           </Box>

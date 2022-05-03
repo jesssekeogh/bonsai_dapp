@@ -29,7 +29,7 @@ function Feature({ title, desc, latest, link, total, ...rest }) {
         shadow="md"
         border={"double"}
         borderRadius="5px"
-        bgColor="#16171b"
+        backgroundColor="#16171b"
         maxW="400px"
         {...rest}
       >
@@ -147,14 +147,14 @@ const BonsaiAll = () => {
         <Heading color="#a7884a">Bonsai Warriors</Heading>
       </Center>
       <div className="bonsai_all-container">
-        <ChapterBox
+        {/* <ChapterBox
           latest
           wait={100}
           title={"INTERLUDE"}
           body={"The Interlude"}
           link={"/stories/bonsai-warriors-chapter-1"}
           total={totalInterlude}
-        />
+        /> */}
         <ChapterBox
           wait={200}
           title={"PROLOGUE III"}

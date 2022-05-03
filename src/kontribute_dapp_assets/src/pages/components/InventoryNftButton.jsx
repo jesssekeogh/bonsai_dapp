@@ -45,6 +45,10 @@ import { ViewIcon, InfoIcon } from "@chakra-ui/icons";
 
 const toast = createStandaloneToast();
 
+const checkSupport = (address) => {
+  if (address.toLowerCase().substring(0, 3) !== "a00") return true;
+};
+
 const InventoryNftButton = ({ tokenId }) => {
   return (
     <>
@@ -83,8 +87,10 @@ const TransferNft = ({ tokenId }) => {
     let send = { id: tokenToText(tokenId), toAddress: To };
 
     if (send.toAddress.length !== 64) {
-      return FailedToast("Invalid ICP address"); // verbose errors for the user
+      return FailedToast("Failed", "Invalid ICP address"); // verbose errors for the user
     } else {
+      if (checkSupport(send.toAddress))
+        return FailedToast("Failed", "Address does not support NFTA");
       onClose();
       SendingToast("Sending NFT...");
 
@@ -136,7 +142,7 @@ const TransferNft = ({ tokenId }) => {
               <FormLabel>To Address</FormLabel>
               <Tooltip label="ICP Address (NOT PRINCIPAL ID)">
                 <Input
-                  placeholder="8bc2fb98c39618....."
+                  placeholder="a00fe60cfcc1ec....."
                   onChange={(event) => setTo(event.target.value)}
                 />
               </Tooltip>
@@ -183,7 +189,14 @@ const BurnNft = ({ tokenId }) => {
     let burned = await dispatch(nft_burn({ id: tokenToText(tokenId) }));
     console.log(burned);
     toast.closeAll();
-    SuccessToast("NFT burned successfully!");
+    SuccessToast(
+      "Success",
+      `${
+        tokenToText(tokenId).substring(0, 6) +
+        "..." +
+        tokenToText(tokenId).substring(15, 20)
+      } burned successfully`
+    );
   };
 
   return (

@@ -35,7 +35,7 @@ const LaunchPad = () => {
           <SlideFade in={true} offsetY="20px">
             <Collection
               colimg={bonsailogo}
-              title={"Bonsai Warriors NFTs"}
+              title={"Bonsai Warrior NFTs"}
               description={
                 "A collection of 1260 hand crafted NFTs from the Bonsai Warriors story"
               }

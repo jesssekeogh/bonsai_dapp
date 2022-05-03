@@ -67,7 +67,7 @@ const Purchase = ({ nfts, amount }) => {
       );
     } catch (err) {
       toast.closeAll();
-      return FailedToast("Transaction failed");
+      return FailedToast("Failed", err.toString());
     }
 
     toast.closeAll();
@@ -91,11 +91,11 @@ const Purchase = ({ nfts, amount }) => {
 
     if ("err" in brez) {
       toast.closeAll();
-      return FailedToast("Transaction failed");
+      return FailedToast("Failed", brez.err.toString());
     }
 
     toast.closeAll();
-    SuccessToast("Congratulations! You got " + nfts + " NFT(s)");
+    SuccessToast("Success","Congratulations! You got " + nfts + " NFT(s)");
 
     return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
       state: {
@@ -119,6 +119,7 @@ const Purchase = ({ nfts, amount }) => {
         _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
         mb={3}
         onClick={onOpen}
+        isDisabled
       >
         <Text as="kbd">Buy Now</Text>
       </Button>

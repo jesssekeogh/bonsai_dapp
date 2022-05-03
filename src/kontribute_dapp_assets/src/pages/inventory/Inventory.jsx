@@ -10,6 +10,7 @@ import { GetMine, Claim } from "../components";
 import { SingleNft } from "../components";
 
 const Inventory = () => {
+  let isMounted = true;
   const [data, setData] = useState([]);
   const dispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
@@ -17,8 +18,11 @@ const Inventory = () => {
   const [Loaded, setLoaded] = useState(false);
 
   const load = async () => {
-    setData(await dispatch(GetMine()));
-    setLoaded(true);
+    let fetch = await dispatch(GetMine())
+    if (isMounted) {
+      setData(fetch);
+      setLoaded(true);
+    }
   };
 
   useEffect(() => {
@@ -33,6 +37,9 @@ const Inventory = () => {
     if (loaded) {
       load();
     }
+    return () => {
+      isMounted = false;
+    };
   });
 
   useEffect(() => {

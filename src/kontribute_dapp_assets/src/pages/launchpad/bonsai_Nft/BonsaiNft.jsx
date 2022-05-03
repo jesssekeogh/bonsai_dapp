@@ -58,7 +58,10 @@ const BonsaiNFT = () => {
     let data = await dispatch(CollectionStats());
     if (isMounted) {
       setStats(data);
-      setLoaded(true);
+      if (!loaded) {
+        console.log("stats", data); // console log stats on inital render only
+        setLoaded(true);
+      }
       if (data.purchase === 0) {
         setSoldOut(true);
       }
@@ -100,7 +103,7 @@ const BonsaiNFT = () => {
                 color="#f0e6d3"
                 fontSize="lg"
               >
-                Team Bonsai Presents
+                Team Bonsai presents
               </Text>
             </HStack>
           </Center>
@@ -259,7 +262,7 @@ export const Card = (props) => {
       width="100%"
       border={"double"}
       borderRadius="lg"
-      bgColor="#16171b"
+      backgroundColor="#16171b"
     >
       {discount1 && <CardBadge>20% Discount</CardBadge>}
       {discount2 && <CardBadge>30% Discount</CardBadge>}
@@ -321,8 +324,9 @@ const StatGrid = ({ total, available }) => (
           </Tooltip>
         </Heading>
         <Text fontWeight={600} color="#f0e6d3" fontSize="lg">
-          Team Bonsai's Genesis collection features 1260 hand crafted NFTs from
-          the Bonsai Warriors story. Read our tokenomics paper for more details about the collection and the NFTs.
+          Team Bonsai's genesis collection features 1260 hand crafted NFTs from
+          the Bonsai Warriors story. Read our tokenomics paper for more details
+          about the collection and the NFTs.
         </Text>
       </GridItem>
       <DataBox
@@ -332,7 +336,7 @@ const StatGrid = ({ total, available }) => (
       />
       <DataBox
         label="NFTs Available"
-        info={"Total NFTs left in the contract"}
+        info={"Total NFTs left for purchase in the contract"}
         data={available}
       />
     </Grid>
@@ -348,7 +352,7 @@ const DataBox = ({ label, info, data }) => {
           py={{ base: "5", md: "6" }}
           border={"double"}
           borderRadius="lg"
-          bgColor="#16171b"
+          backgroundColor="#16171b"
         >
           <Stack>
             <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
