@@ -45,7 +45,8 @@ const price_1 = 300000000; // 3 ICP
 const price_2 = 2100000000; // 21 ICP
 const price_3 = 1200000000; // 12 ICP
 
-const tokenomics_link = "";
+const tokenomics_link =
+  "https://medium.com/@teambonsai.icp/bonsai-warrior-nft-tokenomics-bfbabfee7cde";
 
 const BonsaiNFT = () => {
   let isMounted = true;
@@ -324,7 +325,7 @@ const StatGrid = ({ total, available }) => (
           </Tooltip>
         </Heading>
         <Text fontWeight={600} color="#f0e6d3" fontSize="lg">
-          Team Bonsai's genesis collection features 1260 hand crafted NFTs from
+          Team Bonsai's genesis collection features 1100 hand crafted NFTs from
           the Bonsai Warriors story. Read our tokenomics paper for more details
           about the collection and the NFTs.
         </Text>
@@ -336,7 +337,7 @@ const StatGrid = ({ total, available }) => (
       />
       <DataBox
         label="NFTs Available"
-        info={"Total NFTs left for purchase in the contract"}
+        info={"Total NFTs available for purchase in the contract"}
         data={available}
       />
     </Grid>

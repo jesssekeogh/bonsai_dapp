@@ -37,7 +37,7 @@ const LaunchPad = () => {
               colimg={bonsailogo}
               title={"Bonsai Warrior NFTs"}
               description={
-                "A collection of 1260 hand crafted NFTs from the Bonsai Warriors story"
+                "A collection of 1100 hand crafted NFTs from the Bonsai Warriors story"
               }
               tags={["Fantasy", "Adventure"]}
               author={"Team Bonsai"}

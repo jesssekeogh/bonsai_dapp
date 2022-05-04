@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import {
   Alert,
   AlertIcon,
@@ -8,21 +8,22 @@ import {
 } from "@chakra-ui/react";
 
 const LaunchAlert = () => {
-  const launchDate = new Date("2022-05-20T13:00:00+01:00").getTime(); // IST time
 
-  const now = new Date().getTime();
+  let launchDate = new Date("2022-05-20T13:00:00+01:00").getTime(); // IST time
 
-  const left = launchDate - now;
+  let now = new Date().getTime();
 
-  const minutes = left / 60000;
+  let left = launchDate - now;
 
-  const hours = minutes / 60;
+  let minutes = left / 60000;
 
-  const daysLeft = Math.floor(hours / 24);
+  let hours = minutes / 60;
 
-  const hoursLeft = Math.floor(hours % 24);
+  let daysLeft = Math.floor(hours / 24);
 
-  const minutesLeft = Math.floor(((hours % 24) % Math.floor(hours % 24)) * 60);
+  let hoursLeft = Math.floor(hours % 24);
+
+  let minutesLeft = Math.floor(((hours % 24) - Math.floor(hours % 24)) * 60);
 
   return (
     <>

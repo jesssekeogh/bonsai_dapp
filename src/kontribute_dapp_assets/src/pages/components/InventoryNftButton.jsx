@@ -130,7 +130,7 @@ const TransferNft = ({ tokenId }) => {
             <FormControl>
               <FormHelperText>
                 Address must support NFTA{" "}
-                <Tooltip label="dapps that support NFTA: kontribute.app, nftanvil.com and badbot.ninja">
+                <Tooltip label="dapps that support NFTA: kontribute.app and nftanvil.com">
                   <InfoIcon boxSize={5} viewBox="0 0 30 30" />
                 </Tooltip>
               </FormHelperText>

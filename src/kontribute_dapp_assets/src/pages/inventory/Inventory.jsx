@@ -3,7 +3,7 @@ import {
   useAnvilDispatch,
   useAnvilSelector,
 } from "@vvv-interactive/nftanvil-react";
-import { Center, SimpleGrid } from "@chakra-ui/react";
+import { Center, SimpleGrid, Kbd, Text } from "@chakra-ui/react";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { GetMine, Claim } from "../components";
@@ -18,7 +18,7 @@ const Inventory = () => {
   const [Loaded, setLoaded] = useState(false);
 
   const load = async () => {
-    let fetch = await dispatch(GetMine())
+    let fetch = await dispatch(GetMine());
     if (isMounted) {
       setData(fetch);
       setLoaded(true);
@@ -51,11 +51,22 @@ const Inventory = () => {
     <>
       <InventoryStats totalnfts={data.length} />
       <Center>
-        <SimpleGrid columns={[2, null, 4]} pb={5} gap={2} m={2} maxW="1250px">
-          {data.map((item) => (
-            <SingleNft tokenId={item} key={item} inventory={true} />
-          ))}
-        </SimpleGrid>
+        {data.length > 0 ? (
+          <SimpleGrid columns={[2, null, 4]} pb={5} gap={2} m={2} maxW="1250px">
+            {data.map((item) => (
+              <SingleNft tokenId={item} key={item} inventory={true} />
+            ))}
+          </SimpleGrid>
+        ) : (
+          <Kbd
+            mt={10}
+            border={"double"}
+            borderRadius="lg"
+            backgroundColor="#16171b"
+          >
+            <Text color="#f0e6d3">Your inventory is empty!😱</Text>
+          </Kbd>
+        )}
       </Center>
     </>
   );
