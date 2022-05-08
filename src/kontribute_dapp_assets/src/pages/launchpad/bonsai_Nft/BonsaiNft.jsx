@@ -80,7 +80,7 @@ const BonsaiNFT = () => {
     };
   });
 
-  if (!loaded) return <LoadingSpinner />;
+  if (!loaded) return <LoadingSpinner label="Loading launchpad..." />;
 
   return (
     <>

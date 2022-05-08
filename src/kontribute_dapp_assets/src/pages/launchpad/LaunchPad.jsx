@@ -27,7 +27,7 @@ const LaunchPad = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!imageIsReady) return <LoadingSpinner />;
+  if (!imageIsReady) return <LoadingSpinner label="Loading collections..." />;
   return (
     <div>
       <Center>

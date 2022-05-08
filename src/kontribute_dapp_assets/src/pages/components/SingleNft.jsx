@@ -22,7 +22,7 @@ import {
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { InventoryNftButton } from "./index";
 
-const SingleNft = ({ tokenId }) => {
+const SingleNft = ({ tokenId, sort }) => {
   let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map); //anvil mapper
   const dispatch = useAnvilDispatch();
@@ -33,11 +33,15 @@ const SingleNft = ({ tokenId }) => {
 
   const load = async () => {
     const meta = await dispatch(nft_fetch(tokenToText(tokenId)));
-    if (isMounted){
-      setName({ name: meta.name, color: itemQuality.dark[meta.quality].color });
+    if (isMounted) {
+      setName({
+        name: meta.name,
+        color: itemQuality.dark[meta.quality].color,
+        quality: meta.quality.toString(),
+      });
       let src = await tokenUrl(map.space, tokenId, "thumb");
       setImg(src);
-  
+
       setLoaded(true);
     }
   };
@@ -47,14 +51,17 @@ const SingleNft = ({ tokenId }) => {
     return () => {
       isMounted = false;
     };
-  }, [tokenId]);
+  }, [tokenId, sort]);
 
+  if (sort === "0") {
+    sort = name.quality;
+  } else if (sort !== name.quality) return null;
   return (
     <>
-      <GridItem>
+      <GridItem className="grid-item">
         <Box
           role={"group"}
-          p={4}
+          p={[2, null, 4]}
           maxW={"330px"}
           w={"full"}
           backgroundColor={"#1e212b"}
@@ -71,7 +78,7 @@ const SingleNft = ({ tokenId }) => {
                 src={img}
               />
             ) : (
-              <SkeletonCircle size={["150", null, "250"]} />
+              <SkeletonCircle size={["150", null, "270"]} />
             )}
           </Box>
           <HStack pt={3} align={"start"} justify={"space-between"}>
@@ -80,32 +87,32 @@ const SingleNft = ({ tokenId }) => {
                 <Text
                   color={"gray.500"}
                   casing={"uppercase"}
-                  fontSize={{ base: "7pt", sm: "sm", md: "sm" }}
+                  fontSize={{ base: "7pt", sm: "xs", md: "xs" }}
                 >
                   {tokenToText(tokenId)}
                 </Text>
               </>
             ) : (
               <>
-                <Skeleton height="15px" width={"80px"} />
+                <Skeleton height="20px" width={"70px"} />
               </>
             )}
           </HStack>
           <Stack
-            pt={2}
+            pt={1}
             direction={"row"}
             align={"center"}
             justify="space-between"
           >
             {loaded ? (
               <Heading
-                fontSize={{ base: "xs", sm: "xs", md: "md" }}
+                fontSize={{ base: "xs", sm: "xs", md: "sm" }}
                 color={name.color}
               >
                 {name.name}
               </Heading>
             ) : (
-              <Skeleton height="15px" width={"100px"} />
+              <Skeleton height="20px" width={"100px"} />
             )}
             <InventoryNftButton tokenId={tokenId} />
           </Stack>

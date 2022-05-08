@@ -13,7 +13,7 @@ import {
   Wrap,
   useBreakpointValue,
   IconButton,
-  Tooltip,
+  Tooltip
 } from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
@@ -40,7 +40,7 @@ function StatsCard({ title, stat }) {
       borderRadius="lg"
       backgroundColor="#16171b"
     >
-      <Wrap>
+      <Wrap spacing={{ base: 5, md: 2 }}>
         <StatLabel
           fontWeight={"bold"}
           fontSize={{ base: "xs", md: "md" }}
@@ -81,8 +81,8 @@ function BasicStatistics({ nftsTotal, selling }) {
     <Box
       maxW="7xl"
       mx={"auto"}
-      py={{ base: 0, sm: null, md: 5 }}
-      mt={{ base: -8, sm: null, md: -10 }}
+      pt={{ base: 0, sm: null, md: 5 }}
+      mt={{ base: -10, sm: null, md: -12 }}
       px={{ base: 2, sm: 12, md: 17 }}
     >
       <Center
@@ -125,7 +125,7 @@ function BasicStatistics({ nftsTotal, selling }) {
           </Box>
         </Tooltip>
       </Center>
-      <SimpleGrid columns={{ base: 3, md: 3 }} spacing={{ base: 5, lg: 8 }}>
+      <SimpleGrid columns={{ base: 3, md: 3 }} spacing={{ base: 4, lg: 8 }}>
         <StatsCard title={"ICP Balance"} stat={user_icp} />
         <StatsCard title={"NFTs Owned"} stat={nftsTotal} />
         <StatsCard title={"NFTs Listed for Sale"} stat={selling} />

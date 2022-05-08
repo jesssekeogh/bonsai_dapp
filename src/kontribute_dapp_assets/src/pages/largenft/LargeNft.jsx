@@ -71,7 +71,7 @@ const LargeNft = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!Loaded) return <LoadingSpinner />;
+  if (!Loaded) return <LoadingSpinner label="Loading NFT..."/>;
   return (
     <>
       <Center px={5}>
