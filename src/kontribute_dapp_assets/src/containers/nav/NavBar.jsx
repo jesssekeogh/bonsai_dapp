@@ -7,6 +7,7 @@ import { IoIosImages } from "react-icons/io";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
+import anvlogo from "../../../assets/anvillogo.svg";
 import {
   Button,
   Menu,
@@ -30,6 +31,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
   FormControl,
   FormHelperText,
@@ -74,7 +77,7 @@ const toast = createStandaloneToast();
 
 const NavBar = () => {
   // context for the user profile
-  const { principal, signOut, signActor } = useContext(UserContext);
+  const { principal, signOut } = useContext(UserContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   // NFT anvil tools
   const dispatch = useAnvilDispatch(); // anvil dispatch to initate login
@@ -91,6 +94,23 @@ const NavBar = () => {
   //  1 icp= 100000000 e8s
   // 0.1icp= 010000000 e8s
 
+  const closePop = () => {
+    onClose();
+    setTo("");
+    setAmount(0);
+  };
+
+  const checkAddress = (send) => {
+    if (send.to.length !== 64) {
+      return false;
+    } else if (Number(send.amount) <= 0 || isNaN(Number(send.amount))) {
+      return false;
+    } else if (send.amount >= AccountIdentifier.icpToE8s(user_icp)) {
+      return false;
+    }
+    return true;
+  };
+
   const sendICP = async () => {
     let amounticp = AccountIdentifier.icpToE8s(Amount);
     let send = {
@@ -98,18 +118,17 @@ const NavBar = () => {
       amount: amounticp,
     };
 
-    if (send.to.length !== 64) {
-      return FailedToast("Transfer failed", "Invalid ICP address"); // verbose errors for the user
-    } else if (Amount == 0 || isNaN(Amount)) {
-      return FailedToast("Transfer failed","Invalid amount");
-    } else if (Amount >= user_icp) {
-      return FailedToast("Transfer failed","Insufficient funds");
-    } else {
-      onClose();
+    if (!checkAddress(send))
+      return FailedToast("Transfer failed", "Invalid input");
+
+    try {
+      closePop();
       SendingToast("Sending ICP...");
       await dispatch(user_transfer_icp(send));
       toast.closeAll();
-      SuccessICPToast(Amount, To);
+      return SuccessICPToast(AccountIdentifier.e8sToIcp(send.amount), send.to);
+    } catch (e) {
+      return FailedToast("Transfer failed", e.toString());
     }
   };
 
@@ -158,7 +177,15 @@ const NavBar = () => {
                 </MenuItem>
               </Tooltip>
               <MenuDivider />
-              <MenuGroup title="ICP Wallet" />
+              <MenuGroup
+                as={"div"}
+                title={
+                  <Flex>
+                    ICP Wallet&nbsp;
+                    <ChakraImage src={anvlogo} h={"18px"} w={"auto"} />
+                  </Flex>
+                }
+              />
               <Tooltip label="Copy address">
                 <MenuItem
                   closeOnSelect
@@ -194,6 +221,7 @@ const NavBar = () => {
               </MenuItem>
             </MenuList>
           </Menu>
+          {/* for mobile view */}
           <div className="bonsai__link-dropdown">
             <Menu>
               <MenuButton
@@ -207,7 +235,6 @@ const NavBar = () => {
                 icon={<HamburgerIcon />}
               ></MenuButton>
               <MenuList>
-                {/* for mobile view */}
                 <MenuGroup title="Kontribute" />
                 <NavLink to="/stories">
                   <MenuItem icon={<FaBook />}>Stories</MenuItem>
@@ -215,9 +242,6 @@ const NavBar = () => {
                 <NavLink to="/launchpad">
                   <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
                 </NavLink>
-                {/* <NavLink to="/marketplace">
-                  <MenuItem icon={<GiShop />}>Marketplace</MenuItem>
-                </NavLink> */}
               </MenuList>
             </Menu>
           </div>
@@ -225,7 +249,7 @@ const NavBar = () => {
       </div>
       {/* sending ICP UI */}
       <>
-        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <Modal isOpen={isOpen} onClose={closePop} isCentered>
           <ModalOverlay />
           <ModalContent bg="#141414" color="#fff" mx="10%">
             <ModalHeader
@@ -263,10 +287,26 @@ const NavBar = () => {
 
               <FormControl mt={4}>
                 <FormLabel>Amount</FormLabel>
-                <Input
-                  placeholder="0.1"
-                  onChange={(event) => setAmount(event.target.value)}
-                />
+                <InputGroup>
+                  <Input
+                    value={Amount.toString().substring(0, 8)}
+                    onChange={(event) => setAmount(event.target.value)}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button
+                      _hover={{ opacity: "0.8" }}
+                      colorScheme="#282828"
+                      bg="#282828"
+                      h="1.75rem"
+                      size="sm"
+                      onClick={() => {
+                        if (user_icp > 0) setAmount(user_icp - 0.0001);
+                      }}
+                    >
+                      Max
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
               </FormControl>
             </ModalBody>
 
@@ -289,7 +329,7 @@ const NavBar = () => {
                 color="#f0e6d3"
                 variant="outline"
                 _hover={{ opacity: "0.8" }}
-                onClick={onClose}
+                onClick={closePop}
               >
                 Cancel
               </Button>

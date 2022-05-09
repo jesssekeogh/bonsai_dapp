@@ -58,7 +58,7 @@ const SingleNft = ({ tokenId, sort }) => {
   } else if (sort !== name.quality) return null;
   return (
     <>
-      <GridItem className="grid-item">
+      <GridItem>
         <Box
           role={"group"}
           p={[2, null, 4]}
