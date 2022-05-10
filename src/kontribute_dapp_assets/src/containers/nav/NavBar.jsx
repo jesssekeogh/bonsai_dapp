@@ -79,17 +79,14 @@ const NavBar = () => {
   // context for the user profile
   const { principal, signOut } = useContext(UserContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // NFT anvil tools
   const dispatch = useAnvilDispatch(); // anvil dispatch to initate login
-  const address = useAnvilSelector((state) => state.user.address); // Retrieve NFT Anvil ICP address
+  const [To, setTo] = useState("");
+  const [Amount, setAmount] = useState(0);
+  const address = useAnvilSelector((state) => state.user.address);
   const user_icp = AccountIdentifier.e8sToIcp(
     useAnvilSelector((state) => state.user.icp) // Retrieve NFT Anvil Address ICP Balance
   );
-
   const { hasCopied, onCopy } = useClipboard(address);
-
-  const [To, setTo] = useState("");
-  const [Amount, setAmount] = useState(0);
 
   //  1 icp= 100000000 e8s
   // 0.1icp= 010000000 e8s

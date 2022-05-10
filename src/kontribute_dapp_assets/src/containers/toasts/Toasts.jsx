@@ -10,10 +10,7 @@ export const SuccessToast = (msg, desc) => {
         description: desc,
         status: "success",
         isClosable: true,
-        position: "top-right",
-        containerStyle: {
-          marginTop: "5.5rem",
-        },
+        position: "bottom-right",
       });
 }
 
@@ -24,10 +21,7 @@ export const FailedToast = (msg, err) => {
         description: err,
         status: "error",
         isClosable: true,
-        position: "top-right",
-        containerStyle: {
-          marginTop: "5.5rem",
-        },
+        position: "bottom-right",
       });
 };
 
@@ -36,11 +30,8 @@ export const CopyToast = () => {
       title: `Address Copied`,
       status: "info",
       isClosable: true,
-      position: "top-right",
+      position: "bottom-right",
       duration: 1000,
-      containerStyle: {
-        marginTop: "5.5rem",
-      },
     });
 };
 
@@ -52,11 +43,8 @@ export const SendingToast = (msg) => {
     ),
     status: "info",
     isClosable: true,
-    position: "top-right",
+    position: "bottom-right",
     duration: null,
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
   });
 };
 
@@ -69,9 +57,6 @@ export const SuccessICPToast = (amount, to) => {
     )}`,
     status: "success",
     isClosable: true,
-    position: "top-right",
-    containerStyle: {
-      marginTop: "5.5rem",
-    },
+    position: "bottom-right",
   });
 };

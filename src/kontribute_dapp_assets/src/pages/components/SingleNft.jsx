@@ -22,7 +22,7 @@ import {
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { InventoryNftButton } from "./index";
 
-const SingleNft = ({ tokenId, sort }) => {
+const SingleNft = ({ tokenId, sort, collection }) => {
   let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map); //anvil mapper
   const dispatch = useAnvilDispatch();
@@ -38,6 +38,7 @@ const SingleNft = ({ tokenId, sort }) => {
         name: meta.name,
         color: itemQuality.dark[meta.quality].color,
         quality: meta.quality.toString(),
+        author: meta.author,
       });
       let src = await tokenUrl(map.space, tokenId, "thumb");
       setImg(src);
@@ -53,6 +54,9 @@ const SingleNft = ({ tokenId, sort }) => {
     };
   }, [tokenId, sort]);
 
+  if (collection === "") {
+    collection = name.author;
+  } else if (collection !== name.author) return null;
   if (sort === "0") {
     sort = name.quality;
   } else if (sort !== name.quality) return null;

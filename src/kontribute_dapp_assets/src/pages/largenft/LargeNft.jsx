@@ -54,6 +54,7 @@ const LargeNft = () => {
       color: itemQuality.dark[meta.quality].color,
       rating: itemQuality.dark[meta.quality].label,
     };
+
     if (path.state !== null) {
       setPathData({
         prevPath: path.state.prev,

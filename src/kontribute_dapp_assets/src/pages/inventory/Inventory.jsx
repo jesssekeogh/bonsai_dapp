@@ -22,6 +22,7 @@ const Inventory = () => {
   const [sortedTokens, setTokens] = useState([]);
   const [Loaded, setLoaded] = useState(false);
   const [sortBy, setSort] = useState("0");
+  const [collectionBy, setCollection] = useState("");
   const dispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
 
@@ -59,28 +60,8 @@ const Inventory = () => {
       <InventoryStats totalnfts={sortedTokens.length} />
       <Center>
         <HStack>
-          <Select
-            size="sm"
-            border={"double"}
-            borderRadius="lg"
-            backgroundColor="#16171b"
-            borderColor="#16171b"
-            color="#f0e6d3"
-            my={2}
-            maxW={["100px", null, "150px"]}
-            fontSize={["7pt", null, "md"]}
-            onChange={(e) => {
-              setSort(e.target.value);
-            }}
-          >
-            <option value={0}>All</option>
-            <option value={1}>Common</option>
-            <option value={2}>Uncommon</option>
-            <option value={3}>Rare</option>
-            <option value={4}>Epic</option>
-            <option value={5}>Legendary</option>
-            <option value={6}>Artifact</option>
-          </Select>
+          <RarityFilter setSort={setSort} />
+          <CollectionFilter setCollection={setCollection} />
         </HStack>
       </Center>
       <Center>
@@ -94,7 +75,12 @@ const Inventory = () => {
               maxW="1250px"
             >
               {sortedTokens.map((item) => (
-                <SingleNft tokenId={item} key={item} sort={sortBy} />
+                <SingleNft
+                  tokenId={item}
+                  key={item}
+                  sort={sortBy}
+                  collection={collectionBy}
+                />
               ))}
             </SimpleGrid>
           </>
@@ -110,6 +96,66 @@ const Inventory = () => {
         )}
       </Center>
     </>
+  );
+};
+
+const RarityFilter = ({ setSort }) => {
+  return (
+    <Select
+      size="sm"
+      border={"double"}
+      borderRadius="lg"
+      backgroundColor="#16171b"
+      borderColor="#16171b"
+      color="#f0e6d3"
+      my={2}
+      fontSize={["7pt", null, "sm"]}
+      onChange={(e) => {
+        setSort(e.target.value);
+      }}
+    >
+      <option value={0}>All</option>
+      <option value={1}>Common</option>
+      <option value={2}>Uncommon</option>
+      <option value={3}>Rare</option>
+      <option value={4}>Epic</option>
+      <option value={5}>Legendary</option>
+      <option value={6}>Artifact</option>
+    </Select>
+  );
+};
+
+const CollectionFilter = ({ setCollection }) => {
+  return (
+    <Select
+      size="sm"
+      border={"double"}
+      borderRadius="lg"
+      backgroundColor="#16171b"
+      borderColor="#16171b"
+      color="#f0e6d3"
+      my={2}
+      fontSize={["7pt", null, "sm"]}
+      onChange={(e) => {
+        setCollection(e.target.value);
+      }}
+    >
+      <option value={""}>All</option>
+      <option
+        value={
+          "a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77"
+        }
+      >
+        Bonsai Warriors
+      </option>
+      <option
+        value={
+          "a004f41ea1a46f5b7e9e9639fbed84e037d9ce66b75d392d2c1640bb7a559cda"
+        }
+      >
+        Badbot Ninja
+      </option>
+    </Select>
   );
 };
 
