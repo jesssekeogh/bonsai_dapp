@@ -9,6 +9,7 @@ import {
   tokenToText,
 } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
+import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import {
   Box,
   Heading,
@@ -18,11 +19,20 @@ import {
   SkeletonCircle,
   Skeleton,
   HStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { InventoryNftButton } from "./index";
+import InventoryNftButton from "../inventory/InventoryNftButton";
+import MarketplaceNftButton from "../marketplace/MarketplaceNftButton";
 
-const SingleNft = ({ tokenId, sort, collection }) => {
+const SingleNft = ({
+  tokenId,
+  sort,
+  collection,
+  selling,
+  isInventory,
+  isMarketplace,
+}) => {
   let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map); //anvil mapper
   const dispatch = useAnvilDispatch();
@@ -38,7 +48,8 @@ const SingleNft = ({ tokenId, sort, collection }) => {
         name: meta.name,
         color: itemQuality.dark[meta.quality].color,
         quality: meta.quality.toString(),
-        author: meta.author,
+        filter: meta.tags[0],
+        price: meta.price.amount,
       });
       let src = await tokenUrl(map.space, tokenId, "thumb");
       setImg(src);
@@ -52,14 +63,10 @@ const SingleNft = ({ tokenId, sort, collection }) => {
     return () => {
       isMounted = false;
     };
-  }, [tokenId, sort]);
+  });
 
-  if (collection === "") {
-    collection = name.author;
-  } else if (collection !== name.author) return null;
-  if (sort === "0") {
-    sort = name.quality;
-  } else if (sort !== name.quality) return null;
+  if (checkFilter(sort, collection, selling, name)) return null;
+
   return (
     <>
       <GridItem>
@@ -91,10 +98,22 @@ const SingleNft = ({ tokenId, sort, collection }) => {
                 <Text
                   color={"gray.500"}
                   casing={"uppercase"}
-                  fontSize={{ base: "7pt", sm: "xs", md: "xs" }}
+                  fontSize={{ base: "6pt", sm: "xs", md: "xs" }}
                 >
                   {tokenToText(tokenId)}
                 </Text>
+                {name.price > 0 ? (
+                  <Tooltip label="Amount in ICP">
+                    <Text
+                      as="kbd"
+                      bgGradient="linear(to-r, #ed1f79, #f15b25)"
+                      bgClip="text"
+                      fontSize={{ base: "7pt", sm: "xs", md: "xs" }}
+                    >
+                      {e8sToIcp(name.price)}
+                    </Text>
+                  </Tooltip>
+                ) : null}
               </>
             ) : (
               <>
@@ -110,7 +129,7 @@ const SingleNft = ({ tokenId, sort, collection }) => {
           >
             {loaded ? (
               <Heading
-                fontSize={{ base: "xs", sm: "xs", md: "sm" }}
+                fontSize={{ base: "7pt", sm: "xs", md: "sm" }}
                 color={name.color}
               >
                 {name.name}
@@ -118,12 +137,33 @@ const SingleNft = ({ tokenId, sort, collection }) => {
             ) : (
               <Skeleton height="20px" width={"100px"} />
             )}
-            <InventoryNftButton tokenId={tokenId} />
+            {isInventory ? <InventoryNftButton tokenId={tokenId} /> : null}
+            {isMarketplace ? (
+              <MarketplaceNftButton tokenId={tokenId} price={name.price} />
+            ) : null}
           </Stack>
         </Box>
       </GridItem>
     </>
   );
+};
+
+const checkFilter = (sort, collection, selling, nftmeta) => {
+  if (selling !== "all" && selling === "selling") {
+    if (!(nftmeta.price > 0)) return true;
+  } else if (selling !== "all" && selling === "notselling") {
+    if (nftmeta.price > 0) return true;
+  }
+
+  if (collection === "") {
+    collection = nftmeta.filter;
+  } else if (collection !== nftmeta.filter) return true;
+
+  if (sort === "0") {
+    sort = nftmeta.quality;
+  } else if (sort !== nftmeta.quality) return true;
+
+  return false;
 };
 
 export default SingleNft;

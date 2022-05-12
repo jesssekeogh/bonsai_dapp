@@ -470,7 +470,7 @@ const BonsaiVote = (props) => {
       </Container>
       <div className="bonsai__story_back-button">
         <Link to="/stories/bonsai-all">
-          <Button colorScheme="#282828" bg="#282828" rounded={"full"} px={6} _hover={{"opacity":"0.8"}}>
+          <Button colorScheme="#282828" bg="#282828" size="sm" rounded={"full"} px={6} _hover={{"opacity":"0.8"}}>
             Go Back
           </Button>
         </Link>

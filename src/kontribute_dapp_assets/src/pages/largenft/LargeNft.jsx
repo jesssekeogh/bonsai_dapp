@@ -54,7 +54,7 @@ const LargeNft = () => {
       color: itemQuality.dark[meta.quality].color,
       rating: itemQuality.dark[meta.quality].label,
     };
-
+    
     if (path.state !== null) {
       setPathData({
         prevPath: path.state.prev,
@@ -124,6 +124,7 @@ const LargeNft = () => {
               rounded={"full"}
               px={5}
               my={5}
+              size="sm"
               _hover={{ opacity: "0.8" }}
             >
               <Text as="kbd">Go Back</Text>
@@ -137,6 +138,7 @@ const LargeNft = () => {
                 rounded={"full"}
                 px={5}
                 my={5}
+                size="sm"
                 _hover={{ opacity: "0.8" }}
               >
                 <Text as="kbd">

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import IcLogo from "../../../assets/ic-logo.png";
 import { MdPerson } from "react-icons/md";
-import { FaBook, FaRocket } from "react-icons/fa";
+import { FaBook, FaRocket, FaShoppingCart } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
 import "./NavBar.css";
@@ -69,6 +69,12 @@ const MenuLinks = () => (
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>Launchpad</p>
+    </NavLink>
+    <NavLink
+      to={"/marketplace/" + process.env.MARKETPLACE_COLLECTION}
+      className={(navData) => (navData.isActive ? "nav-active" : "")}
+    >
+      <p>Marketplace</p>
     </NavLink>
   </>
 );
@@ -238,6 +244,9 @@ const NavBar = () => {
                 </NavLink>
                 <NavLink to="/launchpad">
                   <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
+                </NavLink>
+                <NavLink to="/marketplace">
+                  <MenuItem icon={<FaShoppingCart />}>Marketplace</MenuItem>
                 </NavLink>
               </MenuList>
             </Menu>

@@ -8,6 +8,7 @@ import {
   LaunchPad,
   Stories,
   Inventory,
+  Marketplace,
   BonsaiNft,
   LargeNft,
 } from "./pages";
@@ -100,6 +101,7 @@ function App() {
                 <Route path="/nft/:tokenid" element={<LargeNft />} />
                 <Route path="/stories" element={<Stories />} />
                 <Route path="/inventory" element={<Inventory />} />
+                <Route path="/marketplace/:author" element={<Marketplace />} />
                 <Route path="/launchpad" element={<LaunchPad />} />
                 <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
                 <Route path="/stories/bonsai-all" element={<BonsaiAll />} />
