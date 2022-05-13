@@ -9,6 +9,7 @@ import {
   Kbd,
   Text,
   HStack,
+  Divider,
 } from "@chakra-ui/react";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
@@ -71,6 +72,9 @@ const Inventory = () => {
         </HStack>
       </Center>
       <Center>
+        <Divider my={1} borderColor="#16171b" maxW="1250px" />
+      </Center>
+      <Center mt={2}>
         {sortedTokens.length > 0 ? (
           <>
             <SimpleGrid

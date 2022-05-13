@@ -66,7 +66,6 @@ const SingleNft = ({
   });
 
   if (checkFilter(sort, collection, selling, name)) return null;
-
   return (
     <>
       <GridItem>

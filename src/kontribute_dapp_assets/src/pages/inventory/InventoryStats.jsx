@@ -11,8 +11,6 @@ import {
   Flex,
   IconButton,
   Tooltip,
-  Divider,
-  Wrap,
 } from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
@@ -126,7 +124,6 @@ function BasicStatistics({ nftsTotal }) {
         <StatsCard title={"ICP"} stat={user_icp} />
         <StatsCard title={"NFTs"} stat={nftsTotal} />
       </SimpleGrid>
-      <Divider my={2} borderColor="#16171b" />
     </Box>
   );
 }
