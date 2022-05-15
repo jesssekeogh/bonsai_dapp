@@ -63,7 +63,7 @@ const SingleNft = ({
     return () => {
       isMounted = false;
     };
-  });
+  }, [selling]);
 
   if (checkFilter(sort, collection, selling, name)) return null;
   return (

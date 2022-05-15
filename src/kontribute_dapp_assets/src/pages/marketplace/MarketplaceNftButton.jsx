@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { nft_purchase } from "@vvv-interactive/nftanvil-react";
 import { tokenToText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
-import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
+import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 import {
-  Tooltip,
+  e8sToIcp,
+  TextToArray,
+} from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
+import {
   Button,
   Heading,
   Text,
@@ -22,8 +25,6 @@ import {
   ModalBody,
   ModalCloseButton,
   FormControl,
-  FormLabel,
-  Input,
   FormControl,
   FormHelperText,
   useBreakpointValue,
@@ -34,9 +35,10 @@ import {
   FailedToast,
   SendingToast,
   SuccessToast,
-  SuccessICPToast,
 } from "../../containers/toasts/Toasts.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+const toast = createStandaloneToast();
 
 const MarketplaceNftButton = ({ tokenId, price }) => {
   return (
@@ -55,7 +57,11 @@ const MarketplaceNftButton = ({ tokenId, price }) => {
         <MenuList>
           <Link
             to={"/nft/" + tokenToText(tokenId)}
-            state={{ prev: "/marketplace/" + process.env.MARKETPLACE_COLLECTION, showConfetti: false, totalNfts: 1 }}
+            state={{
+              prev: "/marketplace/" + process.env.MARKETPLACE_COLLECTION,
+              showConfetti: false,
+              totalNfts: 1,
+            }}
           >
             <MenuItem icon={<ViewIcon />}>View NFT</MenuItem>
           </Link>
@@ -68,6 +74,48 @@ const MarketplaceNftButton = ({ tokenId, price }) => {
 
 const BuyNft = ({ tokenId, price }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useAnvilDispatch();
+  const navigate = useNavigate();
+
+  const PurchaseNft = async () => {
+    onClose();
+    let buyObj = {
+      id: tokenToText(tokenId),
+      amount: Number(price),
+      affiliate: [
+        {
+          address: TextToArray(process.env.KONTRIBUTE_ADDRESS),
+          amount: 50,
+        },
+      ],
+    };
+
+    try {
+      SendingToast("Buying NFT...");
+      await dispatch(nft_purchase(buyObj));
+      toast.closeAll();
+      SuccessToast(
+        "Success",
+        `${
+          tokenToText(tokenId).substring(0, 6) +
+          "..." +
+          tokenToText(tokenId).substring(15, 20)
+        } bought for ${e8sToIcp(price)} ICP`
+      );
+      return navigate("/nft/" + tokenToText(tokenId), {
+        state: {
+          prev: "/marketplace/" + process.env.MARKETPLACE_COLLECTION,
+          showConfetti: true,
+          totalNfts: 1,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      toast.closeAll();
+      FailedToast("Failed", e.toString());
+    }
+  };
+
   return (
     <>
       <MenuItem icon={<BsBasketFill />} onClick={onOpen}>
@@ -130,7 +178,7 @@ const BuyNft = ({ tokenId, price }) => {
               rightIcon={<BsBasketFill />}
               mr={3}
               _hover={{ opacity: "0.8" }}
-              //   onClick={() => Burn()}
+              onClick={() => PurchaseNft()}
             >
               Buy
             </Button>

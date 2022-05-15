@@ -17,10 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { SingleNft } from "../components";
 import { LoadingSpinner } from "../../containers";
-import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { AuthorFilter, PriceFilter, RarityFilter } from "../components/Filters";
 import { useParams } from "react-router-dom";
-import LazyLoad from "react-lazyload";
 
 const Marketplace = () => {
   const params = useParams();
@@ -28,10 +26,9 @@ const Marketplace = () => {
   const [tokensForSale, setTokensForSale] = useState([]);
   const [sortBy, setSort] = useState("0");
   const [page, setPage] = useState(0);
-  const [amount, setAmount] = useState(12);
+  const [pricing, setPricing] = useState("LtoH");
 
   const sortRarity = async (allTokens, rarity) => {
-    setPage(0)
     let author = await fetch(
       "https://nftpkg.com/api/v1/author/" + params.author
     ).then((x) => x.json());
@@ -58,18 +55,22 @@ const Marketplace = () => {
     let jsonData = await fetch(
       "https://nftpkg.com/api/v1/prices/" + params.author
     ).then((x) => x.json());
+    
+    if (pricing === "LtoH") {
+      jsonData.sort((a, b) => a[2] - b[2]);
+    } else {
+      jsonData.sort((a, b) => b[2] - a[2]);
+    }
 
     for (let i = 0; i < jsonData.length; i++) {
       if (jsonData[i][2] > 0) {
         forSale.push(jsonData[i][0]);
       }
     }
-
     if (sortBy === "0") {
       setTokensForSale(forSale.slice(page * 8, (page + 1) * 8));
     } else {
       let filtered = await sortRarity(forSale, sortBy);
-
       setTokensForSale(filtered.slice(page * 8, (page + 1) * 8));
     }
 
@@ -78,12 +79,12 @@ const Marketplace = () => {
 
   useEffect(() => {
     LoadSale();
-  }, [params.author, page, sortBy]);
+  }, [params.author, page, sortBy, pricing]);
 
   if (!Loaded) return <LoadingSpinner label="Loading Marketplace" />;
   return (
     <div>
-      <MarketplaceHeader setSort={setSort} />
+      <MarketplaceHeader setSort={setSort} setPage={setPage} setPricing={setPricing} />
       <Center my={2}>
         <PaginationButtons
           setPage={setPage}
@@ -97,7 +98,7 @@ const Marketplace = () => {
             <SingleNft
               tokenId={item}
               key={item}
-              sort={sortBy.toString()}
+              sort={"0"}
               collection={""}
               selling={"all"}
               isMarketplace={true}
@@ -116,7 +117,7 @@ const Marketplace = () => {
   );
 };
 
-const MarketplaceHeader = ({ setSort, setCollection }) => {
+const MarketplaceHeader = ({ setSort, setPage, setPricing }) => {
   return (
     <Container maxWidth="1250px" mt={-8}>
       <Flex alignItems="center" gap="2">
@@ -131,8 +132,8 @@ const MarketplaceHeader = ({ setSort, setCollection }) => {
         <Spacer />
         <HStack>
           <AuthorFilter />
-          <RarityFilter setSort={setSort} />
-          <PriceFilter />
+          <RarityFilter setSort={setSort} setPage={setPage} />
+          <PriceFilter setPricing={setPricing} setPage={setPage} />
         </HStack>
       </Flex>
       <Divider my={1} borderColor="#16171b" />

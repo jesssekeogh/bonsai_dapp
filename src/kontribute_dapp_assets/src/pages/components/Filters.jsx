@@ -44,13 +44,13 @@ export const CollectionFilter = ({ setCollection }) => {
       }}
     >
       <option value={""}>All</option>
-      <option value={BonsaiWarriors}>Bonsai Warriors</option>
+      {/* <option value={BonsaiWarriors}>Bonsai Warriors</option> */}
       <option value={BadbotNinja}>Badbot Ninja</option>
     </Select>
   );
 };
 
-export const RarityFilter = ({ setSort }) => {
+export const RarityFilter = ({ setSort, setPage }) => {
   return (
     <Select
       size="sm"
@@ -63,6 +63,7 @@ export const RarityFilter = ({ setSort }) => {
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
         setSort(e.target.value);
+        setPage(0)
       }}
     >
       <option value={0}>All</option>
@@ -76,7 +77,7 @@ export const RarityFilter = ({ setSort }) => {
   );
 };
 
-export const PriceFilter = ({ SetPrices }) => {
+export const PriceFilter = ({ setPricing, setPage }) => {
   // LtoH = low to high
   return (
     <Select
@@ -89,7 +90,8 @@ export const PriceFilter = ({ SetPrices }) => {
       my={2}
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
-        sePrices(e.target.value);
+        setPricing(e.target.value);
+        setPage(0)
       }}
     >
       <option value={"LtoH"}>Price: Low to High</option>
@@ -122,7 +124,7 @@ export const AuthorFilter = () => {
     >
       <option value={process.env.MARKETPLACE_COLLECTION}>Latest</option>
       <option value={badbotPrices}>Badbot Ninja</option>
-      <option value={bonsaiPrices}>Bonsai Warriors</option>
+      {/* <option value={bonsaiPrices}>Bonsai Warriors</option> */}
     </Select>
   );
 };
