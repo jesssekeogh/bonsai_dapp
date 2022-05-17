@@ -34,38 +34,53 @@ const SingleNft = ({
   isMarketplace,
 }) => {
   let isMounted = true;
-  const map = useAnvilSelector((state) => state.user.map); //anvil mapper
+  const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
 
   const [img, setImg] = useState();
-  const [name, setName] = useState({});
+  const [nft, setNft] = useState({});
   const [loaded, setLoaded] = useState(false);
 
-  const load = async () => {
-    const meta = await dispatch(nft_fetch(tokenToText(tokenId)));
-    if (isMounted) {
-      setName({
-        name: meta.name,
-        color: itemQuality.dark[meta.quality].color,
-        quality: meta.quality.toString(),
-        filter: meta.tags[0],
-        price: meta.price.amount,
-      });
-      let src = await tokenUrl(map.space, tokenId, "thumb");
-      setImg(src);
+  const token = tokenToText(tokenId);
 
-      setLoaded(true);
+  const load = async () => {
+    try {
+      const meta = await dispatch(nft_fetch(token));
+      if (isMounted) {
+        setNft({
+          id: token,
+          name: meta.name,
+          color: itemQuality.dark[meta.quality].color,
+          quality: meta.quality.toString(),
+          filter: meta.tags[0],
+          price: meta.price.amount,
+        });
+        setLoaded(true);
+      }
+    } catch (e) {
+      console.log("Error, Certified state not ready");
     }
+  };
+
+  const loadImg = async () => {
+    let src = await tokenUrl(map.space, tokenId, "thumb");
+    setImg(src);
   };
 
   useEffect(() => {
     load();
+    loadImg();
+    const interval = setInterval(() => {
+      load();
+    }, 3000);
     return () => {
+      clearInterval(interval);
       isMounted = false;
     };
-  }, [selling]);
+  }, []);
 
-  if (checkFilter(sort, collection, selling, name)) return null;
+  if (isInventory && checkFilter(sort, collection, selling, nft)) return null; // only check in inventory
+
   return (
     <>
       <GridItem>
@@ -99,9 +114,9 @@ const SingleNft = ({
                   casing={"uppercase"}
                   fontSize={{ base: "6pt", sm: "xs", md: "xs" }}
                 >
-                  {tokenToText(tokenId)}
+                  {nft.id}
                 </Text>
-                {name.price > 0 ? (
+                {nft.price > 0 ? (
                   <Tooltip label="Amount in ICP">
                     <Text
                       as="kbd"
@@ -109,9 +124,18 @@ const SingleNft = ({
                       bgClip="text"
                       fontSize={{ base: "7pt", sm: "xs", md: "xs" }}
                     >
-                      {e8sToIcp(name.price)}
+                      {e8sToIcp(nft.price)}
                     </Text>
                   </Tooltip>
+                ) : isMarketplace ? (
+                  <Text
+                    as="kbd"
+                    bgGradient="linear(to-r, #ed1f79, #f15b25)"
+                    bgClip="text"
+                    fontSize={{ base: "7pt", sm: "xs", md: "xs" }}
+                  >
+                    Sold
+                  </Text>
                 ) : null}
               </>
             ) : (
@@ -129,16 +153,16 @@ const SingleNft = ({
             {loaded ? (
               <Heading
                 fontSize={{ base: "7pt", sm: "xs", md: "sm" }}
-                color={name.color}
+                color={nft.color}
               >
-                {name.name}
+                {nft.name}
               </Heading>
             ) : (
               <Skeleton height="20px" width={"100px"} />
             )}
             {isInventory ? <InventoryNftButton tokenId={tokenId} /> : null}
             {isMarketplace ? (
-              <MarketplaceNftButton tokenId={tokenId} price={name.price} />
+              <MarketplaceNftButton tokenId={tokenId} price={nft.price} />
             ) : null}
           </Stack>
         </Box>

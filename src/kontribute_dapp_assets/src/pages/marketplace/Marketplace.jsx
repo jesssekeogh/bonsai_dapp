@@ -27,92 +27,123 @@ const Marketplace = () => {
   const [sortBy, setSort] = useState("0");
   const [page, setPage] = useState(0);
   const [pricing, setPricing] = useState("LtoH");
+  const [author, setAuthor] = useState({});
 
-  const sortRarity = async (allTokens, rarity) => {
-    let author = await fetch(
+  // author fetch - only runs if author changes
+  const fetchAuthorData = async () => {
+    setLoaded(false);
+    
+    let meta = await fetch(
       "https://nftpkg.com/api/v1/author/" + params.author
     ).then((x) => x.json());
 
+    let prices = await fetch(
+      "https://nftpkg.com/api/v1/prices/" + params.author
+    ).then((x) => x.json());
+
+    setAuthor({ meta: meta, prices: prices });
+    setLoaded(true);
+  };
+
+  // helper function for sorting rarities
+  const sortRarity = async (allTokens, rarity) => {
     let rarityFiltered = [];
-    for (let i = 0; i < author.length; i++) {
-      if (author[i][1] === Number(rarity)) {
-        rarityFiltered.push(author[i][0]);
+    for (let i = 0; i < author.meta.length; i++) {
+      if (author.meta[i][1] === Number(rarity)) {
+        rarityFiltered.push(author.meta[i][0]);
       }
     }
-
     let filtered = [];
     for (let i = 0; i < allTokens.length; i++) {
       if (rarityFiltered.includes(allTokens[i])) {
         filtered.push(allTokens[i]);
       }
     }
-
     return filtered;
   };
 
+  // sort nfts accordingly - prices are retrieved from NFT meta data
   const LoadSale = async () => {
-    let forSale = [];
-    let jsonData = await fetch(
-      "https://nftpkg.com/api/v1/prices/" + params.author
-    ).then((x) => x.json());
-    
-    if (pricing === "LtoH") {
-      jsonData.sort((a, b) => a[2] - b[2]);
-    } else {
-      jsonData.sort((a, b) => b[2] - a[2]);
-    }
+    if (Loaded) {
+      let forSale = [];
 
-    for (let i = 0; i < jsonData.length; i++) {
-      if (jsonData[i][2] > 0) {
-        forSale.push(jsonData[i][0]);
+      let prices = author.prices;
+
+      if (pricing === "LtoH") {
+        prices.sort((a, b) => a[2] - b[2]);
+      } else {
+        prices.sort((a, b) => b[2] - a[2]);
+      }
+
+      for (let i = 0; i < prices.length; i++) {
+        if (prices[i][2] > 0) {
+          forSale.push(prices[i][0]);
+        }
+      }
+      if (sortBy === "0") {
+        setTokensForSale(forSale.slice(page * 12, (page + 1) * 12));
+      } else {
+        let filtered = await sortRarity(forSale, sortBy);
+        setTokensForSale(filtered.slice(page * 12, (page + 1) * 12));
       }
     }
-    if (sortBy === "0") {
-      setTokensForSale(forSale.slice(page * 8, (page + 1) * 8));
-    } else {
-      let filtered = await sortRarity(forSale, sortBy);
-      setTokensForSale(filtered.slice(page * 8, (page + 1) * 8));
-    }
-
-    if (!Loaded) setLoaded(true);
   };
 
   useEffect(() => {
     LoadSale();
-  }, [params.author, page, sortBy, pricing]);
+  }, [page, sortBy, pricing, Loaded]);
 
-  if (!Loaded) return <LoadingSpinner label="Loading Marketplace" />;
+  useEffect(() => {
+    fetchAuthorData();
+  }, [params.author]);
+
   return (
     <div>
-      <MarketplaceHeader setSort={setSort} setPage={setPage} setPricing={setPricing} />
-      <Center my={2}>
-        <PaginationButtons
-          setPage={setPage}
-          page={page}
-          tokensLength={tokensForSale.length}
-        />
-      </Center>
-      <Center mt={1}>
-        <SimpleGrid columns={[2, null, 4]} pb={5} gap={2} mx={2} maxW="1250px">
-          {tokensForSale.map((item) => (
-            <SingleNft
-              tokenId={item}
-              key={item}
-              sort={"0"}
-              collection={""}
-              selling={"all"}
-              isMarketplace={true}
+      <MarketplaceHeader
+        setSort={setSort}
+        setPage={setPage}
+        setPricing={setPricing}
+      />
+      {Loaded ? (
+        <>
+          <Center my={2}>
+            <PaginationButtons
+              setPage={setPage}
+              page={page}
+              tokensLength={tokensForSale.length}
             />
-          ))}
-        </SimpleGrid>
-      </Center>
-      <Center mb={2} mt={-2}>
-        <PaginationButtons
-          setPage={setPage}
-          page={page}
-          tokensLength={tokensForSale.length}
-        />
-      </Center>
+          </Center>
+          <Center mt={1}>
+            <SimpleGrid
+              columns={[2, null, 4]}
+              pb={5}
+              gap={2}
+              mx={2}
+              maxW="1250px"
+            >
+              {tokensForSale.map((item) => (
+                <SingleNft
+                  tokenId={item}
+                  key={item}
+                  sort={"0"}
+                  collection={""}
+                  selling={"all"}
+                  isMarketplace={true}
+                />
+              ))}
+            </SimpleGrid>
+          </Center>
+          <Center mb={2} mt={-2}>
+            <PaginationButtons
+              setPage={setPage}
+              page={page}
+              tokensLength={tokensForSale.length}
+            />
+          </Center>
+        </>
+      ) : (
+        <LoadingSpinner label="Loading Marketplace" />
+      )}
     </div>
   );
 };

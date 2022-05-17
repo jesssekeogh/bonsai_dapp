@@ -63,7 +63,9 @@ export const RarityFilter = ({ setSort, setPage }) => {
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
         setSort(e.target.value);
-        setPage(0)
+        if (setPage) {
+          setPage(0);
+        }
       }}
     >
       <option value={0}>All</option>
@@ -91,7 +93,7 @@ export const PriceFilter = ({ setPricing, setPage }) => {
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
         setPricing(e.target.value);
-        setPage(0)
+        setPage(0);
       }}
     >
       <option value={"LtoH"}>Price: Low to High</option>

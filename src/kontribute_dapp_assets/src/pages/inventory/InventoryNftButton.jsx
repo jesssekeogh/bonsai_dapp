@@ -361,6 +361,9 @@ const SellNft = ({ tokenId }) => {
                 placeholder="0.1"
                 onChange={(event) => setAmount(event.target.value)}
               />
+              <FormHelperText>
+                + 0.05% marketplace fee
+              </FormHelperText>
             </FormControl>
           </ModalBody>
 

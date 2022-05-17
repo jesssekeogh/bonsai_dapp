@@ -42,18 +42,22 @@ const Inventory = () => {
         }
       }
     } catch (e) {
-      FailedToast("Failed", "Error loading some NFTs, please try again");
+      console.log("Error loading some NFTs")
     }
   };
 
   useEffect(() => {
     if (loaded) {
-      fetchTokens();
+      fetchTokens(); // run once
+      const interval = setInterval(() => {
+        fetchTokens(); // then every 3 seconds
+      }, 3000);
+      return () => {
+        clearInterval(interval);
+        isMounted = false;
+      };
     }
-    return () => {
-      isMounted = false;
-    };
-  });
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
