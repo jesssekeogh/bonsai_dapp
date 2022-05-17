@@ -10,23 +10,26 @@ import {
   Text,
   HStack,
   Divider,
+  Spacer,
+  Container,
+  Flex,
 } from "@chakra-ui/react";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { GetMine, Claim } from "../components";
 import { SingleNft } from "../components";
-import { FailedToast } from "../../containers/toasts/Toasts";
 import {
   SellingFilter,
   CollectionFilter,
   RarityFilter,
+  QuickView,
 } from "../components/Filters";
 
-const Inventory = () => {
+const Inventory = ({quickView, setQuickView}) => {
   let isMounted = true;
   const [sortedTokens, setTokens] = useState([]);
   const [Loaded, setLoaded] = useState(false);
-  const [sortBy, setSort] = useState("0");
+  const [sortBy, setSort] = useState(0);
   const [collectionBy, setCollection] = useState("");
   const [sellingBy, setSelling] = useState("");
   const dispatch = useAnvilDispatch();
@@ -42,7 +45,7 @@ const Inventory = () => {
         }
       }
     } catch (e) {
-      console.log("Error loading some NFTs")
+      console.log("Error loading some NFTs");
     }
   };
 
@@ -68,16 +71,18 @@ const Inventory = () => {
   return (
     <>
       <InventoryStats totalnfts={sortedTokens.length} />
-      <Center>
-        <HStack>
-          <RarityFilter setSort={setSort} />
-          <CollectionFilter setCollection={setCollection} />
-          <SellingFilter setSelling={setSelling} />
-        </HStack>
-      </Center>
-      <Center>
-        <Divider my={1} borderColor="#16171b" maxW="1250px" />
-      </Center>
+      <Container maxWidth="1250px" p={1} mt={1}>
+        <Flex alignItems="center">
+          <HStack>
+            <RarityFilter setSort={setSort} />
+            <CollectionFilter setCollection={setCollection} />
+            <SellingFilter setSelling={setSelling} />
+          </HStack>
+          <Spacer />
+          <QuickView setQuickView={setQuickView} quickView={quickView} />
+        </Flex>
+        <Divider my={1} borderColor="#16171b" />
+      </Container>
       <Center mt={2}>
         {sortedTokens.length > 0 ? (
           <>
@@ -96,6 +101,7 @@ const Inventory = () => {
                   collection={collectionBy}
                   selling={sellingBy}
                   isInventory={true}
+                  quickView={quickView}
                 />
               ))}
             </SimpleGrid>

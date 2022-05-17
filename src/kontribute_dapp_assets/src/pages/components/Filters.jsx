@@ -1,5 +1,12 @@
 import React from "react";
-import { Select } from "@chakra-ui/react";
+import {
+  Select,
+  FormControl,
+  FormLabel,
+  Box,
+  Switch,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 // collection filters from tags:
 const BonsaiWarriors = "bonsai warrior";
@@ -128,5 +135,23 @@ export const AuthorFilter = () => {
       <option value={badbotPrices}>Badbot Ninja</option>
       {/* <option value={bonsaiPrices}>Bonsai Warriors</option> */}
     </Select>
+  );
+};
+
+export const QuickView = ({ setQuickView, quickView }) => {
+  return (
+    <Box>
+      <FormControl align="center" m={0} p={0}>
+        <Switch
+          size={useBreakpointValue(["sm", "md"])}
+          isChecked={quickView}
+          colorScheme="cyan"
+          onChange={() => setQuickView(!quickView)}
+        />
+        <FormLabel m={0} fontSize={["6pt", null, "sm"]} color={"gray.500"}>
+          Quick view
+        </FormLabel>
+      </FormControl>
+    </Box>
   );
 };

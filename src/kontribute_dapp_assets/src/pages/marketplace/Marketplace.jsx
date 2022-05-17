@@ -14,11 +14,14 @@ import {
   Wrap,
   Stack,
   Button,
+  Tooltip,
 } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 import { SingleNft } from "../components";
 import { LoadingSpinner } from "../../containers";
 import { AuthorFilter, PriceFilter, RarityFilter } from "../components/Filters";
 import { useParams } from "react-router-dom";
+import { FailedToast } from "../../containers/toasts/Toasts";
 
 const Marketplace = () => {
   const params = useParams();
@@ -32,15 +35,28 @@ const Marketplace = () => {
   // author fetch - only runs if author changes
   const fetchAuthorData = async () => {
     setLoaded(false);
-    
-    let meta = await fetch(
-      "https://nftpkg.com/api/v1/author/" + params.author
-    ).then((x) => x.json());
-
-    let prices = await fetch(
-      "https://nftpkg.com/api/v1/prices/" + params.author
-    ).then((x) => x.json());
-
+    let meta;
+    let prices;
+    await Promise.all([
+      (async () => {
+        try {
+          meta = await fetch(
+            "https://nftpkg.com/api/v1/author/" + params.author
+          ).then((x) => x.json());
+        } catch (e) {
+          FailedToast("Failed", "Error fetching author data");
+        }
+      })(),
+      (async () => {
+        try {
+          prices = await fetch(
+            "https://nftpkg.com/api/v1/prices/" + params.author
+          ).then((x) => x.json());
+        } catch (e) {
+          FailedToast("Failed", "Error fetching author data");
+        }
+      })(),
+    ]);
     setAuthor({ meta: meta, prices: prices });
     setLoaded(true);
   };
@@ -49,7 +65,7 @@ const Marketplace = () => {
   const sortRarity = async (allTokens, rarity) => {
     let rarityFiltered = [];
     for (let i = 0; i < author.meta.length; i++) {
-      if (author.meta[i][1] === Number(rarity)) {
+      if (author.meta[i][1] == rarity) {
         rarityFiltered.push(author.meta[i][0]);
       }
     }
@@ -129,6 +145,7 @@ const Marketplace = () => {
                   collection={""}
                   selling={"all"}
                   isMarketplace={true}
+                  quickView={false}
                 />
               ))}
             </SimpleGrid>
@@ -157,7 +174,12 @@ const MarketplaceHeader = ({ setSort, setPage, setPricing }) => {
             <Text bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
               Kontribute{" "}
             </Text>
-            <Text>Marketplace</Text>
+            <Text color="#f0e6d3">
+              Marketplace{" "}
+              <Tooltip label="Kontribute Marketplace supports the NFTA standard on ICP. The current marketplace is in Beta, please report any bugs to Team Bonsai directly on Twitter or Discord">
+                <InfoIcon boxSize={{ base: 3, md: 6 }} viewBox="0 0 25 25" />
+              </Tooltip>
+            </Text>
           </Wrap>
         </Heading>
         <Spacer />
@@ -203,7 +225,7 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
         rounded={"full"}
         px={6}
         _hover={{ opacity: "0.8" }}
-        isDisabled={tokensLength < 8}
+        isDisabled={tokensLength < 12}
         onClick={() => {
           setPage(page + 1);
         }}

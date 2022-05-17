@@ -32,6 +32,7 @@ const SingleNft = ({
   selling,
   isInventory,
   isMarketplace,
+  quickView,
 }) => {
   let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map);
@@ -51,7 +52,7 @@ const SingleNft = ({
           id: token,
           name: meta.name,
           color: itemQuality.dark[meta.quality].color,
-          quality: meta.quality.toString(),
+          quality: meta.quality,
           filter: meta.tags[0],
           price: meta.price.amount,
         });
@@ -92,20 +93,22 @@ const SingleNft = ({
           backgroundColor={"#1e212b"}
           rounded={"lg"}
         >
-          <Box rounded={"lg"} pos={"relative"}>
-            {loaded ? (
-              <ChakraImage
-                bg="#fff"
-                rounded={"lg"}
-                height={["180px", null, "300px"]}
-                width={"auto"}
-                objectFit={"cover"}
-                src={img}
-              />
-            ) : (
-              <SkeletonCircle size={["150", null, "270"]} />
-            )}
-          </Box>
+          {!quickView ? (
+            <Box rounded={"lg"} pos={"relative"}>
+              {loaded ? (
+                <ChakraImage
+                  bg="#fff"
+                  rounded={"lg"}
+                  height={["180px", null, "300px"]}
+                  width={"auto"}
+                  objectFit={"cover"}
+                  src={img}
+                />
+              ) : (
+                <SkeletonCircle size={["150", null, "270"]} />
+              )}
+            </Box>
+          ) : null}
           <HStack pt={3} align={"start"} justify={"space-between"}>
             {loaded ? (
               <>
@@ -182,9 +185,9 @@ const checkFilter = (sort, collection, selling, nftmeta) => {
     collection = nftmeta.filter;
   } else if (collection !== nftmeta.filter) return true;
 
-  if (sort === "0") {
+  if (sort == 0) {
     sort = nftmeta.quality;
-  } else if (sort !== nftmeta.quality) return true;
+  } else if (sort != nftmeta.quality) return true;
 
   return false;
 };

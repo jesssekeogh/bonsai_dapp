@@ -28,6 +28,7 @@ function App() {
   const [signedIn, setSignedIn] = useState(false);
   const [principal, setPrincipal] = useState("");
   const [client, setClient] = useState();
+  const [quickView, setQuickView] = useState(false); // global state for inventory
 
   const initAuth = async () => {
     const client = await AuthClient.create();
@@ -100,7 +101,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/nft/:tokenid" element={<LargeNft />} />
                 <Route path="/stories" element={<Stories />} />
-                <Route path="/inventory" element={<Inventory />} />
+                <Route path="/inventory" element={<Inventory setQuickView={setQuickView} quickView={quickView} />} />
                 <Route path="/marketplace/:author" element={<Marketplace />} />
                 <Route path="/launchpad" element={<LaunchPad />} />
                 <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />

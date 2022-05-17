@@ -75,7 +75,11 @@ const BonsaiNFT = () => {
 
   useEffect(() => {
     load();
+    const interval = setInterval(() => {
+      load();
+    }, 10000);
     return () => {
+      clearInterval(interval);
       isMounted = false;
     };
   });

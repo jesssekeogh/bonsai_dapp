@@ -44,6 +44,7 @@ const LargeNft = () => {
   });
 
   const load = async () => {
+    setSrc(await tokenUrl(map.space, tokenFromText(params.tokenid), "content"));
     const meta = await dispatch(nft_fetch(params.tokenid));
     let NftData = {
       id: params.tokenid,
@@ -62,7 +63,6 @@ const LargeNft = () => {
         amount: path.state.totalNfts,
       });
     }
-    setSrc(await tokenUrl(map.space, tokenFromText(params.tokenid), "content"));
     setData(NftData);
     setLoaded(true);
   };

@@ -77,6 +77,8 @@ const BuyNft = ({ tokenId, price }) => {
   const dispatch = useAnvilDispatch();
   const navigate = useNavigate();
 
+  // 0.01icp= 001000000 e8s
+
   const PurchaseNft = async () => {
     onClose();
     let buyObj = {
@@ -85,7 +87,7 @@ const BuyNft = ({ tokenId, price }) => {
       affiliate: [
         {
           address: TextToArray(process.env.KONTRIBUTE_ADDRESS),
-          amount: 50,
+          amount: 100000,
         },
       ],
     };
