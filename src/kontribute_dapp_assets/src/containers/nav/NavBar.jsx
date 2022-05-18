@@ -82,20 +82,124 @@ const MenuLinks = ({ currentMarketplace }) => (
 const toast = createStandaloneToast();
 
 const NavBar = ({ currentMarketplace }) => {
-  // context for the user profile
+  return (
+    <div className="nav-container">
+      <div className="bonsai__navbar">
+        <div className="bonsai__navbar-links">
+          <div className="bonsai__navbar-links_logo">
+            <NavLink to="/">
+              <img src={logo} alt="Kontribute" />
+            </NavLink>
+          </div>
+
+          <div className="bonsai__navbar-links_container">
+            <MenuLinks currentMarketplace={currentMarketplace} />
+          </div>
+        </div>
+
+        {/* the profile button */}
+        <div className="bonsai__navbar-sign">
+          <ProfileButton />
+          <MobileMenu currentMarketplace={currentMarketplace}/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NavBar;
+
+const ProfileButton = () => {
+  const dispatch = useAnvilDispatch();
   const { principal, signOut } = useContext(UserContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const dispatch = useAnvilDispatch(); // anvil dispatch to initate login
-  const [To, setTo] = useState("");
-  const [Amount, setAmount] = useState(0);
   const address = useAnvilSelector((state) => state.user.address);
   const user_icp = AccountIdentifier.e8sToIcp(
-    useAnvilSelector((state) => state.user.icp) // Retrieve NFT Anvil Address ICP Balance
+    useAnvilSelector((state) => state.user.icp)
   );
   const { hasCopied, onCopy } = useClipboard(address);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  useEffect(() => {
+    dispatch(user_login());
+  }, []);
+
+  return (
+    <Menu closeOnSelect={false} autoSelect={false}>
+      <MenuButton
+        as={Button}
+        bg="#17191e"
+        border="1px"
+        borderColor="#9d8144"
+        color="#f0e6d3"
+        colorScheme="#17191e"
+      >
+        <Flex align="center">
+          Profile&nbsp;
+          <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+        </Flex>
+      </MenuButton>
+      <MenuList>
+        <MenuGroup title="User Profile" />
+        <Tooltip label="Your unique profile ID">
+          <MenuItem icon={<MdPerson />} maxW="240px">
+            {principal.substring(0, 10) +
+              "......" +
+              principal.substring(54, 63)}
+          </MenuItem>
+        </Tooltip>
+        <MenuDivider />
+        <MenuGroup
+          as={"div"}
+          title={
+            <Flex>
+              ICP Wallet&nbsp;
+              <ChakraImage src={anvlogo} h={"18px"} w={"auto"} />
+            </Flex>
+          }
+        />
+        <Tooltip label="Copy address">
+          <MenuItem
+            closeOnSelect
+            onClick={() => {
+              onCopy(), CopyToast();
+            }}
+            icon={<CopyIcon />}
+            maxW="240px"
+          >
+            {address
+              ? address.substring(0, 10) + "......" + address.substring(56, 64)
+              : null}
+          </MenuItem>
+        </Tooltip>
+        <MenuItem
+          icon={<RiSendPlaneFill />}
+          command={user_icp}
+          closeOnSelect
+          onClick={onOpen}
+        >
+          Transfer ICP
+          <SendingIcp onClose={onClose} isOpen={isOpen} user_icp={user_icp} />
+        </MenuItem>
+        <NavLink to="/inventory">
+          <MenuItem closeOnSelect icon={<IoIosImages />}>
+            NFT Inventory
+          </MenuItem>
+        </NavLink>
+        <MenuDivider />
+        <MenuItem icon={<LockIcon />} onClick={signOut}>
+          Sign Out
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  );
+};
+
+const SendingIcp = ({ isOpen, onClose, user_icp }) => {
   //  1 icp= 100000000 e8s
   // 0.1icp= 010000000 e8s
+  const dispatch = useAnvilDispatch();
+  const [To, setTo] = useState("");
+  const [Amount, setAmount] = useState(0);
 
   const closePop = () => {
     onClose();
@@ -135,216 +239,124 @@ const NavBar = ({ currentMarketplace }) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(user_login());
-  }, []);
-
   return (
-    <div className="nav-container">
-      <div className="bonsai__navbar">
-        <div className="bonsai__navbar-links">
-          <div className="bonsai__navbar-links_logo">
-            <NavLink to="/">
-              <img src={logo} alt="Kontribute" />
-            </NavLink>
-          </div>
-
-          <div className="bonsai__navbar-links_container">
-            <MenuLinks currentMarketplace={currentMarketplace} />
-          </div>
-        </div>
-
-        {/* the profile button */}
-        <div className="bonsai__navbar-sign">
-          <Menu closeOnSelect={false} autoSelect={false}>
-            <MenuButton
-              as={Button}
-              bg="#17191e"
-              border="1px"
-              borderColor="#9d8144"
-              color="#f0e6d3"
-              colorScheme="#17191e"
-            >
-              <Flex align="center">
-                Profile&nbsp;
-                <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
-              </Flex>
-            </MenuButton>
-            <MenuList>
-              <MenuGroup title="User Profile" />
-              <Tooltip label="Your unique profile ID">
-                <MenuItem icon={<MdPerson />} maxW="240px">
-                  {principal.substring(0, 10) +
-                    "......" +
-                    principal.substring(54, 63)}
-                </MenuItem>
-              </Tooltip>
-              <MenuDivider />
-              <MenuGroup
-                as={"div"}
-                title={
-                  <Flex>
-                    ICP Wallet&nbsp;
-                    <ChakraImage src={anvlogo} h={"18px"} w={"auto"} />
-                  </Flex>
-                }
-              />
-              <Tooltip label="Copy address">
-                <MenuItem
-                  closeOnSelect
-                  onClick={() => {
-                    onCopy(), CopyToast();
-                  }}
-                  icon={<CopyIcon />}
-                  maxW="240px"
-                >
-                  {address
-                    ? address.substring(0, 10) +
-                      "......" +
-                      address.substring(56, 64)
-                    : null}
-                </MenuItem>
-              </Tooltip>
-              <MenuItem
-                icon={<RiSendPlaneFill />}
-                command={user_icp}
-                closeOnSelect
-                onClick={onOpen}
-              >
-                Transfer ICP
-              </MenuItem>
-              <NavLink to="/inventory">
-                <MenuItem closeOnSelect icon={<IoIosImages />}>
-                  NFT Inventory
-                </MenuItem>
-              </NavLink>
-              <MenuDivider />
-              <MenuItem icon={<LockIcon />} onClick={signOut}>
-                Sign Out
-              </MenuItem>
-            </MenuList>
-          </Menu>
-          {/* for mobile view */}
-          <div className="bonsai__link-dropdown">
-            <Menu>
-              <MenuButton
-                ms="2"
-                as={IconButton}
-                bg="#17191e"
-                border="1px"
-                borderColor="#9d8144"
-                color="#f0e6d3"
-                colorScheme="#17191e"
-                icon={<HamburgerIcon />}
-              ></MenuButton>
-              <MenuList>
-                <MenuGroup title="Kontribute" />
-                <NavLink to="/stories">
-                  <MenuItem icon={<FaBook />}>Stories</MenuItem>
-                </NavLink>
-                <NavLink to="/launchpad">
-                  <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
-                </NavLink>
-                <NavLink to={"/marketplace/" + currentMarketplace}>
-                  <MenuItem icon={<FaShoppingCart />}>Marketplace</MenuItem>
-                </NavLink>
-              </MenuList>
-            </Menu>
-          </div>
-        </div>
-      </div>
-      {/* sending ICP UI */}
-      <>
-        <Modal isOpen={isOpen} onClose={closePop} isCentered>
-          <ModalOverlay />
-          <ModalContent bg="#141414" color="#fff" mx="10%">
-            <ModalHeader
+    <Modal isOpen={isOpen} onClose={closePop} isCentered>
+      <ModalOverlay />
+      <ModalContent bg="#141414" color="#fff" mx="10%">
+        <ModalHeader
+          as="kbd"
+          bgGradient="linear(to-l, #ed1f79, #2dade2)"
+          bgClip="text"
+        >
+          ICP:{" "}
+          <Tooltip label="ICP Balance">
+            <Text
               as="kbd"
-              bgGradient="linear(to-l, #ed1f79, #2dade2)"
+              bgGradient="linear(to-r, #ed1f79, #f15b25)"
               bgClip="text"
             >
-              ICP:{" "}
-              <Tooltip label="ICP Balance">
-                <Text
-                  as="kbd"
-                  bgGradient="linear(to-r, #ed1f79, #f15b25)"
-                  bgClip="text"
+              {user_icp}
+            </Text>
+          </Tooltip>
+          <FormControl>
+            <FormHelperText>
+              + 0.0001 ICP in transfer fees paid to IC
+            </FormHelperText>
+          </FormControl>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={6}>
+          <FormControl>
+            <FormLabel>To Address</FormLabel>
+            <Tooltip label="ICP Address (NOT PRINCIPAL ID)">
+              <Input
+                placeholder="8bc2fb98c39618....."
+                onChange={(event) => setTo(event.target.value)}
+              />
+            </Tooltip>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Amount</FormLabel>
+            <InputGroup>
+              <Input
+                value={Amount.toString().substring(0, 8)}
+                onChange={(event) => setAmount(event.target.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  _hover={{ opacity: "0.8" }}
+                  colorScheme="#282828"
+                  bg="#282828"
+                  h="1.75rem"
+                  size="sm"
+                  onClick={() => {
+                    if (user_icp > 0) setAmount(user_icp - 0.0001);
+                  }}
                 >
-                  {user_icp}
-                </Text>
-              </Tooltip>
-              <FormControl>
-                <FormHelperText>
-                  + 0.0001 ICP in transfer fees paid to IC
-                </FormHelperText>
-              </FormControl>
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>To Address</FormLabel>
-                <Tooltip label="ICP Address (NOT PRINCIPAL ID)">
-                  <Input
-                    placeholder="8bc2fb98c39618....."
-                    onChange={(event) => setTo(event.target.value)}
-                  />
-                </Tooltip>
-              </FormControl>
+                  Max
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+        </ModalBody>
 
-              <FormControl mt={4}>
-                <FormLabel>Amount</FormLabel>
-                <InputGroup>
-                  <Input
-                    value={Amount.toString().substring(0, 8)}
-                    onChange={(event) => setAmount(event.target.value)}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      _hover={{ opacity: "0.8" }}
-                      colorScheme="#282828"
-                      bg="#282828"
-                      h="1.75rem"
-                      size="sm"
-                      onClick={() => {
-                        if (user_icp > 0) setAmount(user_icp - 0.0001);
-                      }}
-                    >
-                      Max
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button
-                bg="#17191e"
-                border="1px"
-                borderColor="#9d8144"
-                color="#f0e6d3"
-                colorScheme="#17191e"
-                rightIcon={<RiSendPlaneFill />}
-                mr={3}
-                _hover={{ opacity: "0.8" }}
-                onClick={() => sendICP()}
-              >
-                Transfer ICP
-              </Button>
-              <Button
-                colorScheme="black"
-                color="#f0e6d3"
-                variant="outline"
-                _hover={{ opacity: "0.8" }}
-                onClick={closePop}
-              >
-                Cancel
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    </div>
+        <ModalFooter>
+          <Button
+            bg="#17191e"
+            border="1px"
+            borderColor="#9d8144"
+            color="#f0e6d3"
+            colorScheme="#17191e"
+            rightIcon={<RiSendPlaneFill />}
+            mr={3}
+            _hover={{ opacity: "0.8" }}
+            onClick={() => sendICP()}
+          >
+            Transfer ICP
+          </Button>
+          <Button
+            colorScheme="black"
+            color="#f0e6d3"
+            variant="outline"
+            _hover={{ opacity: "0.8" }}
+            onClick={closePop}
+          >
+            Cancel
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 
-export default NavBar;
+const MobileMenu = ({currentMarketplace}) => {
+  return (
+    <div className="bonsai__link-dropdown">
+      <Menu>
+        <MenuButton
+          ms="2"
+          as={IconButton}
+          bg="#17191e"
+          border="1px"
+          borderColor="#9d8144"
+          color="#f0e6d3"
+          colorScheme="#17191e"
+          icon={<HamburgerIcon />}
+        ></MenuButton>
+        <MenuList>
+          <MenuGroup title="Kontribute" />
+          <NavLink to="/stories">
+            <MenuItem icon={<FaBook />}>Stories</MenuItem>
+          </NavLink>
+          <NavLink to="/launchpad">
+            <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
+          </NavLink>
+          <NavLink to={"/marketplace/" + currentMarketplace}>
+            <MenuItem icon={<FaShoppingCart />}>Marketplace</MenuItem>
+          </NavLink>
+        </MenuList>
+      </Menu>
+    </div>
+  );
+};
