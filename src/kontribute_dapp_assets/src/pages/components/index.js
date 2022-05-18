@@ -1,5 +1,3 @@
-export { default as BlogTags } from './BlogTags';
-export { default as BlogAuthor } from './BlogAuthor';
 export { default as GetMine} from './nft_functions/GetMine';
 export { default as Claim } from './nft_functions/Claim';
 export { default as Purchase } from './nft_functions/Purchase';

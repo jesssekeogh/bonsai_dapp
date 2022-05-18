@@ -6,6 +6,7 @@ import {
   Box,
   Switch,
   useBreakpointValue,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 // collection filters from tags:
@@ -141,17 +142,19 @@ export const AuthorFilter = () => {
 export const QuickView = ({ setQuickView, quickView }) => {
   return (
     <Box>
-      <FormControl align="center" m={0} p={0}>
-        <Switch
-          size={useBreakpointValue(["sm", "md"])}
-          isChecked={quickView}
-          colorScheme="cyan"
-          onChange={() => setQuickView(!quickView)}
-        />
-        <FormLabel m={0} fontSize={["6pt", null, "sm"]} color={"gray.500"}>
-          Quick view
-        </FormLabel>
-      </FormControl>
+      <Tooltip label={quickView ? "Show NFT images" : "Hide NFT images"}>
+        <FormControl align="center" m={0} p={0}>
+          <Switch
+            size={useBreakpointValue(["sm", "md"])}
+            isChecked={quickView}
+            colorScheme="cyan"
+            onChange={() => setQuickView(!quickView)}
+          />
+          <FormLabel m={0} fontSize={["6pt", null, "sm"]} color={"gray.500"}>
+            Quick view
+          </FormLabel>
+        </FormControl>
+      </Tooltip>
     </Box>
   );
 };

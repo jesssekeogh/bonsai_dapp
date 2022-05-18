@@ -11,7 +11,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { BlogTags, BlogAuthor } from "../components";
+import { Tags, Author } from "../components/Tags";
 
 const Story = ({
   title,
@@ -74,7 +74,7 @@ const Story = ({
                 justifyContent="center"
                 marginTop={{ base: "3", sm: "0" }}
               >
-                <BlogTags tags={tags} />
+                <Tags tags={tags} />
                 <Heading
                   marginTop="1"
                   bgGradient="linear(to-t, #705025, #a7884a)"
@@ -99,7 +99,7 @@ const Story = ({
                   alignSelf={"start"}
                   position={"relative"}
                 >
-                  <BlogAuthor name={author} img={authorimg} />
+                  <Author name={author} img={authorimg} />
                 </Stack>
               </Box>
             </Box>

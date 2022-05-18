@@ -56,7 +56,7 @@ import {
   SuccessICPToast,
 } from "../toasts/Toasts";
 
-const MenuLinks = () => (
+const MenuLinks = ({ currentMarketplace }) => (
   <>
     <NavLink
       className={(navData) => (navData.isActive ? "nav-active" : "")}
@@ -71,7 +71,7 @@ const MenuLinks = () => (
       <p>Launchpad</p>
     </NavLink>
     <NavLink
-      to={"/marketplace/" + process.env.MARKETPLACE_COLLECTION}
+      to={"/marketplace/" + currentMarketplace}
       className={(navData) => (navData.isActive ? "nav-active" : "")}
     >
       <p>Marketplace</p>
@@ -81,7 +81,7 @@ const MenuLinks = () => (
 
 const toast = createStandaloneToast();
 
-const NavBar = () => {
+const NavBar = ({ currentMarketplace }) => {
   // context for the user profile
   const { principal, signOut } = useContext(UserContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -150,7 +150,7 @@ const NavBar = () => {
           </div>
 
           <div className="bonsai__navbar-links_container">
-            <MenuLinks />
+            <MenuLinks currentMarketplace={currentMarketplace} />
           </div>
         </div>
 
@@ -245,7 +245,7 @@ const NavBar = () => {
                 <NavLink to="/launchpad">
                   <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
                 </NavLink>
-                <NavLink to="/marketplace">
+                <NavLink to={"/marketplace/" + currentMarketplace}>
                   <MenuItem icon={<FaShoppingCart />}>Marketplace</MenuItem>
                 </NavLink>
               </MenuList>

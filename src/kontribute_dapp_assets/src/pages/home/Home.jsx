@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import "../../../assets/main.css";
 import { HomeList } from "../../containers";
-import LaunchAlert from "../components/LaunchAlert";
 
 // needs a redesign
 const Home = () => {

@@ -88,7 +88,7 @@ const SingleNft = ({
         <Box
           role={"group"}
           p={[2, null, 4]}
-          maxW={"330px"}
+          minW={["180px", null, "300px"]}
           w={"full"}
           backgroundColor={"#1e212b"}
           rounded={"lg"}

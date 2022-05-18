@@ -23,7 +23,7 @@ import { AuthorFilter, PriceFilter, RarityFilter } from "../components/Filters";
 import { useParams } from "react-router-dom";
 import { FailedToast } from "../../containers/toasts/Toasts";
 
-const Marketplace = () => {
+const Marketplace = ({ setCurrentMarketplace }) => {
   const params = useParams();
   const [Loaded, setLoaded] = useState(false);
   const [tokensForSale, setTokensForSale] = useState([]);
@@ -111,6 +111,7 @@ const Marketplace = () => {
 
   useEffect(() => {
     fetchAuthorData();
+    setCurrentMarketplace(params.author)
   }, [params.author]);
 
   return (

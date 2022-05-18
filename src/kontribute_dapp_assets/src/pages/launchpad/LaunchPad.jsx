@@ -10,7 +10,7 @@ import {
   SlideFade,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { BlogTags, BlogAuthor } from "../components";
+import { Tags, Author } from "../components/Tags";
 import logo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import bonsailogo from "../../../assets/Bonsai_Warriors_Background_1.png";
 import { LoadingSpinner } from "../../containers";
@@ -76,7 +76,7 @@ const Collection = ({
               }}
             />
           </Box>
-          <BlogTags tags={tags} />
+          <Tags tags={tags} />
           <Heading
             marginTop="1"
             bgGradient="linear(to-t, #705025, #a7884a)"
@@ -93,7 +93,7 @@ const Collection = ({
           >
             {description}
           </Text>
-          <BlogAuthor name={author} img={authorimg} />
+          <Author name={author} img={authorimg} />
         </Box>
       </Box>
     </Link>
