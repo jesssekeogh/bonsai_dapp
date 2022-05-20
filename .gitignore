@@ -17,6 +17,7 @@ dist/
 .vessel/
 project_minting/
 notes/
+Bonsai_Warriors/
 
 old.js
 canister_ids.json

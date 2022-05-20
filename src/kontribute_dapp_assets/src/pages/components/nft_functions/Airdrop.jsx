@@ -89,7 +89,6 @@ const Airdrop = () => {
         _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
         mb={3}
         onClick={onOpen}
-        isDisabled
       >
         <Text as="kbd">Use Airdrop Code</Text>
       </Button>

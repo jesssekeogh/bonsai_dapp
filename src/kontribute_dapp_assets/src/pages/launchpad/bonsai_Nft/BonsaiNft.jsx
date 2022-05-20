@@ -88,7 +88,7 @@ const BonsaiNFT = () => {
 
   return (
     <>
-      <LaunchAlert />
+      {/* <LaunchAlert /> */}
       <Container maxW="1250px" mb={10}>
         <Box>
           <Center>
