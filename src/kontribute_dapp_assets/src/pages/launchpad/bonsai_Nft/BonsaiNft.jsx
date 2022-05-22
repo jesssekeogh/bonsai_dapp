@@ -63,7 +63,7 @@ const BonsaiNFT = () => {
         console.log("stats", data); // console log stats on inital render only
         setLoaded(true);
       }
-      if (data.purchase === 0) {
+      if (data.purchase == 0) {
         setSoldOut(true);
       }
     }
@@ -205,7 +205,7 @@ const BonsaiNFT = () => {
           </Center>
           <StatGrid
             total={stats.total.toString()}
-            available={stats.available.toString()}
+            available={stats.purchase.toString()}
           />
         </SlideFade>
       </Container>

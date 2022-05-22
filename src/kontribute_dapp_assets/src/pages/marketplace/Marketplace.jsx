@@ -132,7 +132,7 @@ const Marketplace = ({ setCurrentMarketplace }) => {
           </Center>
           <Center mt={1}>
             <SimpleGrid
-              columns={[2, null, 4]}
+              columns={{"base": 2, "md": 2, "lg": 4}}
               pb={5}
               gap={2}
               mx={2}

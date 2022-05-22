@@ -65,7 +65,9 @@ const SingleNft = ({
 
   const loadImg = async () => {
     let src = await tokenUrl(map.space, tokenId, "thumb");
-    setImg(src);
+    if (isMounted) {
+      setImg(src);
+    }
   };
 
   useEffect(() => {
@@ -88,7 +90,7 @@ const SingleNft = ({
         <Box
           role={"group"}
           p={[2, null, 4]}
-          minW={["180px", null, "300px"]}
+          minW={["170px", null, "300px"]}
           w={"full"}
           backgroundColor={"#1e212b"}
           rounded={"lg"}
@@ -99,7 +101,7 @@ const SingleNft = ({
                 <ChakraImage
                   bg="#fff"
                   rounded={"lg"}
-                  height={["180px", null, "300px"]}
+                  height={["170px", null, "300px"]}
                   width={"auto"}
                   objectFit={"cover"}
                   src={img}

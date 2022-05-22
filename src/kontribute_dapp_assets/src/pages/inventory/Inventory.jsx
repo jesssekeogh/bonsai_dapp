@@ -71,9 +71,9 @@ const Inventory = ({quickView, setQuickView}) => {
   return (
     <>
       <InventoryStats totalnfts={sortedTokens.length} />
-      <Container maxWidth="1250px" p={1} mt={1}>
+      <Container maxWidth="1250px" px={{"base": 3, "md": 5, "lg": 1}} mt={1}>
         <Flex alignItems="center">
-          <HStack>
+          <HStack width={["250px", null, "auto"]} >
             <RarityFilter setSort={setSort} />
             <CollectionFilter setCollection={setCollection} />
             <SellingFilter setSelling={setSelling} />
@@ -87,7 +87,7 @@ const Inventory = ({quickView, setQuickView}) => {
         {sortedTokens.length > 0 ? (
           <>
             <SimpleGrid
-              columns={[2, null, 4]}
+              columns={{"base": 2, "md": 2, "lg": 4}}
               pb={5}
               gap={2}
               mx={2}

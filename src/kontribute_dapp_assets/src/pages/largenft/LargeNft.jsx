@@ -55,7 +55,7 @@ const LargeNft = () => {
       color: itemQuality.dark[meta.quality].color,
       rating: itemQuality.dark[meta.quality].label,
     };
-    
+
     if (path.state !== null) {
       setPathData({
         prevPath: path.state.prev,
@@ -72,13 +72,13 @@ const LargeNft = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!Loaded) return <LoadingSpinner label="Loading NFT..."/>;
+  if (!Loaded) return <LoadingSpinner label="Loading NFT..." />;
   return (
     <>
       <Center px={5}>
         {pathData.showConfetti ? <Confetti /> : null}
         <Stack
-          height={{ sm: "476px", md: "38vw" }}
+          height={{ sm: "476px", md: "50vw", lg: "38vw" }}
           maxH="650px"
           width="auto"
           direction={{ base: "column", md: "row" }}

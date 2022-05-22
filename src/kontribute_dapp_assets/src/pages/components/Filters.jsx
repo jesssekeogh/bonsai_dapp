@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 // collection filters from tags:
-const BonsaiWarriors = "bonsai warrior";
+const BonsaiWarriors = "Bonsai Warrior";
 const BadbotNinja = "helmet";
 
 export const SellingFilter = ({ setSelling }) => {
@@ -52,7 +52,7 @@ export const CollectionFilter = ({ setCollection }) => {
       }}
     >
       <option value={""}>All</option>
-      {/* <option value={BonsaiWarriors}>Bonsai Warriors</option> */}
+      <option value={BonsaiWarriors}>Bonsai Warriors</option>
       <option value={BadbotNinja}>Badbot Ninja</option>
     </Select>
   );
@@ -134,7 +134,7 @@ export const AuthorFilter = () => {
     >
       <option value={process.env.MARKETPLACE_COLLECTION}>Latest</option>
       <option value={badbotPrices}>Badbot Ninja</option>
-      {/* <option value={bonsaiPrices}>Bonsai Warriors</option> */}
+      <option value={bonsaiPrices}>Bonsai Warriors</option>
     </Select>
   );
 };

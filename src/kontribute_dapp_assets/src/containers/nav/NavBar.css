@@ -89,7 +89,7 @@
 /* Iphone X css */
 @media only screen and (min-device-width : 320px) and (max-device-width : 768px) {
     .bonsai__navbar {
-        padding: 1rem 2rem;
+        padding: 0.8rem 1rem;
     }
     .bonsai__navbar-sign button {
         padding: 0.5rem 0.5rem;
@@ -102,6 +102,12 @@
 
     .bonsai__link-dropdown {
         display: unset;
+    }
+
+    .bonsai__navbar-links_logo img {
+        width: 35px;
+        height: 35px;
+        padding: 5px;
     }
 }
 

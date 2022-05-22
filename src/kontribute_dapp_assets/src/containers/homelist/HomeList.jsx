@@ -10,10 +10,10 @@ import {
   Stack,
   Icon,
   SimpleGrid,
+  useBreakpointValue,
   Flex,
 } from "@chakra-ui/react";
 import { FcUpload, FcPicture, FcVoicePresentation } from "react-icons/fc";
-import { FaDiscord, FaTwitter, FaGithub, FaRedditAlien } from "react-icons/fa";
 
 // the main home section of the dapp
 
@@ -85,6 +85,7 @@ const HomeList = () => {
                 bg="#282828"
                 rounded={"full"}
                 px={6}
+                size={useBreakpointValue(["sm", "md"])}
               >
                 Bonsai Story
               </Button>
@@ -95,6 +96,7 @@ const HomeList = () => {
                 bg="#282828"
                 rounded={"full"}
                 px={6}
+                size={useBreakpointValue(["sm", "md"])}
               >
                 Bonsai NFT
               </Button>

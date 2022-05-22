@@ -36,6 +36,7 @@ import {
   Text,
   FormControl,
   FormHelperText,
+  useBreakpointValue,
   Flex,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
@@ -100,7 +101,7 @@ const NavBar = ({ currentMarketplace }) => {
         {/* the profile button */}
         <div className="bonsai__navbar-sign">
           <ProfileButton />
-          <MobileMenu currentMarketplace={currentMarketplace}/>
+          <MobileMenu currentMarketplace={currentMarketplace} />
         </div>
       </div>
     </div>
@@ -110,12 +111,15 @@ const NavBar = ({ currentMarketplace }) => {
 export default NavBar;
 
 const ProfileButton = () => {
+  const [logged, setLogged] = useState(false);
   const dispatch = useAnvilDispatch();
   const { principal, signOut } = useContext(UserContext);
+
   const address = useAnvilSelector((state) => state.user.address);
   const user_icp = AccountIdentifier.e8sToIcp(
     useAnvilSelector((state) => state.user.icp)
   );
+
   const { hasCopied, onCopy } = useClipboard(address);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -129,6 +133,7 @@ const ProfileButton = () => {
         as={Button}
         bg="#17191e"
         border="1px"
+        size={useBreakpointValue(["sm", "md"])}
         borderColor="#9d8144"
         color="#f0e6d3"
         colorScheme="#17191e"
@@ -330,7 +335,7 @@ const SendingIcp = ({ isOpen, onClose, user_icp }) => {
   );
 };
 
-const MobileMenu = ({currentMarketplace}) => {
+const MobileMenu = ({ currentMarketplace }) => {
   return (
     <div className="bonsai__link-dropdown">
       <Menu>
@@ -338,6 +343,7 @@ const MobileMenu = ({currentMarketplace}) => {
           ms="2"
           as={IconButton}
           bg="#17191e"
+          size={useBreakpointValue(["sm", "md"])}
           border="1px"
           borderColor="#9d8144"
           color="#f0e6d3"
