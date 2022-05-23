@@ -22,6 +22,7 @@ import {
 import { AuthPage, NavBar, LoadingSpinner } from "./containers";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import { Footer } from "./containers/index";
+import { Usergeek } from "usergeek-ic-js";
 
 // this is the launch page:
 function App() {
@@ -35,6 +36,10 @@ function App() {
   );
 
   const initAuth = async () => {
+    Usergeek.init({
+      apiKey: "01B802010D2B6BF49CA5C24532F2D7DB"
+    })
+
     const client = await AuthClient.create();
     const isAuthenticated = await client.isAuthenticated();
 
@@ -42,9 +47,12 @@ function App() {
 
     if (isAuthenticated) {
       const identity = client.getIdentity();
-      const principal = identity.getPrincipal().toString();
+      const principal = identity.getPrincipal();
       setSignedIn(true);
-      setPrincipal(principal);
+      setPrincipal(principal.toString());
+      Usergeek.setPrincipal(principal)
+      Usergeek.trackSession()
+      Usergeek.trackEvent("UserSignIn")
     }
   };
 
@@ -54,14 +62,17 @@ function App() {
         identityProvider: "https://identity.ic0.app", //"http://rno2w-sqaaa-aaaaa-aaacq-cai.localhost:8000/",
         onSuccess: () => {
           const identity = client.getIdentity();
-          const principal = identity.getPrincipal().toString();
+          const principal = identity.getPrincipal();
           resolve({ identity, principal });
         },
         onError: reject,
       });
     });
     setSignedIn(true);
-    setPrincipal(principal);
+    setPrincipal(principal.toString());
+    Usergeek.setPrincipal(principal)
+    Usergeek.trackSession()
+    Usergeek.trackEvent("UserSignIn")
   };
 
   // signing actor so the user can interact with smart contracts with their principal
@@ -79,6 +90,7 @@ function App() {
     await client.logout();
     setSignedIn(false);
     setPrincipal("");
+    Usergeek.setPrincipal(undefined)
   };
 
   useEffect(() => {

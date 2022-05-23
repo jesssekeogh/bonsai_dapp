@@ -65,6 +65,7 @@
     "react-slick": "^0.28.1",
     "react-use": "^17.3.2",
     "request": "^2.79.0",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "usergeek-ic-js": "github:usergeek/usergeek-ic-js"
   }
 }

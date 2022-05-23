@@ -37,6 +37,7 @@ import {
   SuccessToast,
 } from "../../containers/toasts/Toasts.jsx";
 import { Link, useNavigate } from "react-router-dom";
+import { Usergeek } from "usergeek-ic-js";
 
 const toast = createStandaloneToast();
 
@@ -104,6 +105,7 @@ const BuyNft = ({ tokenId, price }) => {
           tokenToText(tokenId).substring(15, 20)
         } bought for ${e8sToIcp(price)} ICP`
       );
+      Usergeek.trackEvent("NftPurchase")
       return navigate("/nft/" + tokenToText(tokenId), {
         state: {
           prev: "/marketplace/" + process.env.MARKETPLACE_COLLECTION,
