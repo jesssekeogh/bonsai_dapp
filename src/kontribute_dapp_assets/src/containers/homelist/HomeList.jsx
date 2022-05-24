@@ -14,6 +14,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FcUpload, FcPicture, FcVoicePresentation } from "react-icons/fc";
+import GeneralAlert from "../../pages/components/GeneralAlert";
 
 // the main home section of the dapp
 
@@ -45,6 +46,7 @@ const HomeList = () => {
   return (
     <div className="home_list_container">
       <Container maxW={"3xl"}>
+        <GeneralAlert />
         <Stack
           as={Box}
           textAlign={"center"}

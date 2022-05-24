@@ -6,3 +6,4 @@ export { default as CollectionStats } from './nft_functions/CollectionStats';
 export { default as SingleNft } from './SingleNft';
 export { default as Confetti } from './Confetti';
 export { default as LaunchAlert } from './LaunchAlert';
+export { default as GeneralAlert } from './GeneralAlert';
