@@ -68,6 +68,11 @@ const Marketplace = ({ setCurrentMarketplace }) => {
       if (author.meta[i][1] == rarity) {
         rarityFiltered.push(author.meta[i][0]);
       }
+      // Temp bug fix for one null meta NFT:
+      if (author.meta[i][0] == 918905 && rarity == 5) {
+        rarityFiltered.push(author.meta[i][0]);
+      }
+
     }
     let filtered = [];
     for (let i = 0; i < allTokens.length; i++) {
@@ -75,6 +80,7 @@ const Marketplace = ({ setCurrentMarketplace }) => {
         filtered.push(allTokens[i]);
       }
     }
+
     return filtered;
   };
 
@@ -111,7 +117,7 @@ const Marketplace = ({ setCurrentMarketplace }) => {
 
   useEffect(() => {
     fetchAuthorData();
-    setCurrentMarketplace(params.author)
+    setCurrentMarketplace(params.author);
   }, [params.author]);
 
   return (
@@ -132,7 +138,7 @@ const Marketplace = ({ setCurrentMarketplace }) => {
           </Center>
           <Center mt={1}>
             <SimpleGrid
-              columns={{"base": 2, "md": 2, "lg": 4}}
+              columns={{ base: 2, md: 2, lg: 4 }}
               pb={5}
               gap={2}
               mx={2}
