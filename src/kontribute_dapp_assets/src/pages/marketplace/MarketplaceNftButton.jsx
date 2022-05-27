@@ -38,10 +38,12 @@ import {
 } from "../../containers/toasts/Toasts.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { Usergeek } from "usergeek-ic-js";
+import { useSelector } from "react-redux";
 
 const toast = createStandaloneToast();
 
 const MarketplaceNftButton = ({ tokenId, price }) => {
+  const isLogged = useSelector((state) => state.Profile.loggedIn)
   return (
     <>
       <Menu>
@@ -54,6 +56,7 @@ const MarketplaceNftButton = ({ tokenId, price }) => {
           colorScheme="#1e212b"
           variant="outline"
           _hover={{ opacity: "0.8" }}
+          isDisabled={!isLogged}
         />
         <MenuList>
           <Link

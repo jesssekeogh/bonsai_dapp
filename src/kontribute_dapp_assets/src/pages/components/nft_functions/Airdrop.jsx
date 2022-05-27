@@ -29,6 +29,7 @@ import {
   SuccessToast,
 } from "../../../containers/toasts/Toasts.jsx";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const toast = createStandaloneToast();
 
@@ -37,6 +38,7 @@ const Airdrop = () => {
   const dispatch = useAnvilDispatch();
   const [code, setCode] = useState("");
   const navigate = useNavigate();
+  const isLogged = useSelector((state) => state.Profile.loggedIn);
 
   const airdrop_use = (key) => async (dispatch, getState) => {
     const s = getState();
@@ -71,7 +73,7 @@ const Airdrop = () => {
     try {
       await dispatch(airdrop_use(code));
       toast.closeAll();
-      SuccessToast("Success","Congratulations! You got 1 NFT");
+      SuccessToast("Success", "Congratulations! You got 1 NFT");
     } catch (e) {
       toast.closeAll();
       return FailedToast("Failed", e.toString());
@@ -89,6 +91,7 @@ const Airdrop = () => {
         _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
         mb={3}
         onClick={onOpen}
+        isDisabled={!isLogged}
       >
         <Text as="kbd">Use Airdrop Code</Text>
       </Button>

@@ -18,6 +18,7 @@ import {
   Text,
   FormControl,
   FormHelperText,
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import {
   useAnvilDispatch,
@@ -25,6 +26,8 @@ import {
 } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { SendingToast, FailedToast, SuccessICPToast } from "../toasts/Toasts";
+
+const toast = createStandaloneToast();
 
 const SendingIcp = ({ isOpen, onClose, user_icp }) => {
   //  1 icp= 100000000 e8s

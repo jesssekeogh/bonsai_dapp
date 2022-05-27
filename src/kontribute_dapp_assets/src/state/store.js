@@ -1,6 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import Profile from './LoginSlice';
+import Global from './GlobalSlice';
 
-export const store = configureStore({
-    reducer: { Profile }
+const store = configureStore({
+    reducer: { Profile, Global }
 })
+
+export default store;

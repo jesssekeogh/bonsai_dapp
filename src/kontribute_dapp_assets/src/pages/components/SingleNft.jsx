@@ -32,7 +32,7 @@ const SingleNft = ({
   selling,
   isInventory,
   isMarketplace,
-  quickView,
+  quickView
 }) => {
   let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map);

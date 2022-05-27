@@ -24,20 +24,22 @@ import {
   RarityFilter,
   QuickView,
 } from "../components/Filters";
+import { useSelector } from "react-redux";
 
-const Inventory = ({quickView, setQuickView}) => {
+const Inventory = () => {
   let isMounted = true;
   const [sortedTokens, setTokens] = useState([]);
   const [Loaded, setLoaded] = useState(false);
   const [sortBy, setSort] = useState(0);
   const [collectionBy, setCollection] = useState("");
   const [sellingBy, setSelling] = useState("");
-  const dispatch = useAnvilDispatch();
+  const anvilDispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
+  const quickView = useSelector((state) => state.Global.quickview)
 
   const fetchTokens = async () => {
     try {
-      let tokens = await dispatch(GetMine());
+      let tokens = await anvilDispatch(GetMine());
       if (isMounted) {
         setTokens(tokens);
         if (!Loaded) {
@@ -64,22 +66,22 @@ const Inventory = ({quickView, setQuickView}) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(Claim());
+    anvilDispatch(Claim());
   }, []);
 
   if (!Loaded) return <LoadingSpinner label="Fetching NFTs..." />;
   return (
     <>
       <InventoryStats totalnfts={sortedTokens.length} />
-      <Container maxWidth="1250px" px={{"base": 3, "md": 5, "lg": 1}} mt={1}>
+      <Container maxWidth="1250px" px={{ base: 3, md: 5, lg: 1 }} mt={1}>
         <Flex alignItems="center">
-          <HStack width={["250px", null, "auto"]} >
+          <HStack width={["250px", null, "auto"]}>
             <RarityFilter setSort={setSort} />
             <CollectionFilter setCollection={setCollection} />
             <SellingFilter setSelling={setSelling} />
           </HStack>
           <Spacer />
-          <QuickView setQuickView={setQuickView} quickView={quickView} />
+          <QuickView />
         </Flex>
         <Divider my={1} borderColor="#16171b" />
       </Container>
@@ -87,7 +89,7 @@ const Inventory = ({quickView, setQuickView}) => {
         {sortedTokens.length > 0 ? (
           <>
             <SimpleGrid
-              columns={{"base": 2, "md": 2, "lg": 4}}
+              columns={{ base: 2, md: 2, lg: 4 }}
               pb={5}
               gap={2}
               mx={2}

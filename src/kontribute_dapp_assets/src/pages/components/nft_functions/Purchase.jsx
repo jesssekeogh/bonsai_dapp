@@ -35,6 +35,7 @@ import {
   FailedToast,
 } from "../../../containers/toasts/Toasts";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const toast = createStandaloneToast();
 
@@ -44,6 +45,7 @@ const Purchase = ({ nfts, amount }) => {
   const dispatch = useAnvilDispatch();
 
   const navigate = useNavigate();
+  const isLogged = useSelector((state) => state.Profile.loggedIn);
 
   const buy = (amount) => async (dispatch, getState) => {
     SendingToast("Transferring ICP...");
@@ -119,6 +121,7 @@ const Purchase = ({ nfts, amount }) => {
         _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
         mb={3}
         onClick={onOpen}
+        isDisabled={!isLogged}
       >
         <Text as="kbd">Buy Now</Text>
       </Button>

@@ -9,6 +9,9 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setQuickView } from "../../state/GlobalSlice";
+
 // collection filters from tags:
 const BonsaiWarriors = "Bonsai Warrior";
 const BadbotNinja = "helmet";
@@ -139,7 +142,10 @@ export const AuthorFilter = () => {
   );
 };
 
-export const QuickView = ({ setQuickView, quickView }) => {
+export const QuickView = () => {
+  const quickView = useSelector((state) => state.Global.quickview);
+  const dispatch = useDispatch();
+
   return (
     <Box>
       <Tooltip label={quickView ? "Show NFT images" : "Hide NFT images"}>
@@ -148,7 +154,7 @@ export const QuickView = ({ setQuickView, quickView }) => {
             size={useBreakpointValue(["sm", "md"])}
             isChecked={quickView}
             colorScheme="cyan"
-            onChange={() => setQuickView(!quickView)}
+            onChange={() => dispatch(setQuickView(!quickView))}
           />
           <FormLabel m={0} fontSize={["6pt", null, "sm"]} color={"gray.500"}>
             Quick view

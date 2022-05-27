@@ -22,8 +22,10 @@ import { LoadingSpinner } from "../../containers";
 import { AuthorFilter, PriceFilter, RarityFilter } from "../components/Filters";
 import { useParams } from "react-router-dom";
 import { FailedToast } from "../../containers/toasts/Toasts";
+import { setMarketplace } from "../../state/GlobalSlice";
+import { useDispatch } from "react-redux";
 
-const Marketplace = ({ setCurrentMarketplace }) => {
+const Marketplace = () => {
   const params = useParams();
   const [Loaded, setLoaded] = useState(false);
   const [tokensForSale, setTokensForSale] = useState([]);
@@ -31,6 +33,7 @@ const Marketplace = ({ setCurrentMarketplace }) => {
   const [page, setPage] = useState(0);
   const [pricing, setPricing] = useState("LtoH");
   const [author, setAuthor] = useState({});
+  const dispatch = useDispatch();
 
   // author fetch - only runs if author changes
   const fetchAuthorData = async () => {
@@ -117,7 +120,7 @@ const Marketplace = ({ setCurrentMarketplace }) => {
 
   useEffect(() => {
     fetchAuthorData();
-    setCurrentMarketplace(params.author);
+    dispatch(setMarketplace(params.author))
   }, [params.author]);
 
   return (

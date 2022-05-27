@@ -10,11 +10,11 @@ import {
   MenuButton,
   MenuGroup,
   IconButton,
-  createStandaloneToast,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Profile from "./Profile";
+import { useSelector } from "react-redux";
 
 const MenuLinks = ({ currentMarketplace }) => (
   <>
@@ -39,9 +39,9 @@ const MenuLinks = ({ currentMarketplace }) => (
   </>
 );
 
-const toast = createStandaloneToast();
+const NavBar = () => {
+  const currentMarketplace = useSelector((state) => state.Global.currentMarketplace)
 
-const NavBar = ({ currentMarketplace }) => {
   return (
     <div className="nav-container">
       <div className="bonsai__navbar">

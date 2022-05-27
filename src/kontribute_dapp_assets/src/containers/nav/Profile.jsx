@@ -32,12 +32,15 @@ import {
 import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { setLogin, setLogout, setPrincipal } from "../../state/LoginSlice";
 import { NavLink } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SendingIcp from "./SendingIcp";
 
 const Profile = () => {
   const [client, setClient] = useState();
   const dispatch = useDispatch();
   const anvilDispatch = useAnvilDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
   const userId = useSelector((state) => state.Profile.principal);
@@ -46,6 +49,15 @@ const Profile = () => {
 
   const { onCopy } = useClipboard(address);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const SignInCallbacks = (principal) => {
+    dispatch(setLogin());
+    anvilDispatch(user_login());
+    dispatch(setPrincipal(principal.toString()));
+    Usergeek.setPrincipal(principal);
+    Usergeek.trackSession();
+    Usergeek.trackEvent("UserSignIn");
+  };
 
   const initAuth = async () => {
     Usergeek.init({
@@ -60,11 +72,7 @@ const Profile = () => {
     if (isAuthenticated) {
       const identity = client.getIdentity();
       const principal = identity.getPrincipal();
-      dispatch(setLogin());
-      dispatch(setPrincipal(principal.toString()));
-      Usergeek.setPrincipal(principal);
-      Usergeek.trackSession();
-      Usergeek.trackEvent("UserSignIn");
+      SignInCallbacks(principal);
     }
   };
 
@@ -80,11 +88,7 @@ const Profile = () => {
         onError: reject,
       });
     });
-    dispatch(setLogin());
-    dispatch(setPrincipal(principal.toString()));
-    Usergeek.setPrincipal(principal);
-    Usergeek.trackSession();
-    Usergeek.trackEvent("UserSignIn");
+    SignInCallbacks(principal);
   };
 
   const signOut = async () => {
@@ -92,11 +96,11 @@ const Profile = () => {
     dispatch(setLogout());
     dispatch(setPrincipal(""));
     Usergeek.setPrincipal(undefined);
+    if (location.pathname == "/inventory") return navigate("/");
   };
 
   useEffect(() => {
     initAuth();
-    anvilDispatch(user_login());
   }, []);
 
   return (
