@@ -50,7 +50,7 @@ const Profile = () => {
   const { onCopy } = useClipboard(address);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const SignInCallbacks = (principal) => {
+  const SignInFunctions = (principal) => {
     dispatch(setLogin());
     anvilDispatch(user_login());
     dispatch(setPrincipal(principal.toString()));
@@ -72,7 +72,7 @@ const Profile = () => {
     if (isAuthenticated) {
       const identity = client.getIdentity();
       const principal = identity.getPrincipal();
-      SignInCallbacks(principal);
+      SignInFunctions(principal);
     }
   };
 
@@ -88,7 +88,7 @@ const Profile = () => {
         onError: reject,
       });
     });
-    SignInCallbacks(principal);
+    SignInFunctions(principal);
   };
 
   const signOut = async () => {

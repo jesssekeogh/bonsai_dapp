@@ -9,7 +9,6 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { Tags, Author } from "../components/Tags";
 
 const Story = ({
   title,
