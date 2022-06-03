@@ -45,6 +45,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.4",
+    "@ckeditor/ckeditor5-build-classic": "^34.1.0",
+    "@ckeditor/ckeditor5-react": "^5.0.2",
     "@dfinity/auth-client": "^0.10.2",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",

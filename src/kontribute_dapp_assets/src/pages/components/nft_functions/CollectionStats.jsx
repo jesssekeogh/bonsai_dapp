@@ -91,12 +91,12 @@ const CollectionStats = ({ props }) => {
         <DataBox
           label="Total NFTs"
           info={"Total NFTs added to the contract"}
-          data={loaded ? stats.total.toString() : <Spinner size="xs" />}
+          data={loaded && !props.airdropEnded ? stats.total.toString() : "N/A"}
         />
         <DataBox
           label="NFTs Available"
           info={"Total NFTs available for purchase in the contract"}
-          data={loaded ? stats.purchase.toString() : <Spinner size="xs" />}
+          data={loaded && !props.airdropEnded ? stats.purchase.toString() : "N/A"}
         />
       </Grid>
     </Container>
