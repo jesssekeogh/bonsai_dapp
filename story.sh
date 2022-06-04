@@ -1,0 +1,3 @@
+dfx canister call story add '(record { summary = "This is a very cool story part 2"; story = "the story takes place in a world of magic..."; address = "a008e74937e5f920f82b8697b26847f16ea8dc45e7d1ffa11a86e5348df44c35"; } )'
+# dfx canister call story get '("hp6vg-7gvok-tqmc5-i5kro-x7xi4-og4dl-pwkcy-4vxq6-ct3es-i5grb-mqe")'
+# dfx canister call story like '("hp6vg-7gvok-tqmc5-i5kro-x7xi4-og4dl-pwkcy-4vxq6-ct3es-i5grb-mqe")'

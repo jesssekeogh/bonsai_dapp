@@ -21,7 +21,6 @@ import {
 } from "@chakra-ui/react";
 import { FaThumbsUp } from "react-icons/fa";
 import { BsPenFill } from "react-icons/bs";
-import TextEditor from "./TextEditor";
 
 const Stories = () => {
   useEffect(() => {
@@ -36,7 +35,6 @@ const Stories = () => {
         <PeakGrid heading={"Most Liked"} />
         <PeakGrid heading={"Latest"} />
       </Container>
-      {/* <TextEditor /> */}
     </>
   );
 };
@@ -64,41 +62,43 @@ const PeakGrid = ({ heading }) => {
 const SingleStory = () => {
   // max 110 character count for short description
   return (
-    <Box
-      w={"full"}
-      bg={useColorModeValue("white", "gray.800")}
-      boxShadow={"2xl"}
-      rounded={"md"}
-      overflow={"hidden"}
-    >
-      <Box p={6}>
-        <Stack spacing={0} align={"left"} mb={5}>
-          <Heading fontSize={["md", null, "xl"]} fontWeight={600}>
-            Title
-          </Heading>
-          <Text color={"gray.500"} fontSize={["7pt", null, "md"]}>
-            Frontend Developer Frontend Developer Frontend Developer Frontend
-            Developer Frontend Developer Frontend Develo
-          </Text>
-        </Stack>
+    <Link to={"/stories/" + "afryb3-greui" +"/" + "1"}>
+      <Box
+        w={"full"}
+        bg={useColorModeValue("white", "gray.800")}
+        boxShadow={"2xl"}
+        rounded={"md"}
+        overflow={"hidden"}
+      >
+        <Box p={6}>
+          <Stack spacing={0} align={"left"} mb={5}>
+            <Heading fontSize={["md", null, "xl"]} fontWeight={600}>
+              Title
+            </Heading>
+            <Text color={"gray.500"} fontSize={["7pt", null, "md"]}>
+              Frontend Developer Frontend Developer Frontend Developer Frontend
+              Developer Frontend Developer Frontend Develo
+            </Text>
+          </Stack>
 
-        <Stack direction={"row"} align={"center"} spacing={2}>
-          <Spacer />
-          <Box color="#000">
-            <FaThumbsUp />
-          </Box>
-          <Box
-            borderRadius="md"
-            bg="#0fbdde"
-            color="black"
-            fontWeight="semibold"
-            px="1"
-          >
-            25
-          </Box>
-        </Stack>
+          <Stack direction={"row"} align={"center"} spacing={2}>
+            <Spacer />
+            <Box color="#000">
+              <FaThumbsUp />
+            </Box>
+            <Box
+              borderRadius="md"
+              bg="#0fbdde"
+              color="black"
+              fontWeight="semibold"
+              px="1"
+            >
+              25
+            </Box>
+          </Stack>
+        </Box>
       </Box>
-    </Box>
+    </Link>
   );
 };
 

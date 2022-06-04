@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import "./story.css";
 
-const TextEditor = () => {
+const Create = () => {
   const [storyData, setStoryData] = useState("");
   const [anvilAddress, setAnvilAddress] = useState("");
   // dangerouslySetInnerHTML={{ __html: storyData }}
@@ -97,4 +97,4 @@ const TextEditor = () => {
   );
 };
 
-export default TextEditor;
+export default Create;

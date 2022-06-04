@@ -1,7 +1,7 @@
 {
   "canisters": {
-    "bonsai": {
-      "main": "src/kontribute_dapp/bonsai.mo",
+    "story": {
+      "main": "src/kontribute_dapp/story.mo",
       "type": "motoko"
     },
     "ito": {

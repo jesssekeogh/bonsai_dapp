@@ -1,7 +1,6 @@
 import Principal "mo:base/Principal";
 import Trie "mo:base/Trie";
 import Result "mo:base/Result";
-import Types "types";
 
 actor Bonsai {
     
