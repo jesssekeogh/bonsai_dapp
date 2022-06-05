@@ -1,0 +1,16 @@
+type StoryWithLikes = 
+ record {
+   likes: nat;
+   story: Story;
+ };
+type Story = 
+ record {
+   address: text;
+   story: text;
+   summary: text;
+ };
+service : {
+  add: (Story) -> (StoryWithLikes);
+  get: (text) -> (StoryWithLikes) query;
+  like: (text) -> (StoryWithLikes);
+}

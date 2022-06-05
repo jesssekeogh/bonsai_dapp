@@ -22,15 +22,16 @@ const Create = () => {
   // dangerouslySetInnerHTML={{ __html: storyData }}
 
   const EncodeData = (editor) => {
-    console.log(editor.getData());
+    // console.log(editor.getData());
     setStoryData(editor.getData());
-    // let data = encodeURIComponent(editor.getData());
+    let data = encodeURIComponent(editor.getData());
+    // console.log(data.length)
     // setStoryData(data);
   };
 
   return (
     <div className="story">
-      <Container maxW="7xl">
+      <Container maxW="4xl">
         <CKEditor
           editor={ClassicEditor}
           config={{

@@ -10,7 +10,7 @@
     },
     "kontribute_dapp_assets": {
       "dependencies": [
-        "bonsai"
+        "story"
       ],
       "frontend": {
         "entrypoint": "src/kontribute_dapp_assets/src/index.html"
