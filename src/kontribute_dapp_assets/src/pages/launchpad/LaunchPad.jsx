@@ -22,7 +22,7 @@ const LaunchPad = () => {
     <div>
       <Center>
         <SimpleGrid
-          columns={[1, null, 3]}
+          columns={{ base: 1, md: 2, lg: 3 }}
           pb={5}
           mt={{ base: "-10", md: "0" }}
           gap={5}

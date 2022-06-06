@@ -186,7 +186,7 @@ const MarketplaceHeader = ({ setSort, setPage, setPricing }) => {
             </Text>
             <Text color="#f0e6d3">
               Marketplace{" "}
-              <Tooltip label="Kontribute Marketplace supports the NFTA standard on ICP. The current marketplace is in Beta, please report any bugs to Team Bonsai directly on Twitter or Discord">
+              <Tooltip label="Kontribute Marketplace supports the NFTA standard on ICP">
                 <InfoIcon boxSize={{ base: 3, md: 6 }} viewBox="0 0 25 25" />
               </Tooltip>
             </Text>

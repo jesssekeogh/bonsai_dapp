@@ -30,7 +30,7 @@ function App() {
           <Route path="/nft/:tokenid" element={<LargeNft />} />
           <Route path="/stories" element={<Stories />} />
           <Route path="/stories/create" element={<Create />} />
-          <Route path="/stories/:principal" element={<Story />} />
+          <Route path="/stories/:principal/:storyId" element={<Story />} />
           <Route path="/launchpad" element={<LaunchPad />} />
           <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
         </Routes>

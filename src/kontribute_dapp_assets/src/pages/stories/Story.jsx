@@ -6,6 +6,7 @@ const Story = () => {
   return (
     <>
       Principal: {params.principal}
+      StoryId: {params.storyId}
       <br />
     </>
   );
