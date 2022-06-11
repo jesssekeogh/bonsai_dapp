@@ -7,6 +7,7 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
 import Trie "mo:base/Trie";
+import Option "mo:base/Option";
 
 actor Story {
 
@@ -20,21 +21,35 @@ actor Story {
         title : Text; // less than 50 characters
         summary : Text; // less than 110 characters
         story : Text; // long encodedURIcomponent string: less than 3000 characters
-        address: ?Text; // nft anvil address
+        address : ?Text; // nft anvil address
     };
 
     public type StoryBlob = {
         title : Blob;
         summary : Blob;
         story : Blob;
-        address: Blob;
+        address : Blob;
     };
 
     public type StoryRecord = {
-        storyId: Nat;
-        author: Principal;
-        totalVotes: Nat;
-        story: StoryBlob;
+        storyId : Nat;
+        author : Principal;
+        totalVotes : Nat;
+        story : StoryBlob;
+    };
+
+    public type StoryReturn = {
+        storyId : Nat;
+        author : Principal;
+        totalVotes : Nat;
+        story : StoryText;
+    };
+
+    public type StorySummary = {
+        storyId : Nat;
+        totalVotes : Nat;
+        title : Text;
+        summary : Text;
     };
 
     private var _stories : [var ?StoryRecord] = Array.init<?StoryRecord>(3, null);
@@ -64,16 +79,39 @@ actor Story {
         return #err("No space left");
     };
 
-    // get a single story
-    public query func get(storyId: Nat) : async Result.Result<StoryRecord, Text> {
+    // get a full single story
+    public query func get(storyId: Nat) : async Result.Result<StoryReturn, Text> {
         let result = _stories[storyId];
 
         switch(result){
             case(null){return #err("Story not found")};
             case(?result){
-                return #ok(result)
-            }
-        }
+                return #ok({
+                    storyId =  result.storyId;
+                    author = result.author;
+                    totalVotes = result.totalVotes;
+                    story = decodeStory(result.story);
+                 });
+            };
+        };
+    };
+
+    // get story summary
+    public query func getSummary(storyId : Nat) : async Result.Result<StorySummary, Text> {
+        let result = _stories[storyId];
+
+        switch (result){
+            case(null){return #err("Story does not exist")};
+            case(?result){
+                let story = decodeStory(result.story);
+                return #ok({
+                    storyId = result.storyId;
+                    totalVotes = result.totalVotes;
+                    title = story.title;
+                    summary = story.summary;
+                });
+            };
+        };
     };
 
     // get all stories belonging to a particular user
@@ -91,7 +129,7 @@ actor Story {
     };
 
     // delete a single story
-    public shared({caller}) func delete(storyId: Nat) : async Result.Result<StoryRecord, Text> {
+    public shared({caller}) func delete(storyId: Nat) : async Result.Result<Text, Text> {
         assert (Principal.isAnonymous(caller) == false);
         assert(userOwns(caller, storyId));
 
@@ -101,12 +139,36 @@ actor Story {
             case(null){return #err("Story not found")};
             case(?result){
                 _stories[storyId] := null;
-                return #ok(result)
+                removeId(caller, storyId);
+                return #ok("Story ID: " # Nat.toText(storyId) # " deleted")
             }
         }
     };
 
-    // TODO: get all stories to get recent ones and then most voted on (should return principal, summary and votes) iter to array?:
+    // public query func getStoryIds(amount : Nat) : async Result.Result<[Nat], Text> {
+    //     var newList = List.nil<Nat>();
+
+    //     let sS = _stories.size();
+    //     let reversedStories = Array.tabulate(sS, func (n : Nat) : ?StoryRecord {
+    //         _stories[sS - 1 - n]
+    //     });
+
+    //     var i = 0;
+    //     label lo for(x in reversedStories.vals()){
+    //         if(x != null){
+    //             newList := List.push(i, newList);
+
+    //             if(List.size(newList) >= amount){
+    //                 break lo
+    //             };
+    //         };
+
+    //         i += 1;
+    //     };
+
+    //    return #ok(List.toArray(newList))
+
+    // };
 
 
     // admin can delete any story will need to be able to delete from user list too
@@ -162,19 +224,39 @@ actor Story {
     };
 
     // add a remove Id function
+    private func removeId(caller: Principal, storyId: Nat) : () {
+        let result = Trie.find(_users, { key = caller; hash = Principal.hash(caller) }, Principal.equal);
+
+        switch(result){
+            case(null){return ()};
+            case(?result){
+                let newList = List.filter<Nat>(result, func (x : Nat) : Bool {
+                    x != storyId
+                });
+
+                _users := Trie.replace(
+                    _users,
+                    { key = caller; hash = Principal.hash(caller) },
+                    Principal.equal,
+                    ?newList,
+                ).0;
+
+                return ()
+            };
+        };
+    };
 
     private func userOwns(caller: Principal, storyId: Nat) : Bool {
         let result = Trie.find(_users, { key = caller; hash = Principal.hash(caller) }, Principal.equal);
 
-        // let result = Array.find<Text>(admin, func (x : Text) : Bool { // example usage of passing function into a mo:base tool
-        //     Principal.fromText(x) == caller;
-        // });
-
-        // switch(result){
-        //     case(null){return false};
-        //     case(?result){
-        //     }
-        return true
+        switch(result){
+            case(null){return false};
+            case(?result){
+                return List.some(result, func (x : Nat) : Bool{
+                    x == storyId
+                })
+            }
+        }
     };
 
     private func encodeStory(story : StoryText) : StoryBlob {
@@ -183,6 +265,15 @@ actor Story {
             summary = Text.encodeUtf8(story.summary);
             story = Text.encodeUtf8(story.story);
             address = Text.encodeUtf8(unwrapAddress(story.address));
+        }
+    };
+
+    private func decodeStory(story : StoryBlob) : StoryText {
+        return {
+            title = Option.unwrap(Text.decodeUtf8(story.title));
+            summary = Option.unwrap(Text.decodeUtf8(story.summary));
+            story = Option.unwrap(Text.decodeUtf8(story.story));
+            address = Text.decodeUtf8(story.address);
         }
     };
 
