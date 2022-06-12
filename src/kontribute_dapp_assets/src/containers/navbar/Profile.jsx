@@ -18,7 +18,7 @@ import {
   Flex,
   Image as ChakraImage,
 } from "@chakra-ui/react";
-import { MdPerson } from "react-icons/md";
+import { MdPerson, MdLibraryBooks } from "react-icons/md";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
@@ -50,7 +50,7 @@ const Profile = () => {
   const { onCopy } = useClipboard(address);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const SignInFunctions = (principal) => {
+  const SignInFunctions = (principal, identity) => {
     dispatch(setLogin());
     anvilDispatch(user_login());
     dispatch(setPrincipal(principal.toString()));
@@ -128,6 +128,11 @@ const Profile = () => {
                 {userId.substring(0, 10) + "......" + userId.substring(54, 63)}
               </MenuItem>
             </Tooltip>
+            <NavLink to={"/stories/author/" + userId}>
+              <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
+                My Stories
+              </MenuItem>
+            </NavLink>
             <MenuDivider />
             <MenuGroup
               as={"div"}
@@ -180,21 +185,23 @@ const Profile = () => {
         </Menu>
       ) : (
         <Menu>
-          <MenuButton
-            as={Button}
-            bg="#17191e"
-            border="1px"
-            size={useBreakpointValue(["sm", "md"])}
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
-            onClick={() => signIn()}
-          >
-            <Flex align="center">
-              Authenticate&nbsp;
-              <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
-            </Flex>
-          </MenuButton>
+          <Tooltip label="Login via Internet Identity">
+            <MenuButton
+              as={Button}
+              bg="#17191e"
+              border="1px"
+              size={useBreakpointValue(["sm", "md"])}
+              borderColor="#9d8144"
+              color="#f0e6d3"
+              colorScheme="#17191e"
+              onClick={() => signIn()}
+            >
+              <Flex align="center">
+                Authenticate&nbsp;
+                <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+              </Flex>
+            </MenuButton>
+          </Tooltip>
         </Menu>
       )}
     </>

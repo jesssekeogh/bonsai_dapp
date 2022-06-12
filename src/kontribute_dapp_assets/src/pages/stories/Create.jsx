@@ -15,18 +15,32 @@ import {
   Text,
 } from "@chakra-ui/react";
 import "./story.css";
+import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
+import { createStoryActor } from "../../../../declarations/story";
 
 const Create = () => {
   const [storyData, setStoryData] = useState("");
-  const [anvilAddress, setAnvilAddress] = useState("");
-  // dangerouslySetInnerHTML={{ __html: storyData }}
+  // const [anvilAddress, setAnvilAddress] = useState("");
 
   const EncodeData = (editor) => {
-    // console.log(editor.getData());
     setStoryData(editor.getData());
-    let data = encodeURIComponent(editor.getData());
-    // console.log(data.length)
-    // setStoryData(data);
+  };
+
+  const PostStory = async () => {
+    let encodedStory = encodeURIComponent(storyData);
+
+    let storyMo = createStoryActor({
+      agentOptions: authentication.getAgentOptions(),
+    });
+
+    let post = await storyMo.add({
+      title: "Testing a big title right here big title right",
+      summary: "Lets test something else",
+      story: "Testing the upload",
+      address: [""]
+    });
+    
+    return console.log(post);
   };
 
   return (
@@ -89,6 +103,7 @@ const Create = () => {
             colorScheme="#17191e"
             _hover={{ opacity: "0.8" }}
             rightIcon={<MdOutlinePublishedWithChanges />}
+            onClick={() => PostStory()}
           >
             Publish
           </Button>

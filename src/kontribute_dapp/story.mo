@@ -50,9 +50,10 @@ actor Story {
         totalVotes : Nat;
         title : Text;
         summary : Text;
+        author : Principal;
     };
 
-    private var _stories : [var ?StoryRecord] = Array.init<?StoryRecord>(3, null);
+    private var _stories : [var ?StoryRecord] = Array.init<?StoryRecord>(10000, null);
     private var _users : Trie.Trie<Principal, List.List<Nat>> = Trie.empty();
 
     // upload a story
@@ -109,16 +110,18 @@ actor Story {
                     totalVotes = result.totalVotes;
                     title = story.title;
                     summary = story.summary;
+                    author = result.author;
                 });
             };
         };
     };
 
     // get all stories belonging to a particular user
-    public shared query({caller}) func getUserStories(): async Result.Result<[Nat], Text>{
-        assert (Principal.isAnonymous(caller) == false);
+    public shared func getUserStories(caller : Text): async Result.Result<[Nat], Text>{
+        let user = Principal.fromText(caller);
+        assert (Principal.isAnonymous(user) == false);
 
-        let result = Trie.find(_users, { key = caller; hash = Principal.hash(caller) }, Principal.equal);
+        let result = Trie.find(_users, { key = user; hash = Principal.hash(user) }, Principal.equal);
 
         switch(result){
             case(null){return #err("No stories found for this user")};
@@ -145,54 +148,51 @@ actor Story {
         }
     };
 
-    // public query func getStoryIds(amount : Nat) : async Result.Result<[Nat], Text> {
-    //     var newList = List.nil<Nat>();
+    // get a certain amount of story Ids
+    public query func getStoryIds(amount : Nat) : async Result.Result<[Nat], Text> {
+        var newList = List.nil<Nat>();
 
-    //     let sS = _stories.size();
-    //     let reversedStories = Array.tabulate(sS, func (n : Nat) : ?StoryRecord {
-    //         _stories[sS - 1 - n]
-    //     });
+        let sS = _stories.size();
+        let reversedStories = Array.tabulate(sS, func (n : Nat) : ?StoryRecord {
+            _stories[sS - 1 - n]
+        });
 
-    //     var i = 0;
-    //     label lo for(x in reversedStories.vals()){
-    //         if(x != null){
-    //             newList := List.push(i, newList);
+        label lo for(x in reversedStories.vals()){
+            switch(x){
+                case(null){};
+                case(?x){
+                    newList := List.push(x.storyId, newList);
+                };
+            };
 
-    //             if(List.size(newList) >= amount){
-    //                 break lo
-    //             };
-    //         };
+            if(List.size(newList) >= amount){
+                    break lo
+            };
 
-    //         i += 1;
-    //     };
+        };
 
-    //    return #ok(List.toArray(newList))
+       return #ok(List.toArray(List.reverse(newList)))
 
-    // };
+    };
 
 
     // admin can delete any story will need to be able to delete from user list too
-    // public shared({caller}) func delete(userId : Text): async Result.Result<StoryWithLikes, Text>{
-    //     assert(adminContains(admin, caller));
+    public shared({caller}) func adminDelete(storyId : Nat): async Result.Result<Text, Text>{
+        assert(adminContains(admin, caller));
 
-    //     let user = Principal.fromText(userId);
-    //     let story = Trie.find(userStories, key(user), Principal.equal);
-    //     switch(story){
-    //         case(null){return #err("Story not found")};
-    //         case(?story){
-    //             userStories := Trie.replace(
-    //                 userStories,
-    //                 key(user),
-    //                 Principal.equal,
-    //                 null,
-    //             ).0;
-    //             return #ok(story)
-    //         };
-    //     };
-    // };
+        let result = _stories[storyId];
+
+        switch(result){
+            case(null){return #err("Story not found")};
+            case(?result){
+                _stories[storyId] := null;
+                removeId(result.author, storyId);
+                return #ok("Story ID: " # Nat.toText(storyId) # " deleted")
+            };
+        };
+    };
 
     // utility functions:
-
     private func addId(caller: Principal, storyId: Nat) : () {
         let result = Trie.find(_users, { key = caller; hash = Principal.hash(caller) }, Principal.equal);
 
@@ -279,8 +279,9 @@ actor Story {
 
     private func checkValidStory(caller: Principal, story: StoryText) : Bool {        
         assert (Principal.isAnonymous(caller) == false);
-        assert (story.summary.size() <= 110 and story.summary.size() >= 10);
-        assert (story.story.size() <= 3000 and story.story.size() >= 10); // change to large amount in Prod
+        assert (story.title.size() <= 50 and story.title.size() >= 10);
+        assert (story.summary.size() <= 110 and story.summary.size() >= 40);
+        assert (story.story.size() <= 3000 and story.story.size() >= 500); // change to large amount in Prod
         if(unwrapAddress(story.address).size() > 1){
             assert (unwrapAddress(story.address).size() == 64);
         };
@@ -319,4 +320,7 @@ actor Story {
         Debug.print(debug_show(_stories));
     };
 
+    public shared({caller}) func whoami() : async Principal {
+        return caller
+    };
 }

@@ -1,0 +1,54 @@
+type StoryText = 
+ record {
+   address: opt text;
+   story: text;
+   summary: text;
+   title: text;
+ };
+type StorySummary = 
+ record {
+   author: principal;
+   storyId: nat;
+   summary: text;
+   title: text;
+   totalVotes: nat;
+ };
+type StoryReturn = 
+ record {
+   author: principal;
+   story: StoryText;
+   storyId: nat;
+   totalVotes: nat;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: StoryReturn;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: StorySummary;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: vec nat;
+ };
+service : {
+  add: (StoryText) -> (Result_3);
+  adminDelete: (nat) -> (Result_3);
+  delete: (nat) -> (Result_3);
+  get: (nat) -> (Result_2) query;
+  getDebug: () -> (reserved) query;
+  getMemorySize: () -> (nat) query;
+  getStoryIds: (nat) -> (Result) query;
+  getSummary: (nat) -> (Result_1) query;
+  getUserStories: (text) -> (Result);
+  whoami: () -> (principal);
+}
