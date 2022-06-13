@@ -13,6 +13,7 @@ import {
   EditableInput,
   EditablePreview,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import "./story.css";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
@@ -37,15 +38,27 @@ const Create = () => {
       title: "Testing a big title right here big title right",
       summary: "Lets test something else",
       story: "Testing the upload",
-      address: [""]
+      address: [""],
     });
-    
+
     return console.log(post);
   };
 
   return (
     <div className="story">
       <Container maxW="4xl">
+        <Box mb={2}>
+          <Editable
+            placeholder="Title: e.g 'Bonsai Warriors Chapter 1'"
+            maxW={"sm"}
+            onChange={(e) => {
+              setAnvilAddress(e);
+            }}
+          >
+            <EditablePreview bg="#fff" px={2} />
+            <EditableInput bg="#fff" />
+          </Editable>
+        </Box>
         <CKEditor
           editor={ClassicEditor}
           config={{
@@ -82,8 +95,7 @@ const Create = () => {
               Your NFT Anvil minting address:
             </Text>
             <Editable
-              defaultValue="eg: a00fe60cfcc1ecb49d7e8..."
-              mx={2}
+              placeholder="a00fe60cfcc1ecb49d7e8..."
               maxW={"xl"}
               onChange={(e) => {
                 setAnvilAddress(e);

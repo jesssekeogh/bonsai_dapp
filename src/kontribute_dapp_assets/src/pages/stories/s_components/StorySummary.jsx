@@ -13,6 +13,7 @@ import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../../declarations/story";
 
 const StorySummary = ({ storyId }) => {
+  let isMounted = true;
   const [storyData, setStoryData] = useState({});
   const [loaded, setLoaded] = useState(false);
 
@@ -21,13 +22,18 @@ const StorySummary = ({ storyId }) => {
   });
 
   const loadSummary = async () => {
-    let summary = await storyMo.getSummary(storyId);
-    setStoryData(summary.ok);
-    setLoaded(true);
+    let summary = await storyMo.get(storyId);
+    if (isMounted) {
+      setStoryData(summary.ok);
+      setLoaded(true);
+    }
   };
 
   useEffect(() => {
     loadSummary();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -49,7 +55,7 @@ const StorySummary = ({ storyId }) => {
                 bgGradient="linear(to-t, #705025, #a7884a)"
                 bgClip="text"
               >
-                {loaded ? storyData.title : <Skeleton />}
+                {loaded ? storyData.story.title : <Skeleton />}
               </Heading>
             ) : (
               <Skeleton height="20px" mb={3} width="120px" />
@@ -61,7 +67,7 @@ const StorySummary = ({ storyId }) => {
                   color="#f0e6d3"
                   fontSize={["8pt", null, "md"]}
                 >
-                  {storyData.summary}
+                  {storyData.story.summary}
                 </Text>
               </Box>
             ) : (

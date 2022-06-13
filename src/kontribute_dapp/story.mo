@@ -45,14 +45,6 @@ actor Story {
         story : StoryText;
     };
 
-    public type StorySummary = {
-        storyId : Nat;
-        totalVotes : Nat;
-        title : Text;
-        summary : Text;
-        author : Principal;
-    };
-
     private var _stories : [var ?StoryRecord] = Array.init<?StoryRecord>(10000, null);
     private var _users : Trie.Trie<Principal, List.List<Nat>> = Trie.empty();
 
@@ -93,25 +85,6 @@ actor Story {
                     totalVotes = result.totalVotes;
                     story = decodeStory(result.story);
                  });
-            };
-        };
-    };
-
-    // get story summary
-    public query func getSummary(storyId : Nat) : async Result.Result<StorySummary, Text> {
-        let result = _stories[storyId];
-
-        switch (result){
-            case(null){return #err("Story does not exist")};
-            case(?result){
-                let story = decodeStory(result.story);
-                return #ok({
-                    storyId = result.storyId;
-                    totalVotes = result.totalVotes;
-                    title = story.title;
-                    summary = story.summary;
-                    author = result.author;
-                });
             };
         };
     };
@@ -279,9 +252,9 @@ actor Story {
 
     private func checkValidStory(caller: Principal, story: StoryText) : Bool {        
         assert (Principal.isAnonymous(caller) == false);
-        assert (story.title.size() <= 50 and story.title.size() >= 10);
-        assert (story.summary.size() <= 110 and story.summary.size() >= 40);
-        assert (story.story.size() <= 3000 and story.story.size() >= 500); // change to large amount in Prod
+        assert (story.title.size() <= 50);
+        assert (story.summary.size() <= 110);
+        assert (story.story.size() <= 3000); // change to large amount in Prod
         if(unwrapAddress(story.address).size() > 1){
             assert (unwrapAddress(story.address).size() == 64);
         };
