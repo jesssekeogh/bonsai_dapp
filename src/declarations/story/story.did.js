@@ -1,7 +1,6 @@
 export const idlFactory = ({ IDL }) => {
   const StoryText = IDL.Record({
     'title' : IDL.Text,
-    'summary' : IDL.Text,
     'story' : IDL.Text,
     'address' : IDL.Opt(IDL.Text),
   });

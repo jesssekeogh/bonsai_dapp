@@ -9,6 +9,7 @@ import {
   Text,
   useBreakpointValue,
   HStack,
+  CircularProgress,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
@@ -85,7 +86,12 @@ const LargeNft = () => {
           padding={4}
         >
           <Flex flex={1}>
-            <ChakraImage borderRadius="lg" boxSize="100%" src={src} />
+            <ChakraImage
+              borderRadius="lg"
+              boxSize="100%"
+              src={src}
+              fallback={<LoadingImage />}
+            />
           </Flex>
           <Stack
             flex={1}
@@ -173,6 +179,18 @@ const NftTags = (props) => {
         );
       })}
     </>
+  );
+};
+
+const LoadingImage = () => {
+  return (
+    <Center>
+      <CircularProgress
+        emptyColor="#17191e"
+        color="#9d8144"
+        isIndeterminate
+      />
+    </Center>
   );
 };
 export default LargeNft;

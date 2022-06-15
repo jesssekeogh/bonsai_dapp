@@ -66,9 +66,13 @@ const StorySummary = ({ storyId }) => {
                   fontWeight={600}
                   color="#f0e6d3"
                   fontSize={["8pt", null, "md"]}
-                >
-                  {storyData.story.summary}
-                </Text>
+                  dangerouslySetInnerHTML={{
+                    __html: decodeURIComponent(storyData.story.story).substring(
+                      0,
+                      70
+                    ) + "...",
+                  }}
+                />
               </Box>
             ) : (
               <SkeletonText mt="4" noOfLines={4} spacing="2" />

@@ -43,7 +43,8 @@ import { useSelector } from "react-redux";
 const toast = createStandaloneToast();
 
 const MarketplaceNftButton = ({ tokenId, price }) => {
-  const isLogged = useSelector((state) => state.Profile.loggedIn)
+  const isLogged = useSelector((state) => state.Profile.loggedIn);
+  const lastAddress = useSelector((state) => state.Global.currentMarketplace);
   return (
     <>
       <Menu>
@@ -62,7 +63,7 @@ const MarketplaceNftButton = ({ tokenId, price }) => {
           <Link
             to={"/nft/" + tokenToText(tokenId)}
             state={{
-              prev: "/marketplace/" + process.env.MARKETPLACE_COLLECTION,
+              prev: "/marketplace/" + lastAddress,
               showConfetti: false,
               totalNfts: 1,
             }}
@@ -108,7 +109,7 @@ const BuyNft = ({ tokenId, price }) => {
           tokenToText(tokenId).substring(15, 20)
         } bought for ${e8sToIcp(price)} ICP`
       );
-      Usergeek.trackEvent("NftPurchase")
+      Usergeek.trackEvent("NftPurchase");
       return navigate("/nft/" + tokenToText(tokenId), {
         state: {
           prev: "/marketplace/" + process.env.MARKETPLACE_COLLECTION,

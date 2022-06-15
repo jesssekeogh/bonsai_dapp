@@ -19,14 +19,12 @@ actor Story {
 
     public type StoryText = {
         title : Text; // less than 50 characters
-        summary : Text; // less than 110 characters
         story : Text; // long encodedURIcomponent string: less than 3000 characters
         address : ?Text; // nft anvil address
     };
 
     public type StoryBlob = {
         title : Blob;
-        summary : Blob;
         story : Blob;
         address : Blob;
     };
@@ -64,7 +62,7 @@ actor Story {
                 };
                 _stories[i] := ?newStory;
                 addId(caller, i);
-                return #ok("Story added at position: " # Nat.toText(i));
+                return #ok(Nat.toText(i));
             };
             i += 1;
         };
@@ -235,7 +233,6 @@ actor Story {
     private func encodeStory(story : StoryText) : StoryBlob {
         return {
             title = Text.encodeUtf8(story.title);
-            summary = Text.encodeUtf8(story.summary);
             story = Text.encodeUtf8(story.story);
             address = Text.encodeUtf8(unwrapAddress(story.address));
         }
@@ -244,7 +241,6 @@ actor Story {
     private func decodeStory(story : StoryBlob) : StoryText {
         return {
             title = Option.unwrap(Text.decodeUtf8(story.title));
-            summary = Option.unwrap(Text.decodeUtf8(story.summary));
             story = Option.unwrap(Text.decodeUtf8(story.story));
             address = Text.decodeUtf8(story.address);
         }
@@ -253,7 +249,6 @@ actor Story {
     private func checkValidStory(caller: Principal, story: StoryText) : Bool {        
         assert (Principal.isAnonymous(caller) == false);
         assert (story.title.size() <= 50);
-        assert (story.summary.size() <= 110);
         assert (story.story.size() <= 3000); // change to large amount in Prod
         if(unwrapAddress(story.address).size() > 1){
             assert (unwrapAddress(story.address).size() == 64);

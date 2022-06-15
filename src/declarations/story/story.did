@@ -2,7 +2,6 @@ type StoryText =
  record {
    address: opt text;
    story: text;
-   summary: text;
    title: text;
  };
 type StoryReturn = 
