@@ -45,7 +45,7 @@ const StorySummary = ({ storyId }) => {
         backgroundColor="#16171b"
         boxShadow={"2xl"}
         overflow={"hidden"}
-        height={["180px", null, "220px"]}
+        height={["150px", null, "220px"]}
       >
         <Box p={[3, null, 6]}>
           <Stack spacing={0} align={"left"} mb={5}>

@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { LoadingSpinner } from "../../containers";
 import {
-  Center,
   SimpleGrid,
   Kbd,
   Text,
   SimpleGrid,
   Container,
 } from "@chakra-ui/react";
-import { StorySummary, CreateButton } from "./s_components";
+import { StorySummary } from "./s_components";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../declarations/story";
 
@@ -48,7 +47,6 @@ const AuthorStories = () => {
   return (
     <>
       <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
-        <CreateButton author={author} />
         {storyIds === "err" ? (
           <Kbd
             my={"195px"}
@@ -59,7 +57,7 @@ const AuthorStories = () => {
             <Text color="#f0e6d3">You have no Stories here!😕</Text>
           </Kbd>
         ) : (
-          <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+          <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2} mt={3}>
             {storyIds.map((item) => (
               <StorySummary key={item} storyId={item} />
             ))}

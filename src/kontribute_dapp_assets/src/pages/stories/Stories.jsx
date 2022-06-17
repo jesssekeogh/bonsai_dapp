@@ -7,20 +7,20 @@ import {
   Container,
   Spacer,
   Divider,
-  useBreakpointValue
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import { CreateButton, StorySummary } from "./s_components";
-import { useSelector } from "react-redux";
+import { CreateButton, StorySummary, FeaturedBox } from "./s_components";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../declarations/story";
 import { LoadingSpinner } from "../../containers";
 
 const amountOfStories = 12;
 const allStories = 10000;
+const featured = [
+  "ntohy-uex3p-ricj3-dhz7a-enmvo-szydx-l77yh-kftxf-h25x3-j6feg-2ae",
+];
 
 const Stories = () => {
-  const user = useSelector((state) => state.Profile.principal);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -28,7 +28,8 @@ const Stories = () => {
   return (
     <>
       <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
-        <CreateButton author={user} />
+        <CreateButton />
+        <FeaturedGrid featuredAuthors={featured} />
         <RecentGrid />
       </Container>
     </>
@@ -36,6 +37,24 @@ const Stories = () => {
 };
 
 export default Stories;
+
+const FeaturedGrid = ({ featuredAuthors }) => {
+  return (
+    <>
+      <Heading my={1} bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
+        Featured
+      </Heading>
+      <Divider my={2} borderColor="#16171b" />
+      <>
+        <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+          {featuredAuthors.map((item) => (
+            <FeaturedBox key={item} author={item} />
+          ))}
+        </SimpleGrid>
+      </>
+    </>
+  );
+};
 
 const RecentGrid = () => {
   let isMounted = true;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
@@ -48,8 +48,8 @@ const Create = () => {
     setPosting(true);
 
     if (CheckStory(title, encodedStory, anvilAddress) !== "passed") {
-      setPosting(false)
-      toast.closeAll()
+      setPosting(false);
+      toast.closeAll();
       return FailedToast(
         "Failed",
         CheckStory(title, encodedStory, anvilAddress)
@@ -86,6 +86,10 @@ const Create = () => {
     return navigate("/stories/story/" + post.ok);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+  
   return (
     <div className="story">
       <Container maxW="4xl" mt={{ base: -10, md: -2 }}>
@@ -95,7 +99,14 @@ const Create = () => {
         <CKEditor
           editor={ClassicEditor}
           config={{
-            toolbar: ["Heading", "bold", "italic", "|", "undo", "redo"],
+            toolbar: [
+              "Heading",
+              "bold",
+              "italic",
+              "|",
+              "undo",
+              "redo",
+            ],
             heading: {
               options: [
                 {

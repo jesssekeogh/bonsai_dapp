@@ -119,6 +119,7 @@ const Marketplace = () => {
   }, [page, sortBy, pricing, Loaded]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchAuthorData();
     dispatch(setMarketplace(params.author))
   }, [params.author]);

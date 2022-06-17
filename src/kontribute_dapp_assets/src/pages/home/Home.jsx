@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Container,
   SimpleGrid,
@@ -20,6 +20,11 @@ import { useSelector } from "react-redux";
 import "./home.css";
 
 const Home = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+  
   return (
     <>
       <div className="home_container">

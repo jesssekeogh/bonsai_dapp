@@ -5,6 +5,7 @@ import { createStoryActor } from "../../../../declarations/story";
 import { Link } from "react-router-dom";
 import {
   Container,
+  Center,
   Heading,
   Text,
   Skeleton,
@@ -34,6 +35,7 @@ const Story = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     loadStory();
     return () => {
       isMounted = false;
@@ -44,14 +46,16 @@ const Story = () => {
     <Container mt={{ base: -10, md: -2 }}>
       {loaded ? (
         <>
-          <Heading
-            mb={2}
-            as={"h2"}
-            bgGradient="linear(to-t, #705025, #a7884a)"
-            bgClip="text"
-          >
-            {story.story.title}
-          </Heading>
+          <Center>
+            <Heading
+              mb={2}
+              as={"h2"}
+              bgGradient="linear(to-t, #705025, #a7884a)"
+              bgClip="text"
+            >
+              {story.story.title}
+            </Heading>
+          </Center>
           <Text
             fontWeight={600}
             color="#f0e6d3"

@@ -4,17 +4,18 @@ import {
   Spacer,
   Button,
   useBreakpointValue,
+  Text,
 } from "@chakra-ui/react";
 import { BsPenFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const CreateButton = ({ author }) => {
-  const user = useSelector((state) => state.Profile.principal);
+const HowTo = "https://medium.com";
+
+const CreateButton = () => {
   const isLogged = useSelector((state) => state.Profile.loggedIn);
-  if (user !== author) return null;
   return (
-    <Stack direction={"row"} mb={2}>
+    <Stack direction={"row"} align={"center"}>
       <Spacer />
       <Link to="/stories/create">
         <Button
@@ -31,6 +32,18 @@ const CreateButton = ({ author }) => {
           Create Story
         </Button>
       </Link>
+      <a href={HowTo} target="_blank" rel="noreferrer">
+        <Text
+          color="#6495ED"
+          _hover={{
+            opacity: "0.8",
+            textDecoration: "underline",
+            cursor: "pointer",
+          }}
+        >
+          How to?
+        </Text>
+      </a>
     </Stack>
   );
 };

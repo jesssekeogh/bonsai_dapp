@@ -22,6 +22,7 @@ import { MdPerson, MdLibraryBooks } from "react-icons/md";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
+import { BsPenFill } from "react-icons/bs";
 import { CopyToast } from "../toasts/Toasts";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -97,6 +98,7 @@ const Profile = () => {
     dispatch(setPrincipal(""));
     Usergeek.setPrincipal(undefined);
     if (location.pathname == "/inventory") return navigate("/");
+    if (location.pathname == "/stories/create") return navigate("/");
   };
 
   useEffect(() => {
@@ -128,6 +130,11 @@ const Profile = () => {
                 {userId.substring(0, 10) + "......" + userId.substring(54, 63)}
               </MenuItem>
             </Tooltip>
+            <NavLink to={"/stories/create/"}>
+              <MenuItem closeOnSelect icon={<BsPenFill />} maxW="240px">
+                Create Story
+              </MenuItem>
+            </NavLink>
             <NavLink to={"/stories/author/" + userId}>
               <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
                 My Stories
