@@ -7,6 +7,7 @@ import {
   Text,
   SimpleGrid,
   Container,
+  Center,
 } from "@chakra-ui/react";
 import { StorySummary } from "./s_components";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
@@ -48,16 +49,24 @@ const AuthorStories = () => {
     <>
       <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
         {storyIds === "err" ? (
-          <Kbd
-            my={"195px"}
-            border={"double"}
-            borderRadius="lg"
-            backgroundColor="#16171b"
-          >
-            <Text color="#f0e6d3">You have no Stories here!😕</Text>
-          </Kbd>
+          <Center>
+            <Kbd
+              my={"195px"}
+              border={"double"}
+              borderRadius="lg"
+              backgroundColor="#16171b"
+            >
+              <Text color="#f0e6d3">There are no Stories here!😕</Text>
+            </Kbd>
+          </Center>
         ) : (
-          <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2} mt={3}>
+          <SimpleGrid
+            columns={{ base: 2, md: 2, lg: 4 }}
+            pb={5}
+            gap={3}
+            mx={2}
+            mt={3}
+          >
             {storyIds.map((item) => (
               <StorySummary key={item} storyId={item} />
             ))}

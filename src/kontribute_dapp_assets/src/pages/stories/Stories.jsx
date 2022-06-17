@@ -8,17 +8,20 @@ import {
   Spacer,
   Divider,
   useBreakpointValue,
+  Skeleton,
 } from "@chakra-ui/react";
 import { CreateButton, StorySummary, FeaturedBox } from "./s_components";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../declarations/story";
-import { LoadingSpinner } from "../../containers";
+import BonsaiBG from "../../../assets/Bonsai_Warriors_Background_1.png";
+import PendragonBG from "../../../assets/pendragon.png";
 
 const amountOfStories = 12;
 const allStories = 10000;
-const featured = [
-  "ntohy-uex3p-ricj3-dhz7a-enmvo-szydx-l77yh-kftxf-h25x3-j6feg-2ae",
-];
+const bonsaiAuthor =
+  "7xvg3-yvl47-x2bkx-tg6yr-hdn6p-xtzti-qiwha-gwdqt-pix4u-7ie7i-3qe";
+const pendragonAuthor =
+  "ehjp3-bl645-t6go7-f2zyt-xxvyl-els4v-iocym-gsxli-mzj5v-tdwau-wae";
 
 const Stories = () => {
   useEffect(() => {
@@ -29,7 +32,7 @@ const Stories = () => {
     <>
       <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
         <CreateButton />
-        <FeaturedGrid featuredAuthors={featured} />
+        <FeaturedGrid />
         <RecentGrid />
       </Container>
     </>
@@ -38,7 +41,7 @@ const Stories = () => {
 
 export default Stories;
 
-const FeaturedGrid = ({ featuredAuthors }) => {
+const FeaturedGrid = () => {
   return (
     <>
       <Heading my={1} bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
@@ -47,9 +50,8 @@ const FeaturedGrid = ({ featuredAuthors }) => {
       <Divider my={2} borderColor="#16171b" />
       <>
         <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
-          {featuredAuthors.map((item) => (
-            <FeaturedBox key={item} author={item} />
-          ))}
+          <FeaturedBox author={bonsaiAuthor} img={BonsaiBG} />
+          <FeaturedBox author={pendragonAuthor} img={PendragonBG} />
         </SimpleGrid>
       </>
     </>
@@ -100,7 +102,12 @@ const RecentGrid = () => {
           />
         </>
       ) : (
-        <LoadingSpinner label="Loading Stories..." />
+        <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+        </SimpleGrid>
       )}
     </>
   );

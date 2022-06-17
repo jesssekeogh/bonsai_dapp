@@ -130,7 +130,7 @@ const Profile = () => {
                 {userId.substring(0, 10) + "......" + userId.substring(54, 63)}
               </MenuItem>
             </Tooltip>
-            <NavLink to={"/stories/create/"}>
+            <NavLink to={"/stories/create"}>
               <MenuItem closeOnSelect icon={<BsPenFill />} maxW="240px">
                 Create Story
               </MenuItem>

@@ -43,7 +43,7 @@ const Story = () => {
   }, []);
 
   return (
-    <Container mt={{ base: -10, md: -2 }}>
+    <Container minW={{ md: "2xl" }} mt={{ base: -10, md: -2 }}>
       {loaded ? (
         <>
           <Center>
@@ -81,7 +81,7 @@ const Story = () => {
 
 const AuthorInfo = ({ authorPrincipal, authorAddress }) => {
   return (
-    <Stack direction={"row"} mb={2} mt={5}>
+    <Stack direction={"row"} my={5}>
       <Spacer />
       <Link to={"/stories/author/" + authorPrincipal}>
         <Button

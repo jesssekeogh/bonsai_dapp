@@ -9,6 +9,7 @@ import {
   StackDivider,
   Icon,
   useColorModeValue,
+  useBreakpointValue,
   Button,
   Center,
   Image as ChakraImage,
@@ -129,17 +130,17 @@ const Buttons = () => {
 
   return (
     <Center my={12}>
-      <Stack direction={"column"} spacing={10}>
+      <Stack direction={useBreakpointValue(["row", "column"])} spacing={{base: 2, md: 10}}>
         <Link to="/stories">
           <Button
             colorScheme="#282828"
             bg="#282828"
             rounded={"full"}
             rightIcon={<BsPen />}
-            p={8}
-            w={"200px"}
+            p={{base: 4, md: 8}}
+            w={{base: null, md: "200px"}}
             _hover={{ opacity: "0.8" }}
-            size={"lg"}
+            size={useBreakpointValue(["md", "lg"])}
           >
             Explore Stories
           </Button>
@@ -150,10 +151,10 @@ const Buttons = () => {
             bg="#282828"
             rounded={"full"}
             rightIcon={<BsImage />}
-            p={8}
-            w={"200px"}
+            p={{base: 4, md: 8}}
+            w={{base: null, md: "200px"}}
             _hover={{ opacity: "0.8" }}
-            size={"lg"}
+            size={useBreakpointValue(["md", "lg"])}
           >
             Explore NFTs
           </Button>

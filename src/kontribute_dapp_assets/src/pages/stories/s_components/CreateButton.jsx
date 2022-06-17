@@ -10,7 +10,7 @@ import { BsPenFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const HowTo = "https://medium.com";
+const HowTo = "https://medium.com/@teambonsai.icp/c5c2cc3c404b";
 
 const CreateButton = () => {
   const isLogged = useSelector((state) => state.Profile.loggedIn);

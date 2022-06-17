@@ -1,9 +1,9 @@
 h3 {
-    font-size: 22pt!important;
+    font-size: 16pt!important;
   }
   
 h4 {
-    font-size: 20pt!important;
+    font-size: 14pt!important;
   }
 
   
@@ -115,4 +115,15 @@ h4 {
     /* -- Overrides the default colors used by the ckeditor5-link package. ---------------------- */
 
     --ck-color-link-default: hsl(190, 100%, 75%);
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 767px) {
+  h3 {
+    font-size: 11pt!important;
+  }
+  
+  h4 {
+    font-size: 10pt!important;
+  }
+
 }

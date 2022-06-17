@@ -51,7 +51,7 @@ const StorySummary = ({ storyId }) => {
           <Stack spacing={0} align={"left"} mb={5}>
             {loaded ? (
               <Heading
-                fontSize={["md", null, "xl"]}
+                fontSize={["xs", null, "lg"]}
                 bgGradient="linear(to-t, #705025, #a7884a)"
                 bgClip="text"
               >
@@ -67,10 +67,11 @@ const StorySummary = ({ storyId }) => {
                   color="#f0e6d3"
                   fontSize={["8pt", null, "md"]}
                   dangerouslySetInnerHTML={{
-                    __html: decodeURIComponent(storyData.story.story).substring(
-                      0,
-                      70
-                    ) + "...",
+                    __html:
+                      decodeURIComponent(storyData.story.story).substring(
+                        0,
+                        70
+                      ) + "...",
                   }}
                 />
               </Box>

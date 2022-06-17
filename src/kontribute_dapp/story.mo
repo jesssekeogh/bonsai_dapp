@@ -265,7 +265,7 @@ actor Story {
     private func checkValidStory(caller: Principal, story: StoryText) : Bool {        
         assert (Principal.isAnonymous(caller) == false);
         assert (story.title.size() <= 50);
-        assert (story.story.size() <= 3000);
+        assert (story.story.size() <= 10000);
         if(unwrapAddress(story.address).size() > 1){
             assert (unwrapAddress(story.address).size() == 64);
         };
