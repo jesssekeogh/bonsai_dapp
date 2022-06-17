@@ -97,7 +97,7 @@ actor Story {
 
     /* get all stories belonging to a particular user returns the array of IDs tied to a particular user
     in the hashmap */
-    public shared func getUserStories(caller : Text): async Result.Result<[Nat], Text>{
+    public query func getUserStories(caller : Text): async Result.Result<[Nat], Text>{
         let user = Principal.fromText(caller);
         assert (Principal.isAnonymous(user) == false);
 

@@ -29,6 +29,7 @@ import {
   SendingToast,
   SuccessToast,
 } from "../../containers/toasts/Toasts";
+import { Usergeek } from "usergeek-ic-js";
 
 const toast = createStandaloneToast();
 
@@ -69,6 +70,7 @@ const Create = () => {
         story: encodedStory,
         address: [anvilAddress],
       });
+      Usergeek.trackEvent("StoryPublished");
     } catch (e) {
       toast.closeAll();
       setPosting(false);
@@ -147,7 +149,6 @@ const Create = () => {
               placeholder="E.g a00fe60cfcc1ecb49d7e8..."
               onChange={(e) => {
                 setAnvilAddress(e.target.value);
-                console.log(e.target.value);
               }}
               color="#f0e6d3"
               variant="flushed"

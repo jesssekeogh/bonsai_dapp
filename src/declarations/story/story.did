@@ -34,6 +34,6 @@ service : {
   getDebug: () -> (reserved) query;
   getMemorySize: () -> (nat) query;
   getStoryIds: (nat) -> (Result) query;
-  getUserStories: (text) -> (Result);
+  getUserStories: (text) -> (Result) query;
   whoami: () -> (principal);
 }

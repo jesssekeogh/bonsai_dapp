@@ -4,11 +4,6 @@
     A decentralised application hosted on the Internet Computer Blockchain (ICP)
   </p>
 </div>
-<p align="center">
-<img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/teambonsai/bonsai_dapp">
-<img alt="Discord" src="https://img.shields.io/discord/918022155420196864?label=Discord&style=flat-square">
-<img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/TeamBonsai_ICP?style=social"> 
-</p>
 
 ## About The Project
 
@@ -40,7 +35,7 @@ Kontribute is built on top of the ICP blockchain - meaning the frontend and back
 
 ### Frontend
 
-We try to take a modern approach to the frontend in terms of using modern React tools such as functional components and hooks aswell as implementing the most popular React state management library: Redux. The idea is to make as many readable dynamic components as possible taking a "less is more" approach. We are adament that the dapp works and looks nice across all device screens so we use Chakra UI for most of the UI design and CSS, This allows custom and fast development of the UI aswell as responsive components.
+We try to take a modern approach to the frontend in terms of using modern React practices such as functional components and hooks aswell as implementing the most popular React state management library: Redux. The idea is to make as many readable dynamic components as possible taking a "less is more" approach. We are adament that the dapp works and looks nice across all device screens so we use Chakra UI for most of the UI design and CSS, This allows custom and fast development of the UI aswell as responsive components.
 
 ### Backend
 

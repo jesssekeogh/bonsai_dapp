@@ -48,7 +48,7 @@ const AuthorStories = () => {
   return (
     <>
       <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
-        {storyIds === "err" ? (
+        {storyIds === "err" || storyIds.length < 1 ? (
           <Center>
             <Kbd
               my={"195px"}

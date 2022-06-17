@@ -14,7 +14,14 @@ import {
   Spacer,
   Button,
   useBreakpointValue,
+  createStandaloneToast,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import {
+  FailedToast,
+  SendingToast,
+  SuccessToast,
+} from "../../containers/toasts/Toasts";
 
 const Story = () => {
   let isMounted = true;
@@ -66,6 +73,7 @@ const Story = () => {
           <AuthorInfo
             authorAddress={story.story.address[0]}
             authorPrincipal={story.author}
+            storyId={params.storyId}
           />
         </>
       ) : null}
@@ -78,8 +86,32 @@ const Story = () => {
     </Container>
   );
 };
+const toast = createStandaloneToast();
 
-const AuthorInfo = ({ authorPrincipal, authorAddress }) => {
+const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
+  const viewer = useSelector((state) => state.Profile.principal);
+  let show = false
+
+  let storyMo = createStoryActor({
+    agentOptions: authentication.getAgentOptions(),
+  });
+
+  if(viewer == authorPrincipal){
+    show = true
+  }
+
+  const deleteStory = (storyId) => {
+    SendingToast("Deleting Story...");
+    try {
+      storyMo.delete(Number(storyId));
+      toast.closeAll();
+      SuccessToast("Success!", `Story with ID ${storyId} deleted`);
+    } catch (e) {
+      toast.closeAll();
+      FailedToast("Failed!", e.toString());
+    }
+  };
+
   return (
     <Stack direction={"row"} my={5}>
       <Spacer />
@@ -116,6 +148,25 @@ const AuthorInfo = ({ authorPrincipal, authorAddress }) => {
           Authors NFTs
         </Button>
       </Link>
+      {show ? (
+        <Button
+          colorScheme="#282828"
+          bg="darkred"
+          rounded={"full"}
+          size={useBreakpointValue(["sm", "md"])}
+          px={5}
+          _hover={{
+            transform: "translateY(-2px)",
+            boxShadow: "lg",
+            opacity: "0.8",
+          }}
+          onClick={() => {
+            deleteStory(storyId);
+          }}
+        >
+          Delete
+        </Button>
+      ) : null}
     </Stack>
   );
 };
