@@ -24,7 +24,7 @@ export const SellingFilter = ({ setSelling }) => {
       borderRadius="lg"
       backgroundColor="#16171b"
       borderColor="#16171b"
-      color="#f0e6d3"
+      color="gray.400"
       my={2}
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
@@ -47,7 +47,7 @@ export const CollectionFilter = ({ setCollection }) => {
       borderRadius="lg"
       backgroundColor="#16171b"
       borderColor="#16171b"
-      color="#f0e6d3"
+      color="gray.400"
       my={2}
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
@@ -69,7 +69,7 @@ export const RarityFilter = ({ setSort, setPage }) => {
       borderRadius="lg"
       backgroundColor="#16171b"
       borderColor="#16171b"
-      color="#f0e6d3"
+      color="gray.400"
       my={2}
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
@@ -99,7 +99,7 @@ export const PriceFilter = ({ setPricing, setPage }) => {
       borderRadius="lg"
       backgroundColor="#16171b"
       borderColor="#16171b"
-      color="#f0e6d3"
+      color="gray.400"
       my={2}
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {
@@ -128,7 +128,7 @@ export const AuthorFilter = () => {
       borderRadius="lg"
       backgroundColor="#16171b"
       borderColor="#16171b"
-      color="#f0e6d3"
+      color="gray.400"
       my={2}
       fontSize={["7pt", null, "sm"]}
       onChange={(e) => {

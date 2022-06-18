@@ -64,7 +64,7 @@ const Story = () => {
             </Heading>
           </Center>
           <Text
-            fontWeight={600}
+            fontWeight={400}
             color="#f0e6d3"
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(story.story.story),
