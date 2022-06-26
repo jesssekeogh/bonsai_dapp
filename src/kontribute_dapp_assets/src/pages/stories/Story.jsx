@@ -148,6 +148,7 @@ const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
 
 const BackButton = () => {
   const path = useLocation();
+
   return (
     <Link to={path.state.prev}>
       <Button

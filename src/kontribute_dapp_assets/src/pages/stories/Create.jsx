@@ -90,7 +90,9 @@ const Create = () => {
     }
 
     SuccessToast("Success", "Story added with ID: " + post.ok.toString());
-    return navigate("/stories/story/" + post.ok);
+    return navigate("/stories/story/" + post.ok, {
+      state: { prev: "/stories/create" },
+    });
   };
 
   useEffect(() => {
@@ -137,36 +139,35 @@ const Create = () => {
         />
         <Flex mb={2} alignItems={"center"}>
           <Box>
-            <Text
+            <Wrap
+              align="center"
               my={2}
               fontWeight={600}
               color="#f0e6d3"
               fontSize={["sm", null, "md"]}
             >
-              <Wrap align="center">
-                Your
-                <a
-                  href={"https://nftanvil.com/mint"}
-                  target="_blank"
-                  rel="noreferrer"
+              Your
+              <a
+                href={"https://nftanvil.com/mint"}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Text
+                  color="#6495ED"
+                  _hover={{
+                    opacity: "0.8",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
                 >
-                  <Text
-                    color="#6495ED"
-                    _hover={{
-                      opacity: "0.8",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                  >
-                    NFT Anvil
-                  </Text>
-                </a>
-                minting address:{" "}
-                <Tooltip label={"Adding your address is optional"}>
-                  <InfoIcon boxSize={5} viewBox="0 0 30 30" />
-                </Tooltip>
-              </Wrap>
-            </Text>
+                  NFT Anvil
+                </Text>
+              </a>
+              minting address:{" "}
+              <Tooltip label={"Adding your address is optional"}>
+                <InfoIcon boxSize={5} viewBox="0 0 30 30" />
+              </Tooltip>
+            </Wrap>
             <Input
               placeholder="E.g a00fe60cfcc1ecb49d7e8..."
               onChange={(e) => {
