@@ -32,17 +32,6 @@ const LaunchPad = () => {
           mx="5"
         >
           <CollectionThumb
-            colimg={pendragonBG}
-            title={"Pendragon Quest NFTs"}
-            description={
-              "A collection of NFTs from Pendragon Quest - The first featured story on Kontribute"
-            }
-            tags={["Fantasy", "Adventure"]}
-            author={"Pendragon Quest"}
-            authorimg={pendragonLogo}
-            link={"/launchpad/pendragon-nft"}
-          />
-          <CollectionThumb
             colimg={bonsailogo}
             title={"Bonsai Warrior NFTs"}
             description={

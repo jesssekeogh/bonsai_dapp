@@ -83,18 +83,21 @@ const LikeButton = ({ storyId }) => {
 
 const TotalLikes = ({ likes }) => {
   return (
-    <Box
+    <Button
       maxW={"100px"}
       align={"center"}
-      size={useBreakpointValue({ base: "sm", md: "md" })}
       borderRadius="md"
       bg="#0fbdde"
       color="black"
       fontWeight="semibold"
-      p={1}
+      size={"xs"}
+      fontSize={{ base: "xs", md: "sm" }}
+      py={{ base: 0, md: 0.5 }}
+      px={{ base: 1, md: 2 }}
+      leftIcon={<FaHeart />}
     >
       {likes}
-    </Box>
+    </Button>
   );
 };
 export default LikeButton;

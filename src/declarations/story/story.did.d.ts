@@ -24,6 +24,7 @@ export interface _SERVICE {
   'getDebug' : () => Promise<any>,
   'getMemorySize' : () => Promise<bigint>,
   'getStoryIds' : (arg_0: bigint) => Promise<Result_1>,
+  'getUserLikedStories' : () => Promise<Result_1>,
   'getUserStories' : (arg_0: string) => Promise<Result_1>,
   'like' : (arg_0: bigint) => Promise<Result>,
   'whoami' : () => Promise<Principal>,

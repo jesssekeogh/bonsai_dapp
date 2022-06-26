@@ -16,6 +16,7 @@ import { createStoryActor } from "../../../../declarations/story";
 import BonsaiBG from "../../../assets/Bonsai_Warriors_Background_1.png";
 import PendragonBG from "../../../assets/pendragon.png";
 
+const mostLikedAmount = 4; // temporary thing until we add pages for each section
 const amountOfStories = 12;
 const allStories = 10000;
 const bonsaiAuthor =
@@ -33,6 +34,7 @@ const Stories = () => {
       <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
         <CreateButton />
         <FeaturedGrid />
+        <MostlikedGrid />
         <RecentGrid />
       </Container>
     </>
@@ -137,5 +139,71 @@ const ViewAllButton = ({ current, setAmount }) => {
         View All
       </Button>
     </Stack>
+  );
+};
+
+const MostlikedGrid = () => {
+  let isMounted = true;
+  const [loaded, setLoaded] = useState(false);
+  const [storyIds, setStoryIds] = useState([]);
+
+  let storyMo = createStoryActor({
+    agentOptions: authentication.getAgentOptions(),
+  });
+
+  const LoadMostliked = async () => {
+    let storiesArray = [];
+    let finalIds = [];
+    let all = await storyMo.getStoryIds(allStories);
+
+    for (let i = 0; i < all.ok.length; i++) {
+      let story = await storyMo.get(all.ok[i]);
+      storiesArray.push(story.ok);
+    }
+
+    let sorted = storiesArray.sort(
+      (a, b) => Number(b.totalVotes) - Number(a.totalVotes)
+    );
+
+    for (let i = 0; i < sorted.length; i++) {
+      finalIds.push(sorted[i].storyId);
+    }
+    if (isMounted) {
+      setStoryIds(finalIds.slice(0, 4));
+
+      setLoaded(true);
+    }
+  };
+
+  useEffect(() => {
+    LoadMostliked();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return (
+    <>
+      <Heading my={1} bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
+        Most Liked
+      </Heading>
+      <Divider my={2} borderColor="#16171b" />
+      {loaded ? (
+        <>
+          <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+            {storyIds.map((item) => (
+              <StorySummary key={item} storyId={item} />
+            ))}
+          </SimpleGrid>
+        </>
+      ) : (
+        <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+          <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
+        </SimpleGrid>
+      )}
+    </>
   );
 };

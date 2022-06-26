@@ -21,6 +21,7 @@ export const idlFactory = ({ IDL }) => {
     'getDebug' : IDL.Func([], [IDL.Reserved], ['query']),
     'getMemorySize' : IDL.Func([], [IDL.Nat], ['query']),
     'getStoryIds' : IDL.Func([IDL.Nat], [Result_1], ['query']),
+    'getUserLikedStories' : IDL.Func([], [Result_1], ['query']),
     'getUserStories' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'like' : IDL.Func([IDL.Nat], [Result], []),
     'whoami' : IDL.Func([], [IDL.Principal], []),

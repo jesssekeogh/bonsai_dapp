@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { MdPerson, MdLibraryBooks } from "react-icons/md";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
+import { FaHeart } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
 import { BsPenFill } from "react-icons/bs";
@@ -114,11 +115,9 @@ const Profile = () => {
               borderColor="#9d8144"
               color="#f0e6d3"
               colorScheme="#17191e"
+              rightIcon={<MdPerson />}
             >
-              <Flex align="center">
-                Profile&nbsp;
-                <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
-              </Flex>
+              Profile
             </MenuButton>
             <MenuList>
               <MenuGroup title="User Profile" />
@@ -137,6 +136,11 @@ const Profile = () => {
               <NavLink to={"/stories/author/" + userId}>
                 <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
                   My Stories
+                </MenuItem>
+              </NavLink>
+              <NavLink to={"/stories/mylikes"}>
+                <MenuItem closeOnSelect icon={<FaHeart />} maxW="240px">
+                  Liked Stories
                 </MenuItem>
               </NavLink>
               <MenuDivider />
@@ -188,11 +192,9 @@ const IcpWallet = ({ address, user_icp }) => {
         colorScheme="#17191e"
       >
         <Flex align="center">
-          {address
-            ? address.substring(0, 5) + "..." + address.substring(59, 64)
-            : null}
+          {`ICP: ${user_icp}`}
           &nbsp;
-          <ChakraImage src={anvlogo} h={"18px"} w={"auto"} />
+          <ChakraImage src={IcLogo} h={"18px"} w={"auto"} />
         </Flex>
       </MenuButton>
       <MenuList>

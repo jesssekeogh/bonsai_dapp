@@ -9,6 +9,7 @@ import {
   Box,
   Flex,
   Spacer,
+  Wrap,
   Button,
   useBreakpointValue,
   Editable,
@@ -20,7 +21,9 @@ import {
   ButtonGroup,
   IconButton,
   Input,
+  Tooltip,
 } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 import "./story.css";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../declarations/story";
@@ -30,6 +33,8 @@ import {
   SuccessToast,
 } from "../../containers/toasts/Toasts";
 import { Usergeek } from "usergeek-ic-js";
+
+const HowTo = "https://medium.com/@teambonsai.icp/c5c2cc3c404b";
 
 const toast = createStandaloneToast();
 
@@ -90,8 +95,8 @@ const Create = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [])
-  
+  }, []);
+
   return (
     <div className="story">
       <Container maxW="4xl" mt={{ base: -10, md: -2 }}>
@@ -101,14 +106,9 @@ const Create = () => {
         <CKEditor
           editor={ClassicEditor}
           config={{
-            toolbar: [
-              "Heading",
-              "bold",
-              "italic",
-              "|",
-              "undo",
-              "redo",
-            ],
+            toolbar: ["Heading", "bold", "italic", "|", "undo", "redo"],
+            placeholder:
+              "In the Celestial Empire, there are laws that must be obeyed, laws which bind all mankind into one great and inexhaustible force. None can defeat the boundless spirit and drive of the peoples of this great empire. ",
             heading: {
               options: [
                 {
@@ -135,7 +135,7 @@ const Create = () => {
             SaveData(editor);
           }}
         />
-        <Flex mb={2} align={"center"}>
+        <Flex mb={2} alignItems={"center"}>
           <Box>
             <Text
               my={2}
@@ -143,7 +143,29 @@ const Create = () => {
               color="#f0e6d3"
               fontSize={["sm", null, "md"]}
             >
-              Your NFT Anvil minting address:
+              <Wrap align="center">
+                Your
+                <a
+                  href={"https://nftanvil.com/mint"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Text
+                    color="#6495ED"
+                    _hover={{
+                      opacity: "0.8",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                  >
+                    NFT Anvil
+                  </Text>
+                </a>
+                minting address:{" "}
+                <Tooltip label={"Adding your address is optional"}>
+                  <InfoIcon boxSize={5} viewBox="0 0 30 30" />
+                </Tooltip>
+              </Wrap>
             </Text>
             <Input
               placeholder="E.g a00fe60cfcc1ecb49d7e8..."
@@ -170,6 +192,21 @@ const Create = () => {
           >
             Publish
           </Button>
+        </Flex>
+        <Flex>
+          <Spacer />
+          <a href={HowTo} target="_blank" rel="noreferrer">
+            <Text
+              color="#6495ED"
+              _hover={{
+                opacity: "0.8",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              Need help?
+            </Text>
+          </a>
         </Flex>
       </Container>
     </div>

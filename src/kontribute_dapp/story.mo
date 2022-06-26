@@ -48,11 +48,12 @@ actor Story {
 
     /* We store stories in an Array - allowing for quick adding, lookups and deletion.
     Users have all their personal story IDs stored in a hashmap with key of principal and
-    a value of a linked list for its linear growth */
+    a value of a linked list for its linear growth.
+    Users also have all their liked stories in a hashmap */
 
     private stable var _stories : [var ?StoryRecord] = Array.init<?StoryRecord>(10000, null);
     private stable var _users : Trie.Trie<Principal, List.List<Nat>> = Trie.empty();
-    private stable var _userLikes : Trie.Trie<Principal, List.List<Nat>> = Trie.empty(); // make stable
+    private stable var _userLikes : Trie.Trie<Principal, List.List<Nat>> = Trie.empty();
 
     /* upload a story: We iterate over the array finding the first null value and using this
     position as the story ID. We also add this ID to the user hashmap*/
@@ -195,6 +196,19 @@ actor Story {
                         return #err("Story already liked")
                     };
                 };
+            };
+        };
+    };
+
+    // get all the stories a particular user has liked
+    public shared query({caller}) func getUserLikedStories() : async Result.Result<[Nat], Text> {
+        let result = Trie.find(_userLikes, { key = caller; hash = Principal.hash(caller) }, Principal.equal);
+        switch(result){
+            case(null){
+                return #err("No liked Stories found")
+            };
+            case(?result){
+                return #ok(List.toArray(result))
             };
         };
     };

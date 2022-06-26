@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../declarations/story";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Container,
   Center,
@@ -141,7 +141,27 @@ const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
           {show ? <DeleteButton storyId={storyId} /> : null}
         </Stack>
       </Stack>
+      <BackButton />
     </>
+  );
+};
+
+const BackButton = () => {
+  const path = useLocation();
+  return (
+    <Link to={path.state.prev}>
+      <Button
+        colorScheme="#282828"
+        bg="#282828"
+        rounded={"full"}
+        px={5}
+        my={5}
+        size="sm"
+        _hover={{ opacity: "0.8" }}
+      >
+        <Text as="kbd">Go Back</Text>
+      </Button>
+    </Link>
   );
 };
 export default Story;
