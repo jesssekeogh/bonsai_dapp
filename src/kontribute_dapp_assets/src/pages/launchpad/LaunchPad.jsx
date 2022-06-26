@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Center, SimpleGrid } from "@chakra-ui/react";
 import logo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import bonsailogo from "../../../assets/Bonsai_Warriors_Background_1.png";
+import pendragonBG from "../../../assets/pendragon.png";
+import pendragonLogo from "../../../assets/pendragon_logo.png";
 import { LoadingSpinner } from "../../containers";
 import { CollectionThumb } from "./lp_components";
 
@@ -29,6 +31,17 @@ const LaunchPad = () => {
           maxW="1250px"
           mx="5"
         >
+          <CollectionThumb
+            colimg={pendragonBG}
+            title={"Pendragon Quest NFTs"}
+            description={
+              "A collection of NFTs from Pendragon Quest - The first featured story on Kontribute"
+            }
+            tags={["Fantasy", "Adventure"]}
+            author={"Pendragon Quest"}
+            authorimg={pendragonLogo}
+            link={"/launchpad/pendragon-nft"}
+          />
           <CollectionThumb
             colimg={bonsailogo}
             title={"Bonsai Warrior NFTs"}

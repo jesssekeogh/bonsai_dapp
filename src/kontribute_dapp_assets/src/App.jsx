@@ -7,6 +7,7 @@ import {
   Inventory,
   Marketplace,
   BonsaiNft,
+  PendragonNft,
   LargeNft,
   Create,
   Story,
@@ -35,6 +36,7 @@ function App() {
           <Route path="/stories/author/:principal" element={<AuthorStories />} />
           <Route path="/launchpad" element={<LaunchPad />} />
           <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
+          <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
         </Routes>
         <Footer />
       </Router>

@@ -8,6 +8,10 @@ import {
   SimpleGrid,
   Container,
   Center,
+  Stat,
+  StatLabel,
+  StatNumber,
+  Divider,
 } from "@chakra-ui/react";
 import { StorySummary } from "./s_components";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
@@ -48,6 +52,8 @@ const AuthorStories = () => {
   return (
     <>
       <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
+        <AuthorCard author={author} />
+        <Divider my={2} borderColor="#16171b" />
         {storyIds === "err" || storyIds.length < 1 ? (
           <Center>
             <Kbd
@@ -77,4 +83,36 @@ const AuthorStories = () => {
   );
 };
 
+const AuthorCard = ({ author }) => {
+  return (
+    <Stat
+      px={{ base: "2", md: "4" }}
+      py={{ base: "2", md: "4" }}
+      border={"double"}
+      borderRadius="lg"
+      backgroundColor="#16171b"
+      maxW={{ base: "270px", md: "400px" }}
+    >
+      <StatLabel
+        fontWeight={"bold"}
+        fontSize={{ base: "xs", md: "md" }}
+        as="kbd"
+        bgGradient="linear(to-l, #ed1f79, #2dade2)"
+        bgClip="text"
+        isTruncated
+      >
+        Author:&nbsp;
+      </StatLabel>
+      <StatNumber
+        fontSize={{ base: "xs", md: "md" }}
+        fontWeight={"medium"}
+        as="kbd"
+        bgGradient="linear(to-r, #ed1f79, #f15b25)"
+        bgClip="text"
+      >
+        {author.substring(0, 10) + "......" + author.substring(54, 63)}
+      </StatNumber>
+    </Stat>
+  );
+};
 export default AuthorStories;

@@ -50,8 +50,8 @@ const FeaturedGrid = () => {
       <Divider my={2} borderColor="#16171b" />
       <>
         <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
-          <FeaturedBox author={bonsaiAuthor} img={BonsaiBG} />
           <FeaturedBox author={pendragonAuthor} img={PendragonBG} />
+          <FeaturedBox author={bonsaiAuthor} img={BonsaiBG} />
         </SimpleGrid>
       </>
     </>

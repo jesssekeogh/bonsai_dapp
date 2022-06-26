@@ -14,26 +14,27 @@ type StoryReturn =
 type Result_2 = 
  variant {
    err: text;
-   ok: text;
+   ok: StoryReturn;
  };
 type Result_1 = 
  variant {
    err: text;
-   ok: StoryReturn;
+   ok: vec nat;
  };
 type Result = 
  variant {
    err: text;
-   ok: vec nat;
+   ok: text;
  };
 service : {
-  add: (StoryText) -> (Result_2);
-  adminDelete: (nat) -> (Result_2);
-  delete: (nat) -> (Result_2);
-  get: (nat) -> (Result_1) query;
+  add: (StoryText) -> (Result);
+  adminDelete: (nat) -> (Result);
+  delete: (nat) -> (Result);
+  get: (nat) -> (Result_2) query;
   getDebug: () -> (reserved) query;
   getMemorySize: () -> (nat) query;
-  getStoryIds: (nat) -> (Result) query;
-  getUserStories: (text) -> (Result) query;
+  getStoryIds: (nat) -> (Result_1) query;
+  getUserStories: (text) -> (Result_1) query;
+  like: (nat) -> (Result);
   whoami: () -> (principal);
 }

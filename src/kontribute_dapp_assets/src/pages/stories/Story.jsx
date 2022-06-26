@@ -14,14 +14,10 @@ import {
   Spacer,
   Button,
   useBreakpointValue,
-  createStandaloneToast,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import {
-  FailedToast,
-  SendingToast,
-  SuccessToast,
-} from "../../containers/toasts/Toasts";
+import { BsImage } from "react-icons/bs";
+import { LikeButton, DeleteButton } from "./s_components";
 
 const Story = () => {
   let isMounted = true;
@@ -65,6 +61,7 @@ const Story = () => {
           </Center>
           <Text
             fontWeight={400}
+            fontSize={"xl"}
             color="#f0e6d3"
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(story.story.story),
@@ -86,88 +83,65 @@ const Story = () => {
     </Container>
   );
 };
-const toast = createStandaloneToast();
 
 const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
   const viewer = useSelector((state) => state.Profile.principal);
-  let show = false
+  let show = false;
 
-  let storyMo = createStoryActor({
-    agentOptions: authentication.getAgentOptions(),
-  });
-
-  if(viewer == authorPrincipal){
-    show = true
+  if (viewer == authorPrincipal) {
+    show = true;
   }
 
-  const deleteStory = (storyId) => {
-    SendingToast("Deleting Story...");
-    try {
-      storyMo.delete(Number(storyId));
-      toast.closeAll();
-      SuccessToast("Success!", `Story with ID ${storyId} deleted`);
-    } catch (e) {
-      toast.closeAll();
-      FailedToast("Failed!", e.toString());
-    }
-  };
-
   return (
-    <Stack direction={"row"} my={5}>
-      <Spacer />
-      <Link to={"/stories/author/" + authorPrincipal}>
-        <Button
-          colorScheme="#282828"
-          bg="#282828"
-          rounded={"full"}
-          size={useBreakpointValue(["sm", "md"])}
-          px={5}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-            opacity: "0.8",
-          }}
-        >
-          Authors Stories
-        </Button>
-      </Link>
-      <Link to={"/marketplace/" + authorAddress}>
-        <Button
-          colorScheme="#282828"
-          bg="#282828"
-          rounded={"full"}
-          size={useBreakpointValue(["sm", "md"])}
-          px={5}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-            opacity: "0.8",
-          }}
-          disabled={authorAddress.length !== 64}
-        >
-          Authors NFTs
-        </Button>
-      </Link>
-      {show ? (
-        <Button
-          colorScheme="#282828"
-          bg="darkred"
-          rounded={"full"}
-          size={useBreakpointValue(["sm", "md"])}
-          px={5}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-            opacity: "0.8",
-          }}
-          onClick={() => {
-            deleteStory(storyId);
-          }}
-        >
-          Delete
-        </Button>
-      ) : null}
-    </Stack>
+    <>
+      <Stack direction="row" align="center">
+        <Stack direction={"column"} my={5}>
+          <Link to={"/marketplace/" + authorAddress}>
+            <Button
+              colorScheme="#282828"
+              bg="#282828"
+              rounded={"full"}
+              size={useBreakpointValue(["sm", "md"])}
+              rightIcon={<BsImage />}
+              px={4}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+                opacity: "0.8",
+              }}
+              disabled={authorAddress.length !== 64}
+            >
+              Authors NFTs
+            </Button>
+          </Link>
+          <Link to={"/stories/author/" + authorPrincipal}>
+            <Button
+              colorScheme="#282828"
+              bg="#282828"
+              rounded={"full"}
+              size={useBreakpointValue(["sm", "md"])}
+              px={4}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+                opacity: "0.8",
+              }}
+            >
+              {`Author: ${authorPrincipal
+                .toString()
+                .substring(0, 6)}...${authorPrincipal
+                .toString()
+                .substring(57, 63)}`}
+            </Button>
+          </Link>
+        </Stack>
+        <Spacer />
+        <Stack direction="column">
+          <LikeButton storyId={storyId} />
+          {show ? <DeleteButton storyId={storyId} /> : null}
+        </Stack>
+      </Stack>
+    </>
   );
 };
 export default Story;

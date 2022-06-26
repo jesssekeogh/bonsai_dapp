@@ -52,6 +52,7 @@ actor Story {
 
     private stable var _stories : [var ?StoryRecord] = Array.init<?StoryRecord>(10000, null);
     private stable var _users : Trie.Trie<Principal, List.List<Nat>> = Trie.empty();
+    private stable var _userLikes : Trie.Trie<Principal, List.List<Nat>> = Trie.empty(); // make stable
 
     /* upload a story: We iterate over the array finding the first null value and using this
     position as the story ID. We also add this ID to the user hashmap*/
@@ -156,6 +157,47 @@ actor Story {
 
     };
 
+    /* like a story: all story IDs are mapped to a hashmap of user principals with a value
+    of List. If story id is not in the list add it (means 1 like), Two switch statements
+    1 for finding the story and 1 for finding the users liked stories: */
+    public shared({caller}) func like(storyId : Nat): async Result.Result<Text, Text>{
+        assert (Principal.isAnonymous(caller) == false);
+
+        let story = _stories[storyId];
+        let result = Trie.find(_userLikes, { key = caller; hash = Principal.hash(caller) }, Principal.equal);
+
+        // check if the story exists first
+        switch(story){
+            case(null){
+                return #err("Story does not exist")
+            };
+            case(?story){
+                switch(result){
+                    case(null){ // user does not exist
+                        var newList = List.nil<Nat>();
+
+                        addLikedId(newList, storyId, caller);
+                        _stories[storyId] := ?addLike(story);
+                        return #ok("Story ID: " # Nat.toText(storyId) # " liked")
+                    };
+                    case(?result){ // user exists
+                        let found = List.find<Nat>(result, func (x : Nat) : Bool {
+                            x == storyId
+                        });
+
+                        if(found == null){
+                            addLikedId(result, storyId, caller);
+                            _stories[storyId] := ?addLike(story);
+        
+                            return #ok("Story ID: " # Nat.toText(storyId) # " liked")
+                        };
+                        
+                        return #err("Story already liked")
+                    };
+                };
+            };
+        };
+    };
 
     // admin can delete any story and delete from user list too
     public shared({caller}) func adminDelete(storyId : Nat): async Result.Result<Text, Text>{
@@ -174,6 +216,30 @@ actor Story {
     };
 
     // utility functions:
+
+    // adding a like to a story:
+    private func addLike(story: StoryRecord) : StoryRecord {
+        let newLike: Nat = story.totalVotes + 1;
+        return {
+            storyId = story.storyId;
+            author = story.author;
+            totalVotes = newLike;
+            story = story.story;
+        };
+    };
+
+    // adding storyID to userLikes List:
+    private func addLikedId(currentLikes: List.List<Nat>, storyId: Nat, caller: Principal) : () {
+        let newList = List.push(storyId, currentLikes);
+                
+        _userLikes := Trie.replace(
+            _userLikes,
+            { key = caller; hash = Principal.hash(caller) },
+            Principal.equal,
+            ?newList,
+        ).0;
+    
+    };
 
     // Add the story ID to the linked list in the user hashmap
     private func addId(caller: Principal, storyId: Nat) : () {

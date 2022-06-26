@@ -33,7 +33,7 @@ import {
 import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { setLogin, setLogout, setPrincipal } from "../../state/LoginSlice";
 import { NavLink } from "react-router-dom";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SendingIcp from "./SendingIcp";
 
 const Profile = () => {
@@ -41,15 +41,11 @@ const Profile = () => {
   const dispatch = useDispatch();
   const anvilDispatch = useAnvilDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
   const userId = useSelector((state) => state.Profile.principal);
   const address = useAnvilSelector((state) => state.user.address);
   const user_icp = e8sToIcp(useAnvilSelector((state) => state.user.icp));
-
-  const { onCopy } = useClipboard(address);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const SignInFunctions = (principal, identity) => {
     dispatch(setLogin());
@@ -97,8 +93,7 @@ const Profile = () => {
     dispatch(setLogout());
     dispatch(setPrincipal(""));
     Usergeek.setPrincipal(undefined);
-    if (location.pathname == "/inventory") return navigate("/");
-    if (location.pathname == "/stories/create") return navigate("/");
+    return navigate("/");
   };
 
   useEffect(() => {
@@ -108,88 +103,49 @@ const Profile = () => {
   return (
     <>
       {loggedIn ? (
-        <Menu closeOnSelect={false} autoSelect={false}>
-          <MenuButton
-            as={Button}
-            bg="#17191e"
-            border="1px"
-            size={useBreakpointValue(["sm", "md"])}
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
-          >
-            <Flex align="center">
-              Profile&nbsp;
-              <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
-            </Flex>
-          </MenuButton>
-          <MenuList>
-            <MenuGroup title="User Profile" />
-            <Tooltip label="Your unique profile ID">
-              <MenuItem icon={<MdPerson />} maxW="240px">
-                {userId.substring(0, 10) + "......" + userId.substring(54, 63)}
-              </MenuItem>
-            </Tooltip>
-            <NavLink to={"/stories/create"}>
-              <MenuItem closeOnSelect icon={<BsPenFill />} maxW="240px">
-                Create Story
-              </MenuItem>
-            </NavLink>
-            <NavLink to={"/stories/author/" + userId}>
-              <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
-                My Stories
-              </MenuItem>
-            </NavLink>
-            <MenuDivider />
-            <MenuGroup
-              as={"div"}
-              title={
-                <Flex>
-                  ICP Wallet&nbsp;
-                  <ChakraImage src={anvlogo} h={"18px"} w={"auto"} />
-                </Flex>
-              }
-            />
-            <Tooltip label="Copy address">
-              <MenuItem
-                closeOnSelect
-                onClick={() => {
-                  onCopy(), CopyToast();
-                }}
-                icon={<CopyIcon />}
-                maxW="240px"
-              >
-                {address
-                  ? address.substring(0, 10) +
-                    "......" +
-                    address.substring(56, 64)
-                  : null}
-              </MenuItem>
-            </Tooltip>
-            <MenuItem
-              icon={<RiSendPlaneFill />}
-              command={user_icp}
-              closeOnSelect
-              onClick={onOpen}
+        <>
+          <IcpWallet address={address} user_icp={user_icp} />
+          <Menu closeOnSelect={false} autoSelect={false}>
+            <MenuButton
+              as={Button}
+              bg="#17191e"
+              border="1px"
+              size={useBreakpointValue(["sm", "md"])}
+              borderColor="#9d8144"
+              color="#f0e6d3"
+              colorScheme="#17191e"
             >
-              Transfer ICP
-              <SendingIcp
-                onClose={onClose}
-                isOpen={isOpen}
-                user_icp={user_icp}
-              />
-            </MenuItem>
-            <NavLink to="/inventory">
-              <MenuItem closeOnSelect icon={<IoIosImages />}>
-                NFT Inventory
+              <Flex align="center">
+                Profile&nbsp;
+                <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+              </Flex>
+            </MenuButton>
+            <MenuList>
+              <MenuGroup title="User Profile" />
+              <Tooltip label="Your unique profile ID">
+                <MenuItem icon={<MdPerson />} maxW="240px">
+                  {userId.substring(0, 10) +
+                    "......" +
+                    userId.substring(54, 63)}
+                </MenuItem>
+              </Tooltip>
+              <NavLink to={"/stories/create"}>
+                <MenuItem closeOnSelect icon={<BsPenFill />} maxW="240px">
+                  Create Story
+                </MenuItem>
+              </NavLink>
+              <NavLink to={"/stories/author/" + userId}>
+                <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
+                  My Stories
+                </MenuItem>
+              </NavLink>
+              <MenuDivider />
+              <MenuItem icon={<LockIcon />} onClick={() => signOut()}>
+                Sign Out
               </MenuItem>
-            </NavLink>
-            <MenuDivider />
-            <MenuItem icon={<LockIcon />} onClick={() => signOut()}>
-              Sign Out
-            </MenuItem>
-          </MenuList>
-        </Menu>
+            </MenuList>
+          </Menu>
+        </>
       ) : (
         <Menu>
           <Tooltip label="Login via Internet Identity">
@@ -212,6 +168,65 @@ const Profile = () => {
         </Menu>
       )}
     </>
+  );
+};
+
+const IcpWallet = ({ address, user_icp }) => {
+  const { onCopy } = useClipboard(address);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <Menu closeOnSelect={false} autoSelect={false}>
+      <MenuButton
+        me={2}
+        as={Button}
+        bg="#17191e"
+        border="1px"
+        size={useBreakpointValue(["sm", "md"])}
+        borderColor="#9d8144"
+        color="#f0e6d3"
+        colorScheme="#17191e"
+      >
+        <Flex align="center">
+          {address
+            ? address.substring(0, 5) + "..." + address.substring(59, 64)
+            : null}
+          &nbsp;
+          <ChakraImage src={anvlogo} h={"18px"} w={"auto"} />
+        </Flex>
+      </MenuButton>
+      <MenuList>
+        <MenuGroup title={"ICP Wallet"} />
+        <Tooltip label="Copy address">
+          <MenuItem
+            closeOnSelect
+            onClick={() => {
+              onCopy(), CopyToast();
+            }}
+            icon={<CopyIcon />}
+            maxW="240px"
+          >
+            {address
+              ? address.substring(0, 10) + "......" + address.substring(56, 64)
+              : null}
+          </MenuItem>
+        </Tooltip>
+        <MenuItem
+          icon={<RiSendPlaneFill />}
+          command={user_icp}
+          closeOnSelect
+          onClick={onOpen}
+        >
+          Transfer ICP
+          <SendingIcp onClose={onClose} isOpen={isOpen} user_icp={user_icp} />
+        </MenuItem>
+        <NavLink to="/inventory">
+          <MenuItem closeOnSelect icon={<IoIosImages />}>
+            NFT Inventory
+          </MenuItem>
+        </NavLink>
+      </MenuList>
+    </Menu>
   );
 };
 

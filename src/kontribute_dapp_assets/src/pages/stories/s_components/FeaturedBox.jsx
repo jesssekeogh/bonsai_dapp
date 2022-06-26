@@ -19,6 +19,7 @@ const FeaturedBox = ({ author, img }) => {
           transform="scale(1.0)"
           bg={"#fff"}
           src={img}
+          width={["170px", null, "auto"]}
           height={["100px", null, "210px"]}
           transition="0.3s ease-in-out"
           _hover={{
