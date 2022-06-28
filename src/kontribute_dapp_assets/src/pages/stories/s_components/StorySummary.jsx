@@ -11,22 +11,36 @@ import {
   Flex,
   Button,
 } from "@chakra-ui/react";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../../declarations/story";
+import { useSelector } from "react-redux";
 
 const StorySummary = ({ storyId }) => {
+  const isLogged = useSelector((state) => state.Profile.loggedIn);
   const path = useLocation();
   let isMounted = true;
   const [storyData, setStoryData] = useState({});
   const [loaded, setLoaded] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   let storyMo = createStoryActor({
     agentOptions: authentication.getAgentOptions(),
   });
 
+  const checkIfLiked = async () => {
+    if (!isLogged) return;
+
+    let liked = await storyMo.getUserLikedStories();
+
+    if (isMounted) {
+      setIsLiked(liked.ok.includes(BigInt(storyId)));
+    }
+  };
+
   const loadSummary = async () => {
     let summary = await storyMo.get(storyId);
+
     if (isMounted) {
       setStoryData(summary.ok);
       setLoaded(true);
@@ -35,6 +49,7 @@ const StorySummary = ({ storyId }) => {
 
   useEffect(() => {
     loadSummary();
+    checkIfLiked();
     return () => {
       isMounted = false;
     };
@@ -101,7 +116,10 @@ const StorySummary = ({ storyId }) => {
                   </Text>
                 </Stack>
                 <Spacer />
-                <TotalLikes likes={storyData.totalVotes.toString()} />
+                <TotalLikes
+                  likes={storyData.totalVotes.toString()}
+                  isLiked={isLiked}
+                />
               </Flex>
             </>
           ) : (
@@ -117,7 +135,7 @@ const StorySummary = ({ storyId }) => {
   );
 };
 
-const TotalLikes = ({ likes }) => {
+const TotalLikes = ({ likes, isLiked }) => {
   return (
     <Button
       maxW={"100px"}
@@ -130,7 +148,7 @@ const TotalLikes = ({ likes }) => {
       fontSize={{ base: "xs", md: "sm" }}
       py={{ base: 0, md: 0.5 }}
       px={{ base: 1, md: 2 }}
-      leftIcon={<FaHeart />}
+      leftIcon={isLiked ? <FaHeart /> : <FaRegHeart />}
     >
       {likes}
     </Button>

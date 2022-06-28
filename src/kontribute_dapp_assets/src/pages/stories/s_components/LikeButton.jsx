@@ -1,57 +1,59 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  useBreakpointValue,
-  createStandaloneToast,
-  Box,
-  Stack,
-  Spinner,
-} from "@chakra-ui/react";
-import { FaHeart } from "react-icons/fa";
+import { Button, useBreakpointValue, Stack, Spinner } from "@chakra-ui/react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../../declarations/story";
-import { FailedToast, SuccessToast } from "../../../containers/toasts/Toasts";
+import { FailedToast } from "../../../containers/toasts/Toasts";
 import { useSelector } from "react-redux";
-
-const toast = createStandaloneToast();
 
 const LikeButton = ({ storyId }) => {
   const isLogged = useSelector((state) => state.Profile.loggedIn);
-  let mounted = true;
+  let isMounted = true;
   const [likes, setLikes] = useState("0");
   const [liking, setLiking] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   let storyMo = createStoryActor({
     agentOptions: authentication.getAgentOptions(),
   });
 
+  const checkIfLiked = async () => {
+    if (!isLogged) return;
+
+    let liked = await storyMo.getUserLikedStories();
+
+    if (isMounted) {
+      setIsLiked(liked.ok.includes(BigInt(storyId)));
+    }
+  };
+
   const loadLikes = async () => {
     let story = await storyMo.get(Number(storyId));
     let likes = story.ok.totalVotes.toString();
-    if (mounted) {
+    if (isMounted) {
       setLikes(likes);
     }
   };
 
   const like = async () => {
-    setLiking(true);
-    let liked = await storyMo.like(Number(storyId));
+    if (isMounted) {
+      setLiking(true);
+      let liked = await storyMo.like(Number(storyId));
 
-    if ("err" in liked) {
-      toast.closeAll();
-      setLiking(false)
-      return FailedToast("Failed!", liked.err.toString());
+      if ("err" in liked) {
+        setLiking(false);
+        return FailedToast("Failed!", liked.err.toString());
+      }
+
+      return setLiking(false);
     }
-
-    toast.closeAll();
-    setLiking(false)
-    return SuccessToast("Success!", liked.ok.toString());
   };
 
   useEffect(() => {
     loadLikes();
+    checkIfLiked();
     return () => {
-      mounted = false;
+      isMounted = false;
     };
   }, [liking]);
 
@@ -67,7 +69,15 @@ const LikeButton = ({ storyId }) => {
           color="#f0e6d3"
           colorScheme="#17191e"
           _hover={{ opacity: "0.8" }}
-          rightIcon={liking ? <Spinner size="xs" /> : <FaHeart />}
+          rightIcon={
+            liking ? (
+              <Spinner size="xs" />
+            ) : isLiked ? (
+              <FaHeart />
+            ) : (
+              <FaRegHeart />
+            )
+          }
           isDisabled={liking || !isLogged}
           onClick={() => {
             like();
@@ -75,13 +85,13 @@ const LikeButton = ({ storyId }) => {
         >
           Like
         </Button>
-        <TotalLikes likes={likes} />
+        <TotalLikes likes={likes} isLiked={isLiked} />
       </Stack>
     </>
   );
 };
 
-const TotalLikes = ({ likes }) => {
+const TotalLikes = ({ likes, isLiked }) => {
   return (
     <Button
       maxW={"100px"}
@@ -94,7 +104,7 @@ const TotalLikes = ({ likes }) => {
       fontSize={{ base: "xs", md: "sm" }}
       py={{ base: 0, md: 0.5 }}
       px={{ base: 1, md: 2 }}
-      leftIcon={<FaHeart />}
+      leftIcon={isLiked ? <FaHeart /> : <FaRegHeart />}
     >
       {likes}
     </Button>

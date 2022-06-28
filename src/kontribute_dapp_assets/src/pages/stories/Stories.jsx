@@ -153,7 +153,6 @@ const MostlikedGrid = () => {
 
   const LoadMostliked = async () => {
     let storiesArray = [];
-    let finalIds = [];
     let all = await storyMo.getStoryIds(allStories);
 
     for (let i = 0; i < all.ok.length; i++) {
@@ -165,11 +164,8 @@ const MostlikedGrid = () => {
       (a, b) => Number(b.totalVotes) - Number(a.totalVotes)
     );
 
-    for (let i = 0; i < sorted.length; i++) {
-      finalIds.push(sorted[i].storyId);
-    }
     if (isMounted) {
-      setStoryIds(finalIds.slice(0, 4));
+      setStoryIds(sorted.slice(0, 4));
 
       setLoaded(true);
     }
@@ -192,7 +188,7 @@ const MostlikedGrid = () => {
         <>
           <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
             {storyIds.map((item) => (
-              <StorySummary key={item} storyId={item} />
+              <StorySummary key={item.storyId} storyId={item.storyId} />
             ))}
           </SimpleGrid>
         </>
