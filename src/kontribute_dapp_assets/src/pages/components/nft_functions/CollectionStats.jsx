@@ -96,7 +96,9 @@ const CollectionStats = ({ props }) => {
         <DataBox
           label="NFTs Available"
           info={"Total NFTs available for purchase in the contract"}
-          data={loaded && !props.airdropEnded ? stats.purchase.toString() : "N/A"}
+          data={
+            loaded && !props.airdropEnded ? stats.purchase.toString() : "N/A"
+          }
         />
       </Grid>
     </Container>
@@ -131,7 +133,8 @@ const DataBox = ({ label, info, data }) => {
               fontWeight="semibold"
               p={1}
             >
-              {data}
+              {/* {data} */}
+              N/A
             </Box>
           </Stack>
         </Box>

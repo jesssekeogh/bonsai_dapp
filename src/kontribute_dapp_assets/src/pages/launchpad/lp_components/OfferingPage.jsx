@@ -33,6 +33,10 @@ const OfferingPage = (props) => {
             >
               Offering ended!
             </Badge>
+          ) : props.launchingSoon ? (
+            <Text fontWeight={600} color="#f0e6d3">
+              Launching Soon!
+            </Text>
           ) : (
             <Airdrop />
           )}
@@ -93,6 +97,7 @@ const Prices = ({ props }) => {
           details={props.details1}
           nfts={props.nfts1}
           saleEnded={props.saleEnded}
+          launchingSoon={props.launchingSoon}
         />
         <PricingCard
           name={props.name2}
@@ -100,6 +105,7 @@ const Prices = ({ props }) => {
           details={props.details2}
           nfts={props.nfts2}
           saleEnded={props.saleEnded}
+          launchingSoon={props.launchingSoon}
           discount
           isMain
         />
@@ -109,6 +115,7 @@ const Prices = ({ props }) => {
           details={props.details3}
           nfts={props.nfts3}
           saleEnded={props.saleEnded}
+          launchingSoon={props.launchingSoon}
           discount
         />
       </SimpleGrid>
@@ -124,6 +131,7 @@ const PricingCard = ({
   isMain,
   saleEnded,
   discount,
+  launchingSoon,
 }) => {
   return (
     <Box
@@ -199,6 +207,10 @@ const PricingCard = ({
           >
             Sold out!
           </Badge>
+        ) : launchingSoon ? (
+          <Text fontWeight={600} color="#f0e6d3">
+            Launching Soon!
+          </Text>
         ) : (
           <Purchase nfts={nfts} amount={price} />
         )}

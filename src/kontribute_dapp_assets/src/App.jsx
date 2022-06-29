@@ -11,7 +11,8 @@ import {
   Create,
   Story,
   AuthorStories,
-  MyLikes
+  MyLikes,
+  PendragonNft,
 } from "./pages";
 import { NavBar, LoadingSpinner } from "./containers";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
@@ -33,10 +34,14 @@ function App() {
           <Route path="/stories" element={<Stories />} />
           <Route path="/stories/create" element={<Create />} />
           <Route path="/stories/story/:storyId" element={<Story />} />
-          <Route path="/stories/author/:principal" element={<AuthorStories />} />
+          <Route
+            path="/stories/author/:principal"
+            element={<AuthorStories />}
+          />
           <Route path="/stories/mylikes" element={<MyLikes />} />
           <Route path="/launchpad" element={<LaunchPad />} />
           <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
+          <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
         </Routes>
         <Footer />
       </Router>

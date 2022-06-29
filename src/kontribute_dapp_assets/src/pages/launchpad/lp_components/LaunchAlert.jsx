@@ -9,7 +9,7 @@ import {
 
 const LaunchAlert = () => {
 
-  let launchDate = new Date("2022-05-20T13:00:00+01:00").getTime(); // IST time
+  let launchDate = new Date("2022-07-10T13:00:00+01:00").getTime(); // IST time
 
   let now = new Date().getTime();
 
@@ -40,10 +40,10 @@ const LaunchAlert = () => {
         >
           <AlertIcon />
           <AlertTitle mb={1} fontSize="md">
-            Launching May 20th 1pm, GMT+1
+            Launching July 10th 1pm, GMT+1
           </AlertTitle>
           <Text>
-            Bonsai Warrior NFTs are launching in{" "}
+            Pendragon Quest NFTs are launching in{" "}
             <b>
               {daysLeft} day(s) {hoursLeft} hour(s) {minutesLeft} minute(s)
             </b>
