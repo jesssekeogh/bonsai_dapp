@@ -3,8 +3,21 @@ export type Result = { 'ok' : string } |
   { 'err' : string };
 export type Result_1 = { 'ok' : Array<bigint> } |
   { 'err' : string };
-export type Result_2 = { 'ok' : StoryReturn } |
+export type Result_2 = { 'ok' : Array<[] | [StoryRecord]> } |
+  { 'err' : null };
+export type Result_3 = { 'ok' : StoryReturn } |
   { 'err' : string };
+export interface StoryBlob {
+  'title' : Array<number>,
+  'story' : Array<number>,
+  'address' : Array<number>,
+}
+export interface StoryRecord {
+  'totalVotes' : bigint,
+  'storyId' : bigint,
+  'author' : Principal,
+  'story' : StoryBlob,
+}
 export interface StoryReturn {
   'totalVotes' : bigint,
   'storyId' : bigint,
@@ -20,7 +33,8 @@ export interface _SERVICE {
   'add' : (arg_0: StoryText) => Promise<Result>,
   'adminDelete' : (arg_0: bigint) => Promise<Result>,
   'delete' : (arg_0: bigint) => Promise<Result>,
-  'get' : (arg_0: bigint) => Promise<Result_2>,
+  'get' : (arg_0: bigint) => Promise<Result_3>,
+  'getAllStories' : () => Promise<Result_2>,
   'getDebug' : () => Promise<any>,
   'getMemorySize' : () => Promise<bigint>,
   'getStoryIds' : (arg_0: bigint) => Promise<Result_1>,

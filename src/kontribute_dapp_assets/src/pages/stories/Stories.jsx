@@ -153,11 +153,12 @@ const MostlikedGrid = () => {
 
   const LoadMostliked = async () => {
     let storiesArray = [];
-    let all = await storyMo.getStoryIds(allStories);
+    let all = await storyMo.getAllStories();
 
     for (let i = 0; i < all.ok.length; i++) {
-      let story = await storyMo.get(all.ok[i]);
-      storiesArray.push(story.ok);
+      if (all.ok[i].length > 0) {
+        storiesArray.push(all.ok[i][0]);
+      }
     }
 
     let sorted = storiesArray.sort(

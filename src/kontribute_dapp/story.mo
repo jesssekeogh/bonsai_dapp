@@ -200,6 +200,10 @@ actor Story {
         };
     };
 
+    public query func getAllStories() : async Result.Result<[?StoryRecord], ()> {
+        return #ok(Array.freeze(_stories))
+    };
+
     // get all the stories a particular user has liked
     public shared query({caller}) func getUserLikedStories() : async Result.Result<[Nat], Text> {
         let result = Trie.find(_userLikes, { key = caller; hash = Principal.hash(caller) }, Principal.equal);

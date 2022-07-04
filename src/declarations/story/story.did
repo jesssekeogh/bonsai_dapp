@@ -11,10 +11,28 @@ type StoryReturn =
    storyId: nat;
    totalVotes: nat;
  };
-type Result_2 = 
+type StoryRecord = 
+ record {
+   author: principal;
+   story: StoryBlob;
+   storyId: nat;
+   totalVotes: nat;
+ };
+type StoryBlob = 
+ record {
+   address: blob;
+   story: blob;
+   title: blob;
+ };
+type Result_3 = 
  variant {
    err: text;
    ok: StoryReturn;
+ };
+type Result_2 = 
+ variant {
+   err;
+   ok: vec opt StoryRecord;
  };
 type Result_1 = 
  variant {
@@ -30,7 +48,8 @@ service : {
   add: (StoryText) -> (Result);
   adminDelete: (nat) -> (Result);
   delete: (nat) -> (Result);
-  get: (nat) -> (Result_2) query;
+  get: (nat) -> (Result_3) query;
+  getAllStories: () -> (Result_2) query;
   getDebug: () -> (reserved) query;
   getMemorySize: () -> (nat) query;
   getStoryIds: (nat) -> (Result_1) query;
