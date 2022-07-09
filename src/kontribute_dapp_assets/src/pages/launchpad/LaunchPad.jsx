@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Center, SimpleGrid } from "@chakra-ui/react";
 import logo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import bonsailogo from "../../../assets/Bonsai_Warriors_Background_1.png";
 import pendragonBG from "../../../assets/pendragon.png";
 import pendragonLogo from "../../../assets/pendragon_logo.png";
-import { LoadingSpinner } from "../../containers";
 import { CollectionThumb } from "./lp_components";
 
 const LaunchPad = () => {
-  const [imageIsReady, setIsReady] = useState(false);
-
   useEffect(() => {
-    const img = new Image();
-    img.onload = () => {
-      setIsReady(true);
-    };
-    img.src = bonsailogo;
     window.scrollTo(0, 0);
   }, []);
 
-  if (!imageIsReady) return <LoadingSpinner label="Loading collections..." />;
   return (
     <div>
       <Center>

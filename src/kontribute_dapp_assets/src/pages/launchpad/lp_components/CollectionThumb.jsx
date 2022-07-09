@@ -9,6 +9,7 @@ import {
   Text,
   HStack,
   Tag,
+  Skeleton,
 } from "@chakra-ui/react";
 
 const CollectionThumb = ({
@@ -29,8 +30,13 @@ const CollectionThumb = ({
               <Box borderRadius="lg" overflow="hidden" mb={3}>
                 <ChakraImage
                   transform="scale(1.0)"
-                  bg={"#fff"}
                   src={colimg}
+                  fallback={
+                    <Skeleton
+                      height={{ base: "170px", md: "220px" }}
+                      borderRadius="lg"
+                    />
+                  }
                   objectFit="contain"
                   transition="0.3s ease-in-out"
                   _hover={{

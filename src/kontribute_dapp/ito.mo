@@ -47,10 +47,10 @@ import PseudoRandom "mo:anvil/lib/PseudoRandom";
 shared({caller = _installer}) actor class Class() : async IF.Interface = this {
 
   // EDITABLE
-  private let MAX_TOKENS = 1100; // max amount of NFTs the contract can hold
+  private let MAX_TOKENS = 1200; // max amount of NFTs the contract can hold
   private let MAX_CODES = 2000; // an arbitrary amount of codes
-  private stable var LEFT_AIRDROP : Nat = 500; // max amount for Airdrop
-  private stable var LEFT_PURCHASE : Nat = 600; // max amount for purchase
+  private stable var LEFT_AIRDROP : Nat = 100; // max amount for Airdrop
+  private stable var LEFT_PURCHASE : Nat = 1100; // max amount for purchase
   private let START_TIMESTAMP : Nat32 = 0; //1654951047
   
 
@@ -296,7 +296,7 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
             if (caller_aid != from) return #err("Unauthorized");
             switch(switch(amount) {
               // pricing option one (its written verbose because different packages may give more things differently)
-              case (300000000) {
+              case (80000000) {
                 switch(use(tx_id)) {
                   case (#ok()) {
                     switch(give(from, 1, #buy)) { //send 1 nft to user
@@ -312,7 +312,7 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
                 };
               };
               // pricing option two
-              case (1200000000) {
+              case (350000000) {
                 switch(use(tx_id)) {
                   case (#ok()) {
                     switch(give(from, 5, #buy)) {
@@ -328,7 +328,7 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
                 };
               };
               // pricing option three
-              case (2100000000) {
+              case (600000000) {
                 switch(use(tx_id)) {
                   case (#ok()) {
                     switch(give(from, 10, #buy)) { 

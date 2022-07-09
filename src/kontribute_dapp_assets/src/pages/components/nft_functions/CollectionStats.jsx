@@ -133,8 +133,8 @@ const DataBox = ({ label, info, data }) => {
               fontWeight="semibold"
               p={1}
             >
-              {/* {data} */}
-              N/A
+              {data}
+              {/* N/A */}
             </Box>
           </Stack>
         </Box>

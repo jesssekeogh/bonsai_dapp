@@ -27,8 +27,9 @@ const BonsaiNFT = () => {
         tokenomics_details={
           "Team Bonsai's genesis collection features 1100 hand crafted NFTs from the Bonsai Warriors story. Read our tokenomics paper for more details about the collection and the NFTs."
         }
+        // launchingSoon
         saleEnded
-        // airdropEnded
+        airdropEnded
       />
     </>
   );

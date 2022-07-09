@@ -56,7 +56,7 @@ const Airdrop = () => {
 
     return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
       state: {
-        prev: "/launchpad/bonsai-nft",
+        prev: "/launchpad/pendragon-nft",
         showConfetti: true,
         totalNfts: 1,
       },

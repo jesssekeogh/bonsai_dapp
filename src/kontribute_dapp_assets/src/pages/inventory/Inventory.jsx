@@ -35,7 +35,7 @@ const Inventory = () => {
   const [sellingBy, setSelling] = useState("");
   const anvilDispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
-  const quickView = useSelector((state) => state.Global.quickview)
+  const quickView = useSelector((state) => state.Global.quickview);
 
   const fetchTokens = async () => {
     try {
@@ -76,8 +76,8 @@ const Inventory = () => {
       <Container maxWidth="1250px" px={{ base: 3, md: 5, lg: 1 }} mt={1}>
         <Flex alignItems="center">
           <HStack width={["250px", null, "auto"]}>
-            <RarityFilter setSort={setSort} />
             <CollectionFilter setCollection={setCollection} />
+            <RarityFilter setSort={setSort} />
             <SellingFilter setSelling={setSelling} />
           </HStack>
           <Spacer />

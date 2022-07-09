@@ -80,11 +80,15 @@ const RecentGrid = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     loadStories();
     return () => {
       isMounted = false;
     };
   }, [currentAmount]);
+
   return (
     <>
       <Heading my={1} bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
@@ -116,6 +120,8 @@ const RecentGrid = () => {
 };
 
 const ViewAllButton = ({ current, setAmount }) => {
+  const [clicked, setClicked] = useState(false);
+
   return (
     <Stack direction={"row"}>
       <Spacer />
@@ -131,9 +137,10 @@ const ViewAllButton = ({ current, setAmount }) => {
           boxShadow: "lg",
           opacity: "0.8",
         }}
-        isDisabled={current < 12}
+        isDisabled={clicked}
         onClick={() => {
           setAmount(allStories);
+          setClicked(true);
         }}
       >
         View All

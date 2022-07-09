@@ -15,6 +15,7 @@ import { setQuickView } from "../../state/GlobalSlice";
 // collection filters from tags:
 const BonsaiWarriors = "Bonsai Warrior";
 const BadbotNinja = "helmet";
+const PendragonQuest = "Knight";
 
 export const SellingFilter = ({ setSelling }) => {
   return (
@@ -57,6 +58,7 @@ export const CollectionFilter = ({ setCollection }) => {
       <option value={""}>All</option>
       <option value={BonsaiWarriors}>Bonsai Warriors</option>
       <option value={BadbotNinja}>Badbot Ninja</option>
+      <option value={PendragonQuest}>Pendragon Quest</option>
     </Select>
   );
 };
@@ -135,7 +137,7 @@ export const AuthorFilter = () => {
         navigate("/marketplace/" + e.target.value);
       }}
     >
-      <option value={process.env.MARKETPLACE_COLLECTION}>Latest</option>
+      <option value={process.env.MARKETPLACE_COLLECTION}>Latest Collection</option>
       <option value={badbotPrices}>Badbot Ninja</option>
       <option value={bonsaiPrices}>Bonsai Warriors</option>
     </Select>

@@ -148,9 +148,14 @@ const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
 
 const BackButton = () => {
   const path = useLocation();
+  let prevLink = "/stories";
+
+  if (path.state) {
+    prevLink = path.state.prev;
+  }
 
   return (
-    <Link to={path.state.prev}>
+    <Link to={prevLink}>
       <Button
         colorScheme="#282828"
         bg="#282828"

@@ -18,6 +18,7 @@ dist/
 project_minting/
 notes/
 Bonsai_Warriors/
+Pendragon_Quest/
 
 airdrop.json
 canister_ids.json
@@ -26,3 +27,5 @@ input.js
 minted.json
 ito_giftcodes.json
 .env
+identity_pendragon.json
+identity_kontribute.json

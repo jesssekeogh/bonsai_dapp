@@ -101,7 +101,7 @@ const Purchase = ({ nfts, amount }) => {
 
     return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
       state: {
-        prev: "/launchpad/bonsai-nft",
+        prev: "/launchpad/pendragon-nft",
         showConfetti: true,
         totalNfts: nfts,
       },
@@ -154,7 +154,7 @@ const Purchase = ({ nfts, amount }) => {
               fontSize={{ base: "xs", sm: "xs", md: "md" }}
               color={"white"}
             >
-              You will be randomly allocated {nfts} Bonsai Warrior(s) from the
+              You will be randomly allocated {nfts} NFT(s) from the
               collection!
             </Heading>
           </ModalBody>

@@ -1,17 +1,18 @@
-const data = require('./input.js');
-//let data = []; // for first one
-const quality = 4;
-const namex = "Zhu Luoli";
-const tags = ["Bonsai Warrior"];
-const lore = "The Academy is a new beginning for Zhu Luoli. She grew up in the Imperial capital, surrounded by court intrigue and politics. Here she can escape the games of the powerful.";
+const data = require("./input.js");
+// let data = []; // for first one
+const quality = 6;
+const namex = "Arthur's Knight #";
+const tags = ["Knight"];
+const lore =
+  "Join Arthur on his adventure throughout Camelot and beyond! Discover the secrets and mysteries that lie before him.";
 const authorShare = 150;
-const content = "Zhu_Luoli"; //has to be the name from the folder and image
-const thumb = content;
+// const content = "Zhu_Luoli";
+// const thumb = content;
 
-for (let i = 1; i < 26; i++) {
+for (let i = 1176; i < 1201; i++) {
   data.push({
     quality: quality,
-    name: namex,
+    name: namex + i,
     tags: tags,
     attributes: {
       physical: Math.round(Math.random() * (100 - 0) + 0),
@@ -21,21 +22,9 @@ for (let i = 1; i < 26; i++) {
     lore: lore,
     authorShare: authorShare,
     content:
-      "./Bonsai_Warriors/" +
-      content +
-      "/content/" +
-      content +
-      "_" +
-      i.toString() +
-      ".png",
+      "./Pendragon_Quest/Arthur_s_Knight_" + String(i).padStart(5, 0) + ".png",
     thumb:
-      "./Bonsai_Warriors/" +
-      thumb +
-      "/thumb/" +
-      thumb +
-      "_" +
-      i.toString() +
-      ".png",
+      "./Pendragon_Quest/Arthur_s_Knight_" + String(i).padStart(5, 0) + ".png",
   });
 }
 
