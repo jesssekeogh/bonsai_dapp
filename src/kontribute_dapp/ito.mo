@@ -388,6 +388,13 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
 
   // --------- ADMIN FUNCTIONS -----------
 
+  // Installer sets an admin, which can add nfts (admin only)
+  public shared({caller}) func set_params({purchase:Nat; airdrop: Nat}) : () {
+    assert((caller == admin) or (caller == _installer));
+
+    LEFT_PURCHASE := purchase;
+    LEFT_AIRDROP := airdrop;
+  };
 
   // Installer sets an admin, which can add nfts (admin only)
   public shared({caller}) func set_admin(x: Principal) : () {
