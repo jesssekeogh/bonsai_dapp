@@ -15,14 +15,18 @@ import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../declarations/story";
 import BonsaiBG from "../../../assets/Bonsai_Warriors_Background_1.png";
 import PendragonBG from "../../../assets/pendragon.png";
+import GalacticBG from "../../../assets/galactic_guardians.png";
 
 const mostLikedAmount = 4; // temporary thing until we add pages for each section
 const amountOfStories = 12;
 const allStories = 10000;
+
 const bonsaiAuthor =
   "7xvg3-yvl47-x2bkx-tg6yr-hdn6p-xtzti-qiwha-gwdqt-pix4u-7ie7i-3qe";
 const pendragonAuthor =
   "ehjp3-bl645-t6go7-f2zyt-xxvyl-els4v-iocym-gsxli-mzj5v-tdwau-wae";
+const galacticAuthor =
+  "bmh3h-sqpdm-fdzbn-z7fpg-ekftw-6gnvr-wp4gf-le5lb-6tef6-lyhuj-pae";
 
 const Stories = () => {
   useEffect(() => {
@@ -52,6 +56,7 @@ const FeaturedGrid = () => {
       <Divider my={2} borderColor="#16171b" />
       <>
         <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+          <FeaturedBox author={galacticAuthor} img={GalacticBG} />
           <FeaturedBox author={pendragonAuthor} img={PendragonBG} />
           <FeaturedBox author={bonsaiAuthor} img={BonsaiBG} />
         </SimpleGrid>

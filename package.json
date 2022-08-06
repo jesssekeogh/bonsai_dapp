@@ -54,7 +54,7 @@
     "@reduxjs/toolkit": "^1.8.0",
     "@vvv-interactive/nftanvil-react": "^0.41.0",
     "@vvv-interactive/nftanvil-tools": "^0.35.0",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.1",
     "file-loader": "^6.2.0",
     "framer-motion": "^5.6.0",
     "moment": "^2.29.3",

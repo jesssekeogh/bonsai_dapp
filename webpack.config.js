@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-require('dotenv').config({ path: './.env' }); 
+require("dotenv").config({ path: "./.env" });
 
 function initCanisterEnv() {
   let localCanisters, prodCanisters;
@@ -77,11 +77,11 @@ module.exports = {
   // modules and CSS as described in the "Adding a stylesheet"
   // tutorial, uncomment the following lines:
   module: {
-   rules: [
-     { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-     { test: /\.css$/, use: ['style-loader','css-loader'] },
-     { test: /\.(gif|svg|jpg|png|ico)$/, loader: "file-loader", }
-   ]
+    rules: [
+      { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
+      { test: /\.css$/, use: ["style-loader", "css-loader"] },
+      { test: /\.(gif|svg|jpg|png|ico)$/, loader: "file-loader" },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -105,7 +105,7 @@ module.exports = {
       process: require.resolve("process/browser"),
     }),
     new webpack.DefinePlugin({
-      "process.env": JSON.stringify(process.env)
+      "process.env": JSON.stringify(process.env),
     }),
   ],
   // proxy /api to port 8000 during development
@@ -122,5 +122,6 @@ module.exports = {
     hot: true,
     watchFiles: [path.resolve(__dirname, "src", frontendDirectory)],
     liveReload: true,
+    historyApiFallback: true,
   },
 };
