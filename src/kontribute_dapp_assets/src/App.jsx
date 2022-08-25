@@ -14,6 +14,7 @@ import {
   MyLikes,
   PendragonNft,
 } from "./pages";
+import { CheckStats } from "./tools"
 import { NavBar, LoadingSpinner } from "./containers";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import { Footer } from "./containers";
@@ -42,6 +43,7 @@ function App() {
           <Route path="/launchpad" element={<LaunchPad />} />
           <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
           <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
+          <Route path="/tools/stats" element={<CheckStats />} />
         </Routes>
         <Footer />
       </Router>
