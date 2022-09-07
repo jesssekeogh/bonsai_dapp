@@ -65,6 +65,9 @@ module.exports = {
       stream: require.resolve("stream-browserify/"),
       util: require.resolve("util/"),
     },
+    alias: {
+      react: path.resolve("./node_modules/react"),
+    },
   },
   output: {
     filename: "index.js",

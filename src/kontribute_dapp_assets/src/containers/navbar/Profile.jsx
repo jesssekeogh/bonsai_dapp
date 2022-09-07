@@ -84,6 +84,10 @@ const Profile = () => {
           resolve({ identity, principal });
         },
         onError: reject,
+        windowOpenerFeatures:
+          `left=${window.screen.width / 2 - 525 / 2}, ` +
+          `top=${window.screen.height / 2 - 705 / 2},` +
+          `toolbar=0,location=0,menubar=0,width=525,height=705`,
       });
     });
     SignInFunctions(principal);
