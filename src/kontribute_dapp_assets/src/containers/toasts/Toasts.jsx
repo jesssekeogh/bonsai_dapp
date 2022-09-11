@@ -1,7 +1,7 @@
 import { createStandaloneToast, Progress } from "@chakra-ui/react";
 import React from "react";
 
-// const toast = createStandaloneToast();
+const toast = createStandaloneToast();
 
 // general success toast
 export const SuccessToast = (msg, desc) => {

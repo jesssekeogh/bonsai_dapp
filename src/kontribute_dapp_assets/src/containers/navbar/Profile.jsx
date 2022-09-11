@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Usergeek } from "usergeek-ic-js";
 import { AuthClient } from "@dfinity/auth-client";
 import IcLogo from "../../../assets/ic-logo.png";
-import anvlogo from "../../../assets/anvillogo.svg";
 import {
   Button,
   Menu,
@@ -18,12 +17,10 @@ import {
   Flex,
   Image as ChakraImage,
 } from "@chakra-ui/react";
-import { MdPerson, MdLibraryBooks } from "react-icons/md";
+import { MdLibraryBooks, MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
-import { FaHeart } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
-import { BsPenFill } from "react-icons/bs";
 import { CopyToast } from "../toasts/Toasts";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -47,6 +44,9 @@ const Profile = () => {
   const userId = useSelector((state) => state.Profile.principal);
   const address = useAnvilSelector((state) => state.user.address);
   const user_icp = e8sToIcp(useAnvilSelector((state) => state.user.icp));
+
+  const { onCopy } = useClipboard(address);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const SignInFunctions = (principal, identity) => {
     dispatch(setLogin());
@@ -108,67 +108,67 @@ const Profile = () => {
   return (
     <>
       {loggedIn ? (
-        <>
-          <IcpWallet address={address} user_icp={user_icp} />
-          <Menu closeOnSelect={false} autoSelect={false}>
-            <MenuButton
-              as={Button}
-              bg="#17191e"
-              border="1px"
-              size={useBreakpointValue(["sm", "md"])}
-              borderColor="#9d8144"
-              color="#f0e6d3"
-              colorScheme="#17191e"
-              rightIcon={<MdPerson />}
-            >
-              Profile
-            </MenuButton>
-            <MenuList>
-              <MenuGroup title="User Profile" />
-              <Tooltip label="Your unique profile ID">
-                <MenuItem icon={<MdPerson />} maxW="240px">
-                  {userId.substring(0, 10) +
+        <Menu closeOnSelect={false} autoSelect={false}>
+          <MenuButton as={Button} size={"md"}>
+            <Flex align="center">
+              {user_icp}
+              &nbsp;
+              <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+            </Flex>
+          </MenuButton>
+          <MenuList>
+            <MenuGroup title={"ICP Wallet"} />
+            <Tooltip label="Copy address">
+              <MenuItem
+                closeOnSelect
+                onClick={() => {
+                  onCopy(), CopyToast();
+                }}
+                icon={<CopyIcon />}
+                maxW="240px"
+              >
+                {address
+                  ? address.substring(0, 10) +
                     "......" +
-                    userId.substring(54, 63)}
-                </MenuItem>
-              </Tooltip>
-              <NavLink to={"/stories/create"}>
-                <MenuItem closeOnSelect icon={<BsPenFill />} maxW="240px">
-                  Create Story
-                </MenuItem>
-              </NavLink>
-              <NavLink to={"/stories/author/" + userId}>
-                <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
-                  My Stories
-                </MenuItem>
-              </NavLink>
-              <NavLink to={"/stories/mylikes"}>
-                <MenuItem closeOnSelect icon={<FaHeart />} maxW="240px">
-                  Liked Stories
-                </MenuItem>
-              </NavLink>
-              <MenuDivider />
-              <MenuItem icon={<LockIcon />} onClick={() => signOut()}>
-                Sign Out
+                    address.substring(56, 64)
+                  : null}
               </MenuItem>
-            </MenuList>
-          </Menu>
-        </>
+            </Tooltip>
+            <MenuItem
+              icon={<RiSendPlaneFill />}
+              command={user_icp}
+              closeOnSelect
+              onClick={onOpen}
+            >
+              Transfer ICP
+              <SendingIcp
+                onClose={onClose}
+                isOpen={isOpen}
+                user_icp={user_icp}
+              />
+            </MenuItem>
+            <NavLink to="/inventory">
+              <MenuItem closeOnSelect icon={<IoIosImages />}>
+                NFT Inventory
+              </MenuItem>
+            </NavLink>
+            <NavLink to={"/stories/author/" + userId}>
+              <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
+                My Stories
+              </MenuItem>
+            </NavLink>
+            <MenuDivider />
+            <MenuItem icon={<LockIcon />} onClick={() => signOut()}>
+              Sign Out
+            </MenuItem>
+          </MenuList>
+        </Menu>
       ) : (
         <Menu>
           <Tooltip label="Login via Internet Identity">
-            <MenuButton
-              as={Button}
-              bg="#17191e"
-              border="1px"
-              size={useBreakpointValue(["sm", "md"])}
-              borderColor="#9d8144"
-              color="#f0e6d3"
-              colorScheme="#17191e"
-              onClick={() => signIn()}
-            >
+            <MenuButton as={Button} size={"md"} onClick={() => signIn()}>
               <Flex align="center">
-                Authenticate&nbsp;
+                Log In&nbsp;
                 <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
               </Flex>
             </MenuButton>
@@ -176,63 +176,6 @@ const Profile = () => {
         </Menu>
       )}
     </>
-  );
-};
-
-const IcpWallet = ({ address, user_icp }) => {
-  const { onCopy } = useClipboard(address);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  return (
-    <Menu closeOnSelect={false} autoSelect={false}>
-      <MenuButton
-        me={2}
-        as={Button}
-        bg="#17191e"
-        border="1px"
-        size={useBreakpointValue(["sm", "md"])}
-        borderColor="#9d8144"
-        color="#f0e6d3"
-        colorScheme="#17191e"
-      >
-        <Flex align="center">
-          {`ICP: ${user_icp}`}
-          &nbsp;
-          <ChakraImage src={IcLogo} h={"18px"} w={"auto"} />
-        </Flex>
-      </MenuButton>
-      <MenuList>
-        <MenuGroup title={"ICP Wallet"} />
-        <Tooltip label="Copy address">
-          <MenuItem
-            closeOnSelect
-            onClick={() => {
-              onCopy(), CopyToast();
-            }}
-            icon={<CopyIcon />}
-            maxW="240px"
-          >
-            {address
-              ? address.substring(0, 10) + "......" + address.substring(56, 64)
-              : null}
-          </MenuItem>
-        </Tooltip>
-        <MenuItem
-          icon={<RiSendPlaneFill />}
-          command={user_icp}
-          closeOnSelect
-          onClick={onOpen}
-        >
-          Transfer ICP
-          <SendingIcp onClose={onClose} isOpen={isOpen} user_icp={user_icp} />
-        </MenuItem>
-        <NavLink to="/inventory">
-          <MenuItem closeOnSelect icon={<IoIosImages />}>
-            NFT Inventory
-          </MenuItem>
-        </NavLink>
-      </MenuList>
-    </Menu>
   );
 };
 

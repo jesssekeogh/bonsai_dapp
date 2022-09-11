@@ -1,6 +1,5 @@
 import React from "react";
 import { FaBook, FaRocket, FaShoppingCart } from "react-icons/fa";
-import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
 import {
@@ -8,93 +7,150 @@ import {
   MenuList,
   MenuItem,
   MenuButton,
-  MenuGroup,
-  IconButton,
   useBreakpointValue,
+  Box,
+  Spacer,
+  Flex,
+  HStack,
+  IconButton,
+  Image as ChakraImage,
+  Text,
+  useColorMode,
 } from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Profile from "./Profile";
-import { useSelector } from "react-redux";
+import ColorButton from "../colormode/ColorButton";
 
-const MenuLinks = ({ currentMarketplace }) => (
-  <>
-    <NavLink
-      className={(navData) => (navData.isActive ? "nav-active" : "")}
-      to="/stories"
-    >
-      <p>Stories</p>
+const LinkItems = [
+  { name: "Stories", link: "/stories" },
+  { name: "Launchpad", link: "/launchpad" },
+  {
+    name: "Marketplace",
+    link: "/marketplace/a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77",
+  },
+];
+
+const NavItem = ({ link, name }) => {
+  return (
+    <NavLink to={link}>
+      {({ isActive }) => (
+        <Box
+          borderBottom="3px solid"
+          borderColor={isActive ? "#12bdde" : "transparent"}
+          pb={0.5}
+        >
+          <Flex
+            align="center"
+            py="2"
+            px="3"
+            m="1"
+            borderRadius="md"
+            role="group"
+            cursor="pointer"
+            fontWeight={600}
+            _hover={{
+              bg: "#282828",
+            }}
+            color="white"
+            bg={isActive ? "#282828" : null}
+            borderColor="#12bdde"
+          >
+            {name}
+          </Flex>
+        </Box>
+      )}
     </NavLink>
-    <NavLink
-      to="/launchpad"
-      className={(navData) => (navData.isActive ? "nav-active" : "")}
-    >
-      <p>Launchpad</p>
-    </NavLink>
-    <NavLink
-      to={"/marketplace/" + currentMarketplace}
-      className={(navData) => (navData.isActive ? "nav-active" : "")}
-    >
-      <p>Marketplace</p>
-    </NavLink>
-  </>
-);
+  );
+};
 
 const NavBar = () => {
-  const currentMarketplace = useSelector((state) => state.Global.currentMarketplace)
+  const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   return (
-    <div className="nav-container">
-      <div className="bonsai__navbar">
-        <div className="bonsai__navbar-links">
-          <div className="bonsai__navbar-links_logo">
-            <NavLink to="/">
-              <img src={logo} alt="Kontribute" />
+    <Box h="8rem">
+      <Box
+        as="section"
+        py={isDesktop ? "1rem" : "0.8rem"}
+        px={isDesktop ? "5rem" : "1rem"}
+        boxShadow="2xl"
+        position="fixed"
+        width="100%"
+        top="0"
+        zIndex="2"
+        bg={"#111111"}
+      >
+        {isDesktop ? (
+          <Flex align="center">
+            <NavLink to={"/"}>
+              <Flex align="center" me={5}>
+                <ChakraImage h={30} src={logo} />
+                <Text fontSize={25} as="samp" color="white">
+                  ontribute
+                </Text>
+              </Flex>
             </NavLink>
-          </div>
-
-          <div className="bonsai__navbar-links_container">
-            <MenuLinks currentMarketplace={currentMarketplace} />
-          </div>
-        </div>
-
-        {/* the profile button */}
-        <div className="bonsai__navbar-sign">
-          <Profile />
-          <MobileMenu currentMarketplace={currentMarketplace} />
-        </div>
-      </div>
-    </div>
+            <HStack fontWeight={700} fontSize={18}>
+              {LinkItems.map((link) => (
+                <NavItem key={link.name} name={link.name} link={link.link} />
+              ))}
+            </HStack>
+            <Spacer />
+            <Profile />
+            <ColorButton />
+          </Flex>
+        ) : (
+          <Flex align="center">
+            <NavLink to={"/"}>
+              <Flex align="center" me={5}>
+                <ChakraImage h={25} src={logo} />
+                <Text fontSize={20} as="samp" color="white">
+                  ontribute
+                </Text>
+              </Flex>
+            </NavLink>
+            <Spacer />
+            <Profile />
+            <MobileMenu />
+          </Flex>
+        )}
+      </Box>
+    </Box>
   );
 };
 
 export default NavBar;
 
-const MobileMenu = ({ currentMarketplace }) => {
+const MobileMenu = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <div className="bonsai__link-dropdown">
       <Menu>
         <MenuButton
           ms="2"
           as={IconButton}
-          bg="#17191e"
-          size={useBreakpointValue(["sm", "md"])}
-          border="1px"
-          borderColor="#9d8144"
-          color="#f0e6d3"
-          colorScheme="#17191e"
           icon={<HamburgerIcon />}
         ></MenuButton>
         <MenuList>
-          <MenuGroup title="Kontribute" />
           <NavLink to="/stories">
             <MenuItem icon={<FaBook />}>Stories</MenuItem>
           </NavLink>
           <NavLink to="/launchpad">
             <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
           </NavLink>
-          <NavLink to={"/marketplace/" + currentMarketplace}>
+          <NavLink
+            to={
+              "/marketplace/a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77"
+            }
+          >
             <MenuItem icon={<FaShoppingCart />}>Marketplace</MenuItem>
           </NavLink>
+          <MenuItem
+            icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+            onClick={() => toggleColorMode()}
+          >
+            Appearance
+          </MenuItem>
         </MenuList>
       </Menu>
     </div>

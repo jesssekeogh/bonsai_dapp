@@ -11,7 +11,6 @@ import {
   Create,
   Story,
   AuthorStories,
-  MyLikes,
   PendragonNft,
 } from "./pages";
 import { CheckStats } from "./tools"
@@ -39,7 +38,6 @@ function App() {
             path="/stories/author/:principal"
             element={<AuthorStories />}
           />
-          <Route path="/stories/mylikes" element={<MyLikes />} />
           <Route path="/launchpad" element={<LaunchPad />} />
           <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
           <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />

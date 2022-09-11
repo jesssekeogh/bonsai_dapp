@@ -10,7 +10,7 @@ import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 
 authentication.setOptions({ cookie: true });
 
-const container = document.getElementById('app');
+const container = document.getElementById("app");
 const root = createRoot(container);
 
 root.render(

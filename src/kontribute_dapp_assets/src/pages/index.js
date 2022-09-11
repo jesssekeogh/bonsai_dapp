@@ -9,4 +9,3 @@ export { default as LargeNft } from "./largenft/LargeNft";
 export { default as Create } from "./stories/Create";
 export { default as Story } from "./stories/Story";
 export { default as AuthorStories } from "./stories/AuthorStories";
-export { default as MyLikes } from "./stories/MyLikes";
