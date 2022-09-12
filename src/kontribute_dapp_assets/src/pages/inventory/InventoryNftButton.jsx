@@ -46,7 +46,7 @@ import {
 import { Link } from "react-router-dom";
 import { ViewIcon, InfoIcon } from "@chakra-ui/icons";
 
-const toast = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 const checkSupport = (address) => {
   if (address.toLowerCase().substring(0, 3) !== "a00") return true;

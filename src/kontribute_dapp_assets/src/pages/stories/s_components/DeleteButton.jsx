@@ -12,7 +12,7 @@ import {
   createStandaloneToast,
 } from "@chakra-ui/react";
 
-const toast = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 const DeleteButton = ({ storyId }) => {
   let storyMo = createStoryActor({

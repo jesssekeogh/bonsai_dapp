@@ -31,7 +31,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const toast = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 const Airdrop = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

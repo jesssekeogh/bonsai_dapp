@@ -1,5 +1,5 @@
 import React from "react";
-import { FaBook, FaRocket, FaShoppingCart } from "react-icons/fa";
+import { FaBook, FaShoppingCart } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import logo from "../../../assets/kontribute_logo.png";
 import {
@@ -23,7 +23,6 @@ import ColorButton from "../colormode/ColorButton";
 
 const LinkItems = [
   { name: "Stories", link: "/stories" },
-  { name: "Launchpad", link: "/launchpad" },
   {
     name: "Marketplace",
     link: "/marketplace/a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77",
@@ -34,30 +33,30 @@ const NavItem = ({ link, name }) => {
   return (
     <NavLink to={link}>
       {({ isActive }) => (
-        <Box
-          borderBottom="3px solid"
-          borderColor={isActive ? "#12bdde" : "transparent"}
-          pb={0.5}
-        >
-          <Flex
-            align="center"
-            py="2"
-            px="3"
-            m="1"
-            borderRadius="md"
-            role="group"
-            cursor="pointer"
-            fontWeight={600}
-            _hover={{
-              bg: "#282828",
-            }}
-            color="white"
-            bg={isActive ? "#282828" : null}
-            borderColor="#12bdde"
+          <Box
+            borderBottom="3px solid"
+            borderColor={isActive ? "#12bdde" : "transparent"}
+            pb={0.5}
           >
-            {name}
-          </Flex>
-        </Box>
+            <Flex
+              align="center"
+              py="2"
+              px="3"
+              m="1"
+              borderRadius="md"
+              role="group"
+              cursor="pointer"
+              fontWeight={600}
+              _hover={{
+                bg: "#282828",
+              }}
+              color="white"
+              bg={isActive ? "#282828" : null}
+              borderColor="#12bdde"
+            >
+              {name}
+            </Flex>
+          </Box>
       )}
     </NavLink>
   );
@@ -67,29 +66,31 @@ const NavBar = () => {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   return (
-    <Box h="8rem">
+    <Box h="4rem">
       <Box
         as="section"
-        py={isDesktop ? "1rem" : "0.8rem"}
-        px={isDesktop ? "5rem" : "1rem"}
+        py={"0.8rem"}
+        px={isDesktop ? "4rem" : "1rem"}
         boxShadow="2xl"
         position="fixed"
         width="100%"
         top="0"
         zIndex="2"
         bg={"#111111"}
+        borderBottom="double"
+        borderColor="#1a1a1a"
       >
         {isDesktop ? (
           <Flex align="center">
             <NavLink to={"/"}>
               <Flex align="center" me={5}>
                 <ChakraImage h={30} src={logo} />
-                <Text fontSize={25} as="samp" color="white">
+                <Text fontSize={20} as="samp" color="white">
                   ontribute
                 </Text>
               </Flex>
             </NavLink>
-            <HStack fontWeight={700} fontSize={18}>
+            <HStack fontWeight={700} fontSize={16}>
               {LinkItems.map((link) => (
                 <NavItem key={link.name} name={link.name} link={link.link} />
               ))}
@@ -134,9 +135,6 @@ const MobileMenu = () => {
         <MenuList>
           <NavLink to="/stories">
             <MenuItem icon={<FaBook />}>Stories</MenuItem>
-          </NavLink>
-          <NavLink to="/launchpad">
-            <MenuItem icon={<FaRocket />}>Launchpad</MenuItem>
           </NavLink>
           <NavLink
             to={

@@ -2,28 +2,30 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Home,
-  LaunchPad,
   Stories,
   Inventory,
   Marketplace,
-  BonsaiNft,
   LargeNft,
   Create,
   Story,
   AuthorStories,
   PendragonNft,
 } from "./pages";
-import { CheckStats } from "./tools"
+import { Box, useColorMode } from "@chakra-ui/react";
+import { CheckStats } from "./tools";
 import { NavBar, LoadingSpinner } from "./containers";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import { Footer } from "./containers";
+import { BgColorDark, BgColorLight } from "./containers/colormode/Colors";
 
 function App() {
   const loaded = useAnvilSelector((state) => state.user.map.history);
+  const { colorMode } = useColorMode();
+
   if (!loaded) return <LoadingSpinner />;
 
   return (
-    <>
+    <Box bg={colorMode === "light" ? BgColorLight : BgColorDark} minH="110vh">
       <Router>
         <NavBar />
         <Routes>
@@ -38,14 +40,12 @@ function App() {
             path="/stories/author/:principal"
             element={<AuthorStories />}
           />
-          <Route path="/launchpad" element={<LaunchPad />} />
-          <Route path="/launchpad/bonsai-nft" element={<BonsaiNft />} />
           <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
           <Route path="/tools/stats" element={<CheckStats />} />
         </Routes>
         <Footer />
       </Router>
-    </>
+    </Box>
   );
 }
 

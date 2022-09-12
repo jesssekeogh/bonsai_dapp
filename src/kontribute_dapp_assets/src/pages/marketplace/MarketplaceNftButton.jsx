@@ -40,7 +40,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Usergeek } from "usergeek-ic-js";
 import { useSelector } from "react-redux";
 
-const toast = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 const MarketplaceNftButton = ({ tokenId, price }) => {
   const isLogged = useSelector((state) => state.Profile.loggedIn);

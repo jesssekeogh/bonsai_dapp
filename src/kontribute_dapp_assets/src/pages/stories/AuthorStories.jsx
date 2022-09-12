@@ -99,7 +99,6 @@ const AuthorCard = ({ author }) => {
         as="kbd"
         bgGradient="linear(to-l, #ed1f79, #2dade2)"
         bgClip="text"
-        isTruncated
       >
         Author:&nbsp;
       </StatLabel>

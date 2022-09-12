@@ -14,10 +14,15 @@ import {
   Spacer,
   Button,
   useBreakpointValue,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
 import { LikeButton, DeleteButton } from "./s_components";
+import {
+  TextColorDark,
+  TextColorLight,
+} from "../../containers/colormode/Colors";
 
 const Story = () => {
   let isMounted = true;
@@ -53,16 +58,16 @@ const Story = () => {
             <Heading
               mb={2}
               as={"h2"}
-              bgGradient="linear(to-t, #705025, #a7884a)"
-              bgClip="text"
+              color={useColorModeValue(TextColorLight, TextColorDark)}
             >
               {story.story.title}
             </Heading>
           </Center>
           <Text
-            fontWeight={400}
-            fontSize={"xl"}
-            color="#f0e6d3"
+            lineHeight={1.5}
+            fontSize={"21px"}
+            color={useColorModeValue(TextColorLight, TextColorDark)}
+            fontFamily="Times New Roman"
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(story.story.story),
             }}

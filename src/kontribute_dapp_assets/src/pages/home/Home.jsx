@@ -1,11 +1,13 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   SimpleGrid,
+  Box,
   Flex,
   Heading,
   Text,
   Stack,
+  VStack,
   StackDivider,
   Icon,
   useColorModeValue,
@@ -13,153 +15,118 @@ import {
   Button,
   Center,
   Image as ChakraImage,
+  Skeleton,
 } from "@chakra-ui/react";
 import { BsPen, BsImage } from "react-icons/bs";
 import IcLogo from "../../../assets/ic-logo.png";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import "./home.css";
+import LaunchpadBanner from "./LaunchpadBanner";
+import launchpadLogo from "../../../assets/pendragon_logo.png";
+import pendragon from "../../../assets/pendragon.png";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  HeadingColorDark,
+  HeadingColorLight,
+  TextColorDark,
+  TextColorLight,
+} from "../../containers/colormode/Colors";
 
 const Home = () => {
-
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [])
-  
+  }, []);
+
   return (
     <>
-      <div className="home_container">
-        <Header />
-      </div>
+      <ChakraImage
+        w={"full"}
+        h="80%"
+        fit="cover"
+        src={pendragon}
+        pos={"absolute"}
+        sx={{
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0))",
+        }}
+      />
+      <HomeBanner />
     </>
   );
 };
 
 export default Home;
 
-// Header for home page:
-
-const Header = () => {
+const HomeBanner = () => {
   return (
-    <Container maxW="7xl" mt={{ base: -10 }} px={{ base: 5, md: 12 }}>
-      <SimpleGrid
-        columns={{ base: 1, md: 2, lg: 2 }}
-        pb={5}
-        gap={2}
-        mx={2}
-        maxW="1250px"
+    <Container maxW={"7xl"} mt={"-3rem"}>
+      <Stack
+        align={"center"}
+        spacing={{ base: 8, md: 10 }}
+        py={{ base: 20, md: 28 }}
+        direction={{ base: "column", md: "row" }}
       >
-        <Stack spacing={4}>
-          <Text
-            textTransform={"uppercase"}
-            fontWeight={600}
-            fontSize={"lg"}
-            p={2}
-            alignSelf={"flex-start"}
-            rounded={"md"}
+        <Stack flex={1} spacing={{ base: 5, md: 5 }}>
+          <Heading
+            lineHeight={1.1}
+            fontWeight={"bold"}
+            fontSize={{ base: "3xl", sm: "4xl", lg: "5xl" }}
+            color={useColorModeValue(HeadingColorLight, HeadingColorDark)}
           >
-            Welcome to{" "}
-            <Text
-              as={"span"}
-              bgGradient="linear(to-t, #705025, #a7884a)"
-              bgClip="text"
-            >
-              Kontribute
-            </Text>
-          </Text>
-          <Heading bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
-            Web 3.0 storytelling with NFTs
+            Discover stories, collect, sell and explore NFTs
           </Heading>
-          <Stack
-            spacing={5}
-            divider={
-              <StackDivider
-                borderColor={useColorModeValue("gray.100", "gray.700")}
-              />
-            }
+          <Text
+            fontSize={{ base: "xl", md: "3xl" }}
+            color={useColorModeValue(TextColorLight, TextColorDark)}
           >
-            <Feature
-              icon={<Icon as={BsPen} color={"gray.500"} w={5} h={5} />}
-              iconBg={"#fff"}
-              text={"Write your own story"}
-            />
-            <Feature
-              icon={<Icon as={BsImage} color={"blue.500"} w={4} h={4} />}
-              iconBg={"#fff"}
-              text={"Sell NFTs from your story on the marketplace"}
-            />
-            <Feature
-              icon={<ChakraImage src={IcLogo} h={"20px"} w={"auto"} />}
-              iconBg={"#fff"}
-              text={"Fully decentralised and powered by ICP"}
-            />
+            Kontribute is a web3 writing platfrom that brings fun and
+            interesting use cases to NFTs
+          </Text>
+          <Stack
+            spacing={{ base: 4, sm: 6 }}
+            direction={{ base: "column", md: "row" }}
+          >
+            <NavLink to={"/stories"}>
+              <Button
+                bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
+                color={useColorModeValue(TextColorDark, TextColorLight)}
+                boxShadow="base"
+                size={"lg"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                rightIcon={<BsPen />}
+              >
+                Discover Stories
+              </Button>
+            </NavLink>
+            <NavLink to={"/marketplace"}>
+              <Button
+                bg="white"
+                boxShadow="base"
+                color={TextColorLight}
+                size={"lg"}
+                colorScheme="pink.400"
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                rightIcon={<BsImage />}
+              >
+                Trade NFTs
+              </Button>
+            </NavLink>
           </Stack>
         </Stack>
-        <Buttons />
-      </SimpleGrid>
-    </Container>
-  );
-};
-
-const Feature = ({ text, icon, iconBg }) => {
-  return (
-    <Stack direction={"row"} align={"center"}>
-      <Flex
-        w={8}
-        h={8}
-        align={"center"}
-        justify={"center"}
-        rounded={"full"}
-        bg={iconBg}
-      >
-        {icon}
-      </Flex>
-      <Text fontWeight={600} color="#f0e6d3">
-        {text}
-      </Text>
-    </Stack>
-  );
-};
-
-// buttons for home page:
-
-const Buttons = () => {
-  const currentMarketplace = useSelector(
-    (state) => state.Global.currentMarketplace
-  );
-
-  return (
-    <Center my={12}>
-      <Stack direction={useBreakpointValue(["row", "column"])} spacing={{base: 2, md: 10}}>
-        <Link to="/stories">
-          <Button
-            colorScheme="#282828"
-            bg="#282828"
-            rounded={"full"}
-            rightIcon={<BsPen />}
-            p={{base: 4, md: 8}}
-            w={{base: null, md: "200px"}}
-            _hover={{ opacity: "0.8" }}
-            size={useBreakpointValue(["md", "lg"])}
-          >
-            Explore Stories
-          </Button>
-        </Link>
-        <Link to={"/marketplace/" + currentMarketplace}>
-          <Button
-            colorScheme="#282828"
-            bg="#282828"
-            rounded={"full"}
-            rightIcon={<BsImage />}
-            p={{base: 4, md: 8}}
-            w={{base: null, md: "200px"}}
-            _hover={{ opacity: "0.8" }}
-            size={useBreakpointValue(["md", "lg"])}
-          >
-            Explore NFTs
-          </Button>
-        </Link>
+        <LaunchpadBanner
+          mainImg={pendragon}
+          logoImg={launchpadLogo}
+          link={"/launchpad/pendragon-nft"}
+          name={"Pendragon Quest"}
+        />
       </Stack>
-    </Center>
+    </Container>
   );
 };

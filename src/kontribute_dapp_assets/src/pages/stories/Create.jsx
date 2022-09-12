@@ -36,7 +36,7 @@ import { Usergeek } from "usergeek-ic-js";
 
 const HowTo = "https://medium.com/@teambonsai.icp/c5c2cc3c404b";
 
-const toast = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 const Create = () => {
   const [storyData, setStoryData] = useState("");

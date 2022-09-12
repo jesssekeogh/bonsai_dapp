@@ -210,7 +210,7 @@ const StatsCard = (props) => {
       borderColor={"white"}
       rounded={"lg"}
     >
-      <StatLabel fontWeight={"medium"} isTruncated>
+      <StatLabel fontWeight={"medium"}>
         {title}
       </StatLabel>
       <StatNumber fontSize={"2xl"} fontWeight={"medium"}>

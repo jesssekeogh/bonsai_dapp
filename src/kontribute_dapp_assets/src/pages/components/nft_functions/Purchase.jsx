@@ -37,7 +37,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const toast = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 // purchase component used in Launhpad for inital offering
 
