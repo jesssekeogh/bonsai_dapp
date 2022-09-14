@@ -69,7 +69,8 @@ const NavBar = () => {
     <Box h="4rem">
       <Box
         as="section"
-        py={"0.8rem"}
+        pt="0.6rem"
+        pb={"0.5rem"}
         px={isDesktop ? "4rem" : "1rem"}
         boxShadow="2xl"
         position="fixed"
@@ -77,7 +78,7 @@ const NavBar = () => {
         top="0"
         zIndex="2"
         bg={"#111111"}
-        borderBottom="double"
+        borderBottom=" 3px double"
         borderColor="#1a1a1a"
       >
         {isDesktop ? (

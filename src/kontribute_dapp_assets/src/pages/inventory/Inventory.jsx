@@ -19,7 +19,6 @@ import InventoryStats from "./InventoryStats.jsx";
 import { GetMine, Claim } from "../components";
 import { SingleNft } from "../components";
 import {
-  SellingFilter,
   CollectionFilter,
   RarityFilter,
   QuickView,
@@ -32,7 +31,6 @@ const Inventory = () => {
   const [Loaded, setLoaded] = useState(false);
   const [sortBy, setSort] = useState(0);
   const [collectionBy, setCollection] = useState("");
-  const [sellingBy, setSelling] = useState("");
   const anvilDispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
   const quickView = useSelector((state) => state.Global.quickview);
@@ -78,7 +76,6 @@ const Inventory = () => {
           <HStack width={["250px", null, "auto"]}>
             <CollectionFilter setCollection={setCollection} />
             <RarityFilter setSort={setSort} />
-            <SellingFilter setSelling={setSelling} />
           </HStack>
           <Spacer />
           <QuickView />
@@ -101,7 +98,6 @@ const Inventory = () => {
                   key={item}
                   sort={sortBy}
                   collection={collectionBy}
-                  selling={sellingBy}
                   isInventory={true}
                   quickView={quickView}
                 />

@@ -16,182 +16,145 @@ import {
   Text,
   Stack,
   GridItem,
-  SkeletonCircle,
+  Hide,
   Skeleton,
   HStack,
-  Tooltip,
+  useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import InventoryNftButton from "../inventory/InventoryNftButton";
-import MarketplaceNftButton from "../marketplace/MarketplaceNftButton";
+import icLogo from "../../../assets/ic-logo.png";
+import { Link } from "react-router-dom";
+import {
+  TextColorDark,
+  TextColorLight,
+} from "../../containers/colormode/Colors";
 
-const SingleNft = ({
-  tokenId,
-  sort,
-  collection,
-  selling,
-  isInventory,
-  isMarketplace,
-  quickView
-}) => {
+const SingleNft = ({ tokenId, quickView }) => {
   let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
 
-  const [img, setImg] = useState();
   const [nft, setNft] = useState({});
   const [loaded, setLoaded] = useState(false);
 
   const token = tokenToText(tokenId);
 
   const load = async () => {
-    try {
-      const meta = await dispatch(nft_fetch(token));
-      if (isMounted) {
-        setNft({
-          id: token,
-          name: meta.name,
-          color: itemQuality.dark[meta.quality].color,
-          quality: meta.quality,
-          filter: meta.tags[0],
-          price: meta.price.amount,
-        });
-        setLoaded(true);
-      }
-    } catch (e) {
-      console.log("Error, Certified state not ready");
-    }
-  };
-
-  const loadImg = async () => {
-    let src = await tokenUrl(map.space, tokenId, "thumb");
+    const meta = await dispatch(nft_fetch(token));
     if (isMounted) {
-      setImg(src);
+      setNft({
+        id: token,
+        name: meta.name,
+        colorDark: itemQuality.dark[meta.quality].color,
+        colorLight: itemQuality.light[meta.quality].color,
+        quality: meta.quality,
+        filter: meta.tags[0],
+        price: meta.price.amount,
+      });
+      setLoaded(true);
     }
   };
 
   useEffect(() => {
     load();
-    loadImg();
-    const interval = setInterval(() => {
-      load();
-    }, 3000);
     return () => {
-      clearInterval(interval);
       isMounted = false;
     };
   }, []);
 
-  if (isInventory && checkFilter(sort, collection, selling, nft)) return null; // only check in inventory
-
   return (
-    <>
+    <Link
+      to={"/nft/" + token}
+      state={{
+        prev: "/marketplace",
+        showConfetti: false,
+        totalNfts: 1,
+      }}
+    >
       <GridItem>
         <Box
           role={"group"}
-          p={[2, null, 4]}
-          minW={["170px", null, "300px"]}
+          minW={["150px", null, "280px"]}
           w={"full"}
-          backgroundColor={"#1e212b"}
-          rounded={"lg"}
+          bg={useColorModeValue("White", "#111111")}
+          rounded={"md"}
+          border={"2px"}
+          borderColor={useColorModeValue("#e5e8eb", "#1a1a1a")}
+          boxShadow="sm"
         >
           {!quickView ? (
-            <Box rounded={"lg"} pos={"relative"}>
-              {loaded ? (
-                <ChakraImage
-                  bg="#fff"
-                  rounded={"lg"}
-                  height={["170px", null, "300px"]}
-                  width={"auto"}
-                  objectFit={"cover"}
-                  src={img}
-                />
-              ) : (
-                <SkeletonCircle size={["150", null, "270"]} />
-              )}
+            <Box rounded={"lg"} pos={"relative"} overflow="hidden">
+              <ChakraImage
+                transform="scale(1.0)"
+                bg="#fff"
+                height={["150px", null, "280px"]}
+                width={"auto"}
+                objectFit={"cover"}
+                src={tokenUrl(map.space, tokenId, "thumb")}
+                fallback={<Skeleton height={["150px", null, "280px"]} />}
+                transition="0.3s ease-in-out"
+                _hover={{
+                  transform: "scale(1.05)",
+                }}
+              />
             </Box>
           ) : null}
-          <HStack pt={3} align={"start"} justify={"space-between"}>
+          <HStack
+            pt={1}
+            px={3}
+            align={"start"}
+            justify={"space-between"}
+            color={useColorModeValue(TextColorLight, TextColorDark)}
+          >
             {loaded ? (
               <>
-                <Text
-                  color={"gray.500"}
-                  casing={"uppercase"}
-                  fontSize={{ base: "6pt", sm: "xs", md: "xs" }}
-                >
-                  {nft.id}
-                </Text>
-                {nft.price > 0 ? (
-                  <Tooltip label="Amount in ICP">
-                    <Text
-                      as="kbd"
-                      bgGradient="linear(to-r, #ed1f79, #f15b25)"
-                      bgClip="text"
-                      fontSize={{ base: "7pt", sm: "xs", md: "xs" }}
-                    >
-                      {e8sToIcp(nft.price)}
-                    </Text>
-                  </Tooltip>
-                ) : isMarketplace ? (
+                <Hide below="md">
                   <Text
-                    as="kbd"
-                    bgGradient="linear(to-r, #ed1f79, #f15b25)"
-                    bgClip="text"
-                    fontSize={{ base: "7pt", sm: "xs", md: "xs" }}
+                    casing={"uppercase"}
+                    fontSize={{ base: "6pt", sm: "xs", md: "xs" }}
                   >
-                    Sold
+                    Price
                   </Text>
-                ) : null}
+                </Hide>
+                <Flex align="center">
+                  <ChakraImage src={icLogo} h={"18px"} w={"auto"} />
+                  &nbsp;
+                  <Text as="kbd" fontSize={"xs"}>
+                    {e8sToIcp(nft.price) > 0 ? e8sToIcp(nft.price) : "N/A"}
+                  </Text>
+                </Flex>
               </>
             ) : (
               <>
-                <Skeleton height="20px" width={"70px"} />
+                <Skeleton height="12px" width={"70px"} />
               </>
             )}
           </HStack>
           <Stack
-            pt={1}
+            px={3}
+            pb={2}
             direction={"row"}
             align={"center"}
             justify="space-between"
+            w={["150px", null, "280px"]}
           >
             {loaded ? (
               <Heading
                 fontSize={{ base: "7pt", sm: "xs", md: "sm" }}
-                color={nft.color}
+                color={useColorModeValue(nft.colorLight, nft.colorDark)}
+                noOfLines={1}
               >
                 {nft.name}
               </Heading>
             ) : (
-              <Skeleton height="20px" width={"100px"} />
+              <Skeleton height="12px" width={"100px"} my={2} />
             )}
-            {isInventory ? <InventoryNftButton tokenId={tokenId} /> : null}
-            {isMarketplace ? (
-              <MarketplaceNftButton tokenId={tokenId} price={nft.price} />
-            ) : null}
           </Stack>
         </Box>
       </GridItem>
-    </>
+    </Link>
   );
-};
-
-const checkFilter = (sort, collection, selling, nftmeta) => {
-  if (selling !== "all" && selling === "selling") {
-    if (!(nftmeta.price > 0)) return true;
-  } else if (selling !== "all" && selling === "notselling") {
-    if (nftmeta.price > 0) return true;
-  }
-
-  if (collection === "") {
-    collection = nftmeta.filter;
-  } else if (collection !== nftmeta.filter) return true;
-
-  if (sort == 0) {
-    sort = nftmeta.quality;
-  } else if (sort != nftmeta.quality) return true;
-
-  return false;
 };
 
 export default SingleNft;

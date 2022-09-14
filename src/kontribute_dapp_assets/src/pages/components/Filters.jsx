@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Select,
   FormControl,
@@ -6,7 +6,15 @@ import {
   Box,
   Switch,
   useBreakpointValue,
+  useColorModeValue,
   Tooltip,
+  Box,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuOptionGroup,
+  MenuItemOption,
+  Button,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,28 +24,6 @@ import { setQuickView } from "../../state/GlobalSlice";
 const BonsaiWarriors = "Bonsai Warrior";
 const BadbotNinja = "helmet";
 const PendragonQuest = "Knight";
-
-export const SellingFilter = ({ setSelling }) => {
-  return (
-    <Select
-      size="sm"
-      border={"double"}
-      borderRadius="lg"
-      backgroundColor="#16171b"
-      borderColor="#16171b"
-      color="gray.400"
-      my={2}
-      fontSize={["7pt", null, "sm"]}
-      onChange={(e) => {
-        setSelling(e.target.value);
-      }}
-    >
-      <option value={"all"}>All</option>
-      <option value={"selling"}>Selling</option>
-      <option value={"notselling"}>Not Selling</option>
-    </Select>
-  );
-};
 
 // inventory filter for quick filtering of collections
 export const CollectionFilter = ({ setCollection }) => {
@@ -63,55 +49,127 @@ export const CollectionFilter = ({ setCollection }) => {
   );
 };
 
-export const RarityFilter = ({ setSort, setPage }) => {
+export const RarityFilter = ({ setSort }) => {
+  const [currentSort, setCurrentSort] = useState("All");
+
+  const getNumFromRarity = (rarity) => {
+    switch (rarity) {
+      case "Common":
+        setCurrentSort("Common");
+        return setSort(1);
+      case "Uncommon":
+        setCurrentSort("Uncommon");
+        return setSort(2);
+      case "Rare":
+        setCurrentSort("Rare");
+        return setSort(3);
+      case "Epic":
+        setCurrentSort("Epic");
+        return setSort(4);
+      case "Legendary":
+        setCurrentSort("Legendary");
+        return setSort(5);
+      case "Artifact":
+        setCurrentSort("Artifact");
+        return setSort(6);
+      case "All":
+        setCurrentSort("All");
+        return setSort("0");
+    }
+  };
+
   return (
-    <Select
-      size="sm"
-      border={"double"}
-      borderRadius="lg"
-      backgroundColor="#16171b"
-      borderColor="#16171b"
-      color="gray.400"
-      my={2}
-      fontSize={["7pt", null, "sm"]}
-      onChange={(e) => {
-        setSort(e.target.value);
-        if (setPage) {
-          setPage(0);
-        }
-      }}
-    >
-      <option value={0}>All</option>
-      <option value={1}>Common</option>
-      <option value={2}>Uncommon</option>
-      <option value={3}>Rare</option>
-      <option value={4}>Epic</option>
-      <option value={5}>Legendary</option>
-      <option value={6}>Artifact</option>
-    </Select>
+    <Menu>
+      <MenuButton
+        me={2}
+        as={Button}
+        boxShadow="base"
+        border={"2px"}
+        borderColor={useColorModeValue("#e5e8eb", "#1a1a1a")}
+      >
+        Rarity: {currentSort}
+      </MenuButton>
+      <MenuList minWidth="240px">
+        <MenuOptionGroup defaultValue="All" title="Rarity">
+          <MenuItemOption value={"All"} onClick={() => getNumFromRarity("All")}>
+            All
+          </MenuItemOption>
+          <MenuItemOption
+            value={"Common"}
+            onClick={() => getNumFromRarity("Common")}
+          >
+            Common
+          </MenuItemOption>
+          <MenuItemOption
+            value={"Uncommon"}
+            onClick={() => getNumFromRarity("Uncommon")}
+          >
+            Uncommon
+          </MenuItemOption>
+          <MenuItemOption
+            value={"Rare"}
+            onClick={() => getNumFromRarity("Rare")}
+          >
+            Rare
+          </MenuItemOption>
+          <MenuItemOption
+            value={"Epic"}
+            onClick={() => getNumFromRarity("Epic")}
+          >
+            Epic
+          </MenuItemOption>
+          <MenuItemOption
+            value={"Legendary"}
+            onClick={() => getNumFromRarity("Legendary")}
+          >
+            Legendary
+          </MenuItemOption>
+          <MenuItemOption
+            value={"Artifact"}
+            onClick={() => getNumFromRarity("Artifact")}
+          >
+            Artifact
+          </MenuItemOption>
+        </MenuOptionGroup>
+      </MenuList>
+    </Menu>
   );
 };
 
-export const PriceFilter = ({ setPricing, setPage }) => {
-  // LtoH = low to high
+export const LtoH = ({ pricing, setPricing, setPage }) => {
   return (
-    <Select
-      size="sm"
-      border={"double"}
-      borderRadius="lg"
-      backgroundColor="#16171b"
-      borderColor="#16171b"
-      color="gray.400"
-      my={2}
-      fontSize={["7pt", null, "sm"]}
-      onChange={(e) => {
-        setPricing(e.target.value);
-        setPage(0);
-      }}
-    >
-      <option value={"LtoH"}>Price: Low to High</option>
-      <option value={"HtoL"}>Price: High to Low</option>
-    </Select>
+    <Menu>
+      <MenuButton
+        as={Button}
+        boxShadow="base"
+        border={"2px"}
+        borderColor={useColorModeValue("#e5e8eb", "#1a1a1a")}
+      >
+        Price: {pricing}
+      </MenuButton>
+      <MenuList minWidth="240px">
+        <MenuOptionGroup defaultValue="Low to High" title="Price">
+          <MenuItemOption
+            value={"Low to High"}
+            onClick={() => {
+              setPage(0);
+              setPricing("Low to High");
+            }}
+          >
+            Low to High
+          </MenuItemOption>
+          <MenuItemOption
+            value={"High to Low"}
+            onClick={() => {
+              setPage(0);
+              setPricing("High to Low");
+            }}
+          >
+            High to Low
+          </MenuItemOption>
+        </MenuOptionGroup>
+      </MenuList>
+    </Menu>
   );
 };
 
@@ -137,7 +195,9 @@ export const AuthorFilter = () => {
         navigate("/marketplace/" + e.target.value);
       }}
     >
-      <option value={process.env.MARKETPLACE_COLLECTION}>Latest Collection</option>
+      <option value={process.env.MARKETPLACE_COLLECTION}>
+        Latest Collection
+      </option>
       <option value={badbotPrices}>Badbot Ninja</option>
       <option value={bonsaiPrices}>Bonsai Warriors</option>
     </Select>

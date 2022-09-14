@@ -1,29 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useTransition } from "react";
 import {
   Center,
   SimpleGrid,
-  HStack,
+  Box,
   Flex,
   Spacer,
   Center,
-  Heading,
   Container,
-  useBreakpointValue,
-  Divider,
-  Text,
-  Wrap,
   Stack,
-  Button,
-  Tooltip,
+  IconButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
+import { InfoIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { SingleNft } from "../components";
 import { LoadingSpinner } from "../../containers";
-import { AuthorFilter, PriceFilter, RarityFilter } from "../components/Filters";
+import {
+  RarityFilter,
+  LtoH,
+} from "../components/Filters";
 import { useParams } from "react-router-dom";
 import { FailedToast } from "../../containers/toasts/Toasts";
 import { setMarketplace } from "../../state/GlobalSlice";
 import { useDispatch } from "react-redux";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  TextColorDark,
+  TextColorLight,
+} from "../../containers/colormode/Colors";
 
 const Marketplace = () => {
   const params = useParams();
@@ -31,9 +35,10 @@ const Marketplace = () => {
   const [tokensForSale, setTokensForSale] = useState([]);
   const [sortBy, setSort] = useState("0");
   const [page, setPage] = useState(0);
-  const [pricing, setPricing] = useState("LtoH");
+  const [pricing, setPricing] = useState("Low to High");
   const [author, setAuthor] = useState({});
   const dispatch = useDispatch();
+  const [isPending, startTransition] = useTransition();
 
   // author fetch - only runs if author changes
   const fetchAuthorData = async () => {
@@ -65,7 +70,7 @@ const Marketplace = () => {
   };
 
   // helper function for sorting rarities
-  const sortRarity = async (allTokens, rarity) => {
+  const sortRarity = (allTokens, rarity) => {
     let rarityFiltered = [];
     for (let i = 0; i < author.meta.length; i++) {
       if (author.meta[i][1] == rarity) {
@@ -75,7 +80,6 @@ const Marketplace = () => {
       if (author.meta[i][0] == 918905 && rarity == 5) {
         rarityFiltered.push(author.meta[i][0]);
       }
-
     }
     let filtered = [];
     for (let i = 0; i < allTokens.length; i++) {
@@ -94,7 +98,7 @@ const Marketplace = () => {
 
       let prices = author.prices;
 
-      if (pricing === "LtoH") {
+      if (pricing === "Low to High") {
         prices.sort((a, b) => a[2] - b[2]);
       } else {
         prices.sort((a, b) => b[2] - a[2]);
@@ -105,12 +109,15 @@ const Marketplace = () => {
           forSale.push(prices[i][0]);
         }
       }
-      if (sortBy === "0") {
-        setTokensForSale(forSale.slice(page * 12, (page + 1) * 12));
-      } else {
-        let filtered = await sortRarity(forSale, sortBy);
-        setTokensForSale(filtered.slice(page * 12, (page + 1) * 12));
-      }
+
+      startTransition(() => {
+        if (sortBy === "0") {
+          setTokensForSale(forSale.slice(page * 12, (page + 1) * 12));
+        } else {
+          let filtered = sortRarity(forSale, sortBy);
+          setTokensForSale(filtered.slice(page * 12, (page + 1) * 12));
+        }
+      });
     }
   };
 
@@ -121,25 +128,19 @@ const Marketplace = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchAuthorData();
-    dispatch(setMarketplace(params.author))
+    dispatch(setMarketplace(params.author));
   }, [params.author]);
 
   return (
-    <div>
+    <Box pt={2} pb={20}>
       <MarketplaceHeader
         setSort={setSort}
         setPage={setPage}
         setPricing={setPricing}
+        pricing={pricing}
       />
       {Loaded ? (
         <>
-          <Center my={2}>
-            <PaginationButtons
-              setPage={setPage}
-              page={page}
-              tokensLength={tokensForSale.length}
-            />
-          </Center>
           <Center mt={1}>
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
@@ -149,15 +150,7 @@ const Marketplace = () => {
               maxW="1250px"
             >
               {tokensForSale.map((item) => (
-                <SingleNft
-                  tokenId={item}
-                  key={item}
-                  sort={"0"}
-                  collection={""}
-                  selling={"all"}
-                  isMarketplace={true}
-                  quickView={false}
-                />
+                <SingleNft tokenId={item} key={item} quickView={false} />
               ))}
             </SimpleGrid>
           </Center>
@@ -172,35 +165,18 @@ const Marketplace = () => {
       ) : (
         <LoadingSpinner label="Loading Marketplace" />
       )}
-    </div>
+    </Box>
   );
 };
 
-const MarketplaceHeader = ({ setSort, setPage, setPricing }) => {
+const MarketplaceHeader = ({ setSort, setPricing, pricing, setPage }) => {
   return (
-    <Container maxWidth="1250px" mt={-8}>
-      <Flex alignItems="center" gap="2">
-        <Heading size={useBreakpointValue({ base: "xs", md: "lg" })}>
-          <Wrap align={"center"}>
-            <Text bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
-              Kontribute{" "}
-            </Text>
-            <Text color="#f0e6d3">
-              Marketplace{" "}
-              <Tooltip label="Kontribute Marketplace supports the NFTA standard on ICP">
-                <InfoIcon boxSize={{ base: 3, md: 6 }} viewBox="0 0 25 25" />
-              </Tooltip>
-            </Text>
-          </Wrap>
-        </Heading>
+    <Container maxWidth="1250px" my={6}>
+      <Flex>
         <Spacer />
-        <HStack>
-          <AuthorFilter />
-          <RarityFilter setSort={setSort} setPage={setPage} />
-          <PriceFilter setPricing={setPricing} setPage={setPage} />
-        </HStack>
+        <RarityFilter setSort={setSort} />
+        <LtoH pricing={pricing} setPricing={setPricing} setPage={setPage} />
       </Flex>
-      <Divider my={1} borderColor="#16171b" />
     </Container>
   );
 };
@@ -215,34 +191,28 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
       alignSelf={"center"}
       position={"relative"}
     >
-      <Button
-        size="xs"
-        colorScheme="#282828"
-        bg="#282828"
-        rounded={"full"}
-        px={6}
-        _hover={{ opacity: "0.8" }}
-        isDisabled={page === 0}
+      <IconButton
+        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
+        color={useColorModeValue(TextColorDark, TextColorLight)}
+        size="sm"
+        _hover={{ opacity: "0.9" }}
+        icon={<ArrowLeftIcon />}
         onClick={() => {
           setPage(page - 1);
         }}
-      >
-        Prev Page
-      </Button>
-      <Button
-        size="xs"
-        colorScheme="#282828"
-        bg="#282828"
-        rounded={"full"}
-        px={6}
-        _hover={{ opacity: "0.8" }}
-        isDisabled={tokensLength < 12}
+        isDisabled={page === 0}
+      />
+      <IconButton
+        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
+        color={useColorModeValue(TextColorDark, TextColorLight)}
+        size="sm"
+        icon={<ArrowRightIcon />}
+        _hover={{ opacity: "0.9" }}
         onClick={() => {
           setPage(page + 1);
         }}
-      >
-        Next Page
-      </Button>
+        isDisabled={tokensLength < 12}
+      />
     </Stack>
   );
 };
