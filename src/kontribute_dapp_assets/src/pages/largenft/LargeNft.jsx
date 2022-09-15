@@ -4,12 +4,12 @@ import {
   Center,
   Flex,
   Heading,
-  Tag,
   Stack,
   Text,
-  useBreakpointValue,
+  useColorModeValue,
   HStack,
   CircularProgress,
+  Box,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
@@ -26,15 +26,22 @@ import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { LoadingSpinner } from "../../containers/index";
 import { Link, useLocation } from "react-router-dom";
 import { Confetti } from "../components";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../containers/colormode/Colors";
+import ForSale from "./ForSale";
+import Owned from "./Owned";
 
 const LargeNft = () => {
   const params = useParams();
   const path = useLocation();
-
+  const address = useAnvilSelector((state) => state.user.address);
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
   const [Loaded, setLoaded] = useState(false);
-
   const [data, setData] = useState({});
   const [src, setSrc] = useState();
 
@@ -45,7 +52,8 @@ const LargeNft = () => {
   });
 
   const load = async () => {
-    setSrc(await tokenUrl(map.space, tokenFromText(params.tokenid), "content"));
+    setSrc(tokenUrl(map.space, tokenFromText(params.tokenid), "content"));
+
     const meta = await dispatch(nft_fetch(params.tokenid));
     let NftData = {
       id: params.tokenid,
@@ -53,8 +61,9 @@ const LargeNft = () => {
       lore: meta.lore,
       attributes: meta.attributes,
       tags: meta.tags,
-      color: itemQuality.dark[meta.quality].color,
-      rating: itemQuality.dark[meta.quality].label,
+      color: itemQuality.light[meta.quality].color,
+      rating: itemQuality.light[meta.quality].label,
+      price: meta.price.amount,
     };
 
     if (path.state !== null) {
@@ -64,6 +73,7 @@ const LargeNft = () => {
         amount: path.state.totalNfts,
       });
     }
+
     setData(NftData);
     setLoaded(true);
   };
@@ -71,125 +81,126 @@ const LargeNft = () => {
   useEffect(() => {
     load();
     window.scrollTo(0, 0);
+    const interval = setInterval(() => {
+      load();
+    }, 3000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
+
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark)
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  )
 
   if (!Loaded) return <LoadingSpinner label="Loading NFT..." />;
   return (
-    <>
-      <Center px={5}>
-        {pathData.showConfetti ? <Confetti /> : null}
+    <Center pt={5} pb={10}>
+      {pathData.showConfetti ? <Confetti /> : null}
+      <Stack direction={{ base: "column", md: "row" }} padding={4}>
+        <Flex flex={1}>
+          <ChakraImage
+            borderRadius="lg"
+            boxSize="100%"
+            src={src}
+            fallback={<LoadingImage />}
+          />
+        </Flex>
         <Stack
-          height={{ sm: "476px", md: "50vw", lg: "38vw" }}
-          maxH="650px"
-          width="auto"
-          direction={{ base: "column", md: "row" }}
-          padding={4}
+          flex={1}
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="start"
+          p={{ sm: 5, md: 8 }}
+          pt={2}
         >
-          <Flex flex={1}>
-            <ChakraImage
-              borderRadius="lg"
-              boxSize="100%"
-              src={src}
-              fallback={<LoadingImage />}
-            />
-          </Flex>
-          <Stack
-            flex={1}
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="start"
-            p={{ sm: 5, md: 8 }}
-            pt={2}
-          >
-            <HStack>
-              <Heading
-                color={data.color}
-                fontWeight="bold"
-                fontSize={["lg", null, "4xl"]}
-                fontStyle={"italic"}
-              >
-                {data.name}
-              </Heading>
-              <Text color="gray.500">({data.rating})</Text>
-            </HStack>
-            <HStack>
-              <NftTags tags={data.tags} />
-            </HStack>
-            <Text fontWeight={600} color="#f0e6d3" mb={2} maxW="520px">
-              {data.lore}
-            </Text>
-          </Stack>
-        </Stack>
-      </Center>
-      <Center>
-        <HStack>
-          <Link to={pathData.prevPath}>
-            <Button
-              colorScheme="#282828"
-              bg="#282828"
-              rounded={"full"}
-              px={5}
-              my={5}
-              size="sm"
-              _hover={{ opacity: "0.8" }}
-            >
-              <Text as="kbd">Go Back</Text>
-            </Button>
-          </Link>
-          {pathData.amount > 1 ? (
-            <Link to="/inventory">
+          <HStack>
+            <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
               <Button
-                colorScheme="#282828"
-                bg="#282828"
-                rounded={"full"}
-                px={5}
-                my={5}
+                bg={buttonBgColor}
+                color={buttonTextColor}
                 size="sm"
                 _hover={{ opacity: "0.8" }}
               >
-                <Text as="kbd">
-                  {"+ " + (pathData.amount - 1) + " other NFTs"}
-                </Text>
+                <Text>Go Back</Text>
               </Button>
             </Link>
-          ) : null}
-        </HStack>
-      </Center>
-    </>
-  );
-};
+            {pathData.amount > 1 ? (
+              <Link to="/marketplace">
+                <Button
+                  bg={buttonBgColor}
+                  color={buttonTextColor}
+                  size="sm"
+                  _hover={{ opacity: "0.8" }}
+                >
+                  <Text>{"+ " + (pathData.amount - 1) + " other NFTs"}</Text>
+                </Button>
+              </Link>
+            ) : null}
+          </HStack>
 
-const NftTags = (props) => {
-  return (
-    <>
-      {props.tags.map((tag) => {
-        return (
-          <Tag
-            me={1}
-            fontStyle={"italic"}
-            my={1}
-            p={1}
-            size={useBreakpointValue(["sm", "md"])}
-            variant="solid"
-            colorScheme="blue"
-            key={tag}
-          >
-            {tag}
-          </Tag>
-        );
-      })}
-    </>
+          <Box bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
+            <Heading
+              color={data.color}
+              fontWeight="bold"
+              fontSize={["lg", null, "4xl"]}
+              fontStyle={"italic"}
+            >
+              {data.name}
+            </Heading>
+            <Flex align="center">
+              <Text
+                fontWeight={600}
+                fontSize={{ base: "md", md: "lg" }}
+                color="#b2b8be"
+              >
+                Token ID:&nbsp;
+              </Text>
+              <Text
+                casing={"uppercase"}
+                color="#353840"
+                fontSize={{ base: "xs", md: "md" }}
+              >
+                {data.id}
+              </Text>
+            </Flex>
+            <Flex align="center">
+              <Text
+                fontWeight={600}
+                fontSize={{ base: "md", md: "lg" }}
+                color="#b2b8be"
+              >
+                Rarity:&nbsp;
+              </Text>
+              <Text color="#353840">{data.rating}</Text>
+            </Flex>
+            <Text
+              fontWeight={600}
+              fontSize={{ base: "md", md: "lg" }}
+              color="#b2b8be"
+            >
+              Description:
+            </Text>
+            <Text fontWeight={600} color="#353840" mb={2} maxW="520px">
+              {data.lore}
+            </Text>
+          </Box>
+          {data.price > 0 ? (
+            <ForSale Icp={data.price} tokenId={data.id} />
+          ) : null}
+          {address ? <Owned tokenId={data.id} /> : null}
+        </Stack>
+      </Stack>
+    </Center>
   );
 };
 
 const LoadingImage = () => {
   return (
     <Center>
-      <CircularProgress
-        emptyColor="#17191e"
-        color="#9d8144"
-        isIndeterminate
-      />
+      <CircularProgress emptyColor="#17191e" color="#9d8144" isIndeterminate />
     </Center>
   );
 };

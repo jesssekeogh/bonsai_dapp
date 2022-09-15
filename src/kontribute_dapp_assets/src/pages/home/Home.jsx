@@ -1,32 +1,23 @@
 import React, { useEffect } from "react";
 import {
   Container,
-  SimpleGrid,
-  Box,
-  Flex,
   Heading,
   Text,
   Stack,
-  VStack,
-  StackDivider,
-  Icon,
   useColorModeValue,
-  useBreakpointValue,
   Button,
-  Center,
   Image as ChakraImage,
-  Skeleton,
 } from "@chakra-ui/react";
 import { BsPen, BsImage } from "react-icons/bs";
-import IcLogo from "../../../assets/ic-logo.png";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 import LaunchpadBanner from "./LaunchpadBanner";
 import launchpadLogo from "../../../assets/pendragon_logo.png";
 import pendragon from "../../../assets/pendragon.png";
 import {
   ButtonColorDark,
   ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
   HeadingColorDark,
   HeadingColorLight,
   TextColorDark,
@@ -90,7 +81,10 @@ const HomeBanner = () => {
             <NavLink to={"/stories"}>
               <Button
                 bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
-                color={useColorModeValue(TextColorDark, TextColorLight)}
+                color={useColorModeValue(
+                  ButtonTextColorlight,
+                  ButtonTextColorDark
+                )}
                 boxShadow="base"
                 size={"lg"}
                 _hover={{

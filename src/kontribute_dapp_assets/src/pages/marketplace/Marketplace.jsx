@@ -11,13 +11,10 @@ import {
   IconButton,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { InfoIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { SingleNft } from "../components";
 import { LoadingSpinner } from "../../containers";
-import {
-  RarityFilter,
-  LtoH,
-} from "../components/Filters";
+import { RarityFilter, LtoH } from "../components/Filters";
 import { useParams } from "react-router-dom";
 import { FailedToast } from "../../containers/toasts/Toasts";
 import { setMarketplace } from "../../state/GlobalSlice";
@@ -25,8 +22,8 @@ import { useDispatch } from "react-redux";
 import {
   ButtonColorDark,
   ButtonColorLight,
-  TextColorDark,
-  TextColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
 } from "../../containers/colormode/Colors";
 
 const Marketplace = () => {
@@ -145,7 +142,7 @@ const Marketplace = () => {
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
               pb={5}
-              gap={2}
+              gap={5}
               mx={2}
               maxW="1250px"
             >
@@ -183,6 +180,11 @@ const MarketplaceHeader = ({ setSort, setPricing, pricing, setPage }) => {
 export default Marketplace;
 
 const PaginationButtons = ({ setPage, page, tokensLength }) => {
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
   return (
     <Stack
       direction={"row"}
@@ -192,8 +194,8 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
       position={"relative"}
     >
       <IconButton
-        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
-        color={useColorModeValue(TextColorDark, TextColorLight)}
+        bg={buttonBgColor}
+        color={buttonTextColor}
         size="sm"
         _hover={{ opacity: "0.9" }}
         icon={<ArrowLeftIcon />}
@@ -203,8 +205,8 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
         isDisabled={page === 0}
       />
       <IconButton
-        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
-        color={useColorModeValue(TextColorDark, TextColorLight)}
+        bg={buttonBgColor}
+        color={buttonTextColor}
         size="sm"
         icon={<ArrowRightIcon />}
         _hover={{ opacity: "0.9" }}

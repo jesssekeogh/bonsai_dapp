@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import icLogo from "../../../assets/ic-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   TextColorDark,
   TextColorLight,
@@ -32,9 +32,9 @@ import {
 
 const SingleNft = ({ tokenId, quickView }) => {
   let isMounted = true;
+  const path = useLocation();
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
-
   const [nft, setNft] = useState({});
   const [loaded, setLoaded] = useState(false);
 
@@ -51,10 +51,16 @@ const SingleNft = ({ tokenId, quickView }) => {
         quality: meta.quality,
         filter: meta.tags[0],
         price: meta.price.amount,
+        author: meta.author,
       });
       setLoaded(true);
     }
   };
+
+  const bgColor = useColorModeValue("White", "#1d1d20");
+  const borderColor = useColorModeValue("#e5e8eb", "#1a1a1a");
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
+  const nftNameColor = useColorModeValue(nft.colorLight, nft.colorDark);
 
   useEffect(() => {
     load();
@@ -67,7 +73,7 @@ const SingleNft = ({ tokenId, quickView }) => {
     <Link
       to={"/nft/" + token}
       state={{
-        prev: "/marketplace",
+        prev: path.pathname,
         showConfetti: false,
         totalNfts: 1,
       }}
@@ -77,10 +83,10 @@ const SingleNft = ({ tokenId, quickView }) => {
           role={"group"}
           minW={["150px", null, "280px"]}
           w={"full"}
-          bg={useColorModeValue("White", "#111111")}
+          bg={bgColor}
           rounded={"md"}
           border={"2px"}
-          borderColor={useColorModeValue("#e5e8eb", "#1a1a1a")}
+          borderColor={borderColor}
           boxShadow="sm"
         >
           {!quickView ? (
@@ -105,7 +111,7 @@ const SingleNft = ({ tokenId, quickView }) => {
             px={3}
             align={"start"}
             justify={"space-between"}
-            color={useColorModeValue(TextColorLight, TextColorDark)}
+            color={textColor}
           >
             {loaded ? (
               <>
@@ -127,7 +133,10 @@ const SingleNft = ({ tokenId, quickView }) => {
               </>
             ) : (
               <>
-                <Skeleton height="12px" width={"70px"} />
+                <Skeleton height="8px" width={"70px"} mt={1} />
+                <Hide below="md">
+                  <Skeleton height="8px" width={"40px"} mt={1} />
+                </Hide>
               </>
             )}
           </HStack>
@@ -141,8 +150,8 @@ const SingleNft = ({ tokenId, quickView }) => {
           >
             {loaded ? (
               <Heading
-                fontSize={{ base: "7pt", sm: "xs", md: "sm" }}
-                color={useColorModeValue(nft.colorLight, nft.colorDark)}
+                fontSize={{ base: "xs", sm: "xs", md: "sm" }}
+                color={nftNameColor}
                 noOfLines={1}
               >
                 {nft.name}

@@ -51,6 +51,7 @@ export const CollectionFilter = ({ setCollection }) => {
 
 export const RarityFilter = ({ setSort }) => {
   const [currentSort, setCurrentSort] = useState("All");
+  const color = useColorModeValue("#e5e8eb", "#1a1a1a")
 
   const getNumFromRarity = (rarity) => {
     switch (rarity) {
@@ -85,7 +86,7 @@ export const RarityFilter = ({ setSort }) => {
         as={Button}
         boxShadow="base"
         border={"2px"}
-        borderColor={useColorModeValue("#e5e8eb", "#1a1a1a")}
+        borderColor={color}
       >
         Rarity: {currentSort}
       </MenuButton>
@@ -137,13 +138,14 @@ export const RarityFilter = ({ setSort }) => {
 };
 
 export const LtoH = ({ pricing, setPricing, setPage }) => {
+  const color = useColorModeValue("#e5e8eb", "#1a1a1a")
   return (
     <Menu>
       <MenuButton
         as={Button}
         boxShadow="base"
         border={"2px"}
-        borderColor={useColorModeValue("#e5e8eb", "#1a1a1a")}
+        borderColor={color}
       >
         Price: {pricing}
       </MenuButton>

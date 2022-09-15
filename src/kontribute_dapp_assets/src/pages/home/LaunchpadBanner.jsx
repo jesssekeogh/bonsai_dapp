@@ -7,11 +7,9 @@ import {
   VStack,
   Skeleton,
   Image as ChakraImage,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import {
-  HeadingColorDark,
   HeadingColorLight,
 } from "../../containers/colormode/Colors";
 

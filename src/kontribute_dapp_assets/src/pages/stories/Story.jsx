@@ -50,15 +50,16 @@ const Story = () => {
     };
   }, []);
 
+  const textColor = useColorModeValue(TextColorLight, TextColorDark)
   return (
-    <Container minW={{ md: "2xl" }} mt={{ base: -10, md: -2 }}>
+    <Container minW={{ md: "2xl" }} mt={10}>
       {loaded ? (
         <>
           <Center>
             <Heading
               mb={2}
               as={"h2"}
-              color={useColorModeValue(TextColorLight, TextColorDark)}
+              color={textColor}
             >
               {story.story.title}
             </Heading>
@@ -66,7 +67,7 @@ const Story = () => {
           <Text
             lineHeight={1.5}
             fontSize={"21px"}
-            color={useColorModeValue(TextColorLight, TextColorDark)}
+            color={textColor}
             fontFamily="Times New Roman"
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(story.story.story),
