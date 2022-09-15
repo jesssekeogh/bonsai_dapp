@@ -200,7 +200,7 @@ const LargeNft = () => {
 const LoadingImage = () => {
   return (
     <Center>
-      <CircularProgress emptyColor="#17191e" color="#9d8144" isIndeterminate />
+      <CircularProgress color="#9d8144" isIndeterminate />
     </Center>
   );
 };

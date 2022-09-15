@@ -28,9 +28,7 @@ const LaunchpadBanner = ({ mainImg, logoImg, link, name }) => {
           w={"auto"}
           backgroundColor={"#fff"}
           rounded={"lg"}
-          border={"2px"}
-          borderColor={"#e5e8eb"}
-          boxShadow="sm"
+          boxShadow="md"
         >
           <Box rounded={"lg"} pos={"relative"} overflow="hidden">
             <ChakraImage

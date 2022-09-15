@@ -30,7 +30,7 @@ import {
   TextColorLight,
 } from "../../containers/colormode/Colors";
 
-const SingleNft = ({ tokenId, quickView }) => {
+const SingleNft = ({ tokenId }) => {
   let isMounted = true;
   const path = useLocation();
   const map = useAnvilSelector((state) => state.user.map);
@@ -89,23 +89,21 @@ const SingleNft = ({ tokenId, quickView }) => {
           borderColor={borderColor}
           boxShadow="sm"
         >
-          {!quickView ? (
-            <Box rounded={"lg"} pos={"relative"} overflow="hidden">
-              <ChakraImage
-                transform="scale(1.0)"
-                bg="#fff"
-                height={["150px", null, "280px"]}
-                width={"auto"}
-                objectFit={"cover"}
-                src={tokenUrl(map.space, tokenId, "thumb")}
-                fallback={<Skeleton height={["150px", null, "280px"]} />}
-                transition="0.3s ease-in-out"
-                _hover={{
-                  transform: "scale(1.05)",
-                }}
-              />
-            </Box>
-          ) : null}
+          <Box rounded={"lg"} pos={"relative"} overflow="hidden">
+            <ChakraImage
+              transform="scale(1.0)"
+              bg="#fff"
+              height={["150px", null, "280px"]}
+              width={"auto"}
+              objectFit={"cover"}
+              src={tokenUrl(map.space, tokenId, "thumb")}
+              fallback={<Skeleton height={["150px", null, "280px"]} />}
+              transition="0.3s ease-in-out"
+              _hover={{
+                transform: "scale(1.05)",
+              }}
+            />
+          </Box>
           <HStack
             pt={1}
             px={3}

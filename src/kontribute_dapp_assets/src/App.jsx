@@ -4,6 +4,7 @@ import {
   Home,
   Stories,
   Inventory,
+  MarketplaceLanding,
   Marketplace,
   LargeNft,
   Create,
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/marketplace" element={<MarketplaceLanding />} />
           <Route path="/marketplace/:author" element={<Marketplace />} />
           <Route path="/nft/:tokenid" element={<LargeNft />} />
           <Route path="/stories" element={<Stories />} />

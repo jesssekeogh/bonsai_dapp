@@ -25,7 +25,7 @@ const LinkItems = [
   { name: "Stories", link: "/stories" },
   {
     name: "Marketplace",
-    link: "/marketplace/a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77",
+    link: "/marketplace",
   },
 ];
 
@@ -139,7 +139,7 @@ const MobileMenu = () => {
           </NavLink>
           <NavLink
             to={
-              "/marketplace/a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77"
+              "/marketplace"
             }
           >
             <MenuItem icon={<FaShoppingCart />}>Marketplace</MenuItem>

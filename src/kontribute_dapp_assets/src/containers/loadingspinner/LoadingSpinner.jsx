@@ -1,8 +1,10 @@
 import React from "react";
-import { Spinner, Text, Center } from "@chakra-ui/react";
+import { Spinner, Text, useColorModeValue } from "@chakra-ui/react";
 import "../../../assets/main.css";
+import { TextColorDark, TextColorLight } from "../colormode/Colors";
 
 const LoadingSpinner = ({ label }) => {
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
     <>
       <div className="bonsai__spinner">
@@ -15,7 +17,7 @@ const LoadingSpinner = ({ label }) => {
         />
       </div>
       <div className="bonsai__spinner_text">
-        <Text fontWeight={600} color="#f0e6d3">
+        <Text fontWeight={600} color={textColor}>
           {label}
         </Text>
       </div>

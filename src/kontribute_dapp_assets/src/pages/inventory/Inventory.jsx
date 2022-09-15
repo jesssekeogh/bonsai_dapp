@@ -8,38 +8,39 @@ import {
   SimpleGrid,
   Kbd,
   Text,
-  HStack,
-  Divider,
-  Spacer,
-  Container,
-  Flex,
+  useColorModeValue,
+  Stack,
+  IconButton,
+  Box,
 } from "@chakra-ui/react";
+import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { GetMine, Claim } from "../components";
 import { SingleNft } from "../components";
 import {
-  CollectionFilter,
-  RarityFilter,
-  QuickView,
-} from "../components/Filters";
-import { useSelector } from "react-redux";
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../containers/colormode/Colors";
 
 const Inventory = () => {
   let isMounted = true;
-  const [sortedTokens, setTokens] = useState([]);
+  const [allTokens, setAllTokens] = useState(0);
+  const [tokensShowing, setTokensShowing] = useState([]);
   const [Loaded, setLoaded] = useState(false);
-  const [sortBy, setSort] = useState(0);
-  const [collectionBy, setCollection] = useState("");
+  const [page, setPage] = useState(0);
   const anvilDispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
-  const quickView = useSelector((state) => state.Global.quickview);
 
   const fetchTokens = async () => {
     try {
       let tokens = await anvilDispatch(GetMine());
       if (isMounted) {
-        setTokens(tokens);
+        setAllTokens(tokens.length);
+        setTokensShowing(tokens.slice(page * 20, (page + 1) * 20));
+
         if (!Loaded) {
           setLoaded(true);
         }
@@ -52,15 +53,11 @@ const Inventory = () => {
   useEffect(() => {
     if (loaded) {
       fetchTokens(); // run once
-      const interval = setInterval(() => {
-        fetchTokens(); // then every 3 seconds
-      }, 3000);
       return () => {
-        clearInterval(interval);
         isMounted = false;
       };
     }
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,38 +66,24 @@ const Inventory = () => {
 
   if (!Loaded) return <LoadingSpinner label="Fetching NFTs..." />;
   return (
-    <>
-      <InventoryStats totalnfts={sortedTokens.length} />
-      <Container maxWidth="1250px" px={{ base: 3, md: 5, lg: 1 }} mt={1}>
-        <Flex alignItems="center">
-          <HStack width={["250px", null, "auto"]}>
-            <CollectionFilter setCollection={setCollection} />
-            <RarityFilter setSort={setSort} />
-          </HStack>
-          <Spacer />
-          <QuickView />
-        </Flex>
-        <Divider my={1} borderColor="#16171b" />
-      </Container>
+    <Box pb={20} pt={3}>
+      <InventoryStats totalnfts={allTokens} />
+      <PaginationButtons
+        setPage={setPage}
+        page={page}
+        tokensLength={tokensShowing.length}
+      />
       <Center mt={2}>
-        {sortedTokens.length > 0 ? (
+        {tokensShowing.length > 0 ? (
           <>
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
-              pb={5}
-              gap={2}
+              gap={5}
               mx={2}
               maxW="1250px"
             >
-              {sortedTokens.map((item) => (
-                <SingleNft
-                  tokenId={item}
-                  key={item}
-                  sort={sortBy}
-                  collection={collectionBy}
-                  isInventory={true}
-                  quickView={quickView}
-                />
+              {tokensShowing.map((item) => (
+                <SingleNft tokenId={item} key={item} />
               ))}
             </SimpleGrid>
           </>
@@ -115,7 +98,54 @@ const Inventory = () => {
           </Kbd>
         )}
       </Center>
-    </>
+      <PaginationButtons
+        setPage={setPage}
+        page={page}
+        tokensLength={tokensShowing.length}
+      />
+    </Box>
+  );
+};
+
+const PaginationButtons = ({ setPage, page, tokensLength }) => {
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+  return (
+    <Center m={3}>
+      <Stack
+        direction={"row"}
+        spacing={3}
+        align={"center"}
+        alignSelf={"center"}
+        position={"relative"}
+      >
+        <IconButton
+          bg={buttonBgColor}
+          color={buttonTextColor}
+          size="sm"
+          _hover={{ opacity: "0.9" }}
+          icon={<ArrowLeftIcon />}
+          onClick={() => {
+            setPage(page - 1);
+          }}
+          isDisabled={page === 0}
+        />
+        <IconButton
+          bg={buttonBgColor}
+          color={buttonTextColor}
+          size="sm"
+          icon={<ArrowRightIcon />}
+          _hover={{ opacity: "0.9" }}
+          onClick={() => {
+            setPage(page + 1);
+          }}
+          isDisabled={tokensLength < 20}
+        />
+      </Stack>
+    </Center>
   );
 };
 

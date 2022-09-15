@@ -11,6 +11,7 @@ import {
   Flex,
   IconButton,
   Tooltip,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
@@ -28,24 +29,24 @@ const InventoryStats = ({ totalnfts }) => {
 export default InventoryStats;
 
 function StatsCard({ title, stat, address, onCopy }) {
+  const bgColor = useColorModeValue("White", "#1d1d20");
   return (
     <Stat
       px={{ base: "2", md: "4" }}
       py={{ base: "2", md: "4" }}
-      border={"double"}
       borderRadius="lg"
-      backgroundColor="#16171b"
+      backgroundColor={bgColor}
+      boxShadow="lg"
     >
       <Center>
-        <StatLabel
-          fontWeight={"bold"}
-          fontSize={{ base: "xs", md: "md" }}
-          as="kbd"
-          bgGradient="linear(to-l, #ed1f79, #2dade2)"
-          bgClip="text"
-        >
-          {title}:&nbsp;
-        </StatLabel>
+        {!address ? (
+          <StatLabel
+            fontSize={{ base: "xs", md: "md" }}
+            as="kbd"
+          >
+            {title}:&nbsp;
+          </StatLabel>
+        ) : null}
         {address ? (
           <Tooltip label="Copy address (supports ICP and NFTA)">
             <Flex
@@ -53,33 +54,26 @@ function StatsCard({ title, stat, address, onCopy }) {
               _hover={{ opacity: "0.8", cursor: "pointer" }}
               onClick={() => onCopy()}
             >
-              <Button
-                as={IconButton}
-                icon={<CopyIcon />}
-                size={"xs"}
-                color="#fff"
-                backgroundColor={"#16171b"}
-                _hover={{ backgroundColor: "#16171b" }}
-              ></Button>
               <StatNumber
+                ms={1}
                 fontSize={{ base: "6pt", md: "md" }}
-                fontWeight={"medium"}
                 as="kbd"
-                bgGradient="linear(to-r, #ed1f79, #f15b25)"
-                bgClip="text"
                 overflow="hidden"
               >
                 {stat}
               </StatNumber>
+              <Button
+                as={IconButton}
+                icon={<CopyIcon />}
+                size={"xs"}
+                bg={bgColor}
+              ></Button>
             </Flex>
           </Tooltip>
         ) : (
           <StatNumber
             fontSize={{ base: "xs", md: "md" }}
-            fontWeight={"medium"}
             as="kbd"
-            bgGradient="linear(to-r, #ed1f79, #f15b25)"
-            bgClip="text"
           >
             {stat}
           </StatNumber>
@@ -105,8 +99,7 @@ function BasicStatistics({ nftsTotal }) {
     <Box
       maxW="7xl"
       mx={"auto"}
-      pt={{ base: 0, sm: null, md: 5 }}
-      mt={{ base: -8, sm: null, md: -12 }}
+      pt={{ base: 0, sm: null, md: 10 }}
       px={{ base: 2, sm: 12, md: 17 }}
     >
       <SimpleGrid columns={{ base: 3, md: 3 }} spacing={{ base: 4, lg: 8 }}>

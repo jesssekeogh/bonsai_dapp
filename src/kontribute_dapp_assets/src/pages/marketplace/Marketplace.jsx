@@ -109,10 +109,10 @@ const Marketplace = () => {
 
       startTransition(() => {
         if (sortBy === "0") {
-          setTokensForSale(forSale.slice(page * 12, (page + 1) * 12));
+          setTokensForSale(forSale.slice(page * 20, (page + 1) * 20));
         } else {
           let filtered = sortRarity(forSale, sortBy);
-          setTokensForSale(filtered.slice(page * 12, (page + 1) * 12));
+          setTokensForSale(filtered.slice(page * 20, (page + 1) * 20));
         }
       });
     }
@@ -138,6 +138,11 @@ const Marketplace = () => {
       />
       {Loaded ? (
         <>
+          <PaginationButtons
+            setPage={setPage}
+            page={page}
+            tokensLength={tokensForSale.length}
+          />
           <Center mt={1}>
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
@@ -151,13 +156,11 @@ const Marketplace = () => {
               ))}
             </SimpleGrid>
           </Center>
-          <Center mb={2} mt={-2}>
-            <PaginationButtons
-              setPage={setPage}
-              page={page}
-              tokensLength={tokensForSale.length}
-            />
-          </Center>
+          <PaginationButtons
+            setPage={setPage}
+            page={page}
+            tokensLength={tokensForSale.length}
+          />
         </>
       ) : (
         <LoadingSpinner label="Loading Marketplace" />
@@ -186,35 +189,37 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
     ButtonTextColorDark
   );
   return (
-    <Stack
-      direction={"row"}
-      spacing={3}
-      align={"center"}
-      alignSelf={"center"}
-      position={"relative"}
-    >
-      <IconButton
-        bg={buttonBgColor}
-        color={buttonTextColor}
-        size="sm"
-        _hover={{ opacity: "0.9" }}
-        icon={<ArrowLeftIcon />}
-        onClick={() => {
-          setPage(page - 1);
-        }}
-        isDisabled={page === 0}
-      />
-      <IconButton
-        bg={buttonBgColor}
-        color={buttonTextColor}
-        size="sm"
-        icon={<ArrowRightIcon />}
-        _hover={{ opacity: "0.9" }}
-        onClick={() => {
-          setPage(page + 1);
-        }}
-        isDisabled={tokensLength < 12}
-      />
-    </Stack>
+    <Center mb={2} mt={-2}>
+      <Stack
+        direction={"row"}
+        spacing={3}
+        align={"center"}
+        alignSelf={"center"}
+        position={"relative"}
+      >
+        <IconButton
+          bg={buttonBgColor}
+          color={buttonTextColor}
+          size="sm"
+          _hover={{ opacity: "0.9" }}
+          icon={<ArrowLeftIcon />}
+          onClick={() => {
+            setPage(page - 1);
+          }}
+          isDisabled={page === 0}
+        />
+        <IconButton
+          bg={buttonBgColor}
+          color={buttonTextColor}
+          size="sm"
+          icon={<ArrowRightIcon />}
+          _hover={{ opacity: "0.9" }}
+          onClick={() => {
+            setPage(page + 1);
+          }}
+          isDisabled={tokensLength < 20}
+        />
+      </Stack>
+    </Center>
   );
 };

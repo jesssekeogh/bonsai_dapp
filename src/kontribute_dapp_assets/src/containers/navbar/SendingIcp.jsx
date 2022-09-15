@@ -15,7 +15,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
+  useColorModeValue,
   FormControl,
   FormHelperText,
   createStandaloneToast,
@@ -26,6 +26,12 @@ import {
 } from "@vvv-interactive/nftanvil-react";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { SendingToast, FailedToast, SuccessICPToast } from "../toasts/Toasts";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../colormode/Colors";
 
 const { toast } = createStandaloneToast();
 
@@ -74,25 +80,17 @@ const SendingIcp = ({ isOpen, onClose, user_icp }) => {
     }
   };
 
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
   return (
     <Modal isOpen={isOpen} onClose={closePop} isCentered>
       <ModalOverlay />
-      <ModalContent bg="#141414" color="#fff" mx="10%">
-        <ModalHeader
-          as="kbd"
-          bgGradient="linear(to-l, #ed1f79, #2dade2)"
-          bgClip="text"
-        >
-          ICP:{" "}
-          <Tooltip label="ICP Balance">
-            <Text
-              as="kbd"
-              bgGradient="linear(to-r, #ed1f79, #f15b25)"
-              bgClip="text"
-            >
-              {user_icp}
-            </Text>
-          </Tooltip>
+      <ModalContent mx="10%">
+        <ModalHeader>
+          ICP: {user_icp}
           <FormControl>
             <FormHelperText>
               + 0.0001 ICP in transfer fees paid to IC
@@ -121,8 +119,6 @@ const SendingIcp = ({ isOpen, onClose, user_icp }) => {
               <InputRightElement width="4.5rem">
                 <Button
                   _hover={{ opacity: "0.8" }}
-                  colorScheme="#282828"
-                  bg="#282828"
                   h="1.75rem"
                   size="sm"
                   onClick={() => {
@@ -138,26 +134,14 @@ const SendingIcp = ({ isOpen, onClose, user_icp }) => {
 
         <ModalFooter>
           <Button
-            bg="#17191e"
-            border="1px"
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
+            bg={buttonBgColor}
+            color={buttonTextColor}
             rightIcon={<RiSendPlaneFill />}
-            mr={3}
+            w={"full"}
             _hover={{ opacity: "0.8" }}
             onClick={() => sendICP()}
           >
             Transfer ICP
-          </Button>
-          <Button
-            colorScheme="black"
-            color="#f0e6d3"
-            variant="outline"
-            _hover={{ opacity: "0.8" }}
-            onClick={closePop}
-          >
-            Cancel
           </Button>
         </ModalFooter>
       </ModalContent>

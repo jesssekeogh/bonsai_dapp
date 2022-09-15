@@ -117,8 +117,10 @@ const HomeBanner = () => {
         <LaunchpadBanner
           mainImg={pendragon}
           logoImg={launchpadLogo}
-          link={"/launchpad/pendragon-nft"}
-          name={"Pendragon Quest"}
+          link={
+            "/marketplace/a00b8f555f7b02edaf9854ea727e83adb7e6b84cca023f784d70369e5223cfd5"
+          }
+          name={"Pendragon Quest now trading on the marketplace"}
         />
       </Stack>
     </Container>

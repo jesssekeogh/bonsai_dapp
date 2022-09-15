@@ -149,7 +149,7 @@ const Profile = () => {
             </MenuItem>
             <NavLink to="/inventory">
               <MenuItem closeOnSelect icon={<IoIosImages />}>
-                NFT Inventory
+                NFTs
               </MenuItem>
             </NavLink>
             <NavLink to={"/stories/author/" + userId}>
