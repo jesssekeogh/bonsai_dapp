@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Button, useBreakpointValue, Stack, Spinner } from "@chakra-ui/react";
+import { Button, useColorModeValue, Stack, Spinner } from "@chakra-ui/react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../../declarations/story";
 import { FailedToast } from "../../../containers/toasts/Toasts";
 import { useSelector } from "react-redux";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../../containers/colormode/Colors";
 
 const LikeButton = ({ storyId }) => {
   const isLogged = useSelector((state) => state.Profile.loggedIn);
@@ -57,17 +63,20 @@ const LikeButton = ({ storyId }) => {
     };
   }, [liking]);
 
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
   return (
     <>
       <Stack align={"center"} direction={"row"}>
         <Button
-          bg="#17191e"
-          border="1px"
-          size={useBreakpointValue(["sm", "md"])}
+          size={"md"}
           maxW={"150px"}
-          borderColor="#9d8144"
-          color="#f0e6d3"
-          colorScheme="#17191e"
+          bg={buttonBgColor}
+          color={buttonTextColor}
           _hover={{ opacity: "0.8" }}
           rightIcon={
             liking ? (

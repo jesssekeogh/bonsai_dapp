@@ -9,6 +9,12 @@ import {
   Divider,
   useBreakpointValue,
   Skeleton,
+  useColorModeValue,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from "@chakra-ui/react";
 import { CreateButton, StorySummary, FeaturedBox } from "./s_components";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
@@ -16,17 +22,23 @@ import { createStoryActor } from "../../../../declarations/story";
 import BonsaiBG from "../../../assets/Bonsai_Warriors_Background_1.png";
 import PendragonBG from "../../../assets/pendragon.png";
 import GalacticBG from "../../../assets/galactic_guardians.png";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../containers/colormode/Colors";
 
 const mostLikedAmount = 4; // temporary thing until we add pages for each section
 const amountOfStories = 12;
 const allStories = 10000;
 
 const bonsaiAuthor =
-  "7xvg3-yvl47-x2bkx-tg6yr-hdn6p-xtzti-qiwha-gwdqt-pix4u-7ie7i-3qe";
+  "/stories/author/7xvg3-yvl47-x2bkx-tg6yr-hdn6p-xtzti-qiwha-gwdqt-pix4u-7ie7i-3qe";
 const pendragonAuthor =
-  "ehjp3-bl645-t6go7-f2zyt-xxvyl-els4v-iocym-gsxli-mzj5v-tdwau-wae";
+  "/stories/author/ehjp3-bl645-t6go7-f2zyt-xxvyl-els4v-iocym-gsxli-mzj5v-tdwau-wae";
 const galacticAuthor =
-  "bmh3h-sqpdm-fdzbn-z7fpg-ekftw-6gnvr-wp4gf-le5lb-6tef6-lyhuj-pae";
+  "/stories/author/bmh3h-sqpdm-fdzbn-z7fpg-ekftw-6gnvr-wp4gf-le5lb-6tef6-lyhuj-pae";
 
 const Stories = () => {
   useEffect(() => {
@@ -35,11 +47,29 @@ const Stories = () => {
 
   return (
     <>
-      <Container maxW={"7xl"} mt={{ base: -10, md: -2 }} mb={5}>
+      <Container maxW={"8xl"} mb={5} pt={5} pb={10}>
         <CreateButton />
         <FeaturedGrid />
-        <MostlikedGrid />
-        <RecentGrid />
+
+        <Tabs variant="soft-rounded" colorScheme="gray" m={5}>
+          <TabList>
+            <Tab>
+              <Heading size="lg">Most Liked</Heading>
+            </Tab>
+            <Tab>
+              <Heading size="lg">Recent</Heading>
+            </Tab>
+          </TabList>
+          <Divider mt={5} />
+          <TabPanels>
+            <TabPanel>
+              <MostlikedGrid />
+            </TabPanel>
+            <TabPanel>
+              <RecentGrid />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Container>
     </>
   );
@@ -50,17 +80,24 @@ export default Stories;
 const FeaturedGrid = () => {
   return (
     <>
-      <Heading my={1} bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
-        Featured
-      </Heading>
-      <Divider my={2} borderColor="#16171b" />
-      <>
-        <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
-          <FeaturedBox author={galacticAuthor} img={GalacticBG} />
-          <FeaturedBox author={pendragonAuthor} img={PendragonBG} />
-          <FeaturedBox author={bonsaiAuthor} img={BonsaiBG} />
-        </SimpleGrid>
-      </>
+      <Heading my={3}>Featured</Heading>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} pb={5} gap={3} mx={2}>
+        <FeaturedBox
+          link={galacticAuthor}
+          mainImg={GalacticBG}
+          name={"Galactic Guardians"}
+        />
+        <FeaturedBox
+          link={pendragonAuthor}
+          mainImg={PendragonBG}
+          name={"Pendragon Quest"}
+        />
+        <FeaturedBox
+          link={bonsaiAuthor}
+          mainImg={BonsaiBG}
+          name={"Bonsai Warriors"}
+        />
+      </SimpleGrid>
     </>
   );
 };
@@ -96,10 +133,6 @@ const RecentGrid = () => {
 
   return (
     <>
-      <Heading my={1} bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
-        Recent
-      </Heading>
-      <Divider my={2} borderColor="#16171b" />
       {loaded ? (
         <>
           <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
@@ -113,7 +146,7 @@ const RecentGrid = () => {
           />
         </>
       ) : (
-        <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
           <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
           <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
           <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
@@ -127,19 +160,21 @@ const RecentGrid = () => {
 const ViewAllButton = ({ current, setAmount }) => {
   const [clicked, setClicked] = useState(false);
 
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
   return (
     <Stack direction={"row"}>
       <Spacer />
       <Button
         mt={8}
-        colorScheme="#282828"
-        bg="#282828"
-        rounded={"full"}
+        bg={buttonBgColor}
+        color={buttonTextColor}
         size={useBreakpointValue(["sm", "md"])}
         px={5}
         _hover={{
-          transform: "translateY(-2px)",
-          boxShadow: "lg",
           opacity: "0.8",
         }}
         isDisabled={clicked}
@@ -178,7 +213,7 @@ const MostlikedGrid = () => {
     );
 
     if (isMounted) {
-      setStoryIds(sorted.slice(0, 4));
+      setStoryIds(sorted.slice(0, 12));
 
       setLoaded(true);
     }
@@ -193,20 +228,16 @@ const MostlikedGrid = () => {
 
   return (
     <>
-      <Heading my={1} bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
-        Most Liked
-      </Heading>
-      <Divider my={2} borderColor="#16171b" />
       {loaded ? (
         <>
-          <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
             {storyIds.map((item) => (
               <StorySummary key={item.storyId} storyId={item.storyId} />
             ))}
           </SimpleGrid>
         </>
       ) : (
-        <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
           <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
           <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />
           <Skeleton height={{ base: "150px", md: "200px" }} borderRadius="lg" />

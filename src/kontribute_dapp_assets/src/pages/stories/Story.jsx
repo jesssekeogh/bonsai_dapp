@@ -20,6 +20,10 @@ import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
 import { LikeButton, DeleteButton } from "./s_components";
 import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
@@ -50,17 +54,13 @@ const Story = () => {
     };
   }, []);
 
-  const textColor = useColorModeValue(TextColorLight, TextColorDark)
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
-    <Container minW={{ md: "2xl" }} mt={10}>
+    <Container minW={{ md: "3xl" }} pt={10} pb={12}>
       {loaded ? (
         <>
           <Center>
-            <Heading
-              mb={2}
-              as={"h2"}
-              color={textColor}
-            >
+            <Heading mb={2} as={"h2"} color={textColor}>
               {story.story.title}
             </Heading>
           </Center>
@@ -98,21 +98,24 @@ const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
     show = true;
   }
 
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
   return (
     <>
       <Stack direction="row" align="center">
         <Stack direction={"column"} my={5}>
           <Link to={"/marketplace/" + authorAddress}>
             <Button
-              colorScheme="#282828"
-              bg="#282828"
-              rounded={"full"}
+              bg={buttonBgColor}
+              color={buttonTextColor}
               size={useBreakpointValue(["sm", "md"])}
               rightIcon={<BsImage />}
               px={4}
               _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
                 opacity: "0.8",
               }}
               disabled={authorAddress.length !== 64}
@@ -122,22 +125,15 @@ const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
           </Link>
           <Link to={"/stories/author/" + authorPrincipal}>
             <Button
-              colorScheme="#282828"
-              bg="#282828"
-              rounded={"full"}
+              bg={buttonBgColor}
+              color={buttonTextColor}
               size={useBreakpointValue(["sm", "md"])}
               px={4}
               _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
                 opacity: "0.8",
               }}
             >
-              {`Author: ${authorPrincipal
-                .toString()
-                .substring(0, 6)}...${authorPrincipal
-                .toString()
-                .substring(57, 63)}`}
+              {`Authors Stories`}
             </Button>
           </Link>
         </Stack>
@@ -160,14 +156,19 @@ const BackButton = () => {
     prevLink = path.state.prev;
   }
 
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
   return (
     <Link to={prevLink}>
       <Button
-        colorScheme="#282828"
-        bg="#282828"
-        rounded={"full"}
+        bg={buttonBgColor}
+        color={buttonTextColor}
         px={5}
-        my={5}
+        my={3}
         size="sm"
         _hover={{ opacity: "0.8" }}
       >

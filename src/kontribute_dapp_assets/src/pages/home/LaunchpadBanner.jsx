@@ -7,11 +7,12 @@ import {
   VStack,
   Skeleton,
   Image as ChakraImage,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-import { HeadingColorLight } from "../../containers/colormode/Colors";
 
 const LaunchpadBanner = ({ mainImg, logoImg, link, name }) => {
+  const bgColor = useColorModeValue("White", "#1d1d20");
   return (
     <NavLink to={link}>
       <Flex
@@ -24,14 +25,14 @@ const LaunchpadBanner = ({ mainImg, logoImg, link, name }) => {
         <Box
           role={"group"}
           w={"auto"}
-          backgroundColor={"#fff"}
+          backgroundColor={bgColor}
           rounded={"lg"}
           boxShadow="md"
         >
           <Box rounded={"lg"} pos={"relative"} overflow="hidden">
             <ChakraImage
               transform="scale(1.0)"
-              bg="#fff"
+              bg={bgColor}
               rounded={"lg"}
               height={["250px", null, "350px"]}
               width={"auto"}
@@ -53,18 +54,13 @@ const LaunchpadBanner = ({ mainImg, logoImg, link, name }) => {
             />
             <VStack px={3} align={"start"} justify={"space-between"}>
               <Text
-                color={HeadingColorLight}
                 casing={"uppercase"}
                 fontSize={{ base: "6pt", sm: "xs", md: "xs" }}
                 mb={-2}
               >
                 Latest NFT Collection
               </Text>
-              <Heading
-                fontSize={{ base: "xs", sm: "xs", md: "md" }}
-                as="u"
-                color={HeadingColorLight}
-              >
+              <Heading fontSize={{ base: "xs", sm: "xs", md: "md" }} as="u">
                 {name}
               </Heading>
             </VStack>

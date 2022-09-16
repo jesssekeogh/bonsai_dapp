@@ -26,7 +26,6 @@ import {
   TextColorLight,
 } from "../../containers/colormode/Colors";
 import PopularDrops from "./PopularDrops";
-import InterestingNFTs from "./InterestingNFTs";
 import powered from "../../../assets/powered.dark.svg";
 import SocialProof from "./SocialProof";
 
@@ -50,7 +49,6 @@ const Home = () => {
       />
       <HomeBanner />
       <PopularDrops />
-      <InterestingNFTs />
       <SocialProof />
       <Center pt={20}>
         <ChakraImage w={"250px"} fit="cover" src={powered} />

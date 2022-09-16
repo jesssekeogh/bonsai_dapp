@@ -1,16 +1,19 @@
 import React from "react";
-import {
-  SendingToast,
-  SuccessToast,
-} from "../../../containers/toasts/Toasts";
+import { SendingToast, SuccessToast } from "../../../containers/toasts/Toasts";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../../declarations/story";
 import { MdDelete } from "react-icons/md";
 import {
   Button,
-  useBreakpointValue,
   createStandaloneToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../../containers/colormode/Colors";
 
 const { toast } = createStandaloneToast();
 
@@ -27,16 +30,19 @@ const DeleteButton = ({ storyId }) => {
     SuccessToast("Success!", `Story with ID ${storyId} deleted`);
   };
 
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
   return (
     <Button
-      bg="#17191e"
-      border="1px"
-      size={useBreakpointValue(["sm", "md"])}
+      bg={buttonBgColor}
+      color={buttonTextColor}
+      size={"md"}
       maxW={"150px"}
-      borderColor="#9d8144"
       mx={2}
-      color="#f0e6d3"
-      colorScheme="#17191e"
       _hover={{ opacity: "0.8" }}
       rightIcon={<MdDelete />}
       onClick={() => {

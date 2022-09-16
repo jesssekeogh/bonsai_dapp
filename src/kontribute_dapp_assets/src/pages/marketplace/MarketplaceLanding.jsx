@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 import {
   Box,
   Heading,
-  Text,
   SlideFade,
   Image as ChakraImage,
-  Text,
   HStack,
   Skeleton,
   Center,

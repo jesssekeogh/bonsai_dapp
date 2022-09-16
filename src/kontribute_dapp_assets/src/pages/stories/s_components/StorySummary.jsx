@@ -10,11 +10,16 @@ import {
   Spacer,
   Flex,
   Button,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../../declarations/story";
 import { useSelector } from "react-redux";
+import {
+  TextColorDark,
+  TextColorLight,
+} from "../../../containers/colormode/Colors";
 
 const StorySummary = ({ storyId }) => {
   const isLogged = useSelector((state) => state.Profile.loggedIn);
@@ -55,34 +60,35 @@ const StorySummary = ({ storyId }) => {
     };
   }, []);
 
+  const bgColor = useColorModeValue("White", "#1d1d20");
+  const color = useColorModeValue("#e5e8eb", "#1a1a1a");
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
+
   return (
     <NavLink to={"/stories/story/" + storyId} state={{ prev: path.pathname }}>
       <Box
         w={"full"}
-        border={"double"}
         borderRadius="lg"
-        backgroundColor="#16171b"
-        boxShadow={"2xl"}
+        boxShadow={"base"}
+        _hover={{
+          transform: "translateY(-2px)",
+          boxShadow: "lg",
+        }}
         height={["150px", null, "220px"]}
+        border={"2px"}
+        borderColor={color}
+        bg={bgColor}
+        color={textColor}
       >
-        <Box
-          p={[3, null, 6]}
-          overflow={"hidden"}
-          height={["150px", null, "220px"]}
-        >
+        <Box p={[3, null, 6]} overflow={"hidden"}>
           <Stack
             spacing={0}
             align={"left"}
-            mb={5}
             height={["75px", null, "125px"]}
             overflow="hidden"
           >
             {loaded ? (
-              <Heading
-                fontSize={["8pt", null, "lg"]}
-                bgGradient="linear(to-t, #705025, #a7884a)"
-                bgClip="text"
-              >
+              <Heading fontSize={["8pt", null, "lg"]}>
                 {loaded ? storyData.story.title : <Skeleton />}
               </Heading>
             ) : (
@@ -91,45 +97,42 @@ const StorySummary = ({ storyId }) => {
             {loaded ? (
               <Text
                 fontWeight={600}
-                color="#f0e6d3"
                 fontSize={["7pt", null, "md"]}
                 dangerouslySetInnerHTML={{
                   __html:
-                    decodeURIComponent(storyData.story.story).substring(0, 70) +
-                    "...",
+                    decodeURIComponent(storyData.story.story).substring(
+                      0,
+                      100
+                    ) + "...",
                 }}
               />
             ) : (
               <SkeletonText mt="4" noOfLines={4} spacing="2" />
             )}
           </Stack>
-          {loaded ? (
-            <>
-              <Flex m={1}>
-                <Stack direction="column">
-                  <Text
-                    mt={1}
-                    color={"gray.500"}
-                    fontSize={["6pt", null, "sm"]}
-                  >
-                    Story ID: {storyData.storyId.toString()}
-                  </Text>
-                </Stack>
-                <Spacer />
-                <TotalLikes
-                  likes={storyData.totalVotes.toString()}
-                  isLiked={isLiked}
-                />
-              </Flex>
-            </>
-          ) : (
-            <Flex>
-              <Skeleton height="15px" width="80px" />
-              <Spacer />
-              <Skeleton height="20px" width="40px" />
-            </Flex>
-          )}
         </Box>
+        {loaded ? (
+          <>
+            <Flex px={4}>
+              <Stack direction="column">
+                <Text mt={1} fontSize={["6pt", null, "sm"]}>
+                  Story ID: {storyData.storyId.toString()}
+                </Text>
+              </Stack>
+              <Spacer />
+              <TotalLikes
+                likes={storyData.totalVotes.toString()}
+                isLiked={isLiked}
+              />
+            </Flex>
+          </>
+        ) : (
+          <Flex px={4}>
+            <Skeleton height="15px" width="70px" />
+            <Spacer />
+            <Skeleton height="20px" width="40px" />
+          </Flex>
+        )}
       </Box>
     </NavLink>
   );

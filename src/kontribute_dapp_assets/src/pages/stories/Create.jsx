@@ -11,7 +11,7 @@ import {
   Spacer,
   Wrap,
   Button,
-  useBreakpointValue,
+  useColorModeValue,
   Editable,
   EditableInput,
   EditablePreview,
@@ -33,6 +33,12 @@ import {
   SuccessToast,
 } from "../../containers/toasts/Toasts";
 import { Usergeek } from "usergeek-ic-js";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../containers/colormode/Colors";
 
 const HowTo = "https://medium.com/@teambonsai.icp/c5c2cc3c404b";
 
@@ -99,54 +105,61 @@ const Create = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
   return (
     <div className="story">
-      <Container maxW="4xl" mt={{ base: -10, md: -2 }}>
+      <Container maxW="5xl" py={10} pb={12}>
         <Box mb={2}>
           <EditTitle setTitle={setTitle} />
         </Box>
-        <CKEditor
-          editor={ClassicEditor}
-          config={{
-            toolbar: ["Heading", "bold", "italic", "|", "undo", "redo"],
-            placeholder:
-              "In the Celestial Empire, there are laws that must be obeyed, laws which bind all mankind into one great and inexhaustible force. None can defeat the boundless spirit and drive of the peoples of this great empire. ",
-            heading: {
-              options: [
-                {
-                  model: "heading2",
-                  view: "h3",
-                  title: "Heading",
-                  class: "ck-heading_heading2",
-                },
-                {
-                  model: "heading3",
-                  view: "h4",
-                  title: "Heading 2",
-                  class: "ck-heading_heading3",
-                },
-                {
-                  model: "paragraph",
-                  title: "Paragraph",
-                  class: "ck-heading_paragraph",
-                },
-              ],
-            },
-          }}
-          onChange={(event, editor) => {
-            SaveData(editor);
-          }}
-        />
-        <Flex mb={2} alignItems={"center"}>
+        <Box color="black">
+          <CKEditor
+            editor={ClassicEditor}
+            config={{
+              toolbar: ["Heading", "bold", "italic", "|", "undo", "redo"],
+              placeholder:
+                "In the Celestial Empire, there are laws that must be obeyed, laws which bind all mankind into one great and inexhaustible force. None can defeat the boundless spirit and drive of the peoples of this great empire. ",
+              heading: {
+                options: [
+                  {
+                    model: "heading2",
+                    view: "h3",
+                    title: "Heading",
+                    class: "ck-heading_heading2",
+                  },
+                  {
+                    model: "heading3",
+                    view: "h4",
+                    title: "Heading 2",
+                    class: "ck-heading_heading3",
+                  },
+                  {
+                    model: "paragraph",
+                    title: "Paragraph",
+                    class: "ck-heading_paragraph",
+                  },
+                ],
+              },
+            }}
+            onChange={(event, editor) => {
+              SaveData(editor);
+            }}
+          />
+        </Box>
+        <Flex alignItems={"center"}>
           <Box>
             <Wrap
+              p={2}
               align="center"
-              my={2}
               fontWeight={600}
-              color="#f0e6d3"
               fontSize={["sm", null, "md"]}
             >
-              Your
+              Link your NFTs and add your
               <a
                 href={"https://nftanvil.com/mint"}
                 target="_blank"
@@ -180,18 +193,15 @@ const Create = () => {
           </Box>
           <Spacer />
           <Button
-            bg="#17191e"
-            border="1px"
-            size={useBreakpointValue(["sm", "md"])}
-            borderColor="#9d8144"
-            color="#f0e6d3"
-            colorScheme="#17191e"
+            size={"md"}
+            bg={buttonBgColor}
+            color={buttonTextColor}
             _hover={{ opacity: "0.8" }}
             rightIcon={<MdOutlinePublishedWithChanges />}
             onClick={() => PostStory()}
             disabled={posting}
           >
-            Publish
+            Post
           </Button>
         </Flex>
         <Flex>
@@ -221,8 +231,6 @@ const EditTitle = ({ setTitle }) => {
       placeholder="Story Title ✍️ "
       fontSize="2xl"
       isPreviewFocusable={false}
-      bgGradient="linear(to-t, #705025, #a7884a)"
-      bgClip="text"
       fontWeight={800}
       onChange={(e) => {
         setTitle(e);
@@ -246,25 +254,12 @@ const EditableControls = () => {
   } = useEditableControls();
   return isEditing ? (
     <ButtonGroup justifyContent="center" size="sm" mx={2}>
-      <IconButton
-        color="#16171b"
-        icon={<CheckIcon />}
-        {...getSubmitButtonProps()}
-      />
-      <IconButton
-        color="#16171b"
-        icon={<CloseIcon />}
-        {...getCancelButtonProps()}
-      />
+      <IconButton icon={<CheckIcon />} {...getSubmitButtonProps()} />
+      <IconButton icon={<CloseIcon />} {...getCancelButtonProps()} />
     </ButtonGroup>
   ) : (
     <Flex justifyContent="center" mx={2}>
-      <IconButton
-        size="sm"
-        color="#16171b"
-        icon={<EditIcon />}
-        {...getEditButtonProps()}
-      />
+      <IconButton size="sm" icon={<EditIcon />} {...getEditButtonProps()} />
     </Flex>
   );
 };

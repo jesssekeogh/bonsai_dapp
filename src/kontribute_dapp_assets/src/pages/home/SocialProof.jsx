@@ -18,7 +18,7 @@ const SocialProof = () => {
   const { colorMode } = useColorMode();
   return (
     <>
-      <Center pt={15}>
+      <Center pt={20}>
         <SimpleGrid
           columns={{ base: 1, md: 3, lg: 3 }}
           py={5}

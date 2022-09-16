@@ -32,8 +32,6 @@ const CheckStats = () => {
   const [collectionStats, setCollectionStats] = useState({});
   const [userNftCount, setUserNftCount] = useState(0);
 
-  console.log("mounted");
-
   const load = async () => {
     setLoading(true);
 
