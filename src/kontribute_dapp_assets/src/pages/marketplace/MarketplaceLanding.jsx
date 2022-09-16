@@ -114,7 +114,7 @@ const CollectionThumb = ({ colimg, title, authorimg, link }) => {
               <ChakraImage
                 transform="scale(1.0)"
                 src={colimg}
-                fallback={<Skeleton height={"auto"} borderRadius="lg" />}
+                fallback={<Skeleton height={250} borderRadius="lg" />}
                 objectFit="contain"
                 transition="0.3s ease-in-out"
                 _hover={{

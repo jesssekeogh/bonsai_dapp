@@ -1,4 +1,6 @@
 import type { Principal } from '@dfinity/principal';
+import type { ActorMethod } from '@dfinity/agent';
+
 export type Result = { 'ok' : string } |
   { 'err' : string };
 export type Result_1 = { 'ok' : Array<bigint> } |
@@ -30,16 +32,16 @@ export interface StoryText {
   'address' : [] | [string],
 }
 export interface _SERVICE {
-  'add' : (arg_0: StoryText) => Promise<Result>,
-  'adminDelete' : (arg_0: bigint) => Promise<Result>,
-  'delete' : (arg_0: bigint) => Promise<Result>,
-  'get' : (arg_0: bigint) => Promise<Result_3>,
-  'getAllStories' : () => Promise<Result_2>,
-  'getDebug' : () => Promise<any>,
-  'getMemorySize' : () => Promise<bigint>,
-  'getStoryIds' : (arg_0: bigint) => Promise<Result_1>,
-  'getUserLikedStories' : () => Promise<Result_1>,
-  'getUserStories' : (arg_0: string) => Promise<Result_1>,
-  'like' : (arg_0: bigint) => Promise<Result>,
-  'whoami' : () => Promise<Principal>,
+  'add' : ActorMethod<[StoryText], Result>,
+  'adminDelete' : ActorMethod<[bigint], Result>,
+  'delete' : ActorMethod<[bigint], Result>,
+  'get' : ActorMethod<[bigint], Result_3>,
+  'getAllStories' : ActorMethod<[], Result_2>,
+  'getDebug' : ActorMethod<[], any>,
+  'getMemorySize' : ActorMethod<[], bigint>,
+  'getStoryIds' : ActorMethod<[bigint], Result_1>,
+  'getUserLikedStories' : ActorMethod<[], Result_1>,
+  'getUserStories' : ActorMethod<[string], Result_1>,
+  'like' : ActorMethod<[bigint], Result>,
+  'whoami' : ActorMethod<[], Principal>,
 }

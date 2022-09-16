@@ -89,11 +89,11 @@ const LargeNft = () => {
     };
   }, []);
 
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark)
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
   const buttonTextColor = useColorModeValue(
     ButtonTextColorlight,
     ButtonTextColorDark
-  )
+  );
 
   if (!Loaded) return <LoadingSpinner label="Loading NFT..." />;
   return (
@@ -140,7 +140,10 @@ const LargeNft = () => {
               </Link>
             ) : null}
           </HStack>
-
+          {address ? <Owned tokenId={data.id} /> : null}
+          {data.price > 0 ? (
+            <ForSale Icp={data.price} tokenId={data.id} />
+          ) : null}
           <Box bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
             <Heading
               color={data.color}
@@ -187,10 +190,6 @@ const LargeNft = () => {
               {data.lore}
             </Text>
           </Box>
-          {data.price > 0 ? (
-            <ForSale Icp={data.price} tokenId={data.id} />
-          ) : null}
-          {address ? <Owned tokenId={data.id} /> : null}
         </Stack>
       </Stack>
     </Center>
