@@ -112,7 +112,6 @@ const BuyButton = ({ tokenId, price, usd }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const address = useAnvilSelector((state) => state.user.address);
   const dispatch = useAnvilDispatch();
-
   // 0.01icp= 001000000 e8s
 
   const PurchaseNft = async () => {

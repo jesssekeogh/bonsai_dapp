@@ -50,8 +50,8 @@ const MarketplaceLanding = () => {
               borderRadius="lg"
               bg={bgColor}
             >
-              Own NFTs of characters, accessories, or anything else from a story
-              featured on Kontribute
+              Collect NFTs of characters, accessories, or anything else from a
+              story featured on Kontribute
             </Heading>
             <NftCards />
           </TabPanel>

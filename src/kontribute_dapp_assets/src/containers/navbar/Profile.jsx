@@ -11,13 +11,12 @@ import {
   MenuDivider,
   Tooltip,
   MenuItem,
-  useBreakpointValue,
   useClipboard,
   useDisclosure,
   Flex,
   Image as ChakraImage,
 } from "@chakra-ui/react";
-import { MdLibraryBooks, MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { MdLibraryBooks } from "react-icons/md";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";

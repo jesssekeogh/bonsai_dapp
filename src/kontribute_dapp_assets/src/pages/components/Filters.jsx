@@ -9,11 +9,12 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-export const RarityFilter = ({ setSort }) => {
+export const RarityFilter = ({ setSort, setPage }) => {
   const [currentSort, setCurrentSort] = useState("All");
   const color = useColorModeValue("#e5e8eb", "#1a1a1a");
 
   const getNumFromRarity = (rarity) => {
+    setPage(0);
     switch (rarity) {
       case "Common":
         setCurrentSort("Common");

@@ -9,9 +9,7 @@ import {
   Image as ChakraImage,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-import {
-  HeadingColorLight,
-} from "../../containers/colormode/Colors";
+import { HeadingColorLight } from "../../containers/colormode/Colors";
 
 const LaunchpadBanner = ({ mainImg, logoImg, link, name }) => {
   return (
@@ -35,7 +33,7 @@ const LaunchpadBanner = ({ mainImg, logoImg, link, name }) => {
               transform="scale(1.0)"
               bg="#fff"
               rounded={"lg"}
-              height={["220px", null, "350px"]}
+              height={["250px", null, "350px"]}
               width={"auto"}
               objectFit={"cover"}
               src={mainImg}

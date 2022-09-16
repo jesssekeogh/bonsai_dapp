@@ -6,6 +6,8 @@ import {
   Stack,
   useColorModeValue,
   Button,
+  Box,
+  Center,
   Image as ChakraImage,
 } from "@chakra-ui/react";
 import { BsPen, BsImage } from "react-icons/bs";
@@ -23,6 +25,10 @@ import {
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
+import PopularDrops from "./PopularDrops";
+import InterestingNFTs from "./InterestingNFTs";
+import powered from "../../../assets/powered.dark.svg";
+import SocialProof from "./SocialProof";
 
 const Home = () => {
   useEffect(() => {
@@ -30,7 +36,7 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <Box pb={28}>
       <ChakraImage
         w={"full"}
         h="80%"
@@ -43,7 +49,13 @@ const Home = () => {
         }}
       />
       <HomeBanner />
-    </>
+      <PopularDrops />
+      <InterestingNFTs />
+      <SocialProof />
+      <Center pt={20}>
+        <ChakraImage w={"250px"} fit="cover" src={powered} />
+      </Center>
+    </Box>
   );
 };
 
@@ -55,23 +67,24 @@ const HomeBanner = () => {
       <Stack
         align={"center"}
         spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}
+        pt={{ base: 20, md: 28 }}
+        pb={20}
         direction={{ base: "column", md: "row" }}
       >
-        <Stack flex={1} spacing={{ base: 5, md: 5 }}>
+        <Stack flex={1} spacing={5}>
           <Heading
             lineHeight={1.1}
             fontWeight={"bold"}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "5xl" }}
+            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
             color={useColorModeValue(HeadingColorLight, HeadingColorDark)}
           >
-            Discover stories, collect, sell and explore NFTs
+            Discover stories and explore NFTs
           </Heading>
           <Text
             fontSize={{ base: "xl", md: "3xl" }}
             color={useColorModeValue(TextColorLight, TextColorDark)}
           >
-            Kontribute is a web3 writing platfrom that brings fun and
+            Kontribute is a web3 creators platform that brings fun and
             interesting use cases to NFTs
           </Text>
           <Stack
@@ -120,7 +133,7 @@ const HomeBanner = () => {
           link={
             "/marketplace/a00b8f555f7b02edaf9854ea727e83adb7e6b84cca023f784d70369e5223cfd5"
           }
-          name={"Pendragon Quest now trading on the marketplace"}
+          name={"Pendragon Quest is now trading on the marketplace!"}
         />
       </Stack>
     </Container>

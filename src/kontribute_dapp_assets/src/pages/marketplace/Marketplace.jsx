@@ -174,7 +174,7 @@ const MarketplaceHeader = ({ setSort, setPricing, pricing, setPage }) => {
     <Container maxWidth="1250px" my={6}>
       <Flex>
         <Spacer />
-        <RarityFilter setSort={setSort} />
+        <RarityFilter setSort={setSort} setPage={setPage}/>
         <LtoH pricing={pricing} setPricing={setPricing} setPage={setPage} />
       </Flex>
     </Container>
