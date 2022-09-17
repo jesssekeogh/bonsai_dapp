@@ -141,13 +141,6 @@ const BuyButton = ({ tokenId, price, usd }) => {
       );
 
       Usergeek.trackEvent("NftPurchase");
-      return navigate("/nft/" + tokenToText(tokenId), {
-        state: {
-          prev: "/marketplace",
-          showConfetti: true,
-          totalNfts: 1,
-        },
-      });
     } catch (e) {
       console.log(e);
       toast.closeAll();

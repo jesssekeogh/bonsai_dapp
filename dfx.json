@@ -8,6 +8,14 @@
       "main": "src/kontribute_dapp/ito.mo",
       "type": "motoko"
     },
+    "index": {
+      "main": "src/kontribute_dapp/canDB/IndexCanister.mo",
+      "type": "motoko"
+    },
+    "helloservice": {
+      "main": "src/kontribute_dapp/canDB/HelloService.mo",
+      "type": "motoko"
+    },
     "kontribute_dapp_assets": {
       "dependencies": [
         "story"

@@ -32,7 +32,22 @@ let additions = [
   , repo = "https://github.com/aviate-labs/principal.mo"
   , version = "v0.2.3"
   , dependencies = [ "array", "base", "hash", "encoding", "sha" ],
-  }
+  },
+    { name = "stable-rbtree"
+  , repo = "https://github.com/canscale/StableRBTree"
+  , version = "v0.6.0"
+  , dependencies = [ "base" ]
+  },
+  { name = "stable-buffer"
+  , repo = "https://github.com/canscale/StableBuffer"
+  , version = "v0.2.0"
+  , dependencies = [ "base" ]
+  },
+  { name = "candb"
+  , repo = "git@github.com:canscale/CanDB.git"
+  , version = "alpha"
+  , dependencies = [ "base" ]
+  },
 ]
 
 in  upstream # additions

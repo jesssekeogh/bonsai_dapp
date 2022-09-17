@@ -29,7 +29,6 @@ import {
   ButtonTextColorlight,
 } from "../../containers/colormode/Colors";
 
-const mostLikedAmount = 4; // temporary thing until we add pages for each section
 const amountOfStories = 12;
 const allStories = 10000;
 

@@ -1,0 +1,23 @@
+type ScalingOptions = 
+ record {
+   autoScalingCanisterId: text;
+   sizeLimit: ScalingLimitType;
+ };
+type ScalingLimitType = 
+ variant {
+   count: nat;
+   heapSize: nat;
+ };
+type HelloService = 
+ service {
+   getPK: () -> (text) query;
+   greetUser: (text) -> (opt text) query;
+   putUser: (text, text) -> ();
+   skExists: (text) -> (bool) query;
+   transferCycles: () -> ();
+ };
+service : (record {
+             owners: opt vec principal;
+             partitionKey: text;
+             scalingOptions: ScalingOptions;
+           }) -> HelloService

@@ -11,6 +11,7 @@ import {
   Story,
   AuthorStories,
   PendragonNft,
+  ScalableStories
 } from "./pages";
 import { Box, useColorMode } from "@chakra-ui/react";
 import { CheckStats } from "./tools";
@@ -36,6 +37,7 @@ function App() {
           <Route path="/marketplace/:author" element={<Marketplace />} />
           <Route path="/nft/:tokenid" element={<LargeNft />} />
           <Route path="/stories" element={<Stories />} />
+          <Route path="/stories/candb" element={<ScalableStories />} />
           <Route path="/stories/create" element={<Create />} />
           <Route path="/stories/story/:storyId" element={<Story />} />
           <Route

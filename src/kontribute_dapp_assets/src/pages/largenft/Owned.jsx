@@ -58,20 +58,26 @@ const checkSupport = (address) => {
 // shows if owned on large NFT view
 const Owned = ({ tokenId }) => {
   const anvilDispatch = useAnvilDispatch();
-  const loaded = useAnvilSelector((state) => state.user.map.history);
   const [loadComponent, setLoadComponent] = useState(false);
 
   const fetchOwned = async () => {
-    if (loaded) {
-      const tokens = await anvilDispatch(GetMine());
-      if (tokens.includes(tokenFromText(tokenId))) {
-        setLoadComponent(true);
-      }
+    const tokens = await anvilDispatch(GetMine());
+    
+    if (tokens.includes(tokenFromText(tokenId))) {
+      setLoadComponent(true);
+    } else {
+      setLoadComponent(false);
     }
   };
 
   useEffect(() => {
     fetchOwned();
+    const interval = setInterval(() => {
+      fetchOwned();
+    }, 3000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   if (!loadComponent) return null;
@@ -236,8 +242,11 @@ const SellButton = ({ tokenId }) => {
     }
   };
 
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark)
-  const buttonTextColor = useColorModeValue(ButtonTextColorlight, ButtonTextColorDark)
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
   return (
     <>
       <Button

@@ -1,0 +1,5 @@
+service : {
+  createAdditionalCanisterForPK: (text) -> (text);
+  createHelloServiceCanisterByRegion: (text) -> (opt text);
+  getCanistersByPK: (text) -> (vec text) query;
+}
