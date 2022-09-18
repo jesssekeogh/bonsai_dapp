@@ -12,8 +12,8 @@
       "main": "src/kontribute_dapp/canDB/IndexCanister.mo",
       "type": "motoko"
     },
-    "helloservice": {
-      "main": "src/kontribute_dapp/canDB/HelloService.mo",
+    "userservice": {
+      "main": "src/kontribute_dapp/canDB/UserService.mo",
       "type": "motoko"
     },
     "kontribute_dapp_assets": {

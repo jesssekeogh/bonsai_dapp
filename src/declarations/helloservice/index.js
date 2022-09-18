@@ -35,4 +35,4 @@ export const createActor = (canisterId, options) => {
  * A ready-to-use agent for the helloservice canister
  * @type {import("@dfinity/agent").ActorSubclass<import("./helloservice.did.js")._SERVICE>}
  */
-// export const helloservice = createActor(canisterId);
+export const helloservice = createActor(canisterId);

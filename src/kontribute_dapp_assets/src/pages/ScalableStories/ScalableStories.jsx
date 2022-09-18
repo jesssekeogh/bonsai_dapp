@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { greetUser, putUser } from "./api";
-import { startHelloServiceClient, startIndexClient } from "./client";
 import { Text, Heading, Input, Button, Container } from "@chakra-ui/react";
-
-const indexClient = startIndexClient();
-const helloServiceClient = startHelloServiceClient(indexClient);
 
 const ScalableStories = () => {
   const [greetName, setGreetName] = useState("");
@@ -16,16 +12,13 @@ const ScalableStories = () => {
   const region = "us-east-1";
 
   async function getUserGreeting() {
-    const funcs = await indexClient.indexCanisterActor.getCanistersByPK('region#us-east-1')
-
-    console.log(funcs)
     if (greetName === "") {
       let errorText = "must enter a name to try to greet";
       console.error(errorText);
       setGreetErrorText(errorText);
     } else {
       setGreetErrorText("");
-      let greeting = await greetUser(helloServiceClient, region, greetName);
+      let greeting = await greetUser(region, greetName);
       console.log("response", greeting);
       setGreetingResponse(greeting);
     }
@@ -43,7 +36,7 @@ const ScalableStories = () => {
         region
       );
       // create the new user
-      putUser(helloServiceClient, region, name, zipCode);
+      putUser(region, name, zipCode);
     }
   }
 

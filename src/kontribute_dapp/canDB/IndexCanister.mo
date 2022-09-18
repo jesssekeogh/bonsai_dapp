@@ -7,7 +7,7 @@ import Text "mo:base/Text";
 import CA "mo:candb/CanisterActions";
 import CanisterMap "mo:candb/CanisterMap";
 import Buffer "mo:stable-buffer/StableBuffer";
-import HelloService "./HelloService";
+import UserService "./UserService";
 
 shared ({caller = owner}) actor class IndexCanister() = this {
   /// @required stable variable (Do not delete or change)
@@ -42,19 +42,15 @@ shared ({caller = owner}) actor class IndexCanister() = this {
   ///
   /// If the developer does not utilize this method, auto-scaling will NOT work
   public shared({caller = caller}) func createAdditionalCanisterForPK(pk: Text): async Text {
-    if (Text.startsWith(pk, #text("region"))) {
-      await createHelloServiceCanister(pk, ?[owner, Principal.fromActor(this)])
-    } else {
-      throw Error.reject("creation of additional canister case not covered");
-    };
+    await createUserServiceCanister(pk, ?[owner, Principal.fromActor(this)])
   };
 
   // Partition HelloService canisters by the region passed in
-  public shared({caller = creator}) func createHelloServiceCanisterByRegion(region: Text): async ?Text {
-    let pk = "region#" # region;
+  public shared({caller = creator}) func createUserServiceCanisterByPrincipal(principal: Text): async ?Text {
+    let pk = principal;
     let canisterIds = getCanisterIdsIfExists(pk);
     if (canisterIds == []) {
-      ?(await createHelloServiceCanister(pk, ?[owner, Principal.fromActor(this)]));
+      ?(await createUserServiceCanister(pk, ?[owner, Principal.fromActor(this)]));
     // already exists
     } else {
       Debug.print(pk # " already exists, not creating and returning null");
@@ -63,13 +59,13 @@ shared ({caller = owner}) actor class IndexCanister() = this {
   };
 
   // Spins up a new HelloService canister with the provided pk and controllers
-  func createHelloServiceCanister(pk: Text, controllers: ?[Principal]): async Text {
-    Debug.print("creating new hello service canister with pk=" # pk);
+  func createUserServiceCanister(pk: Text, controllers: ?[Principal]): async Text {
+    Debug.print("creating new user service canister with pk=" # pk);
     // Pre-load 300 billion cycles for the creation of a new Hello Service canister
     // Note that canister creation costs 100 billion cycles, meaning there are 200 billion
     // left over for the new canister when it is created
     Cycles.add(300_000_000_000);
-    let newHelloServiceCanister = await HelloService.HelloService({
+    let newUserServiceCanister = await UserService.UserService({
       partitionKey = pk;
       scalingOptions = {
         autoScalingCanisterId = Principal.toText(Principal.fromActor(this));
@@ -77,9 +73,9 @@ shared ({caller = owner}) actor class IndexCanister() = this {
       };
       owners = controllers;
     });
-    let newHelloServiceCanisterPrincipal = Principal.fromActor(newHelloServiceCanister);
+    let newUserServiceCanisterPrincipal = Principal.fromActor(newUserServiceCanister);
     await CA.updateCanisterSettings({
-      canisterId = newHelloServiceCanisterPrincipal;
+      canisterId = newUserServiceCanisterPrincipal;
       settings = {
         controllers = controllers;
         compute_allocation = ?0;
@@ -88,11 +84,11 @@ shared ({caller = owner}) actor class IndexCanister() = this {
       }
     });
 
-    let newHelloServiceCanisterId = Principal.toText(newHelloServiceCanisterPrincipal);
+    let newUserServiceCanisterId = Principal.toText(newUserServiceCanisterPrincipal);
     // After creating the new Hello Service canister, add it to the pkToCanisterMap
-    pkToCanisterMap := CanisterMap.add(pkToCanisterMap, pk, newHelloServiceCanisterId);
+    pkToCanisterMap := CanisterMap.add(pkToCanisterMap, pk, newUserServiceCanisterId);
 
-    Debug.print("new hello service canisterId=" # newHelloServiceCanisterId);
-    newHelloServiceCanisterId;
+    Debug.print("new user service canisterId=" # newUserServiceCanisterId);
+    newUserServiceCanisterId;
   }
 }
