@@ -1,5 +1,5 @@
 service : {
-  createAdditionalCanisterForPK: (text) -> (text);
-  createHelloServiceCanisterByRegion: (text) -> (opt text);
+  autoScaleUserServiceCanister: (text) -> (text);
+  createUserServiceCanisterByPrincipal: (text) -> (opt text);
   getCanistersByPK: (text) -> (vec text) query;
 }

@@ -1,11 +1,12 @@
 export const idlFactory = ({ IDL }) => {
   const IndexCanister = IDL.Service({
-    'createAdditionalCanisterForPK' : IDL.Func([IDL.Text], [IDL.Text], []),
-    'createHelloServiceCanisterByRegion' : IDL.Func(
+    'autoScaleUserServiceCanister' : IDL.Func([IDL.Text], [IDL.Text], []),
+    'createUserServiceCanisterByPrincipal' : IDL.Func(
         [IDL.Text],
         [IDL.Opt(IDL.Text)],
         [],
       ),
+    'deleteUserServiceCanister' : IDL.Func([], [], []),
     'getCanistersByPK' : IDL.Func([IDL.Text], [IDL.Vec(IDL.Text)], ['query']),
   });
   return IndexCanister;

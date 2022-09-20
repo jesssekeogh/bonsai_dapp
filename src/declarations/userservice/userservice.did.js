@@ -1,29 +1,41 @@
 export const idlFactory = ({ IDL }) => {
+  const AutoScalingCanisterSharedFunctionHook = IDL.Func(
+      [IDL.Text],
+      [IDL.Text],
+      [],
+    );
   const ScalingLimitType = IDL.Variant({
     'heapSize' : IDL.Nat,
     'count' : IDL.Nat,
   });
   const ScalingOptions = IDL.Record({
+    'autoScalingHook' : AutoScalingCanisterSharedFunctionHook,
     'sizeLimit' : ScalingLimitType,
-    'autoScalingCanisterId' : IDL.Text,
   });
-  const HelloService = IDL.Service({
+  const Story = IDL.Record({ 'title' : IDL.Text, 'body' : IDL.Text });
+  const UserService = IDL.Service({
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
-    'greetUser' : IDL.Func([IDL.Text], [IDL.Opt(IDL.Text)], ['query']),
-    'putUser' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'getStory' : IDL.Func([IDL.Text], [IDL.Opt(Story)], ['query']),
+    'putStory' : IDL.Func([Story], [], []),
     'skExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'transferCycles' : IDL.Func([], [], []),
+    'whoami' : IDL.Func([], [IDL.Principal], []),
   });
-  return HelloService;
+  return UserService;
 };
 export const init = ({ IDL }) => {
+  const AutoScalingCanisterSharedFunctionHook = IDL.Func(
+      [IDL.Text],
+      [IDL.Text],
+      [],
+    );
   const ScalingLimitType = IDL.Variant({
     'heapSize' : IDL.Nat,
     'count' : IDL.Nat,
   });
   const ScalingOptions = IDL.Record({
+    'autoScalingHook' : AutoScalingCanisterSharedFunctionHook,
     'sizeLimit' : ScalingLimitType,
-    'autoScalingCanisterId' : IDL.Text,
   });
   return [
     IDL.Record({

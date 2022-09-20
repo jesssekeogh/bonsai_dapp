@@ -30,15 +30,20 @@ type AttributeValueRBTreeValue =
     #text : Text;
     #tuple : [AttributeValuePrimitive]
   };
+type AutoScalingCanisterSharedFunctionHook = shared Text -> async Text;
 type Color = {#B; #R};
 type PK = Text;
 type RangeTree = Tree<SK, AttributeMap>;
 type SK = Text;
 type ScalingLimitType = {#count : Nat; #heapSize : Nat};
 type ScalingOptions =
-  {autoScalingCanisterId : Text; sizeLimit : ScalingLimitType};
+  {
+    autoScalingHook : AutoScalingCanisterSharedFunctionHook;
+    sizeLimit : ScalingLimitType
+  };
 type Tree<K, V> = {#leaf; #node : (Color, Tree<K, V>, (K, ?V), Tree<K, V>)};
 actor {
+  stable var _storyId : Nat;
   stable db :
     {
       var count : Nat;

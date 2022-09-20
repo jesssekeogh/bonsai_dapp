@@ -1,0 +1,30 @@
+type UserService = 
+ service {
+   getPK: () -> (text) query;
+   getStory: (text) -> (opt Story) query;
+   putStory: (Story) -> ();
+   skExists: (text) -> (bool) query;
+   transferCycles: () -> ();
+   whoami: () -> (principal);
+ };
+type Story = 
+ record {
+   body: text;
+   title: text;
+ };
+type ScalingOptions = 
+ record {
+   autoScalingHook: AutoScalingCanisterSharedFunctionHook;
+   sizeLimit: ScalingLimitType;
+ };
+type ScalingLimitType = 
+ variant {
+   count: nat;
+   heapSize: nat;
+ };
+type AutoScalingCanisterSharedFunctionHook = func (text) -> (text);
+service : (record {
+             owners: opt vec principal;
+             partitionKey: text;
+             scalingOptions: ScalingOptions;
+           }) -> UserService

@@ -1,73 +1,72 @@
 import React, { useState } from "react";
-import { greetUser, putUser } from "./api";
-import { Text, Heading, Input, Button, Container } from "@chakra-ui/react";
+import { startUserServiceClient, startIndexClient } from "./client";
+import { Text, Heading, Button, Container, Input } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 const ScalableStories = () => {
-  const [greetName, setGreetName] = useState("");
-  const [name, setName] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [greetingResponse, setGreetingResponse] = useState("");
-  const [greetErrorText, setGreetErrorText] = useState("");
-  const [createErrorText, setCreateErrorText] = useState("");
-  const region = "us-east-1";
+  const [story, setStory] = useState({});
+  const [storyId, setStoryId] = useState("");
+  const [newStory, setNewStory] = useState({});
 
-  async function getUserGreeting() {
-    if (greetName === "") {
-      let errorText = "must enter a name to try to greet";
-      console.error(errorText);
-      setGreetErrorText(errorText);
-    } else {
-      setGreetErrorText("");
-      let greeting = await greetUser(region, greetName);
-      console.log("response", greeting);
-      setGreetingResponse(greeting);
+  const pk = useSelector((state) => state.Profile.principal);
+  const indexClient = startIndexClient();
+  const userServiceClient = startUserServiceClient(indexClient);
+
+  async function getStory() {
+    let userStoryQueryResults = await userServiceClient.query(pk, (actor) =>
+      actor.getStory(storyId)
+    );
+
+    let storyData;
+
+    if (userStoryQueryResults[0].value.length > 0) {
+      // handle candid returned optional type (string[] or string)
+      storyData = Array.isArray(userStoryQueryResults[0].value)
+        ? userStoryQueryResults[0].value[0]
+        : userStoryQueryResults[0].value;
     }
+    setStory(storyData);
   }
 
-  async function createUser() {
-    if (name === "" || zipCode == "") {
-      let errorText = "must enter a name and a zipCode for user";
-      console.error(errorText);
-      setCreateErrorText(errorText);
+  const createStory = async () => {
+    if (pk) {
+      // delete a canister:
+      // const del = await indexClient.indexCanisterActor.deleteUserServiceCanister()
+
+      console.log(newStory)
+      // const creation =
+      //   await indexClient.indexCanisterActor.createUserServiceCanisterByPrincipal(
+      //     pk
+      //   );
+
+      // console.log("creation", creation);
+
+      // const update = await userServiceClient.update(pk, "", (actor) =>
+      //   actor.putStory({ title: newStory.title, body: newStory.body })
+      // );
+
+      // console.log("update", update);
     } else {
-      setCreateErrorText("");
-      // create the canister for the partition key if not sure that is exists
-      await indexClient.indexCanisterActor.createHelloServiceCanisterByRegion(
-        region
-      );
-      // create the new user
-      putUser(region, name, zipCode);
+      console.log("not signed in");
     }
-  }
+  };
 
   return (
+    // add story editor
     <Container py={10}>
-      Hello world!
-      <Text mb={2}>Region is {region}</Text>
-      <Heading size="md">
-        Set username to greet
-        <Input
-          value={greetName}
-          onChange={(ev) => setGreetName(ev.target.value)}
-        />
-      </Heading>
-      <Button type="button" onClick={getUserGreeting}>
-        Get user greeting
+      <Heading>{story.title}</Heading>
+      <Text>{story.body}</Text>
+      <Input
+        placeholder="1"
+        value={storyId}
+        onChange={(e) => setStoryId(e.target.value)}
+      />
+      <Button type="button" onClick={() => getStory()}>
+        Get Story
       </Button>
-      <Heading mb={5}>Greeting response: {greetingResponse}</Heading>
-      <div>{greetErrorText}</div>
-      <Heading size="md">
-        Set username to create
-        <Input value={name} onChange={(ev) => setName(ev.target.value)} />
-      </Heading>
-      <Heading size="md">
-        Set zipCode for username
-        <Input value={zipCode} onChange={(ev) => setZipCode(ev.target.value)} />
-      </Heading>
-      <Button type="button" onClick={createUser}>
-        Create username
+      <Button type="button" onClick={() => createStory()}>
+        Create story
       </Button>
-      <div>{createErrorText}</div>
     </Container>
   );
 };

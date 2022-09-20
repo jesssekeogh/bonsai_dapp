@@ -2,32 +2,27 @@ import { IndexClient } from "candb-client-typescript/dist/IndexClient";
 import { ActorClient } from "candb-client-typescript/dist/ActorClient";
 
 import { idlFactory as IndexCanisterIDL } from "../../../../declarations/index/index";
-import { idlFactory as HelloServiceCanisterIDL } from "../../../../declarations/helloservice/index";
+import { idlFactory as UserServiceCanisterIDL } from "../../../../declarations/userservice/index";
+import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 
 export const startIndexClient = () => {
   // canister ID of index canister:
   // this canister is on ic network
   const canisterId = "fxzyj-3yaaa-aaaai-qnocq-cai";
-  const host = "https://ic0.app";
 
   return new IndexClient({
     IDL: IndexCanisterIDL,
     canisterId,
-    agentOptions: {
-      host,
-    },
+    agentOptions: authentication.getAgentOptions(),
   });
 };
 
-export const startHelloServiceClient = (indexClient) => {
-  const host = "https://ic0.app";
+export const startUserServiceClient = (indexClient) => {
 
   return new ActorClient({
     actorOptions: {
-      IDL: HelloServiceCanisterIDL,
-      agentOptions: {
-        host,
-      },
+      IDL: UserServiceCanisterIDL,
+      agentOptions: authentication.getAgentOptions(),
     },
     indexClient,
   });

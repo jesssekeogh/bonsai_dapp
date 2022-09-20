@@ -6,8 +6,10 @@ import Text "mo:base/Text";
 
 import CA "mo:candb/CanisterActions";
 import CanisterMap "mo:candb/CanisterMap";
+import Utils "mo:candb/Utils";
 import Buffer "mo:stable-buffer/StableBuffer";
 import UserService "./UserService";
+import Admin "mo:candb/CanDBAdmin";
 
 shared ({caller = owner}) actor class IndexCanister() = this {
   /// @required stable variable (Do not delete or change)
@@ -41,8 +43,14 @@ shared ({caller = owner}) actor class IndexCanister() = this {
   /// PK prefixes should spin up which canister actor.
   ///
   /// If the developer does not utilize this method, auto-scaling will NOT work
-  public shared({caller = caller}) func createAdditionalCanisterForPK(pk: Text): async Text {
-    await createUserServiceCanister(pk, ?[owner, Principal.fromActor(this)])
+  public shared({caller = caller}) func autoScaleUserServiceCanister(pk: Text): async Text {
+    // Auto-Scaling Authorization - if the request to auto-scale the partition is not coming from an existing canister in the partition, reject it
+    if (Utils.callingCanisterOwnsPK(caller, pkToCanisterMap, pk)) {
+      Debug.print("creating an additional canister for pk=" # pk);
+      await createUserServiceCanister(pk, ?[owner, Principal.fromActor(this)])
+    } else {
+      throw Error.reject("not authorized");
+    };
   };
 
   // Partition HelloService canisters by the region passed in
@@ -68,7 +76,7 @@ shared ({caller = owner}) actor class IndexCanister() = this {
     let newUserServiceCanister = await UserService.UserService({
       partitionKey = pk;
       scalingOptions = {
-        autoScalingCanisterId = Principal.toText(Principal.fromActor(this));
+        autoScalingHook = autoScaleUserServiceCanister;
         sizeLimit = #heapSize(200_000_000); // Scale out at 200MB
       };
       owners = controllers;
@@ -90,5 +98,18 @@ shared ({caller = owner}) actor class IndexCanister() = this {
 
     Debug.print("new user service canisterId=" # newUserServiceCanisterId);
     newUserServiceCanisterId;
-  }
+  };
+
+  public shared({caller = caller}) func deleteUserServiceCanister(): async () {
+    let pk = Principal.toText(caller);
+    let canisterIds = getCanisterIdsIfExists(pk);
+    if (canisterIds == []) {
+      Debug.print("canister for user with principal=" # pk # " pk=" # pk # " does not exist");
+    } else {
+      // can choose to use this statusMap for to detect failures and prompt retries if desired 
+      let statusMap = await Admin.transferCyclesStopAndDeleteCanisters(canisterIds);
+      pkToCanisterMap := CanisterMap.delete(pkToCanisterMap, pk);
+    };
+  };
+
 }

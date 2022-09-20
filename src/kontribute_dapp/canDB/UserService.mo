@@ -18,6 +18,10 @@ shared ({ caller = owner }) actor class UserService({
 
     stable var _storyId = 0;
 
+    public shared({caller}) func whoami() : async Principal {
+        return caller
+    };
+
     public query func getPK(): async Text { db.pk };
 
     public query func skExists(sk: Text): async Bool { 
@@ -39,8 +43,8 @@ shared ({ caller = owner }) actor class UserService({
         await CanDB.put(db, {
             sk = Nat.toText(_storyId);
             attributes = [
-                ("storyTitle", #text(story.title)),
-                ("storyBody", #text(story.body))
+                ("title", #text(story.title)),
+                ("body", #text(story.body))
             ]
         })
     };
@@ -53,10 +57,10 @@ shared ({ caller = owner }) actor class UserService({
 
         switch(story) {
             case null { null };
-            case (?{ storyTitle; storyBody }) {
+            case (?{ title; body }) {
                 ?({
-                    title: storyTitle;
-                    body: storyBody
+                    title;
+                    body
                 });
             }
         }
@@ -73,14 +77,14 @@ shared ({ caller = owner }) actor class UserService({
       // attempts to cast an Entity (retrieved from CanDB) into a User type
     private func unwrapUser(entity: Entity.Entity): ?Types.Story {
         let { sk; attributes } = entity;
-        let storyTitle = Entity.getAttributeMapValueForKey(attributes, "storyTitle");
-        let storyBody = Entity.getAttributeMapValueForKey(attributes, "storyBody");
+        let storyTitleValue = Entity.getAttributeMapValueForKey(attributes, "title");
+        let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
 
-        switch(storyTitle, storyBody) {
+        switch(storyTitleValue, storyBodyValue) {
             case (
-                ?(#text(storyTitle)),
-                ?(#text(storyBody))
-            ) { ?{ storyTitle; storyBody } };
+                ?(#text(title)),
+                ?(#text(body))
+            ) { ?{ title; body } };
             case _ { 
                 null 
             }
