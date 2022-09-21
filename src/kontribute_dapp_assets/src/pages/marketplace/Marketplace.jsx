@@ -10,15 +10,18 @@ import {
   Stack,
   IconButton,
   useColorModeValue,
+  Heading,
+  Text,
+  VStack,
+  Hide,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { SingleNft } from "../components";
+import { SingleNft, IcpToDollars } from "../components";
 import { LoadingSpinner } from "../../containers";
 import { RarityFilter, LtoH } from "../components/Filters";
 import { useParams } from "react-router-dom";
 import { FailedToast } from "../../containers/toasts/Toasts";
-import { setMarketplace } from "../../state/GlobalSlice";
-import { useDispatch } from "react-redux";
+import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import {
   ButtonColorDark,
   ButtonColorLight,
@@ -34,7 +37,7 @@ const Marketplace = () => {
   const [page, setPage] = useState(0);
   const [pricing, setPricing] = useState("Low to High");
   const [author, setAuthor] = useState({});
-  const dispatch = useDispatch();
+  const [stats, setStats] = useState({});
   const [isPending, startTransition] = useTransition();
 
   // author fetch - only runs if author changes
@@ -88,6 +91,34 @@ const Marketplace = () => {
     return filtered;
   };
 
+  const getSomeStats = async () => {
+    if (Loaded) {
+      const prices = author.prices.sort((a, b) => a[2] - b[2]);
+      let marketcap = 0;
+      let countForSale = 0;
+      let countTotal = 0;
+      let floor;
+
+      for (let price of prices) {
+        if (price[2] > 0) {
+          if (!floor) {
+            floor = price[2];
+          }
+          marketcap += price[2];
+          countForSale++;
+        }
+        countTotal++;
+      }
+
+      setStats({
+        floor: floor,
+        countTotal: countTotal,
+        countForSale: countForSale,
+        marketcap: marketcap,
+      });
+    }
+  };
+
   // sort nfts accordingly - prices are retrieved from NFT meta data
   const LoadSale = async () => {
     if (Loaded) {
@@ -120,12 +151,12 @@ const Marketplace = () => {
 
   useEffect(() => {
     LoadSale();
+    getSomeStats();
   }, [page, sortBy, pricing, Loaded]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchAuthorData();
-    dispatch(setMarketplace(params.author));
   }, [params.author]);
 
   return (
@@ -135,6 +166,7 @@ const Marketplace = () => {
         setPage={setPage}
         setPricing={setPricing}
         pricing={pricing}
+        stats={stats}
       />
       {Loaded ? (
         <>
@@ -168,19 +200,91 @@ const Marketplace = () => {
     </Box>
   );
 };
+export default Marketplace;
 
-const MarketplaceHeader = ({ setSort, setPricing, pricing, setPage }) => {
+const HeaderStats = ({ title, stat }) => {
+  const bgColor = useColorModeValue("White", "#1d1d20");
+
   return (
-    <Container maxWidth="1250px" my={6}>
-      <Flex>
+    <VStack align="start" spacing="0px">
+      <Heading
+        p={2}
+        size={{ base: "sm", md: "sm", lg: "md" }}
+        boxShadow="base"
+        borderRadius="lg"
+        bg={bgColor}
+      >
+        {stat}
+      </Heading>
+      <Text px={2}>{title}</Text>
+    </VStack>
+  );
+};
+const MarketplaceHeader = ({
+  setSort,
+  setPricing,
+  pricing,
+  setPage,
+  stats,
+}) => {
+  const [marketcapUsd, setMarketcapUsd] = useState("US$0.00");
+
+  const load = async () => {
+    if (stats.marketcap) {
+      setMarketcapUsd(await IcpToDollars(stats.marketcap));
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, [stats.marketcap]);
+
+  return (
+    <Container maxWidth="1250px" my={8}>
+      <Hide above="md">
+        <Center align="center" gap={{ base: 2, md: 5, lg: 5 }} mb={3} mt={-2}>
+          <HeaderStats
+            title={"floor price"}
+            stat={stats ? `${e8sToIcp(stats.floor)} ICP` : "0.0000"}
+          />
+          <HeaderStats
+            title={"listed"}
+            stat={
+              stats
+                ? `${Math.round(
+                    (stats.countForSale / stats.countTotal) * 100
+                  )}%`
+                : "0%"
+            }
+          />
+          <HeaderStats title={"marketcap"} stat={marketcapUsd} />
+        </Center>
+      </Hide>
+      <Flex align="center" gap={{ base: 2, md: 5, lg: 5 }} mb={2}>
+        <Hide below="md">
+          <HeaderStats
+            title={"floor price"}
+            stat={stats ? `${e8sToIcp(stats.floor)} ICP` : "0.0000"}
+          />
+          <HeaderStats
+            title={"listed"}
+            stat={
+              stats
+                ? `${Math.round(
+                    (stats.countForSale / stats.countTotal) * 100
+                  )}%`
+                : "0%"
+            }
+          />
+          <HeaderStats title={"marketcap"} stat={marketcapUsd} />
+        </Hide>
         <Spacer />
-        <RarityFilter setSort={setSort} setPage={setPage}/>
+        <RarityFilter setSort={setSort} setPage={setPage} />
         <LtoH pricing={pricing} setPricing={setPricing} setPage={setPage} />
       </Flex>
     </Container>
   );
 };
-export default Marketplace;
 
 const PaginationButtons = ({ setPage, page, tokensLength }) => {
   const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
@@ -189,7 +293,7 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
     ButtonTextColorDark
   );
   return (
-    <Center mb={2} mt={-2}>
+    <Center mb={2} mt={-3}>
       <Stack
         direction={"row"}
         spacing={3}

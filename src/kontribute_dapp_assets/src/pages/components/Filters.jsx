@@ -8,10 +8,15 @@ import {
   MenuItemOption,
   Button,
 } from "@chakra-ui/react";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../containers/colormode/Colors";
 
 export const RarityFilter = ({ setSort, setPage }) => {
   const [currentSort, setCurrentSort] = useState("All");
-  const color = useColorModeValue("#e5e8eb", "#1a1a1a");
 
   const getNumFromRarity = (rarity) => {
     setPage(0);
@@ -43,11 +48,13 @@ export const RarityFilter = ({ setSort, setPage }) => {
   return (
     <Menu>
       <MenuButton
-        me={2}
         as={Button}
         boxShadow="base"
-        border={"2px"}
-        borderColor={color}
+        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
+        color={useColorModeValue(ButtonTextColorlight, ButtonTextColorDark)}
+        _hover={{
+          opacity: "0.9",
+        }}
       >
         Rarity: {currentSort}
       </MenuButton>
@@ -99,14 +106,16 @@ export const RarityFilter = ({ setSort, setPage }) => {
 };
 
 export const LtoH = ({ pricing, setPricing, setPage }) => {
-  const color = useColorModeValue("#e5e8eb", "#1a1a1a");
   return (
     <Menu>
       <MenuButton
         as={Button}
         boxShadow="base"
-        border={"2px"}
-        borderColor={color}
+        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
+        color={useColorModeValue(ButtonTextColorlight, ButtonTextColorDark)}
+        _hover={{
+          opacity: "0.9",
+        }}
       >
         Price: {pricing}
       </MenuButton>

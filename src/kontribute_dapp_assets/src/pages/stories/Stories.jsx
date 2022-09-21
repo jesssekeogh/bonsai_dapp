@@ -44,6 +44,8 @@ const Stories = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const bgColor = useColorModeValue("White", "#1d1d20");
+
   return (
     <>
       <Container maxW={"8xl"} mb={5} pt={5} pb={10}>
@@ -60,6 +62,16 @@ const Stories = () => {
             </Tab>
           </TabList>
           <Divider mt={5} />
+          <Heading
+            m={3}
+            size="xs"
+            boxShadow="base"
+            p={2}
+            borderRadius="lg"
+            bg={bgColor}
+          >
+            Read and explore the lore stories behind Kontribute NFT collections
+          </Heading>
           <TabPanels>
             <TabPanel>
               <MostlikedGrid />

@@ -45,19 +45,13 @@ import {
 } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 import { Usergeek } from "usergeek-ic-js";
-
-// coingecko API:
-const CoinApi =
-  "https://api.coingecko.com/api/v3/simple/price?ids=internet-computer&vs_currencies=usd";
+import IcpToDollars from "../components/IcpToDollars";
 
 const ForSale = ({ Icp, tokenId, setConfetti }) => {
   const [usdPrice, setUsdPrice] = useState(0);
 
   const loadPrice = async () => {
-    let resp = await fetch(CoinApi).then((x) => x.json());
-    let price = resp["internet-computer"].usd;
-
-    setUsdPrice((price * e8sToIcp(Icp)).toFixed(2));
+    setUsdPrice(await IcpToDollars(Icp));
   };
 
   useEffect(() => {
@@ -91,7 +85,7 @@ const ForSale = ({ Icp, tokenId, setConfetti }) => {
             </Flex>
           </Heading>
           <Text size="sm" fontWeight="bold" color="gray.500">
-            (${usdPrice})
+            {usdPrice}
           </Text>
           <Spacer />
           <BuyButton
@@ -201,7 +195,7 @@ const BuyButton = ({ tokenId, price, usd }) => {
               &nbsp;
               {e8sToIcp(price)}
               &nbsp;
-              <Text>(${usd})</Text>
+              <Text>{usd}</Text>
             </Flex>
           </ModalBody>
 
