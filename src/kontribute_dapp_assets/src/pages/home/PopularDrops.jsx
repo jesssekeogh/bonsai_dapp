@@ -25,7 +25,6 @@ const PopularDrops = () => {
       <Center mt={1}>
         <SimpleGrid
           columns={{ base: 1, md: 2, lg: 2 }}
-          pb={5}
           gap={10}
           mx={2}
           maxW="1250px"

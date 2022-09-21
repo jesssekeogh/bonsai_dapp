@@ -35,7 +35,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Box pb={28}>
+    <Box>
       <ChakraImage
         w={"full"}
         h="80%"
@@ -50,7 +50,7 @@ const Home = () => {
       <HomeBanner />
       <PopularDrops />
       <SocialProof />
-      <Center pt={20}>
+      <Center mt={20} pb={20}>
         <ChakraImage w={"250px"} fit="cover" src={powered} />
       </Center>
     </Box>

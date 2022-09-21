@@ -100,7 +100,7 @@ const NavBar = () => {
             </HStack>
             <Spacer />
             <Profile />
-            <ColorButton />
+            <ColorButton size="sm"/>
           </Flex>
         ) : (
           <Flex align="center">
@@ -135,10 +135,10 @@ const MobileMenu = () => {
         <DrawerContent bg={"#111111"} borderColor="#1a1a1a">
           <DrawerCloseButton color="white" />
           <DrawerHeader>
-            <ColorButton />
+            <ColorButton size="md"/>
           </DrawerHeader>
           <DrawerBody>
-            <VStack fontWeight={700} fontSize={21} onClick={() => onClose()}>
+            <VStack fontWeight={700} fontSize={28} onClick={() => onClose()}>
               {LinkItems.map((link) => (
                 <NavItem key={link.name} name={link.name} link={link.link} />
               ))}

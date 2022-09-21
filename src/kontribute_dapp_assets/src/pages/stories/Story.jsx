@@ -15,6 +15,7 @@ import {
   Button,
   useBreakpointValue,
   useColorModeValue,
+  Progress,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
@@ -54,39 +55,43 @@ const Story = () => {
     };
   }, []);
 
+  const target = React.createRef();
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
-    <Container minW={{ md: "3xl" }} pt={10} pb={12}>
-      {loaded ? (
-        <>
-          <Center>
-            <Heading mb={2} as={"h2"} color={textColor}>
-              {story.story.title}
-            </Heading>
-          </Center>
-          <Text
-            lineHeight={1.5}
-            fontSize={"21px"}
-            color={textColor}
-            fontFamily="Times New Roman"
-            dangerouslySetInnerHTML={{
-              __html: decodeURIComponent(story.story.story),
-            }}
-          />{" "}
-          <AuthorInfo
-            authorAddress={story.story.address[0]}
-            authorPrincipal={story.author}
-            storyId={params.storyId}
-          />
-        </>
-      ) : null}
-      {!loaded ? (
-        <>
-          <Skeleton height="40px" />
-          <SkeletonText mt="4" noOfLines={2} spacing="4" />
-        </>
-      ) : null}
-    </Container>
+    <>
+      <ReadingProgress target={target} />
+      <Container minW={{ md: "3xl" }} pt={10} pb={12} ref={target}>
+        {loaded ? (
+          <>
+            <Center>
+              <Heading mb={2} as={"h2"} color={textColor}>
+                {story.story.title}
+              </Heading>
+            </Center>
+            <Text
+              lineHeight={1.5}
+              fontSize={"21px"}
+              color={textColor}
+              fontFamily="Times New Roman"
+              dangerouslySetInnerHTML={{
+                __html: decodeURIComponent(story.story.story),
+              }}
+            />{" "}
+            <AuthorInfo
+              authorAddress={story.story.address[0]}
+              authorPrincipal={story.author}
+              storyId={params.storyId}
+            />
+          </>
+        ) : null}
+        {!loaded ? (
+          <>
+            <Skeleton height="40px" />
+            <SkeletonText mt="4" noOfLines={2} spacing="4" />
+          </>
+        ) : null}
+      </Container>
+    </>
   );
 };
 
@@ -177,4 +182,49 @@ const BackButton = () => {
     </Link>
   );
 };
+
+const ReadingProgress = ({ target }) => {
+  const [readingProgress, setReadingProgress] = useState(0);
+  const scrollListener = () => {
+    if (!target.current) {
+      return;
+    }
+
+    const element = target.current;
+    const totalHeight =
+      element.clientHeight - element.offsetTop - window.innerHeight;
+    const windowScrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+
+    if (windowScrollTop === 0) {
+      return setReadingProgress(0);
+    }
+
+    if (windowScrollTop > totalHeight) {
+      return setReadingProgress(100);
+    }
+
+    setReadingProgress((windowScrollTop / totalHeight) * 100);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", scrollListener);
+    return () => window.removeEventListener("scroll", scrollListener);
+  });
+
+  return (
+    <Progress
+      value={readingProgress}
+      size="sm"
+      mt={{ base: -1, md: 2 }}
+      position="fixed"
+      width="100%"
+      zIndex="2"
+    />
+  );
+};
+
 export default Story;

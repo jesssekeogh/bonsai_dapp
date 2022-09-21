@@ -68,7 +68,7 @@ const AuthorStories = () => {
           </Center>
         ) : (
           <SimpleGrid
-            columns={{ base: 2, md: 2, lg: 4 }}
+            columns={{ base: 1, md: 2, lg: 4 }}
             pb={5}
             gap={3}
             mx={2}

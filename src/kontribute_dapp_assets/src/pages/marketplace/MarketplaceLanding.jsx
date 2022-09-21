@@ -68,7 +68,6 @@ const NftCards = () => {
       pb={5}
       gap={5}
       maxW="1250px"
-      m="5"
     >
       <CollectionThumb
         colimg={pendragonBG}

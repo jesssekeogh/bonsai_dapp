@@ -228,39 +228,33 @@ const MarketplaceHeader = ({
   stats,
 }) => {
   const [marketcapUsd, setMarketcapUsd] = useState("US$0.00");
+  const [floor, setFloor] = useState("0.0000");
+  const [listed, setListed] = useState("0%");
 
   const load = async () => {
-    if (stats.marketcap) {
+    if (stats) {
       setMarketcapUsd(await IcpToDollars(stats.marketcap));
+      setFloor(`${e8sToIcp(stats.floor)} ICP`);
+      setListed(
+        `${Math.round((stats.countForSale / stats.countTotal) * 100)}%`
+      );
     }
   };
 
   useEffect(() => {
     load();
-  }, [stats.marketcap]);
+  }, [stats]);
 
   return (
     <Container maxWidth="1250px" my={8}>
       <Hide above="md">
-        <Center align="center" gap={{ base: 2, md: 5, lg: 5 }} mb={3} mt={-2}>
-          <HeaderStats
-            title={"floor price"}
-            stat={stats ? `${e8sToIcp(stats.floor)} ICP` : "0.0000"}
-          />
-          <HeaderStats
-            title={"listed"}
-            stat={
-              stats
-                ? `${Math.round(
-                    (stats.countForSale / stats.countTotal) * 100
-                  )}%`
-                : "0%"
-            }
-          />
+        <Center align="center" gap={4} mb={4} mt={-2}>
+          <HeaderStats title={"floor price"} stat={floor} />
+          <HeaderStats title={"listed"} stat={listed} />
           <HeaderStats title={"marketcap"} stat={marketcapUsd} />
         </Center>
       </Hide>
-      <Flex align="center" gap={{ base: 2, md: 5, lg: 5 }} mb={2}>
+      <Flex align="center" gap={{ base: 2, md: 3, lg: 3 }} mb={2}>
         <Hide below="md">
           <HeaderStats
             title={"floor price"}
