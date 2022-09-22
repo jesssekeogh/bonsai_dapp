@@ -1,5 +1,6 @@
 service : {
   autoScaleUserServiceCanister: (text) -> (text);
   createUserServiceCanisterByPrincipal: (text) -> (opt text);
+  deleteUserServiceCanister: () -> ();
   getCanistersByPK: (text) -> (vec text) query;
 }

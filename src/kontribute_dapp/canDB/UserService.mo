@@ -34,7 +34,7 @@ shared ({ caller = owner }) actor class UserService({
         };
     };
 
-    public shared({caller}) func putStory(story: Types.Story): async () {
+    public shared({caller}) func putStory(story: Types.Story): async Text {
         assert(checkStory(story) == true);
         assert(Principal.toText(caller) == partitionKey);
 
@@ -46,7 +46,9 @@ shared ({ caller = owner }) actor class UserService({
                 ("title", #text(story.title)),
                 ("body", #text(story.body))
             ]
-        })
+        });
+
+        return Nat.toText(_storyId)
     };
 
     public query func getStory(id: Text): async ?Types.Story {

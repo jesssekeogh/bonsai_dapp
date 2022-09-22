@@ -16,7 +16,7 @@ export const idlFactory = ({ IDL }) => {
   const UserService = IDL.Service({
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
     'getStory' : IDL.Func([IDL.Text], [IDL.Opt(Story)], ['query']),
-    'putStory' : IDL.Func([Story], [], []),
+    'putStory' : IDL.Func([Story], [IDL.Text], []),
     'skExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'transferCycles' : IDL.Func([], [], []),
     'whoami' : IDL.Func([], [IDL.Principal], []),

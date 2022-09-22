@@ -25,6 +25,7 @@ const SocialProof = () => {
           columns={{ base: 1, md: 2, lg: 3 }}
           maxW="1250px"
           mx={2}
+          gap={10}
         >
           <SocialCard img={icLogo}>
             <Text fontSize={"xl"} fontWeight={500}>

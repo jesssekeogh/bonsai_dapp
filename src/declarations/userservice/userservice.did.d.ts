@@ -15,7 +15,7 @@ export interface Story { 'title' : string, 'body' : string }
 export interface UserService {
   'getPK' : ActorMethod<[], string>,
   'getStory' : ActorMethod<[string], [] | [Story]>,
-  'putStory' : ActorMethod<[Story], undefined>,
+  'putStory' : ActorMethod<[Story], string>,
   'skExists' : ActorMethod<[string], boolean>,
   'transferCycles' : ActorMethod<[], undefined>,
   'whoami' : ActorMethod<[], Principal>,

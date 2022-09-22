@@ -1,12 +1,34 @@
 import React, { useState } from "react";
 import { startUserServiceClient, startIndexClient } from "./client";
-import { Text, Heading, Button, Container, Input } from "@chakra-ui/react";
+import {
+  Text,
+  Heading,
+  Button,
+  Container,
+  Input,
+  createStandaloneToast,
+  Flex,
+  Spacer,
+  Box,
+  VStack,
+  Center,
+} from "@chakra-ui/react";
 import { useSelector } from "react-redux";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {
+  FailedToast,
+  SendingToast,
+  SuccessToast,
+} from "../../containers/toasts/Toasts";
+
+const { toast } = createStandaloneToast();
 
 const ScalableStories = () => {
-  const [story, setStory] = useState({});
+  const [story, setStory] = useState();
   const [storyId, setStoryId] = useState("");
-  const [newStory, setNewStory] = useState({});
+  const [newStoryTitle, setNewStoryTitle] = useState("");
+  const [newStoryBody, setNewStoryBody] = useState("");
 
   const pk = useSelector((state) => state.Profile.principal);
   const indexClient = startIndexClient();
@@ -17,8 +39,9 @@ const ScalableStories = () => {
       actor.getStory(storyId)
     );
 
-    let storyData;
+    if (userStoryQueryResults.length < 1) return;
 
+    let storyData;
     if (userStoryQueryResults[0].value.length > 0) {
       // handle candid returned optional type (string[] or string)
       storyData = Array.isArray(userStoryQueryResults[0].value)
@@ -32,41 +55,106 @@ const ScalableStories = () => {
     if (pk) {
       // delete a canister:
       // const del = await indexClient.indexCanisterActor.deleteUserServiceCanister()
+      // return console.log(del)
 
-      console.log(newStory)
-      // const creation =
-      //   await indexClient.indexCanisterActor.createUserServiceCanisterByPrincipal(
-      //     pk
-      //   );
+      if (newStoryTitle == "" || newStoryBody == "") {
+        return FailedToast("Failed", "Some fields are empty");
+      }
 
-      // console.log("creation", creation);
+      SendingToast("Posting story...");
+      let encodedStory = encodeURIComponent(newStoryBody);
+      let encodedTitle = encodeURIComponent(newStoryTitle);
 
-      // const update = await userServiceClient.update(pk, "", (actor) =>
-      //   actor.putStory({ title: newStory.title, body: newStory.body })
-      // );
+      // console.log("encoded story", encodedStory, encodedTitle);
+      const creation =
+        await indexClient.indexCanisterActor.createUserServiceCanisterByPrincipal(
+          pk
+        );
 
-      // console.log("update", update);
+      console.log("creation", creation);
+
+      try {
+        const update = await userServiceClient.update(pk, "", (actor) =>
+          actor.putStory({ title: encodedTitle, body: encodedStory })
+        );
+
+        toast.closeAll();
+        // console.log("update", update)
+        SuccessToast("Success", `Story posted with ID ${update}`);
+      } catch (e) {
+        toast.closeAll();
+        FailedToast("Failed", e.toString());
+      }
     } else {
-      console.log("not signed in");
+      FailedToast("Failed", "Not signed in");
     }
   };
 
   return (
     // add story editor
-    <Container py={10}>
-      <Heading>{story.title}</Heading>
-      <Text>{story.body}</Text>
+    <Container py={10} maxW="5xl">
       <Input
-        placeholder="1"
-        value={storyId}
-        onChange={(e) => setStoryId(e.target.value)}
+        placeholder="Story title"
+        onChange={(e) => setNewStoryTitle(e.target.value)}
+        my={3}
+        variant="filled"
       />
-      <Button type="button" onClick={() => getStory()}>
-        Get Story
-      </Button>
-      <Button type="button" onClick={() => createStory()}>
-        Create story
-      </Button>
+      <CKEditor
+        editor={ClassicEditor}
+        config={{
+          toolbar: ["Heading", "bold", "italic", "|", "undo", "redo"],
+          placeholder:
+            "In the Celestial Empire, there are laws that must be obeyed, laws which bind all mankind into one great and inexhaustible force. None can defeat the boundless spirit and drive of the peoples of this great empire. ",
+          heading: {
+            options: [
+              {
+                model: "heading2",
+                view: "h3",
+                title: "Heading",
+                class: "ck-heading_heading2",
+              },
+              {
+                model: "heading3",
+                view: "h4",
+                title: "Heading 2",
+                class: "ck-heading_heading3",
+              },
+              {
+                model: "paragraph",
+                title: "Paragraph",
+                class: "ck-heading_paragraph",
+              },
+            ],
+          },
+        }}
+        onChange={(event, editor) => {
+          setNewStoryBody(editor.getData());
+        }}
+      />
+      <Flex mt={3}>
+        <Spacer />
+        <Button type="button" onClick={() => createStory()}>
+          Create story
+        </Button>
+      </Flex>
+      <Center mt={5}>
+        <VStack>
+          <Input placeholder="1" onChange={(e) => setStoryId(e.target.value)} />
+          <Button type="button" onClick={() => getStory()}>
+            Get Story
+          </Button>
+        </VStack>
+      </Center>
+      <Center>
+        <Box py={10}>
+          <Heading>{story ? decodeURIComponent(story.title) : null}</Heading>
+          <Text
+            dangerouslySetInnerHTML={{
+              __html: story ? decodeURIComponent(story.body) : null,
+            }}
+          />
+        </Box>
+      </Center>
     </Container>
   );
 };

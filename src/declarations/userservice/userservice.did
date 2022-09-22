@@ -2,7 +2,7 @@ type UserService =
  service {
    getPK: () -> (text) query;
    getStory: (text) -> (opt Story) query;
-   putStory: (Story) -> ();
+   putStory: (Story) -> (text);
    skExists: (text) -> (bool) query;
    transferCycles: () -> ();
    whoami: () -> (principal);
