@@ -26,8 +26,8 @@ const PendragonNft = () => {
           "Pendragon Quest consists of 1200 hand drawn NFTs which you can own in order to access our story. Holders will be eligible to decide the path that the story takes and participate in unique story events. Holders will also be able receive our future NFT airdrop at a 1:1 ratio."
         }
         // launchingSoon
-        //   saleEnded
-        //   airdropEnded
+        saleEnded
+        // airdropEnded
       />
     </>
   );

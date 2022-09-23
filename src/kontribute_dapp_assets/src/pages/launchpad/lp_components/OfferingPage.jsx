@@ -19,7 +19,7 @@ import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.
 
 const OfferingPage = (props) => {
   return (
-    <Container maxW="1250px" mb={10} mt={{ base: "-10", md: "0" }}>
+    <Container maxW="1250px" my={10}>
       <Header props={{ ...props }} />
       <SlideFade in={true} offsetY="20px">
         <Prices props={{ ...props }} />
@@ -61,20 +61,13 @@ const Header = ({ props }) => {
             p={1}
             m={2}
           />
-          <Text
-            fontStyle={"italic"}
-            fontWeight={600}
-            color="#f0e6d3"
-            fontSize="lg"
-          >
+          <Text fontStyle={"italic"} fontWeight={600} fontSize="lg">
             {props.title}
           </Text>
         </HStack>
       </Center>
       <Stack spacing="3" textAlign="center">
-        <Heading bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
-          {props.collectionName}
-        </Heading>
+        <Heading>{props.collectionName}</Heading>
       </Stack>
     </Box>
   );

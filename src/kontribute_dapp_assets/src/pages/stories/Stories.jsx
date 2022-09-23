@@ -6,7 +6,6 @@ import {
   Button,
   Container,
   Spacer,
-  Divider,
   useBreakpointValue,
   Skeleton,
   useColorModeValue,
@@ -48,11 +47,17 @@ const Stories = () => {
 
   return (
     <>
-      <Container maxW={"8xl"} mb={5} pt={5} pb={10}>
+      <Container
+        maxW={"8xl"}
+        w={"95%"}
+        mb={5}
+        pt={5}
+        pb={10}
+      >
         <CreateButton />
         <FeaturedGrid />
 
-        <Tabs variant="soft-rounded" colorScheme="gray" m={5}>
+        <Tabs variant="line" colorScheme="cyan" m={5}>
           <TabList>
             <Tab>
               <Heading size="lg">Most Liked</Heading>
@@ -61,9 +66,10 @@ const Stories = () => {
               <Heading size="lg">Recent</Heading>
             </Tab>
           </TabList>
-          <Divider mt={5} />
           <Heading
-            m={3}
+            mx={3}
+            mt={5}
+            mb={2}
             size="xs"
             boxShadow="base"
             p={2}
@@ -146,7 +152,7 @@ const RecentGrid = () => {
     <>
       {loaded ? (
         <>
-          <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} pb={5} gap={3} mx={2}>
             {storyIds.map((item) => (
               <StorySummary key={item} storyId={item} />
             ))}

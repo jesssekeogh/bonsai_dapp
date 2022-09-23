@@ -60,7 +60,7 @@ const Story = () => {
   return (
     <>
       <ReadingProgress target={target} />
-      <Container minW={{ md: "3xl" }} pt={10} pb={12} ref={target}>
+      <Container minW={{ md: "2xl" }} pt={10} pb={12} ref={target}>
         {loaded ? (
           <>
             <Center>

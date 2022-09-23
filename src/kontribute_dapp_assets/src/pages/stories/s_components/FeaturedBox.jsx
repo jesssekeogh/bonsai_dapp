@@ -11,6 +11,7 @@ const FeaturedBox = ({ mainImg, link, name }) => {
         backgroundColor={"#fff"}
         rounded={"lg"}
         boxShadow="lg"
+        maxW="md"
       >
         <Box rounded={"lg"} pos={"relative"} overflow="hidden">
           <ChakraImage

@@ -13,7 +13,6 @@ import {
   GridItem,
   IconButton,
   Tooltip,
-  Spinner,
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
@@ -71,7 +70,7 @@ const CollectionStats = ({ props }) => {
         gap={6}
       >
         <GridItem w="100%" colSpan={{ base: 1, sm: 2, md: 2 }}>
-          <Heading as={"h2"} color="#f0e6d3">
+          <Heading as={"h2"}>
             Tokenomics{" "}
             <Tooltip label="Read more about this collections tokenomics">
               <a href={props.tokenomics_link} target="_blank" rel="noreferrer">
@@ -84,7 +83,7 @@ const CollectionStats = ({ props }) => {
               </a>
             </Tooltip>
           </Heading>
-          <Text fontWeight={600} color="#f0e6d3" fontSize="lg">
+          <Text fontWeight={600} fontSize="lg">
             {props.tokenomics_details}
           </Text>
         </GridItem>

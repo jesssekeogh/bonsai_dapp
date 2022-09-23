@@ -82,8 +82,8 @@ const HomeBanner = () => {
             fontSize={{ base: "xl", md: "3xl" }}
             color={useColorModeValue(TextColorLight, TextColorDark)}
           >
-            Kontribute is a web3 creators platform that brings fun and
-            interesting use cases to NFTs
+            Kontribute is a web3 creators platform that brings story writing and
+            NFTs together
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
@@ -109,11 +109,13 @@ const HomeBanner = () => {
             </NavLink>
             <NavLink to={"/marketplace"}>
               <Button
-                bg="white"
+                bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
+                color={useColorModeValue(
+                  ButtonTextColorlight,
+                  ButtonTextColorDark
+                )}
                 boxShadow="base"
-                color={TextColorLight}
                 size={"lg"}
-                colorScheme="pink.400"
                 _hover={{
                   transform: "translateY(-2px)",
                   boxShadow: "lg",

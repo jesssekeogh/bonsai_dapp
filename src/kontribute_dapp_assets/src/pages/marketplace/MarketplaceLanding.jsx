@@ -15,7 +15,6 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Divider,
 } from "@chakra-ui/react";
 import logo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import bonsailogo from "../../../assets/Bonsai_Warriors_Background_1.png";
@@ -32,13 +31,12 @@ const MarketplaceLanding = () => {
 
   return (
     <Center my={8}>
-      <Tabs variant="soft-rounded" colorScheme="gray" mx={5}>
+      <Tabs variant="line" colorScheme="cyan" mx={5}>
         <TabList>
           <Tab>
             <Heading size="lg">Story Art</Heading>
           </Tab>
         </TabList>
-        <Divider mt={5} />
         <TabPanels>
           <TabPanel>
             <Heading

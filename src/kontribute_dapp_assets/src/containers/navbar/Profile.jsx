@@ -164,14 +164,12 @@ const Profile = () => {
         </Menu>
       ) : (
         <Menu>
-          <Tooltip label="Login via Internet Identity">
-            <MenuButton as={Button} size={"md"} onClick={() => signIn()}>
-              <Flex align="center">
-                Log In&nbsp;
-                <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
-              </Flex>
-            </MenuButton>
-          </Tooltip>
+          <MenuButton as={Button} size={"md"} onClick={() => signIn()}>
+            <Flex align="center">
+              Log In&nbsp;
+              <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+            </Flex>
+          </MenuButton>
         </Menu>
       )}
     </>
