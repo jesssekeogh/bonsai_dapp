@@ -45,6 +45,10 @@ const Airdrop = () => {
 
     let address = AccountIdentifier.TextToArray(s.user.address);
 
+    let subaccount = [
+      AccountIdentifier.TextToArray(s.user.subaccount) || null,
+    ].filter(Boolean);
+
     let ito = createItoActor({
       agentOptions: authentication.getAgentOptions(),
     });
@@ -54,7 +58,11 @@ const Airdrop = () => {
     console.log("airdrop_use", brez);
     if ("err" in brez) throw new Error(brez.err);
 
-    return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
+    let tid = brez.ok.map((x) => Number(x))[0];
+
+    await ito.claim(address, subaccount, tid);
+
+    return navigate("/nft/" + tokenToText(tid), {
       state: {
         prev: "/launchpad/pendragon-nft",
         showConfetti: true,

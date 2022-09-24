@@ -100,8 +100,11 @@ shared ({caller = owner}) actor class IndexCanister() = this {
     newUserServiceCanisterId;
   };
 
-  public shared({caller = caller}) func deleteUserServiceCanister(): async () {
-    let pk = Principal.toText(caller);
+  public shared({caller = caller}) func deleteUserServiceCanister(userPK: Text): async () {
+    assert(caller == owner);
+
+    let pk = userPK;
+
     let canisterIds = getCanisterIdsIfExists(pk);
     if (canisterIds == []) {
       Debug.print("canister for user with principal=" # pk # " pk=" # pk # " does not exist");
@@ -110,6 +113,22 @@ shared ({caller = owner}) actor class IndexCanister() = this {
       let statusMap = await Admin.transferCyclesStopAndDeleteCanisters(canisterIds);
       pkToCanisterMap := CanisterMap.delete(pkToCanisterMap, pk);
     };
+  };
+
+  public shared({ caller = caller }) func upgradeUserCanistersByPK(userPK: Text, wasmModule: Blob): async Text {
+    if (caller != owner) { // basic authorization
+      return "Not authorized"
+    }; 
+
+    let pk = userPK;
+    let scalingOptions = {
+      autoScalingHook = autoScaleUserServiceCanister;
+      sizeLimit = #heapSize(200_000_000); // Scale out at 200MB
+    };
+
+    let result  = await Admin.upgradeCanistersByPK(pkToCanisterMap, pk, wasmModule, scalingOptions);
+
+    return "Canisters in PK" # pk # "upgraded"
   };
 
 }

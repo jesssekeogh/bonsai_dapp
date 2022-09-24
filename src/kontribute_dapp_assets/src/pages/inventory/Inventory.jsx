@@ -16,7 +16,7 @@ import {
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
-import { GetMine, Claim } from "../components";
+import { GetMine } from "../components";
 import { SingleNft } from "../components";
 import {
   ButtonColorDark,
@@ -33,35 +33,37 @@ const Inventory = () => {
   const [page, setPage] = useState(0);
   const anvilDispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
+  const [loadedTokens, setLoadedTokens] = useState();
+
+  const initialLoad = async () => {
+    let tokens = await anvilDispatch(GetMine());
+    if (isMounted) {
+      setLoadedTokens(tokens);
+      setAllTokens(tokens.length);
+      if (!Loaded) {
+        setLoaded(true);
+      }
+    }
+  };
 
   const fetchTokens = async () => {
-    try {
-      let tokens = await anvilDispatch(GetMine());
-      if (isMounted) {
-        setAllTokens(tokens.length);
-        setTokensShowing(tokens.slice(page * 20, (page + 1) * 20));
-
-        if (!Loaded) {
-          setLoaded(true);
-        }
-      }
-    } catch (e) {
-      console.log("Error loading some NFTs");
+    if (isMounted && Loaded) {
+      setTokensShowing(loadedTokens.slice(page * 20, (page + 1) * 20));
     }
   };
 
   useEffect(() => {
     if (loaded) {
-      fetchTokens(); // run once
+      fetchTokens();
       return () => {
         isMounted = false;
       };
     }
-  }, [page]);
+  }, [page, Loaded]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    anvilDispatch(Claim());
+    initialLoad();
   }, []);
 
   if (!Loaded) return <LoadingSpinner label="Fetching NFTs..." />;

@@ -35,20 +35,25 @@ const ScalableStories = () => {
   const userServiceClient = startUserServiceClient(indexClient);
 
   async function getStory() {
-    let userStoryQueryResults = await userServiceClient.query(pk, (actor) =>
-      actor.getStory(storyId)
-    );
+    // query needs to know pk to get story
+    if (pk) {
+      let userStoryQueryResults = await userServiceClient.query(pk, (actor) =>
+        actor.getStory(storyId)
+      );
 
-    if (userStoryQueryResults.length < 1) return;
+      if (userStoryQueryResults.length < 1) return;
 
-    let storyData;
-    if (userStoryQueryResults[0].value.length > 0) {
-      // handle candid returned optional type (string[] or string)
-      storyData = Array.isArray(userStoryQueryResults[0].value)
-        ? userStoryQueryResults[0].value[0]
-        : userStoryQueryResults[0].value;
+      let storyData;
+      if (userStoryQueryResults[0].value.length > 0) {
+        // handle candid returned optional type (string[] or string)
+        storyData = Array.isArray(userStoryQueryResults[0].value)
+          ? userStoryQueryResults[0].value[0]
+          : userStoryQueryResults[0].value;
+      }
+      setStory(storyData);
+    } else {
+      FailedToast("Failed", "Not signed in");
     }
-    setStory(storyData);
   }
 
   const createStory = async () => {

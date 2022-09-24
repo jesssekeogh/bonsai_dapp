@@ -6,8 +6,13 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Opt(IDL.Text)],
         [],
       ),
-    'deleteUserServiceCanister' : IDL.Func([], [], []),
+    'deleteUserServiceCanister' : IDL.Func([IDL.Text], [], []),
     'getCanistersByPK' : IDL.Func([IDL.Text], [IDL.Vec(IDL.Text)], ['query']),
+    'upgradeUserCanistersByPK' : IDL.Func(
+        [IDL.Text, IDL.Vec(IDL.Nat8)],
+        [IDL.Text],
+        [],
+      ),
   });
   return IndexCanister;
 };
