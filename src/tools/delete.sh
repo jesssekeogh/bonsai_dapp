@@ -1,0 +1,1 @@
+npx node src/delete_pk.js

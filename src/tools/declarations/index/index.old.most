@@ -1,0 +1,16 @@
+// Version: 1.0.0
+type CanisterId = Text;
+type CanisterIdList = StableBuffer<CanisterId>;
+type Color = {#B; #R};
+type StableBuffer<X> =
+  {var count : Nat; var elems : [var X]; initCapacity : Nat};
+type Tree<K, V> = {#leaf; #node : (Color, Tree<K, V>, (K, ?V), Tree<K, V>)};
+actor {
+  stable var pkToCanisterMap :
+    {
+      #leaf;
+      #node :
+        (Color, Tree<Text, CanisterIdList>, (Text, ?CanisterIdList),
+         Tree<Text, CanisterIdList>)
+    }
+};

@@ -1,0 +1,1 @@
+npx node src/upgrade_pk.js

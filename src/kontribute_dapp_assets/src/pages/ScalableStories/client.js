@@ -8,7 +8,7 @@ import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 export const startIndexClient = () => {
   // canister ID of index canister:
   // this canister is on ic network
-  const canisterId = "fxzyj-3yaaa-aaaai-qnocq-cai";
+  const canisterId = process.env.REACT_APP_INDEX_CANISTER_ID;
 
   return new IndexClient({
     IDL: IndexCanisterIDL,

@@ -58,9 +58,6 @@ const ScalableStories = () => {
 
   const createStory = async () => {
     if (pk) {
-      // delete a canister:
-      // const del = await indexClient.indexCanisterActor.deleteUserServiceCanister()
-      // return console.log(del)
 
       if (newStoryTitle == "" || newStoryBody == "") {
         return FailedToast("Failed", "Some fields are empty");

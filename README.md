@@ -43,22 +43,6 @@ Our backend is a mix between in house smart contracts written in Motoko aswell a
 
 ## ICP, Anvil Protocol, APIs
 
-The ICP blockchain allows us to create "canisters" which can serve your applications code (a canister is just a smart contract which in turn is just code on a blockchain), We use canisters to host both our frontend and backend. Our dapps authentication uses [Internet Identity](https://internetcomputer.org/docs/current/tokenomics/identity-auth/what-is-ic-identity/) which is currently an ICP specific authentication system, it is secure and powered by cryptography and allows users to create anonymous user IDs and wallets. We have integrated the Anvil Protocol which allows us to achieve NFT integration aswell as providing us with a variety of tools, including `vessel` and `npm` packages. Our marketplace, inventory and ICP wallet are all powered by the Anvil Protocol. We use UserGeek for analytics which allows us to obtain stats on unique users who use our dapp aswell as things like how many users purchased NFTs, All information is anonymous. 
-
-## Roadmap
-
-- [x] Canisters launched on the ICP blockchain
-- [x] ICP wallet
-- [x] NFT Inventory
-- [x] NFT Launchpad
-- [x] NFT Marketplace
-- [ ] User Stories
-    - [x] create stories via text editor
-    - [x] view your own stories
-    - [x] Read other user stories
-    - [x] Sell NFTs from your story
-    - [ ] Delete stories (admin and users)
-    - [ ] Story likes
-    - [ ] Story vote options
+The ICP blockchain allows us to create "canisters" which can serve your applications code (a canister is just a smart contract which in turn is just code on a blockchain), We use canisters to host both our frontend and backend. Our dapps authentication uses [Internet Identity](https://internetcomputer.org/docs/current/tokenomics/identity-auth/what-is-ic-identity/) which is currently an ICP specific authentication system, it is secure and powered by cryptography and allows users to create anonymous user IDs and wallets. We have integrated the Anvil Protocol which allows us to achieve NFT integration aswell as providing us with a variety of tools, including `vessel` and `npm` packages. Our marketplace, inventory and ICP wallet are all powered by the Anvil Protocol. We use UserGeek for analytics which allows us to obtain stats on unique users who use our dapp aswell as things like how many users purchased NFTs, All information is anonymous.
 
 <p align="right">(<a href="#top">back to top</a>)</p>

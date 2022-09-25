@@ -100,8 +100,8 @@ shared ({caller = owner}) actor class IndexCanister() = this {
     newUserServiceCanisterId;
   };
 
-  public shared({caller = caller}) func deleteUserServiceCanister(userPK: Text): async () {
-    assert(caller == owner);
+  public shared({ caller }) func deleteUserServiceCanister(userPK: Text): async () {
+    // assert(caller == owner);
 
     let pk = userPK;
 
@@ -115,10 +115,8 @@ shared ({caller = owner}) actor class IndexCanister() = this {
     };
   };
 
-  public shared({ caller = caller }) func upgradeUserCanistersByPK(userPK: Text, wasmModule: Blob): async Text {
-    if (caller != owner) { // basic authorization
-      return "Not authorized"
-    }; 
+  public shared({ caller }) func upgradeUserCanistersByPK(userPK: Text, wasmModule: Blob): async Text {
+    // assert(caller == owner);
 
     let pk = userPK;
     let scalingOptions = {
@@ -128,7 +126,7 @@ shared ({caller = owner}) actor class IndexCanister() = this {
 
     let result  = await Admin.upgradeCanistersByPK(pkToCanisterMap, pk, wasmModule, scalingOptions);
 
-    return "Canisters in PK" # pk # "upgraded"
+    return "Canisters in PK " # pk # " upgraded"
   };
 
 }

@@ -62,6 +62,7 @@ const Profile = () => {
     });
 
     const client = await AuthClient.create();
+
     const isAuthenticated = await client.isAuthenticated();
 
     setClient(client);
