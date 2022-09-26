@@ -179,7 +179,7 @@ const Marketplace = () => {
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
               pb={5}
-              gap={5}
+              gap={3}
               mx={2}
               maxW="1250px"
             >
@@ -246,16 +246,16 @@ const MarketplaceHeader = ({
   }, [stats]);
 
   return (
-    <Container maxWidth="1250px" my={8}>
+    <Container maxWidth="1250px" py={8}>
       <Hide above="md">
-        <Center align="center" gap={4} mb={4} mt={-2}>
+        <Center align="center" gap={4} mb={4}>
           <HeaderStats title={"floor price"} stat={floor} />
           <HeaderStats title={"listed"} stat={listed} />
           <HeaderStats title={"marketcap"} stat={marketcapUsd} />
         </Center>
       </Hide>
-      <Flex align="center" gap={{ base: 2, md: 3, lg: 3 }} mb={2}>
-        <Hide below="md">
+      <Hide below="md">
+        <Flex align="center" gap={{ base: 2, md: 3, lg: 3 }} mb={2}>
           <HeaderStats
             title={"floor price"}
             stat={stats ? `${e8sToIcp(stats.floor)} ICP` : "0.0000"}
@@ -271,11 +271,18 @@ const MarketplaceHeader = ({
             }
           />
           <HeaderStats title={"marketcap"} stat={marketcapUsd} />
-        </Hide>
-        <Spacer />
-        <RarityFilter setSort={setSort} setPage={setPage} />
-        <LtoH pricing={pricing} setPricing={setPricing} setPage={setPage} />
-      </Flex>
+          <Spacer />
+
+          <RarityFilter setSort={setSort} setPage={setPage} />
+          <LtoH pricing={pricing} setPricing={setPricing} setPage={setPage} />
+        </Flex>
+      </Hide>
+      <Hide above="md">
+        <Center gap={3}>
+          <RarityFilter setSort={setSort} setPage={setPage} />
+          <LtoH pricing={pricing} setPricing={setPricing} setPage={setPage} />
+        </Center>
+      </Hide>
     </Container>
   );
 };

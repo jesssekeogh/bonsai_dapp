@@ -80,7 +80,7 @@ const Inventory = () => {
           <>
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
-              gap={5}
+              gap={3}
               mx={2}
               maxW="1250px"
             >

@@ -41,7 +41,7 @@ function StatsCard({ title, stat, address, onCopy }) {
       <Center>
         {!address ? (
           <StatLabel
-            fontSize={{ base: "xs", md: "md" }}
+            fontSize={{ base: "sm", md: "md" }}
             as="kbd"
           >
             {title}:&nbsp;
@@ -56,7 +56,7 @@ function StatsCard({ title, stat, address, onCopy }) {
             >
               <StatNumber
                 ms={1}
-                fontSize={{ base: "6pt", md: "md" }}
+                fontSize={{ base: "sm", md: "md" }}
                 as="kbd"
                 overflow="hidden"
               >
@@ -72,7 +72,7 @@ function StatsCard({ title, stat, address, onCopy }) {
           </Tooltip>
         ) : (
           <StatNumber
-            fontSize={{ base: "xs", md: "md" }}
+            fontSize={{ base: "sm", md: "md" }}
             as="kbd"
           >
             {stat}
@@ -102,7 +102,7 @@ function BasicStatistics({ nftsTotal }) {
       pt={{ base: 0, sm: null, md: 10 }}
       px={{ base: 2, sm: 12, md: 17 }}
     >
-      <SimpleGrid columns={{ base: 3, md: 3 }} spacing={{ base: 4, lg: 8 }}>
+      <SimpleGrid columns={{ base: 2, md: 3 }} spacing={{ base: 4, lg: 8 }}>
         <StatsCard
           title={"Address"}
           stat={

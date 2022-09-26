@@ -93,7 +93,7 @@ const SingleNft = ({ tokenId }) => {
             <ChakraImage
               transform="scale(1.0)"
               bg="#fff"
-              height={["150px", null, "280px"]}
+              height={["170px", null, "280px"]}
               width={"auto"}
               objectFit={"cover"}
               src={tokenUrl(map.space, tokenId, "thumb")}

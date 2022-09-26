@@ -63,7 +63,7 @@ const NftCards = () => {
   return (
     <SimpleGrid
       columns={{ base: 1, md: 2, lg: 3 }}
-      pb={5}
+      pb={12}
       gap={5}
       maxW="1250px"
     >

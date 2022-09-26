@@ -74,7 +74,7 @@ const StorySummary = ({ storyId }) => {
           transform: "translateY(-2px)",
           boxShadow: "lg",
         }}
-        height={["150px", null, "220px"]}
+        height={["190px", null, "220px"]}
         border={"2px"}
         borderColor={color}
         bg={bgColor}
@@ -84,7 +84,7 @@ const StorySummary = ({ storyId }) => {
           <Stack
             spacing={0}
             align={"left"}
-            height={["75px", null, "125px"]}
+            height={["125px", null, "125px"]}
             overflow="hidden"
           >
             {loaded ? (
@@ -102,7 +102,7 @@ const StorySummary = ({ storyId }) => {
                   __html:
                     decodeURIComponent(storyData.story.story).substring(
                       0,
-                      100
+                      200
                     ) + "...",
                 }}
               />
