@@ -13,10 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
-  tokenUrl,
-  tokenFromText,
-} from "@vvv-interactive/nftanvil-tools/cjs/token.js";
-import {
   useAnvilSelector,
   nft_fetch,
   useAnvilDispatch,
@@ -39,11 +35,9 @@ const LargeNft = () => {
   const params = useParams();
   const path = useLocation();
   const address = useAnvilSelector((state) => state.user.address);
-  const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
   const [Loaded, setLoaded] = useState(false);
   const [data, setData] = useState({});
-  const [src, setSrc] = useState();
 
   const [pathData, setPathData] = useState({
     prevPath: "/",
@@ -52,9 +46,8 @@ const LargeNft = () => {
   });
 
   const load = async () => {
-    setSrc(tokenUrl(map.space, tokenFromText(params.tokenid), "content"));
-
     const meta = await dispatch(nft_fetch(params.tokenid));
+
     let NftData = {
       id: params.tokenid,
       name: meta.name,
@@ -64,6 +57,9 @@ const LargeNft = () => {
       color: itemQuality.light[meta.quality].color,
       rating: itemQuality.light[meta.quality].label,
       price: meta.price.amount,
+      content: meta.content.internal
+        ? meta.content.internal.url
+        : meta.content.external,
     };
 
     if (path.state !== null) {
@@ -97,14 +93,14 @@ const LargeNft = () => {
 
   if (!Loaded) return <LoadingSpinner label="Loading NFT..." />;
   return (
-    <Center pt={5} pb={10}>
+    <Center pt={2} pb={10}>
       {pathData.showConfetti ? <Confetti /> : null}
-      <Stack direction={{ base: "column", md: "row" }} padding={4}>
+      <Stack direction={{ base: "column", md: "column", lg: "row" }} padding={4}>
         <Flex flex={1}>
           <ChakraImage
             borderRadius="lg"
-            boxSize="100%"
-            src={src}
+            boxSize={["100%", null, "600px"]}
+            src={data.content}
             fallback={<LoadingImage />}
           />
         </Flex>

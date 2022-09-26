@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  useAnvilDispatch,
-  useAnvilSelector,
-  nft_fetch,
-} from "@vvv-interactive/nftanvil-react";
-import {
-  tokenUrl,
-  tokenToText,
-} from "@vvv-interactive/nftanvil-tools/cjs/token.js";
+import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
+import { tokenToText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import {
@@ -33,7 +26,6 @@ import {
 const SingleNft = ({ tokenId }) => {
   let isMounted = true;
   const path = useLocation();
-  const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
   const [nft, setNft] = useState({});
   const [loaded, setLoaded] = useState(false);
@@ -42,6 +34,7 @@ const SingleNft = ({ tokenId }) => {
 
   const load = async () => {
     const meta = await dispatch(nft_fetch(token));
+
     if (isMounted) {
       setNft({
         id: token,
@@ -52,6 +45,9 @@ const SingleNft = ({ tokenId }) => {
         filter: meta.tags[0],
         price: meta.price.amount,
         author: meta.author,
+        thumb: meta.thumb.internal
+          ? meta.thumb.internal.url
+          : meta.thumb.external,
       });
       setLoaded(true);
     }
@@ -96,7 +92,7 @@ const SingleNft = ({ tokenId }) => {
               height={["170px", null, "280px"]}
               width={"auto"}
               objectFit={"cover"}
-              src={tokenUrl(map.space, tokenId, "thumb")}
+              src={nft.thumb}
               fallback={<Skeleton height={["150px", null, "280px"]} />}
               transition="0.3s ease-in-out"
               _hover={{

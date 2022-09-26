@@ -69,7 +69,7 @@ const ForSale = ({ Icp, tokenId, setConfetti }) => {
         >
           Current Price
         </Text>
-        <HStack>
+        <HStack align="center">
           <Heading color={"#353840"} fontSize={{ base: "lg", md: "xl" }}>
             <Flex align="center">
               <Tooltip label="ICP">
@@ -85,7 +85,7 @@ const ForSale = ({ Icp, tokenId, setConfetti }) => {
             </Flex>
           </Heading>
           <Text size="sm" fontWeight="bold" color="gray.500">
-            {usdPrice}
+            &nbsp;{usdPrice}
           </Text>
           <Spacer />
           <BuyButton
