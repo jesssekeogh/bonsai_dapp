@@ -185,13 +185,19 @@ const BackButton = () => {
 
 const ReadingProgress = () => {
   const { scrollYProgress } = useScroll();
-
+  const bg = useColorModeValue("#edf2f7", "#242424");
   return (
-    <Box mt={{ base: -1, md: -1, lg: 2.5}} position="fixed" width="100%" zIndex="2" bg={"#282828"} sx={{opacity: 0.7}}>
+    <Box
+      mt={{ base: -1, md: -1, lg: 2.5 }}
+      position="fixed"
+      width="100%"
+      zIndex="2"
+      bg={bg}
+    >
       <motion.div
         style={{
           scaleX: scrollYProgress,
-          height: "10px",
+          height: "8px",
           background: "#12bdde",
           transformOrigin: "0%",
         }}
