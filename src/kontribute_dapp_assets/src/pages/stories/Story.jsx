@@ -15,7 +15,7 @@ import {
   Button,
   useBreakpointValue,
   useColorModeValue,
-  Progress,
+  Box,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
@@ -28,6 +28,7 @@ import {
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
+import { useScroll, motion } from "framer-motion";
 
 const Story = () => {
   let isMounted = true;
@@ -55,12 +56,11 @@ const Story = () => {
     };
   }, []);
 
-  const target = React.createRef();
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
     <>
-      <ReadingProgress target={target} />
-      <Container minW={{ md: "2xl" }} pt={10} pb={12} ref={target}>
+      <ReadingProgress />
+      <Container minW={{ md: "2xl" }} pt={10} pb={12}>
         {loaded ? (
           <>
             <Center>
@@ -183,47 +183,20 @@ const BackButton = () => {
   );
 };
 
-const ReadingProgress = ({ target }) => {
-  const [readingProgress, setReadingProgress] = useState(0);
-  const scrollListener = () => {
-    if (!target.current) {
-      return;
-    }
-
-    const element = target.current;
-    const totalHeight =
-      element.clientHeight - element.offsetTop - window.innerHeight;
-    const windowScrollTop =
-      window.pageYOffset ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop ||
-      0;
-
-    if (windowScrollTop === 0) {
-      return setReadingProgress(0);
-    }
-
-    if (windowScrollTop > totalHeight) {
-      return setReadingProgress(100);
-    }
-
-    setReadingProgress((windowScrollTop / totalHeight) * 100);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", scrollListener);
-    return () => window.removeEventListener("scroll", scrollListener);
-  });
+const ReadingProgress = () => {
+  const { scrollYProgress } = useScroll();
 
   return (
-    <Progress
-      value={readingProgress}
-      size="sm"
-      mt={{ base: -1, md: 2 }}
-      position="fixed"
-      width="100%"
-      zIndex="2"
-    />
+    <Box mt={{ base: -1, md: -1, lg: 2.5}} position="fixed" width="100%" zIndex="2" bg={"#282828"} sx={{opacity: 0.7}}>
+      <motion.div
+        style={{
+          scaleX: scrollYProgress,
+          height: "10px",
+          background: "#12bdde",
+          transformOrigin: "0%",
+        }}
+      />
+    </Box>
   );
 };
 

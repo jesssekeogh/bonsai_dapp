@@ -72,7 +72,7 @@ const NavBar = () => {
       <Box
         as="section"
         pt="0.6rem"
-        pb={"0.5rem"}
+        pb={"0.4rem"}
         px={isDesktop ? "4rem" : "1rem"}
         boxShadow="2xl"
         position="fixed"
@@ -80,7 +80,7 @@ const NavBar = () => {
         top="0"
         zIndex="2"
         bg={"#111111"}
-        borderBottom=" 3px double"
+        borderBottom={isDesktop ? "5px double" : "4px double"}
         borderColor="#1a1a1a"
       >
         {isDesktop ? (
@@ -100,7 +100,7 @@ const NavBar = () => {
             </HStack>
             <Spacer />
             <Profile />
-            <ColorButton size="sm"/>
+            <ColorButton size="sm" />
           </Flex>
         ) : (
           <Flex align="center">
@@ -135,7 +135,7 @@ const MobileMenu = () => {
         <DrawerContent bg={"#111111"} borderColor="#1a1a1a">
           <DrawerCloseButton color="white" />
           <DrawerHeader>
-            <ColorButton size="md"/>
+            <ColorButton size="md" />
           </DrawerHeader>
           <DrawerBody>
             <VStack fontWeight={700} fontSize={28} onClick={() => onClose()}>
