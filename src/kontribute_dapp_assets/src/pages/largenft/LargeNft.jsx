@@ -21,7 +21,7 @@ import { useParams } from "react-router-dom";
 import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { LoadingSpinner } from "../../containers/index";
 import { Link, useLocation } from "react-router-dom";
-import { Confetti } from "../components";
+import { Confetti, GetMine } from "../components";
 import {
   ButtonColorDark,
   ButtonColorLight,
@@ -38,6 +38,7 @@ const LargeNft = () => {
   const dispatch = useAnvilDispatch();
   const [Loaded, setLoaded] = useState(false);
   const [data, setData] = useState({});
+  const [ownedTokens, setOwnedTokens] = useState([]);
 
   const [pathData, setPathData] = useState({
     prevPath: "/",
@@ -46,21 +47,33 @@ const LargeNft = () => {
   });
 
   const load = async () => {
-    const meta = await dispatch(nft_fetch(params.tokenid));
+    await Promise.all([
+      (async () => {
+        let meta = await dispatch(nft_fetch(params.tokenid));
 
-    let NftData = {
-      id: params.tokenid,
-      name: meta.name,
-      lore: meta.lore,
-      attributes: meta.attributes,
-      tags: meta.tags,
-      color: itemQuality.light[meta.quality].color,
-      rating: itemQuality.light[meta.quality].label,
-      price: meta.price.amount,
-      content: meta.content.internal
-        ? meta.content.internal.url
-        : meta.content.external,
-    };
+        let NftData = {
+          id: params.tokenid,
+          name: meta.name,
+          lore: meta.lore,
+          attributes: meta.attributes,
+          tags: meta.tags,
+          color: itemQuality.light[meta.quality].color,
+          rating: itemQuality.light[meta.quality].label,
+          price: meta.price.amount,
+          content: meta.content.internal
+            ? meta.content.internal.url
+            : meta.content.external,
+        };
+
+        setData(NftData);
+      })(),
+      (async () => {
+        if (address) {
+          let allTokens = await dispatch(GetMine());
+          setOwnedTokens(allTokens);
+        }
+      })(),
+    ]);
 
     if (path.state !== null) {
       setPathData({
@@ -70,7 +83,6 @@ const LargeNft = () => {
       });
     }
 
-    setData(NftData);
     setLoaded(true);
   };
 
@@ -95,7 +107,10 @@ const LargeNft = () => {
   return (
     <Center pt={2} pb={10}>
       {pathData.showConfetti ? <Confetti /> : null}
-      <Stack direction={{ base: "column", md: "column", lg: "row" }} padding={4}>
+      <Stack
+        direction={{ base: "column", md: "column", lg: "row" }}
+        padding={4}
+      >
         <Flex flex={1}>
           <ChakraImage
             borderRadius="lg"
@@ -136,7 +151,7 @@ const LargeNft = () => {
               </Link>
             ) : null}
           </HStack>
-          {address ? <Owned tokenId={data.id} /> : null}
+          {address ? <Owned tokenId={data.id} tokens={ownedTokens} /> : null}
           {data.price > 0 ? (
             <ForSale Icp={data.price} tokenId={data.id} />
           ) : null}

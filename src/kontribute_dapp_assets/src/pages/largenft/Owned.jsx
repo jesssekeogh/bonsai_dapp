@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   useAnvilDispatch,
   useAnvilSelector,
@@ -7,7 +7,6 @@ import {
 } from "@vvv-interactive/nftanvil-react";
 import { tokenFromText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import { GetMine } from "../components";
 import {
   Button,
   Text,
@@ -56,31 +55,11 @@ const checkSupport = (address) => {
 };
 
 // shows if owned on large NFT view
-const Owned = ({ tokenId }) => {
-  const anvilDispatch = useAnvilDispatch();
-  const [loadComponent, setLoadComponent] = useState(false);
+const Owned = ({ tokenId, tokens }) => {
+  if (!tokens.includes(tokenFromText(tokenId))) {
+    return null;
+  }
 
-  const fetchOwned = async () => {
-    const tokens = await anvilDispatch(GetMine());
-    
-    if (tokens.includes(tokenFromText(tokenId))) {
-      setLoadComponent(true);
-    } else {
-      setLoadComponent(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchOwned();
-    const interval = setInterval(() => {
-      fetchOwned();
-    }, 3000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  if (!loadComponent) return null;
   return (
     <Flex bg={"gray.50"} rounded={"lg"}>
       <Container bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
