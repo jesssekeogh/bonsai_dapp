@@ -10,6 +10,7 @@ import {
   HStack,
   CircularProgress,
   Box,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
@@ -50,7 +51,6 @@ const LargeNft = () => {
     await Promise.all([
       (async () => {
         let meta = await dispatch(nft_fetch(params.tokenid));
-
         let NftData = {
           id: params.tokenid,
           name: meta.name,
@@ -116,7 +116,9 @@ const LargeNft = () => {
             borderRadius="lg"
             boxSize={["100%", null, "600px"]}
             src={data.content}
-            fallback={<LoadingImage />}
+            fallback={
+              <Skeleton borderRadius="lg" boxSize={["320px", null, "600px"]} />
+            }
           />
         </Flex>
         <Stack
@@ -129,12 +131,7 @@ const LargeNft = () => {
         >
           <HStack>
             <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
-              <Button
-                bg={buttonBgColor}
-                color={buttonTextColor}
-                size="sm"
-                _hover={{ opacity: "0.8" }}
-              >
+              <Button variant="outline" size="sm" _hover={{ opacity: "0.8" }}>
                 <Text>Go Back</Text>
               </Button>
             </Link>
@@ -207,11 +204,4 @@ const LargeNft = () => {
   );
 };
 
-const LoadingImage = () => {
-  return (
-    <Center>
-      <CircularProgress color="#9d8144" isIndeterminate />
-    </Center>
-  );
-};
 export default LargeNft;

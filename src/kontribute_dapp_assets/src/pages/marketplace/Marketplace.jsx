@@ -8,11 +8,12 @@ import {
   Center,
   Container,
   Stack,
-  IconButton,
+  Button,
   useColorModeValue,
   Heading,
   Text,
   VStack,
+  Divider,
   Hide,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
@@ -22,12 +23,8 @@ import { RarityFilter, LtoH } from "../components/Filters";
 import { useParams } from "react-router-dom";
 import { FailedToast } from "../../containers/toasts/Toasts";
 import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
-import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
-} from "../../containers/colormode/Colors";
+
+const NFTSDISPLAYED = 20;
 
 const Marketplace = () => {
   const params = useParams();
@@ -37,7 +34,8 @@ const Marketplace = () => {
   const [page, setPage] = useState(0);
   const [pricing, setPricing] = useState("Low to High");
   const [author, setAuthor] = useState({});
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState();
+  const [allNftsAfterFilter, setAll] = useState();
   const [isPending, startTransition] = useTransition();
 
   // author fetch - only runs if author changes
@@ -140,10 +138,16 @@ const Marketplace = () => {
 
       startTransition(() => {
         if (sortBy === "0") {
-          setTokensForSale(forSale.slice(page * 20, (page + 1) * 20));
+          setTokensForSale(
+            forSale.slice(page * NFTSDISPLAYED, (page + 1) * NFTSDISPLAYED)
+          );
+          setAll(forSale.length);
         } else {
           let filtered = sortRarity(forSale, sortBy);
-          setTokensForSale(filtered.slice(page * 20, (page + 1) * 20));
+          setTokensForSale(
+            filtered.slice(page * NFTSDISPLAYED, (page + 1) * NFTSDISPLAYED)
+          );
+          setAll(filtered.length);
         }
       });
     }
@@ -174,6 +178,8 @@ const Marketplace = () => {
             setPage={setPage}
             page={page}
             tokensLength={tokensForSale.length}
+            stats={stats}
+            allNftsAfterFilter={allNftsAfterFilter}
           />
           <Center mt={1}>
             <SimpleGrid
@@ -192,6 +198,7 @@ const Marketplace = () => {
             setPage={setPage}
             page={page}
             tokensLength={tokensForSale.length}
+            allNftsAfterFilter={allNftsAfterFilter}
           />
         </>
       ) : (
@@ -227,8 +234,8 @@ const MarketplaceHeader = ({
   setPage,
   stats,
 }) => {
-  const [marketcapUsd, setMarketcapUsd] = useState("US$0.00");
-  const [floor, setFloor] = useState("0.0000");
+  const [marketcapUsd, setMarketcapUsd] = useState("US$00.00");
+  const [floor, setFloor] = useState("0.0000 ICP");
   const [listed, setListed] = useState("0%");
 
   const load = async () => {
@@ -246,7 +253,7 @@ const MarketplaceHeader = ({
   }, [stats]);
 
   return (
-    <Container maxWidth="1250px" py={8}>
+    <Container maxWidth="1250px" pt={{ base: 2, md: 8 }}>
       <Hide above="md">
         <Center align="center" gap={4} mb={4}>
           <HeaderStats title={"floor price"} stat={floor} />
@@ -256,20 +263,8 @@ const MarketplaceHeader = ({
       </Hide>
       <Hide below="md">
         <Flex align="center" gap={{ base: 2, md: 3, lg: 3 }} mb={2}>
-          <HeaderStats
-            title={"floor price"}
-            stat={stats ? `${e8sToIcp(stats.floor)} ICP` : "0.0000"}
-          />
-          <HeaderStats
-            title={"listed"}
-            stat={
-              stats
-                ? `${Math.round(
-                    (stats.countForSale / stats.countTotal) * 100
-                  )}%`
-                : "0%"
-            }
-          />
+          <HeaderStats title={"floor price"} stat={floor} />
+          <HeaderStats title={"listed"} stat={listed} />
           <HeaderStats title={"marketcap"} stat={marketcapUsd} />
           <Spacer />
 
@@ -283,47 +278,67 @@ const MarketplaceHeader = ({
           <LtoH pricing={pricing} setPricing={setPricing} setPage={setPage} />
         </Center>
       </Hide>
+      <Divider my={3} />
     </Container>
   );
 };
 
-const PaginationButtons = ({ setPage, page, tokensLength }) => {
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
-  const buttonTextColor = useColorModeValue(
-    ButtonTextColorlight,
-    ButtonTextColorDark
-  );
+const PaginationButtons = ({
+  setPage,
+  page,
+  tokensLength,
+  allNftsAfterFilter,
+}) => {
+  const [totalPages, setTotalPages] = useState(0);
+
+  const loadPages = () => {
+    if (allNftsAfterFilter) {
+      setTotalPages(Math.ceil(allNftsAfterFilter / NFTSDISPLAYED));
+    }
+  };
+
+  useEffect(() => {
+    loadPages();
+  }, [allNftsAfterFilter]);
+
   return (
-    <Center mb={2} mt={-3}>
-      <Stack
-        direction={"row"}
-        spacing={3}
-        align={"center"}
-        alignSelf={"center"}
-        position={"relative"}
-      >
-        <IconButton
-          bg={buttonBgColor}
-          color={buttonTextColor}
+    <Center my={5}>
+      <Stack direction="row" align="center">
+        <Button
+          variant="outline"
           size="sm"
           _hover={{ opacity: "0.9" }}
-          icon={<ArrowLeftIcon />}
+          leftIcon={<ArrowLeftIcon />}
           onClick={() => {
             setPage(page - 1);
           }}
           isDisabled={page === 0}
-        />
-        <IconButton
-          bg={buttonBgColor}
-          color={buttonTextColor}
+        >
+          Previous
+        </Button>
+        <Button size="xs" rounded="full">
+          {page + 1}
+        </Button>
+        <Text>...</Text>
+        <Button
+          size="xs"
+          rounded="full"
+          onClick={() => setPage(totalPages - 1)}
+        >
+          {totalPages}
+        </Button>
+        <Button
+          variant="outline"
           size="sm"
-          icon={<ArrowRightIcon />}
+          rightIcon={<ArrowRightIcon />}
           _hover={{ opacity: "0.9" }}
           onClick={() => {
             setPage(page + 1);
           }}
           isDisabled={tokensLength < 20}
-        />
+        >
+          Next
+        </Button>
       </Stack>
     </Center>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  useColorModeValue,
   Menu,
   MenuButton,
   MenuList,
@@ -8,12 +7,6 @@ import {
   MenuItemOption,
   Button,
 } from "@chakra-ui/react";
-import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
-} from "../../containers/colormode/Colors";
 
 export const RarityFilter = ({ setSort, setPage }) => {
   const [currentSort, setCurrentSort] = useState("All");
@@ -50,8 +43,7 @@ export const RarityFilter = ({ setSort, setPage }) => {
       <MenuButton
         as={Button}
         boxShadow="base"
-        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
-        color={useColorModeValue(ButtonTextColorlight, ButtonTextColorDark)}
+        variant="outline"
         _hover={{
           opacity: "0.9",
         }}
@@ -111,8 +103,7 @@ export const LtoH = ({ pricing, setPricing, setPage }) => {
       <MenuButton
         as={Button}
         boxShadow="base"
-        bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
-        color={useColorModeValue(ButtonTextColorlight, ButtonTextColorDark)}
+        variant="outline"
         _hover={{
           opacity: "0.9",
         }}
