@@ -8,9 +8,8 @@ import {
   SimpleGrid,
   Kbd,
   Text,
-  useColorModeValue,
   Stack,
-  IconButton,
+  Button,
   Box,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
@@ -18,12 +17,8 @@ import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { GetMine } from "../components";
 import { SingleNft } from "../components";
-import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
-} from "../../containers/colormode/Colors";
+
+const NFTSDISPLAYED = 20;
 
 const Inventory = () => {
   let isMounted = true;
@@ -48,7 +43,9 @@ const Inventory = () => {
 
   const fetchTokens = async () => {
     if (isMounted && Loaded) {
-      setTokensShowing(loadedTokens.slice(page * 20, (page + 1) * 20));
+      setTokensShowing(
+        loadedTokens.slice(page * NFTSDISPLAYED, (page + 1) * NFTSDISPLAYED)
+      );
     }
   };
 
@@ -74,6 +71,7 @@ const Inventory = () => {
         setPage={setPage}
         page={page}
         tokensLength={tokensShowing.length}
+        allNftsAfterFilter={allTokens}
       />
       <Center mt={2}>
         {tokensShowing.length > 0 ? (
@@ -104,48 +102,67 @@ const Inventory = () => {
         setPage={setPage}
         page={page}
         tokensLength={tokensShowing.length}
+        allNftsAfterFilter={allTokens}
       />
     </Box>
   );
 };
 
-const PaginationButtons = ({ setPage, page, tokensLength }) => {
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
-  const buttonTextColor = useColorModeValue(
-    ButtonTextColorlight,
-    ButtonTextColorDark
-  );
+const PaginationButtons = ({
+  setPage,
+  page,
+  tokensLength,
+  allNftsAfterFilter,
+}) => {
+  const [totalPages, setTotalPages] = useState(0);
+
+  const loadPages = () => {
+    if (allNftsAfterFilter) {
+      setTotalPages(Math.ceil(allNftsAfterFilter / NFTSDISPLAYED));
+    }
+  };
+
+  useEffect(() => {
+    loadPages();
+  }, [allNftsAfterFilter]);
   return (
-    <Center m={3}>
-      <Stack
-        direction={"row"}
-        spacing={3}
-        align={"center"}
-        alignSelf={"center"}
-        position={"relative"}
-      >
-        <IconButton
-          bg={buttonBgColor}
-          color={buttonTextColor}
+    <Center my={5}>
+      <Stack direction="row" align="center">
+        <Button
+          variant="outline"
           size="sm"
-          _hover={{ opacity: "0.9" }}
-          icon={<ArrowLeftIcon />}
+          _hover={{ boxShadow: "base" }}
+          leftIcon={<ArrowLeftIcon />}
           onClick={() => {
             setPage(page - 1);
           }}
           isDisabled={page === 0}
-        />
-        <IconButton
-          bg={buttonBgColor}
-          color={buttonTextColor}
+        >
+          Previous
+        </Button>
+        <Button size="xs" rounded="full">
+          {page + 1}
+        </Button>
+        <Text>...</Text>
+        <Button
+          size="xs"
+          rounded="full"
+          onClick={() => setPage(totalPages - 1)}
+        >
+          {totalPages}
+        </Button>
+        <Button
+          variant="outline"
           size="sm"
-          icon={<ArrowRightIcon />}
-          _hover={{ opacity: "0.9" }}
+          rightIcon={<ArrowRightIcon />}
+          _hover={{ boxShadow: "base" }}
           onClick={() => {
             setPage(page + 1);
           }}
-          isDisabled={tokensLength < 20}
-        />
+          isDisabled={page + 1 === totalPages}
+        >
+          Next
+        </Button>
       </Stack>
     </Center>
   );

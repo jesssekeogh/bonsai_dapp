@@ -307,7 +307,7 @@ const PaginationButtons = ({
         <Button
           variant="outline"
           size="sm"
-          _hover={{ opacity: "0.9" }}
+          _hover={{ boxShadow: "base" }}
           leftIcon={<ArrowLeftIcon />}
           onClick={() => {
             setPage(page - 1);
@@ -331,11 +331,11 @@ const PaginationButtons = ({
           variant="outline"
           size="sm"
           rightIcon={<ArrowRightIcon />}
-          _hover={{ opacity: "0.9" }}
+          _hover={{ boxShadow: "base" }}
           onClick={() => {
             setPage(page + 1);
           }}
-          isDisabled={tokensLength < 20}
+          isDisabled={page + 1 === totalPages}
         >
           Next
         </Button>

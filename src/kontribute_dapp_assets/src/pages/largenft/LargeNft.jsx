@@ -131,7 +131,11 @@ const LargeNft = () => {
         >
           <HStack>
             <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
-              <Button variant="outline" size="sm" _hover={{ opacity: "0.8" }}>
+              <Button
+                variant="outline"
+                size="sm"
+                _hover={{ boxShadow: "base" }}
+              >
                 <Text>Go Back</Text>
               </Button>
             </Link>

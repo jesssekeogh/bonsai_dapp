@@ -121,7 +121,7 @@ const SingleNft = ({ tokenId }) => {
                   <ChakraImage src={icLogo} h={"18px"} w={"auto"} />
                   &nbsp;
                   <Text as="kbd" fontSize={"xs"}>
-                    {e8sToIcp(nft.price) > 0 ? e8sToIcp(nft.price) : "N/A"}
+                    {e8sToIcp(nft.price) > 0 ? e8sToIcp(nft.price) : "-"}
                   </Text>
                 </Flex>
               </>

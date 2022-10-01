@@ -7,6 +7,7 @@ import {
   MenuItemOption,
   Button,
 } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 export const RarityFilter = ({ setSort, setPage }) => {
   const [currentSort, setCurrentSort] = useState("All");
@@ -45,8 +46,9 @@ export const RarityFilter = ({ setSort, setPage }) => {
         boxShadow="base"
         variant="outline"
         _hover={{
-          opacity: "0.9",
+          boxShadow: "md",
         }}
+        rightIcon={<ChevronDownIcon />}
       >
         Rarity: {currentSort}
       </MenuButton>
@@ -105,8 +107,9 @@ export const LtoH = ({ pricing, setPricing, setPage }) => {
         boxShadow="base"
         variant="outline"
         _hover={{
-          opacity: "0.9",
+          boxShadow: "md",
         }}
+        rightIcon={<ChevronDownIcon />}
       >
         Price: {pricing}
       </MenuButton>
