@@ -9,8 +9,6 @@ import {
   Tooltip,
   useBreakpointValue,
   useColorModeValue,
-  HStack,
-  Spacer,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -43,11 +41,12 @@ import {
   e8sToIcp,
   TextToArray,
 } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
+import { tokenFromText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 import { Usergeek } from "usergeek-ic-js";
 import IcpToDollars from "../components/IcpToDollars";
 
-const ForSale = ({ Icp, tokenId, setConfetti }) => {
+const ForSale = ({ Icp, tokenId, tokens }) => {
   const [usdPrice, setUsdPrice] = useState(0);
 
   const loadPrice = async () => {
@@ -59,7 +58,7 @@ const ForSale = ({ Icp, tokenId, setConfetti }) => {
   }, []);
 
   return (
-    <Flex bg={"gray.50"} rounded={"lg"}>
+    <Flex bg={"gray.50"} rounded={"lg"} w={{ base: "100%", md: "60%" }}>
       <Container bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Text
           fontWeight={600}
@@ -69,32 +68,28 @@ const ForSale = ({ Icp, tokenId, setConfetti }) => {
         >
           Current Price
         </Text>
-        <HStack align="center">
-          <Heading color={"#353840"} fontSize={{ base: "lg", md: "xl" }}>
-            <Flex align="center">
-              <Tooltip label="ICP">
-                <ChakraImage
-                  src={IcLogo}
-                  h={["18px", null, "25px"]}
-                  w={"auto"}
-                />
-              </Tooltip>
-              &nbsp;
-              {e8sToIcp(Icp)}
-              &nbsp;
-            </Flex>
+        <Flex align="baseline" gap={1}>
+          <Heading color={"#353840"} fontSize={{ base: "xl", md: "3xl" }}>
+            {Number(e8sToIcp(Icp)).toFixed(2)}
           </Heading>
-          <Text size="sm" fontWeight="bold" color="gray.500">
+          <Text
+            fontSize={{ base: "md", md: "lg" }}
+            fontWeight="bold"
+            color={"#353840"}
+          >
+            ICP
+          </Text>
+          <Text
+            fontSize={{ base: "md", md: "lg" }}
+            fontWeight="bold"
+            color="gray.500"
+          >
             &nbsp;{usdPrice}
           </Text>
-          <Spacer />
-          <BuyButton
-            tokenId={tokenId}
-            price={Icp}
-            setConfetti={setConfetti}
-            usd={usdPrice}
-          />
-        </HStack>
+        </Flex>
+        {!tokens.includes(tokenFromText(tokenId)) ? (
+          <BuyButton tokenId={tokenId} price={Icp} usd={usdPrice} />
+        ) : null}
       </Container>
     </Flex>
   );
@@ -154,8 +149,9 @@ const BuyButton = ({ tokenId, price, usd }) => {
         leftIcon={<MdOutlineAccountBalanceWallet />}
         bg={buttonBgColor}
         color={buttonTextColor}
-        mt={2}
-        size={useBreakpointValue(["md", "lg"])}
+        mt={3}
+        w="full"
+        size="lg"
         _hover={{ opacity: "0.8" }}
         disabled={address ? false : true}
         onClick={() => onOpen()}

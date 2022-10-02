@@ -7,7 +7,7 @@ const IcpToDollars = async (e8sIcp) => {
   let resp = await fetch(CoinApi).then((x) => x.json());
   let price = resp["internet-computer"].usd;
 
-  let formatCurrency = new Intl.NumberFormat(undefined, {
+  let formatCurrency = new Intl.NumberFormat("en-US", {
     style: 'currency',
     currency: 'USD',
   });

@@ -112,7 +112,7 @@ const SingleNft = ({ tokenId }) => {
                 <Hide below="md">
                   <Text
                     casing={"uppercase"}
-                    fontSize={{ base: "6pt", sm: "xs", md: "xs" }}
+                    fontSize={"sm"}
                   >
                     Price
                   </Text>
@@ -120,8 +120,10 @@ const SingleNft = ({ tokenId }) => {
                 <Flex align="center">
                   <ChakraImage src={icLogo} h={"18px"} w={"auto"} />
                   &nbsp;
-                  <Text as="kbd" fontSize={"xs"}>
-                    {e8sToIcp(nft.price) > 0 ? e8sToIcp(nft.price) : "-"}
+                  <Text fontWeight="bold" fontSize={"sm"}>
+                    {e8sToIcp(nft.price) > 0
+                      ? Number(e8sToIcp(nft.price)).toFixed(2)
+                      : "-"}
                   </Text>
                 </Flex>
               </>
@@ -144,7 +146,7 @@ const SingleNft = ({ tokenId }) => {
           >
             {loaded ? (
               <Heading
-                fontSize={{ base: "xs", sm: "xs", md: "sm" }}
+                fontSize={{ base: "sm", sm: "sm", md: "sm" }}
                 color={nftNameColor}
                 noOfLines={1}
               >

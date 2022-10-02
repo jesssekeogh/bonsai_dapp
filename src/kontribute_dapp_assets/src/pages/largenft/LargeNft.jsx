@@ -8,7 +8,6 @@ import {
   Text,
   useColorModeValue,
   HStack,
-  CircularProgress,
   Box,
   Skeleton,
 } from "@chakra-ui/react";
@@ -109,7 +108,7 @@ const LargeNft = () => {
       {pathData.showConfetti ? <Confetti /> : null}
       <Stack
         direction={{ base: "column", md: "column", lg: "row" }}
-        padding={4}
+        p={{ base: 4, md: 10 }}
       >
         <Flex flex={1}>
           <ChakraImage
@@ -152,9 +151,9 @@ const LargeNft = () => {
               </Link>
             ) : null}
           </HStack>
-          {address ? <Owned tokenId={data.id} tokens={ownedTokens} /> : null}
+          {address ? <Owned tokenId={data.id} tokens={ownedTokens} price={data.price} /> : null}
           {data.price > 0 ? (
-            <ForSale Icp={data.price} tokenId={data.id} />
+            <ForSale Icp={data.price} tokenId={data.id} tokens={ownedTokens} />
           ) : null}
           <Box bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
             <Heading

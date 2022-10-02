@@ -15,7 +15,6 @@ import {
   Tooltip,
   useBreakpointValue,
   HStack,
-  Spacer,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -34,7 +33,7 @@ import {
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { RiSendPlaneFill } from "react-icons/ri";
-import { MdSell } from "react-icons/md";
+import { MdSell, MdRemoveShoppingCart } from "react-icons/md";
 import {
   FailedToast,
   SendingToast,
@@ -55,7 +54,7 @@ const checkSupport = (address) => {
 };
 
 // shows if owned on large NFT view
-const Owned = ({ tokenId, tokens }) => {
+const Owned = ({ tokenId, tokens, price }) => {
   if (!tokens.includes(tokenFromText(tokenId))) {
     return null;
   }
@@ -71,11 +70,11 @@ const Owned = ({ tokenId, tokens }) => {
         >
           Owned
         </Text>
-        <HStack>
-          <Spacer />
+        <HStack align="center">
           <SellButton tokenId={tokenId} />
           <TransferButton tokenId={tokenId} />
         </HStack>
+        {price > 0 ? <DelistButton tokenId={tokenId} /> : null}
       </Container>
     </Flex>
   );
@@ -118,8 +117,7 @@ const TransferButton = ({ tokenId }) => {
         leftIcon={<RiSendPlaneFill />}
         bg={buttonBgColor}
         color={buttonTextColor}
-        mt={2}
-        size={useBreakpointValue(["md", "lg"])}
+        size="lg"
         _hover={{ opacity: "0.8" }}
         disabled={address ? false : true}
         onClick={() => onOpen()}
@@ -232,8 +230,7 @@ const SellButton = ({ tokenId }) => {
         leftIcon={<MdSell />}
         bg={buttonBgColor}
         color={buttonTextColor}
-        mt={2}
-        size={useBreakpointValue(["md", "lg"])}
+        size="lg"
         _hover={{ opacity: "0.8" }}
         disabled={address ? false : true}
         onClick={() => onOpen()}
@@ -279,4 +276,58 @@ const SellButton = ({ tokenId }) => {
   );
 };
 
+const DelistButton = ({ tokenId }) => {
+  const dispatch = useAnvilDispatch();
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
+  const priceObj = {
+    id: tokenId,
+    price: {
+      amount: AccountIdentifier.icpToE8s(0),
+      marketplace: [
+        {
+          address: AccountIdentifier.TextToArray(
+            "a00dcee3d64e4daaa34ebfa7b95fba5f095e234d32a4770958e3f8e8818cafe1"
+          ),
+          share: 50,
+        },
+      ],
+    },
+  };
+
+  const updatePrice = async () => {
+    try {
+      SendingToast("Updating NFT...");
+      await dispatch(nft_set_price(priceObj));
+      toast.closeAll();
+      SuccessToast(
+        "Success",
+        `${
+          tokenId.substring(0, 6) + "..." + tokenId.substring(15, 20)
+        } Delisted`
+      );
+    } catch (e) {
+      toast.closeAll();
+      FailedToast("Failed", e.toString());
+    }
+  };
+
+  return (
+    <Button
+      bg={buttonBgColor}
+      color={buttonTextColor}
+      mt={2}
+      size="lg"
+      leftIcon={<MdRemoveShoppingCart />}
+      _hover={{ opacity: "0.8" }}
+      onClick={() => updatePrice()}
+    >
+      Delist from marketplace
+    </Button>
+  );
+};
 export default Owned;
