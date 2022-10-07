@@ -44,7 +44,6 @@ export const RarityFilter = ({ setSort, setPage }) => {
       <MenuButton
         as={Button}
         boxShadow="base"
-        variant="outline"
         _hover={{
           boxShadow: "md",
         }}
@@ -105,7 +104,6 @@ export const LtoH = ({ pricing, setPricing, setPage }) => {
       <MenuButton
         as={Button}
         boxShadow="base"
-        variant="outline"
         _hover={{
           boxShadow: "md",
         }}

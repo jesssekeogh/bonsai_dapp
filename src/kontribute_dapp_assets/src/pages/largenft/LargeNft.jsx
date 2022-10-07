@@ -96,12 +96,6 @@ const LargeNft = () => {
     };
   }, []);
 
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
-  const buttonTextColor = useColorModeValue(
-    ButtonTextColorlight,
-    ButtonTextColorDark
-  );
-
   if (!Loaded) return <LoadingSpinner label="Loading NFT..." />;
   return (
     <Center pt={2} pb={10}>
@@ -131,8 +125,6 @@ const LargeNft = () => {
           <HStack>
             <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
               <Button
-                variant="outline"
-                size="sm"
                 _hover={{ boxShadow: "base" }}
               >
                 <Text>Go Back</Text>
@@ -141,9 +133,6 @@ const LargeNft = () => {
             {pathData.amount > 1 ? (
               <Link to="/marketplace">
                 <Button
-                  bg={buttonBgColor}
-                  color={buttonTextColor}
-                  size="sm"
                   _hover={{ opacity: "0.8" }}
                 >
                   <Text>{"+ " + (pathData.amount - 1) + " other NFTs"}</Text>

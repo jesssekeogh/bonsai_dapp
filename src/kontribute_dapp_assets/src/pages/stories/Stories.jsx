@@ -6,7 +6,6 @@ import {
   Button,
   Container,
   Spacer,
-  useBreakpointValue,
   Skeleton,
   useColorModeValue,
   Tabs,
@@ -21,12 +20,6 @@ import { createStoryActor } from "../../../../declarations/story";
 import BonsaiBG from "../../../assets/Bonsai_Warriors_Background_1.png";
 import PendragonBG from "../../../assets/pendragon.png";
 import GalacticBG from "../../../assets/galactic_guardians.png";
-import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
-} from "../../containers/colormode/Colors";
 
 const amountOfStories = 12;
 const allStories = 10000;
@@ -177,22 +170,15 @@ const RecentGrid = () => {
 const ViewAllButton = ({ current, setAmount }) => {
   const [clicked, setClicked] = useState(false);
 
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
-  const buttonTextColor = useColorModeValue(
-    ButtonTextColorlight,
-    ButtonTextColorDark
-  );
   return (
     <Stack direction={"row"}>
       <Spacer />
       <Button
         mt={8}
-        bg={buttonBgColor}
-        color={buttonTextColor}
-        size={useBreakpointValue(["sm", "md"])}
         px={5}
+        boxShadow="base"
         _hover={{
-          opacity: "0.8",
+          boxShadow: "md",
         }}
         isDisabled={clicked}
         onClick={() => {

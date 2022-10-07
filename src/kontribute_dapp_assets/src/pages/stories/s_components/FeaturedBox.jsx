@@ -35,7 +35,6 @@ const FeaturedBox = ({ mainImg, link, name }) => {
           mx={5}
           fontSize={{ base: "md", sm: "md", md: "xl" }}
           color="white"
-          as={"u"}
         >
           {name}
         </Heading>

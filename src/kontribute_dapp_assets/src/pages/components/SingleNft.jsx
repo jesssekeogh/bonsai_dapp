@@ -7,11 +7,9 @@ import {
   Box,
   Heading,
   Text,
-  Stack,
   GridItem,
-  Hide,
   Skeleton,
-  HStack,
+  VStack,
   useColorModeValue,
   Flex,
 } from "@chakra-ui/react";
@@ -54,7 +52,6 @@ const SingleNft = ({ tokenId }) => {
   };
 
   const bgColor = useColorModeValue("White", "#1d1d20");
-  const borderColor = useColorModeValue("#e5e8eb", "#1a1a1a");
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const nftNameColor = useColorModeValue(nft.colorLight, nft.colorDark);
 
@@ -77,85 +74,56 @@ const SingleNft = ({ tokenId }) => {
       <GridItem>
         <Box
           role={"group"}
-          minW={["150px", null, "280px"]}
-          w={"full"}
+          w={["160px", null, "280px"]}
           bg={bgColor}
           rounded={"md"}
-          border={"2px"}
-          borderColor={borderColor}
-          boxShadow="sm"
+          boxShadow="md"
         >
           <Box rounded={"lg"} pos={"relative"} overflow="hidden">
             <ChakraImage
               transform="scale(1.0)"
               bg="#fff"
-              height={["170px", null, "280px"]}
+              height={["160px", null, "280px"]}
               width={"auto"}
               objectFit={"cover"}
               src={nft.thumb}
-              fallback={<Skeleton height={["150px", null, "280px"]} />}
+              fallback={<Skeleton height={["160px", null, "280px"]} />}
               transition="0.3s ease-in-out"
               _hover={{
                 transform: "scale(1.05)",
               }}
             />
           </Box>
-          <HStack
-            pt={1}
-            px={3}
-            align={"start"}
-            justify={"space-between"}
-            color={textColor}
-          >
-            {loaded ? (
-              <>
-                <Hide below="md">
-                  <Text
-                    casing={"uppercase"}
-                    fontSize={"sm"}
+          <Box p={{ base: 2, md: 3 }} >
+            <VStack align={"start"} color={textColor}>
+              {loaded ? (
+                <>
+                  <Heading
+                    fontSize={{ base: "sm", md: "md" }}
+                    color={nftNameColor}
+                    noOfLines={1}
                   >
-                    Price
-                  </Text>
-                </Hide>
-                <Flex align="center">
-                  <ChakraImage src={icLogo} h={"18px"} w={"auto"} />
-                  &nbsp;
-                  <Text fontWeight="bold" fontSize={"sm"}>
-                    {e8sToIcp(nft.price) > 0
-                      ? Number(e8sToIcp(nft.price)).toFixed(2)
-                      : "-"}
-                  </Text>
-                </Flex>
-              </>
-            ) : (
-              <>
-                <Skeleton height="8px" width={"70px"} mt={1} />
-                <Hide below="md">
-                  <Skeleton height="8px" width={"40px"} mt={1} />
-                </Hide>
-              </>
-            )}
-          </HStack>
-          <Stack
-            px={3}
-            pb={2}
-            direction={"row"}
-            align={"center"}
-            justify="space-between"
-            w={["150px", null, "280px"]}
-          >
-            {loaded ? (
-              <Heading
-                fontSize={{ base: "sm", sm: "sm", md: "sm" }}
-                color={nftNameColor}
-                noOfLines={1}
-              >
-                {nft.name}
-              </Heading>
-            ) : (
-              <Skeleton height="12px" width={"100px"} my={2} />
-            )}
-          </Stack>
+                    {nft.name}
+                  </Heading>
+
+                  <Flex align="center" pt={1}>
+                    <ChakraImage src={icLogo} h={"22px"} w={"auto"} />
+                    &nbsp;
+                    <Text fontWeight="bold" fontSize={"md"}>
+                      {e8sToIcp(nft.price) > 0
+                        ? Number(e8sToIcp(nft.price)).toFixed(2)
+                        : "-"}
+                    </Text>
+                  </Flex>
+                </>
+              ) : (
+                <>
+                  <Skeleton height="15px" width={"100px"} my={2} />
+                  <Skeleton height="15px" width={"70px"} mt={2} />
+                </>
+              )}
+            </VStack>
+          </Box>
         </Box>
       </GridItem>
     </Link>

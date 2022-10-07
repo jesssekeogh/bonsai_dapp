@@ -88,7 +88,7 @@ const StorySummary = ({ storyId }) => {
             overflow="hidden"
           >
             {loaded ? (
-              <Heading fontSize={["8pt", null, "lg"]}>
+              <Heading fontSize={["md", null, "lg"]}>
                 {loaded ? storyData.story.title : <Skeleton />}
               </Heading>
             ) : (
@@ -97,14 +97,11 @@ const StorySummary = ({ storyId }) => {
             {loaded ? (
               <Text
                 fontWeight={600}
-                fontSize={["7pt", null, "md"]}
+                fontSize={["sm", null, "md"]}
                 dangerouslySetInnerHTML={{
-                  __html:
-                    decodeURIComponent(storyData.story.story).substring(
-                      0,
-                      200
-                    ) + "...",
+                  __html: decodeURIComponent(storyData.story.story),
                 }}
+                noOfLines={{ base: 4, md: 3 }}
               />
             ) : (
               <SkeletonText mt="4" noOfLines={4} spacing="2" />
@@ -112,20 +109,13 @@ const StorySummary = ({ storyId }) => {
           </Stack>
         </Box>
         {loaded ? (
-          <>
-            <Flex px={4}>
-              <Stack direction="column">
-                <Text mt={1} fontSize={["6pt", null, "sm"]}>
-                  Story ID: {storyData.storyId.toString()}
-                </Text>
-              </Stack>
-              <Spacer />
-              <TotalLikes
-                likes={storyData.totalVotes.toString()}
-                isLiked={isLiked}
-              />
-            </Flex>
-          </>
+          <Flex px={4}>
+            <Spacer />
+            <TotalLikes
+              likes={storyData.totalVotes.toString()}
+              isLiked={isLiked}
+            />
+          </Flex>
         ) : (
           <Flex px={4}>
             <Skeleton height="15px" width="70px" />

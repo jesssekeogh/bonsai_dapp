@@ -13,7 +13,6 @@ import {
   Stack,
   Spacer,
   Button,
-  useBreakpointValue,
   useColorModeValue,
   Box,
 } from "@chakra-ui/react";
@@ -21,10 +20,6 @@ import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
 import { LikeButton, DeleteButton } from "./s_components";
 import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
@@ -103,25 +98,17 @@ const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
     show = true;
   }
 
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
-  const buttonTextColor = useColorModeValue(
-    ButtonTextColorlight,
-    ButtonTextColorDark
-  );
-
   return (
     <>
       <Stack direction="row" align="center">
         <Stack direction={"column"} my={5}>
           <Link to={"/marketplace/" + authorAddress}>
             <Button
-              bg={buttonBgColor}
-              color={buttonTextColor}
-              size={useBreakpointValue(["sm", "md"])}
               rightIcon={<BsImage />}
               px={4}
+              boxShadow="base"
               _hover={{
-                opacity: "0.8",
+                boxShadow: "md",
               }}
               disabled={authorAddress.length !== 64}
             >
@@ -130,13 +117,11 @@ const AuthorInfo = ({ authorPrincipal, authorAddress, storyId }) => {
           </Link>
           <Link to={"/stories/author/" + authorPrincipal}>
             <Button
-              bg={buttonBgColor}
-              color={buttonTextColor}
-              size={useBreakpointValue(["sm", "md"])}
-              px={4}
+              boxShadow="base"
               _hover={{
-                opacity: "0.8",
+                boxShadow: "md",
               }}
+              px={4}
             >
               {`Authors Stories`}
             </Button>
@@ -161,23 +146,17 @@ const BackButton = () => {
     prevLink = path.state.prev;
   }
 
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
-  const buttonTextColor = useColorModeValue(
-    ButtonTextColorlight,
-    ButtonTextColorDark
-  );
-
   return (
     <Link to={prevLink}>
       <Button
-        bg={buttonBgColor}
-        color={buttonTextColor}
+        boxShadow="base"
+        _hover={{
+          boxShadow: "md",
+        }}
         px={5}
         my={3}
-        size="sm"
-        _hover={{ opacity: "0.8" }}
       >
-        <Text as="kbd">Go Back</Text>
+        Go Back
       </Button>
     </Link>
   );

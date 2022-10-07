@@ -92,31 +92,11 @@ const LikeButton = ({ storyId }) => {
             like();
           }}
         >
-          Like
+          {likes}
         </Button>
-        <TotalLikes likes={likes} isLiked={isLiked} />
       </Stack>
     </>
   );
 };
 
-const TotalLikes = ({ likes, isLiked }) => {
-  return (
-    <Button
-      maxW={"100px"}
-      align={"center"}
-      borderRadius="md"
-      bg="#0fbdde"
-      color="black"
-      fontWeight="semibold"
-      size={"xs"}
-      fontSize={{ base: "xs", md: "sm" }}
-      py={{ base: 0, md: 0.5 }}
-      px={{ base: 1, md: 2 }}
-      leftIcon={isLiked ? <FaHeart /> : <FaRegHeart />}
-    >
-      {likes}
-    </Button>
-  );
-};
 export default LikeButton;

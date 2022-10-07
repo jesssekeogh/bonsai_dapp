@@ -78,8 +78,7 @@ const Inventory = () => {
           <>
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
-              gap={3}
-              mx={2}
+              gap={{ base: 3, md: 5 }}
               maxW="1250px"
             >
               {tokensShowing.map((item) => (
@@ -111,7 +110,6 @@ const Inventory = () => {
 const PaginationButtons = ({
   setPage,
   page,
-  tokensLength,
   allNftsAfterFilter,
 }) => {
   const [totalPages, setTotalPages] = useState(0);
@@ -129,7 +127,6 @@ const PaginationButtons = ({
     <Center my={5}>
       <Stack direction="row" align="center">
         <Button
-          variant="outline"
           size="sm"
           _hover={{ boxShadow: "base" }}
           leftIcon={<ArrowLeftIcon />}
@@ -152,7 +149,6 @@ const PaginationButtons = ({
           {totalPages}
         </Button>
         <Button
-          variant="outline"
           size="sm"
           rightIcon={<ArrowRightIcon />}
           _hover={{ boxShadow: "base" }}

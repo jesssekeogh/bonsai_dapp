@@ -1,39 +1,32 @@
 import React from "react";
 import {
   Box,
-  chakra,
   Container,
   Stack,
   Text,
-  useColorModeValue,
-  VisuallyHidden,
+  IconButton,
 } from "@chakra-ui/react";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 import "../../../assets/main.css";
 
-const SocialButton = ({ children, label, href }) => {
+const SocialButton = ({ icon, href }) => {
   return (
-    <chakra.button
-      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-      rounded={"full"}
-      w={8}
-      h={8}
+    <IconButton
+      size="lg"
       cursor={"pointer"}
       as={"a"}
       display={"inline-flex"}
       alignItems={"center"}
       justifyContent={"center"}
-      transition={"background 0.3s ease"}
       href={href}
       target="_blank"
       rel="noreferrer"
+      icon={icon}
+      variant="unstyled"
       _hover={{
-        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+        transform: "translateY(-2px)",
       }}
-    >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {children}
-    </chakra.button>
+    />
   );
 };
 
@@ -57,21 +50,18 @@ const Footer = () => {
             <SocialButton
               label={"Discord"}
               href={"https://discord.gg/S3qRpq8R6e"}
-            >
-              <FaDiscord />
-            </SocialButton>
+              icon={<FaDiscord />}
+            />
             <SocialButton
               label={"Twitter"}
               href={"https://mobile.twitter.com/TeamBonsai_ICP"}
-            >
-              <FaTwitter />
-            </SocialButton>
+              icon={<FaTwitter />}
+            />
             <SocialButton
               label={"Github"}
               href={"https://github.com/teambonsai/bonsai_dapp"}
-            >
-              <FaGithub />
-            </SocialButton>
+              icon={<FaGithub />}
+            />
           </Stack>
         </Container>
       </Box>

@@ -8,7 +8,13 @@ module {
         votedProposals: [Nat];
     };
 
-    public type Story = {
+    public type GroupStory = {
+        new: Bool;
+        groupName: Text;
+        stories: IndividualStory;
+    };
+
+    public type IndividualStory = {
         title: Text;
         body: Text;
         // totalLikes: Nat;
@@ -31,6 +37,5 @@ module {
         totalLikes: Nat;
         totalDislikes: Nat;
     };
-    
 
 }

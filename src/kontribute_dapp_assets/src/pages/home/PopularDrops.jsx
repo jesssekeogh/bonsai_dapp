@@ -58,7 +58,6 @@ const PopularCard = ({ mainImg, link, name }) => {
         <Box rounded={"lg"} pos={"relative"} overflow="hidden">
           <ChakraImage
             transform="scale(1.0)"
-            bg="#fff"
             rounded={"lg"}
             height={["220px", null, "350px"]}
             width={"auto"}
@@ -77,7 +76,6 @@ const PopularCard = ({ mainImg, link, name }) => {
           mx={5}
           fontSize={{ base: "md", sm: "md", md: "xl" }}
           color="white"
-          as={"u"}
         >
           {name}
         </Heading>

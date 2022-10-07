@@ -18,6 +18,7 @@ import {
   DrawerCloseButton,
   useDisclosure,
   VStack,
+  Center,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Profile from "./Profile";
@@ -69,55 +70,55 @@ const NavBar = () => {
 
   return (
     <Box h="4rem">
-      <Box
-        as="section"
-        pt="0.6rem"
-        pb={"0.4rem"}
-        px={isDesktop ? "4rem" : "1rem"}
-        boxShadow="2xl"
-        position="fixed"
-        width="100%"
-        top="0"
-        zIndex="2"
-        bg={"#111111"}
-        borderBottom={isDesktop ? "5px double" : "4px double"}
-        borderColor="#1a1a1a"
-      >
-        {isDesktop ? (
-          <Flex align="center">
-            <NavLink to={"/"}>
-              <Flex align="center" me={5}>
-                <ChakraImage h={30} src={logo} />
-                <Text fontSize={20} as="samp" color="white">
-                  ontribute
-                </Text>
-              </Flex>
-            </NavLink>
-            <HStack fontWeight={700} fontSize={16}>
-              {LinkItems.map((link) => (
-                <NavItem key={link.name} name={link.name} link={link.link} />
-              ))}
-            </HStack>
-            <Spacer />
-            <Profile />
-            <ColorButton size="sm" />
-          </Flex>
-        ) : (
-          <Flex align="center">
-            <NavLink to={"/"}>
-              <Flex align="center" me={5}>
-                <ChakraImage h={25} src={logo} />
-                <Text fontSize={20} as="samp" color="white">
-                  ontribute
-                </Text>
-              </Flex>
-            </NavLink>
-            <Spacer />
-            <Profile />
-            <MobileMenu />
-          </Flex>
-        )}
-      </Box>
+        <Box
+          as="section"
+          pt="0.6rem"
+          pb={"0.4rem"}
+          px={isDesktop ? "4rem" : "1rem"}
+          boxShadow="2xl"
+          position="fixed"
+          width="100%"
+          top="0"
+          zIndex="2"
+          bg={"#111111"}
+          borderBottom={isDesktop ? "5px double" : "4px double"}
+          borderColor="#1a1a1a"
+        >
+          {isDesktop ? (
+            <Flex align="center">
+              <NavLink to={"/"}>
+                <Flex align="center" me={5}>
+                  <ChakraImage h={30} src={logo} />
+                  <Text fontSize={20} as="samp" color="white">
+                    ontribute
+                  </Text>
+                </Flex>
+              </NavLink>
+              <HStack fontWeight={700} fontSize={16}>
+                {LinkItems.map((link) => (
+                  <NavItem key={link.name} name={link.name} link={link.link} />
+                ))}
+              </HStack>
+              <Spacer />
+              <Profile />
+              <ColorButton />
+            </Flex>
+          ) : (
+            <Flex align="center">
+              <NavLink to={"/"}>
+                <Flex align="center" me={5}>
+                  <ChakraImage h={25} src={logo} />
+                  <Text fontSize={20} as="samp" color="white">
+                    ontribute
+                  </Text>
+                </Flex>
+              </NavLink>
+              <Spacer />
+              <Profile />
+              <MobileMenu />
+            </Flex>
+          )}
+        </Box>
     </Box>
   );
 };
@@ -135,7 +136,7 @@ const MobileMenu = () => {
         <DrawerContent bg={"#111111"} borderColor="#1a1a1a">
           <DrawerCloseButton color="white" />
           <DrawerHeader>
-            <ColorButton size="md" />
+            <ColorButton />
           </DrawerHeader>
           <DrawerBody>
             <VStack fontWeight={700} fontSize={28} onClick={() => onClose()}>

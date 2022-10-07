@@ -185,8 +185,7 @@ const Marketplace = () => {
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
               pb={5}
-              gap={3}
-              mx={2}
+              gap={{ base: 3, md: 5 }}
               maxW="1250px"
             >
               {tokensForSale.map((item) => (
@@ -210,23 +209,18 @@ const Marketplace = () => {
 export default Marketplace;
 
 const HeaderStats = ({ title, stat }) => {
-  const bgColor = useColorModeValue("White", "#1d1d20");
-
   return (
-    <VStack align="start" spacing="0px">
+    <VStack align="start" spacing="0px" mx={1}>
       <Heading
-        p={2}
         size={{ base: "sm", md: "sm", lg: "md" }}
-        boxShadow="base"
-        borderRadius="lg"
-        bg={bgColor}
       >
         {stat}
       </Heading>
-      <Text px={2}>{title}</Text>
+      <Text>{title}</Text>
     </VStack>
   );
 };
+
 const MarketplaceHeader = ({
   setSort,
   setPricing,
@@ -255,7 +249,7 @@ const MarketplaceHeader = ({
   return (
     <Container maxWidth="1250px" pt={{ base: 2, md: 8 }}>
       <Hide above="md">
-        <Center align="center" gap={4} mb={4}>
+        <Center align="center" gap={5} mb={4}>
           <HeaderStats title={"floor price"} stat={floor} />
           <HeaderStats title={"listed"} stat={listed} />
           <HeaderStats title={"marketcap"} stat={marketcapUsd} />
@@ -286,7 +280,6 @@ const MarketplaceHeader = ({
 const PaginationButtons = ({
   setPage,
   page,
-  tokensLength,
   allNftsAfterFilter,
 }) => {
   const [totalPages, setTotalPages] = useState(0);
@@ -305,7 +298,6 @@ const PaginationButtons = ({
     <Center my={5}>
       <Stack direction="row" align="center">
         <Button
-          variant="outline"
           size="sm"
           _hover={{ boxShadow: "base" }}
           leftIcon={<ArrowLeftIcon />}
@@ -328,7 +320,6 @@ const PaginationButtons = ({
           {totalPages}
         </Button>
         <Button
-          variant="outline"
           size="sm"
           rightIcon={<ArrowRightIcon />}
           _hover={{ boxShadow: "base" }}

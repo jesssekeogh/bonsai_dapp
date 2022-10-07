@@ -3,17 +3,7 @@ import { SendingToast, SuccessToast } from "../../../containers/toasts/Toasts";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import { createStoryActor } from "../../../../../declarations/story";
 import { MdDelete } from "react-icons/md";
-import {
-  Button,
-  createStandaloneToast,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
-} from "../../../containers/colormode/Colors";
+import { Button, createStandaloneToast } from "@chakra-ui/react";
 
 const { toast } = createStandaloneToast();
 
@@ -30,20 +20,15 @@ const DeleteButton = ({ storyId }) => {
     SuccessToast("Success!", `Story with ID ${storyId} deleted`);
   };
 
-  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
-  const buttonTextColor = useColorModeValue(
-    ButtonTextColorlight,
-    ButtonTextColorDark
-  );
-
   return (
     <Button
-      bg={buttonBgColor}
-      color={buttonTextColor}
+      boxShadow="base"
+      _hover={{
+        boxShadow: "md",
+      }}
       size={"md"}
       maxW={"150px"}
       mx={2}
-      _hover={{ opacity: "0.8" }}
       rightIcon={<MdDelete />}
       onClick={() => {
         deleteStory(storyId);
