@@ -4,11 +4,13 @@ import Entity "mo:candb/Entity";
 import Types "./Types";
 import Principal "mo:base/Principal";
 import Nat "mo:base/Nat";
+import Option "mo:base/Option";
+import Result "mo:base/Result";
 
 shared ({ caller = owner }) actor class StoryService({
-    partitionKey: Text;
-    scalingOptions: CanDB.ScalingOptions;
-    owners: ?[Principal];
+    partitionKey : Text;
+    scalingOptions : CanDB.ScalingOptions;
+    owners : ?[Principal];
 }) {
 
     stable let db = CanDB.init({
@@ -16,47 +18,120 @@ shared ({ caller = owner }) actor class StoryService({
         scalingOptions = scalingOptions;
     });
 
-    public shared({caller}) func whoami() : async Principal {
-        return caller
+    public shared ({ caller }) func whoami() : async Principal {
+        return caller;
     };
 
-    // public query func getPK(): async Text { db.pk };
+    public query func getPK() : async Text { db.pk };
 
-    // public query func skExists(sk: Text): async Bool { 
-    //     CanDB.skExists(db, sk);
-    // };
+    public query func skExists(sk : Text) : async Bool {
+        CanDB.skExists(db, sk);
+    };
 
-    // public shared({ caller = caller }) func transferCycles(): async () {
-    //     if (caller == owner) {
-    //         return await CA.transferCycles(caller);
-    //     };
-    // };
+    public shared ({ caller = caller }) func transferCycles() : async () {
+        if (caller == owner) {
+            return await CA.transferCycles(caller);
+        };
+    };
 
-    // // creates a new group story and stores 
-    // public shared({caller}) func putStory(groupStory: Types.GroupStory): async Text {
-    //     assert(checkStory(story) == true);
-    //     assert(Principal.toText(caller) == partitionKey);
+    public shared ({ caller }) func putStory(singleStory : Types.SingleStory) : async Text {
+        assert (checkStory(singleStory) == true);
 
-    //     let sortKey = groupStory.groupName # "/" # Nat.toText(_storyId);
+        let sortKey = "author#" # Principal.toText(caller) # "#groupedStory#" # singleStory.groupName # "#singleStory#" # singleStory.title;
 
-    //     await CanDB.put(db, {
-    //         sk = sortKey;
-    //         attributes = [
-    //             ("id", #text(Nat.toText(storyId))),
-    //             ("title", #text(story.title)),
-    //             ("body", #text(story.body))
-    //         ];
-    //     });
-    //     // replace the entity for every vote?
-    //     // its not a new story so we find the
-    //     // get last story id
+        await CanDB.put(
+            db,
+            {
+                sk = sortKey;
+                attributes = [
+                    ("groupName", #text(singleStory.groupName)),
+                    ("title", #text(singleStory.title)),
+                    ("body", #text(singleStory.body)),
+                    ("likes", #int(0)),
+                    ("views", #int(0)),
+                ];
+            },
+        );
 
-    //     return sortKey
-    // };
+        return sortKey;
+    };
 
-    // private func getGroupedStoryLastId() : Nat {
-        
-    // };
+    public shared ({ caller }) func likeStory(storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
+        // candb get sk = caller # storyID, attribute, liked: true or false
+        let sortKeyForLikes = "user#" # Principal.toText(caller) # storySK;
+
+        // get a stories previous likes total
+        let story = switch (CanDB.get(db, { sk = storySK })) {
+            case null { null };
+            case (?storyEntity) { unwrapStory(storyEntity) };
+        };
+
+        let likesResult = switch (story) {
+            case null { null };
+            case (?{ likes }) {
+                ?({
+                    likes;
+                });
+            };
+        };
+
+        let newLikes = Option.get(likesResult, { likes = 0 }).likes + 1;
+
+        let updatedLikeAttribute = [("likes", #int(newLikes))];
+
+        func updateAttributes(attributeMap : ?Entity.AttributeMap) : Entity.AttributeMap {
+            switch (attributeMap) {
+                case null {
+                    Entity.createAttributeMapFromKVPairs(updatedLikeAttribute);
+                };
+                case (?map) {
+                    Entity.updateAttributeMapWithKVPairs(map, updatedLikeAttribute);
+                };
+            };
+        };
+
+        // check if user has liked by searching the sk
+        let likedStory = switch (CanDB.get(db, { sk = sortKeyForLikes })) {
+            case null {
+
+                // we update the story likes
+                let updated = switch (
+                    CanDB.update(
+                        db,
+                        {
+                            pk = "StoryService";
+                            sk = storySK;
+                            updateAttributeMapFunction = updateAttributes;
+                        },
+                    ),
+                ) {
+                    case null { null };
+                    case (?entity) {
+                        ?{
+                            pk = entity.pk;
+                            sk = entity.sk;
+                            attributes = Entity.extractKVPairsFromAttributeMap(entity.attributes);
+                        };
+                    };
+                };
+
+                // user has liked we store user like
+                await CanDB.put(
+                    db,
+                    {
+                        sk = sortKeyForLikes;
+                        attributes = [("liked", #bool(true))];
+                    },
+                );
+
+                return #ok(updated);
+            };
+            case (?userEntity) {
+                return #err("User already liked")
+            };
+        };
+
+    };
 
     // public query func getStory(id: Text): async ?Types.IndividualStory {
     //     let story = switch(CanDB.get(db, { sk = id })) {
@@ -75,28 +150,35 @@ shared ({ caller = owner }) actor class StoryService({
     //     }
     // };
 
-    // private func checkStory(story: Types.Story): Bool {
-    //     if(story.title == "" or story.body == ""){
-    //         return false
-    //     };
-    //     // add checks here that likes & votes are 0
-    //     return true
-    // };
+    private func checkStory(story : Types.SingleStory) : Bool {
+        if (story.title == "" or story.body == "") {
+            return false;
+        };
+        // add checks here that likes & votes are 0
+        return true;
+    };
 
-    //   // attempts to cast an Entity (retrieved from CanDB) into a User type
-    // private func unwrapUser(entity: Entity.Entity): ?Types.Story {
-    //     let { sk; attributes } = entity;
-    //     let storyTitleValue = Entity.getAttributeMapValueForKey(attributes, "title");
-    //     let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
+    private func unwrapStory(entity : Entity.Entity) : ?Types.SingleStory {
+        let { sk; attributes } = entity;
 
-    //     switch(storyTitleValue, storyBodyValue) {
-    //         case (
-    //             ?(#text(title)),
-    //             ?(#text(body))
-    //         ) { ?{ title; body } };
-    //         case _ { 
-    //             null 
-    //         }
-    //     };
-    // };
-}
+        let storyGroupNameValue = Entity.getAttributeMapValueForKey(attributes, "groupName");
+        let storyTitleValue = Entity.getAttributeMapValueForKey(attributes, "title");
+        let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
+        let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
+        let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
+
+        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue) {
+            case (
+                ?(#text(groupName)),
+                ?(#text(title)),
+                ?(#text(body)),
+                ?(#int(likes)),
+                ?(#int(views)),
+            ) { ?{ groupName; title; body; likes; views } };
+            case _ {
+                null;
+            };
+        };
+    };
+
+};
