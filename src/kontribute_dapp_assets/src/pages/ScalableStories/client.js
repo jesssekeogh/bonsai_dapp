@@ -2,7 +2,7 @@ import { IndexClient } from "candb-client-typescript/dist/IndexClient";
 import { ActorClient } from "candb-client-typescript/dist/ActorClient";
 
 import { idlFactory as IndexCanisterIDL } from "../../../../declarations/index/index";
-import { idlFactory as UserServiceCanisterIDL } from "../../../../declarations/userservice/index";
+import { idlFactory as UserServiceCanisterIDL } from "../../../../declarations/storyservice/index";
 import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 
 export const startIndexClient = () => {

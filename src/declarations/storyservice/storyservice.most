@@ -43,7 +43,6 @@ type ScalingOptions =
   };
 type Tree<K, V> = {#leaf; #node : (Color, Tree<K, V>, (K, ?V), Tree<K, V>)};
 actor {
-  stable var _storyId : Nat;
   stable db :
     {
       var count : Nat;

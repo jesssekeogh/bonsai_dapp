@@ -13,7 +13,6 @@ import {
   VStack,
   Center,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
@@ -30,7 +29,7 @@ const ScalableStories = () => {
   const [newStoryTitle, setNewStoryTitle] = useState("");
   const [newStoryBody, setNewStoryBody] = useState("");
 
-  const pk = useSelector((state) => state.Profile.principal);
+  const pk = "StoryService";
   const indexClient = startIndexClient();
   const userServiceClient = startUserServiceClient(indexClient);
 
@@ -51,13 +50,28 @@ const ScalableStories = () => {
           : userStoryQueryResults[0].value;
       }
       setStory(storyData);
+      console.log(storyData);
     } else {
       FailedToast("Failed", "Not signed in");
     }
   }
+  // story sk
+  // author#2vxsx-fae#groupedStory#First Story#singleStory#testing
+  const likeStory = async () => {
+    const like = await userServiceClient.update(pk, "", (actor) =>
+      actor.likeStory(
+        "author#2vxsx-fae#groupedStory#First Story#singleStory#testing"
+      )
+    );
+
+    console.log(like);
+  };
 
   const createStory = async () => {
     if (pk) {
+      // return await indexClient.indexCanisterActor.deleteStoryServiceCanister(
+      //   pk
+      // );
 
       if (newStoryTitle == "" || newStoryBody == "") {
         return FailedToast("Failed", "Some fields are empty");
@@ -69,7 +83,7 @@ const ScalableStories = () => {
 
       // console.log("encoded story", encodedStory, encodedTitle);
       const creation =
-        await indexClient.indexCanisterActor.createUserServiceCanisterByPrincipal(
+        await indexClient.indexCanisterActor.createStoryServiceCanisterParitition(
           pk
         );
 
@@ -77,19 +91,40 @@ const ScalableStories = () => {
 
       try {
         const update = await userServiceClient.update(pk, "", (actor) =>
-          actor.putStory({ title: encodedTitle, body: encodedStory })
+          actor.putStory({
+            groupName: "First Story",
+            title: encodedTitle,
+            body: encodedStory,
+            likes: 0,
+            views: 0,
+          })
         );
 
         toast.closeAll();
-        // console.log("update", update)
+        console.log("update", update);
         SuccessToast("Success", `Story posted with ID ${update}`);
       } catch (e) {
+        console.log(e);
         toast.closeAll();
         FailedToast("Failed", e.toString());
       }
     } else {
       FailedToast("Failed", "Not signed in");
     }
+  };
+
+  const getAllStories = async () => {
+    const skLowerBound = "";
+    const skUpperBound = "~";
+    const limit = 1000;
+    const ascending = [false];
+
+    console.log("loading all stories")
+    const stories = await userServiceClient.query(pk, (actor) =>
+      actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
+    );
+
+    console.log(stories);
   };
 
   return (
@@ -141,9 +176,18 @@ const ScalableStories = () => {
       </Flex>
       <Center mt={5}>
         <VStack>
-          <Input placeholder="1" onChange={(e) => setStoryId(e.target.value)} />
+          <Input
+            placeholder="story sort key"
+            onChange={(e) => setStoryId(e.target.value)}
+          />
+          <Button type="button" onClick={() => getAllStories()}>
+            Get All Stories
+          </Button>
           <Button type="button" onClick={() => getStory()}>
             Get Story
+          </Button>
+          <Button type="button" onClick={() => likeStory()}>
+            Like story
           </Button>
         </VStack>
       </Center>

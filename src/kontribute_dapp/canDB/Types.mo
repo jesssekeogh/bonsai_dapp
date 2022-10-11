@@ -3,16 +3,16 @@ import Entity "mo:candb/Entity";
 module {
 
     public type SingleStory = {
-        groupName : Text; // the name of the grouped story if applicable: helps use sort things correctly
+        groupName : Text; // the name of the grouped story eg. "Bonsai Warriors"
         title : Text;
         body : Text;
         likes : Int;
         views : Int;
-        // totalLikes: Nat;
-        // totalDislikes: Nat;
-        // totalViews: Nat;
-        // proposals: [Proposal]; // diff service
-        // comments: [Comment]; // diff service
+    };
+
+    public type ScanStoriesResult = {
+        stories : [SingleStory];
+        nextKey : ?Text;
     };
 
     public type ConsumableEntity = {
@@ -21,18 +21,16 @@ module {
         attributes : [(Entity.AttributeKey, Entity.AttributeValue)];
     };
 
-    public type Proposal = {
-        id : Nat;
+    public type VotingProposal = {
+        storySortKey: Text;
         title : Text;
         body : Text;
-        totalVotes : Nat;
+        totalVotes : Int;
     };
 
-    public type Comment = {
-        id : Nat;
-        body : Text;
-        totalLikes : Nat;
-        totalDislikes : Nat;
+    public type ScanProposalResult = {
+        stories : [VotingProposal];
+        nextKey : ?Text;
     };
 
 };

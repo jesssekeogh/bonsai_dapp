@@ -6,6 +6,7 @@ import Principal "mo:base/Principal";
 import Nat "mo:base/Nat";
 import Option "mo:base/Option";
 import Result "mo:base/Result";
+import Array "mo:base/Array";
 
 shared ({ caller = owner }) actor class StoryService({
     partitionKey : Text;
@@ -127,34 +128,55 @@ shared ({ caller = owner }) actor class StoryService({
                 return #ok(updated);
             };
             case (?userEntity) {
-                return #err("User already liked")
+                return #err("User already liked");
             };
         };
 
     };
 
-    // public query func getStory(id: Text): async ?Types.IndividualStory {
-    //     let story = switch(CanDB.get(db, { sk = id })) {
-    //         case null { null };
-    //         case (?userEntity) { unwrapUser(userEntity) };
-    //     };
+    public query func getStory(storySK : Text) : async ?Types.SingleStory {
+        let story = switch (CanDB.get(db, { sk = storySK })) {
+            case null { null };
+            case (?userEntity) { unwrapStory(userEntity) };
+        };
 
-    //     switch(story) {
-    //         case null { null };
-    //         case (?{ title; body }) {
-    //             ?({
-    //                 title;
-    //                 body
-    //             });
-    //         }
-    //     }
-    // };
+        switch (story) {
+            case null { null };
+            case (?{ groupName; title; body; likes; views }) {
+                ?({
+                    groupName;
+                    title;
+                    body;
+                    likes;
+                    views;
+                });
+            };
+        };
+    };
+
+    public query func scanAllStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesResult {
+
+        let { entities; nextKey } = CanDB.scan(
+            db,
+            {
+                skLowerBound = skLowerBound;
+                skUpperBound = skUpperBound;
+                limit = limit;
+                ascending = ascending;
+            },
+        );
+
+        {
+            stories = unwrapValidStories(entities);
+            nextKey = nextKey;
+        }
+
+    };
 
     private func checkStory(story : Types.SingleStory) : Bool {
         if (story.title == "" or story.body == "") {
             return false;
         };
-        // add checks here that likes & votes are 0
         return true;
     };
 
@@ -179,6 +201,32 @@ shared ({ caller = owner }) actor class StoryService({
                 null;
             };
         };
+    };
+
+    private func unwrapValidStories(entities : [Entity.Entity]) : [Types.SingleStory] {
+        Array.mapFilter<Entity.Entity, Types.SingleStory>(
+            entities,
+            func(e) {
+                let { sk; attributes } = e;
+                let storyGroupNameValue = Entity.getAttributeMapValueForKey(attributes, "groupName");
+                let storyTitleValue = Entity.getAttributeMapValueForKey(attributes, "title");
+                let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
+                let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
+                let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
+                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue) {
+                    case (
+                        ?(#text(groupName)),
+                        ?(#text(title)),
+                        ?(#text(body)),
+                        ?(#int(likes)),
+                        ?(#int(views)),
+                    ) { ?{ groupName; title; body; likes; views } };
+                    case _ {
+                        null;
+                    };
+                };
+            },
+        );
     };
 
 };

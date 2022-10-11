@@ -12,8 +12,12 @@
       "main": "src/kontribute_dapp/canDB/IndexCanister.mo",
       "type": "motoko"
     },
-    "userservice": {
-      "main": "src/kontribute_dapp/canDB/UserService.mo",
+    "storyservice": {
+      "main": "src/kontribute_dapp/canDB/StoryService.mo",
+      "type": "motoko"
+    },
+    "votingservice": {
+      "main": "src/kontribute_dapp/canDB/VotingService.mo",
       "type": "motoko"
     },
     "kontribute_dapp_assets": {

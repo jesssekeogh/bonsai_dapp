@@ -1,0 +1,110 @@
+type Tree = 
+ variant {
+   leaf;
+   node:
+    record {
+      Color;
+      Tree;
+      record {
+        text;
+        opt AttributeValueRBTreeValue;
+      };
+      Tree;
+    };
+ };
+type StoryService = 
+ service {
+   getPK: () -> (text) query;
+   getStory: (text) -> (opt SingleStory) query;
+   likeStory: (text) -> (Result);
+   putStory: (SingleStory) -> (text);
+   scanAllStories: (text, text, nat, opt bool) -> (ScanStoriesResult) query;
+   skExists: (text) -> (bool) query;
+   transferCycles: () -> ();
+   whoami: () -> (principal);
+ };
+type SingleStory = 
+ record {
+   body: text;
+   groupName: text;
+   likes: int;
+   title: text;
+   views: int;
+ };
+type ScanStoriesResult = 
+ record {
+   nextKey: opt text;
+   stories: vec SingleStory;
+ };
+type ScalingOptions = 
+ record {
+   autoScalingHook: AutoScalingCanisterSharedFunctionHook;
+   sizeLimit: ScalingLimitType;
+ };
+type ScalingLimitType = 
+ variant {
+   count: nat;
+   heapSize: nat;
+ };
+type SK = text;
+type Result = 
+ variant {
+   err: text;
+   ok: opt ConsumableEntity;
+ };
+type PK = text;
+type ConsumableEntity = 
+ record {
+   attributes: vec record {
+                     AttributeKey;
+                     AttributeValue;
+                   };
+   pk: PK;
+   sk: SK;
+ };
+type Color = 
+ variant {
+   B;
+   R;
+ };
+type AutoScalingCanisterSharedFunctionHook = func (text) -> (text);
+type AttributeValueRBTreeValue = 
+ variant {
+   arrayBool: vec bool;
+   arrayFloat: vec float64;
+   arrayInt: vec int;
+   arrayText: vec text;
+   "blob": blob;
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "text": text;
+   tuple: vec AttributeValuePrimitive;
+ };
+type AttributeValuePrimitive = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "text": text;
+ };
+type AttributeValue = 
+ variant {
+   arrayBool: vec bool;
+   arrayFloat: vec float64;
+   arrayInt: vec int;
+   arrayText: vec text;
+   "blob": blob;
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "text": text;
+   tree: Tree;
+   tuple: vec AttributeValuePrimitive;
+ };
+type AttributeKey = text;
+service : (record {
+             owners: opt vec principal;
+             partitionKey: text;
+             scalingOptions: ScalingOptions;
+           }) -> StoryService
