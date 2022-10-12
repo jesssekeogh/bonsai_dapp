@@ -38,7 +38,7 @@ shared ({ caller = owner }) actor class StoryService({
     public shared ({ caller }) func putStory(singleStory : Types.SingleStory) : async Text {
         assert (checkStory(singleStory) == true);
 
-        let sortKey = "author#" # Principal.toText(caller) # "#groupedStory#" # singleStory.groupName # "#singleStory#" # singleStory.title;
+        let sortKey = "#groupedStory#" # singleStory.groupName # "#singleStory#" # singleStory.title;
 
         await CanDB.put(
             db,
@@ -50,6 +50,8 @@ shared ({ caller = owner }) actor class StoryService({
                     ("body", #text(singleStory.body)),
                     ("likes", #int(0)),
                     ("views", #int(0)),
+                    ("author", #text(Principal.toText(caller))),
+                    ("proposals", #int(singleStory.proposals)),
                 ];
             },
         );
@@ -142,13 +144,15 @@ shared ({ caller = owner }) actor class StoryService({
 
         switch (story) {
             case null { null };
-            case (?{ groupName; title; body; likes; views }) {
+            case (?{ groupName; title; body; likes; views; author; proposals }) {
                 ?({
                     groupName;
                     title;
                     body;
                     likes;
                     views;
+                    author;
+                    proposals;
                 });
             };
         };
@@ -188,15 +192,19 @@ shared ({ caller = owner }) actor class StoryService({
         let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
         let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
         let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
+        let storyAuthorValue = Entity.getAttributeMapValueForKey(attributes, "author");
+        let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
 
-        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue) {
+        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
             case (
                 ?(#text(groupName)),
                 ?(#text(title)),
                 ?(#text(body)),
                 ?(#int(likes)),
                 ?(#int(views)),
-            ) { ?{ groupName; title; body; likes; views } };
+                ?(#text(author)),
+                ?(#int(proposals)),
+            ) { ?{ groupName; title; body; likes; views; author; proposals } };
             case _ {
                 null;
             };
@@ -213,14 +221,29 @@ shared ({ caller = owner }) actor class StoryService({
                 let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
                 let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
                 let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
-                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue) {
+                let storyAuthorValue = Entity.getAttributeMapValueForKey(attributes, "author");
+                let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
+
+                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
                     case (
                         ?(#text(groupName)),
                         ?(#text(title)),
                         ?(#text(body)),
                         ?(#int(likes)),
                         ?(#int(views)),
-                    ) { ?{ groupName; title; body; likes; views } };
+                        ?(#text(author)),
+                        ?(#int(proposals)),
+                    ) {
+                        ?{
+                            groupName;
+                            title;
+                            body;
+                            likes;
+                            views;
+                            author;
+                            proposals;
+                        };
+                    };
                     case _ {
                         null;
                     };

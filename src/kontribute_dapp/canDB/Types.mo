@@ -8,6 +8,8 @@ module {
         body : Text;
         likes : Int;
         views : Int;
+        author: Text;
+        proposals: Int; // so we can determine how many proposals attached to the story 
     };
 
     public type ScanStoriesResult = {
@@ -22,14 +24,13 @@ module {
     };
 
     public type VotingProposal = {
-        storySortKey: Text;
         title : Text;
         body : Text;
-        totalVotes : Int;
+        votes : Int;
     };
 
     public type ScanProposalResult = {
-        stories : [VotingProposal];
+        proposals : [VotingProposal];
         nextKey : ?Text;
     };
 
