@@ -11,8 +11,6 @@ import Buffer "mo:stable-buffer/StableBuffer";
 import Admin "mo:candb/CanDBAdmin";
 
 import StoryService "./StoryService";
-import VotingService "./VotingService";
-
 
 shared ({ caller = owner }) actor class IndexCanister() = this {
   /// @required stable variable (Do not delete or change)
@@ -46,7 +44,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   /// PK prefixes should spin up which canister actor.
   ///
   /// If the developer does not utilize this method, auto-scaling will NOT work
-  
+
   /*
     API for story service:
   */
@@ -109,60 +107,6 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   };
 
   /*
-    API for voting service:
-  */
-
-  public shared ({ caller = caller }) func autoScaleVotingServiceCanister(pk : Text) : async Text {
-    if (Utils.callingCanisterOwnsPK(caller, pkToCanisterMap, pk)) {
-      Debug.print("creating an additional canister for pk=" # pk);
-      await createVotingServiceCanister(pk, ?[owner, Principal.fromActor(this)]);
-    } else {
-      throw Error.reject("not authorized");
-    };
-  };
-
-  public shared ({ caller = creator }) func createVotingServiceCanisterParitition(serviceId : Text) : async ?Text {
-    let pk = serviceId;
-    let canisterIds = getCanisterIdsIfExists(pk);
-
-    if (canisterIds == []) {
-      ?(await createVotingServiceCanister(pk, ?[owner, Principal.fromActor(this)]));
-    } else {
-      Debug.print(pk # " already exists, not creating and returning null");
-      null;
-    };
-  };
-
-  func createVotingServiceCanister(pk : Text, controllers : ?[Principal]) : async Text {
-    Debug.print("creating new voting service canister with pk=" # pk);
-    Cycles.add(300_000_000_000);
-    let newVotingServiceCanister = await VotingService.VotingService({
-      partitionKey = pk;
-      scalingOptions = {
-        autoScalingHook = autoScaleVotingServiceCanister;
-        sizeLimit = #heapSize(200_000_000);
-      };
-      owners = controllers;
-    });
-    let newVotingServiceCanisterPrincipal = Principal.fromActor(newVotingServiceCanister);
-    await CA.updateCanisterSettings({
-      canisterId = newVotingServiceCanisterPrincipal;
-      settings = {
-        controllers = controllers;
-        compute_allocation = ?0;
-        memory_allocation = ?0;
-        freezing_threshold = ?2592000;
-      };
-    });
-
-    let newVotingServiceCanisterId = Principal.toText(newVotingServiceCanisterPrincipal);
-    pkToCanisterMap := CanisterMap.add(pkToCanisterMap, pk, newVotingServiceCanisterId);
-
-    Debug.print("new voting service canisterId=" # newVotingServiceCanisterId);
-    newVotingServiceCanisterId;
-  };
-
-  /*
     Util functions:
   */
 
@@ -187,20 +131,6 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     let pk = serviceId;
     let scalingOptions = {
       autoScalingHook = autoScaleStoryServiceCanister;
-      sizeLimit = #heapSize(200_000_000); // Scale out at 200MB
-    };
-
-    let result = await Admin.upgradeCanistersByPK(pkToCanisterMap, pk, wasmModule, scalingOptions);
-
-    return "Canisters in PK " # pk # " upgraded";
-  };
-
-  public shared ({ caller }) func upgradeVotingServiceCanistersByPK(serviceId : Text, wasmModule : Blob) : async Text {
-    // assert(caller == owner);
-
-    let pk = serviceId;
-    let scalingOptions = {
-      autoScalingHook = autoScaleVotingServiceCanister;
       sizeLimit = #heapSize(200_000_000); // Scale out at 200MB
     };
 

@@ -24,6 +24,7 @@ module {
     };
 
     public type VotingProposal = {
+        proposalNumber: Int;
         title : Text;
         body : Text;
         votes : Int;
