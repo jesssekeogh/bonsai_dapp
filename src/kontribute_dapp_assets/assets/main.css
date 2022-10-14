@@ -1,9 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Irish+Grover&family=Noto+Sans+JP:wght@700&family=Orienta&family=Risque&display=swap");
 
-/* #page-container {
-  position: relative;
-  min-height: 100%;
-} */
+.story {
+  font-size: "21px";
+}
 
 .footer {
   position: absolute;

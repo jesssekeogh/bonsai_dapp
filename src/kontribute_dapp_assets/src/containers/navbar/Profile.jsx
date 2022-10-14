@@ -16,9 +16,8 @@ import {
   Flex,
   Image as ChakraImage,
 } from "@chakra-ui/react";
-import { MdLibraryBooks } from "react-icons/md";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
-import { RiSendPlaneFill } from "react-icons/ri";
+import { RiSendPlaneFill, RiPencilFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
 import { CopyToast } from "../toasts/Toasts";
 import { useDispatch, useSelector } from "react-redux";
@@ -152,9 +151,9 @@ const Profile = () => {
                 NFTs
               </MenuItem>
             </NavLink>
-            <NavLink to={"/stories/author/" + userId}>
-              <MenuItem closeOnSelect icon={<MdLibraryBooks />} maxW="240px">
-                My Stories
+            <NavLink to={"/stories/create"}>
+              <MenuItem closeOnSelect icon={<RiPencilFill />} maxW="240px">
+                Write
               </MenuItem>
             </NavLink>
             <MenuDivider />
