@@ -1,25 +1,14 @@
 export const idlFactory = ({ IDL }) => {
   const IndexCanister = IDL.Service({
     'autoScaleStoryServiceCanister' : IDL.Func([IDL.Text], [IDL.Text], []),
-    'autoScaleVotingServiceCanister' : IDL.Func([IDL.Text], [IDL.Text], []),
     'createStoryServiceCanisterParitition' : IDL.Func(
         [IDL.Text],
         [IDL.Opt(IDL.Text)],
         [],
       ),
-    'createVotingServiceCanisterParitition' : IDL.Func(
-        [IDL.Text],
-        [IDL.Opt(IDL.Text)],
-        [],
-      ),
-    'deleteServiceCanister' : IDL.Func([IDL.Text], [], []),
+    'deleteStoryServiceCanister' : IDL.Func([IDL.Text], [], []),
     'getCanistersByPK' : IDL.Func([IDL.Text], [IDL.Vec(IDL.Text)], ['query']),
-    'upgradeStoryServiceCanistersByPK' : IDL.Func(
-        [IDL.Text, IDL.Vec(IDL.Nat8)],
-        [IDL.Text],
-        [],
-      ),
-    'upgradeVotingServiceCanistersByPK' : IDL.Func(
+    'upgradeStoryCanistersByPK' : IDL.Func(
         [IDL.Text, IDL.Vec(IDL.Nat8)],
         [IDL.Text],
         [],

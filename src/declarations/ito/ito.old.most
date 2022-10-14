@@ -1,0 +1,20 @@
+// Version: 1.0.0
+type AccountIdentifier__1 = Blob;
+type AccountRecordSerialized__2 = {tokens : [TokenIdentifier__1]};
+type TokenIdentifier__1 = Nat64;
+type TransactionId = Blob;
+actor {
+  stable var LEFT_AIRDROP : Nat;
+  stable var LEFT_PURCHASE : Nat;
+  stable var _codes : [var ?Blob];
+  stable var _tmpAccount :
+    [(AccountIdentifier__1, AccountRecordSerialized__2)];
+  stable var _tmpUsed : [(TransactionId, Bool)];
+  stable var _tokens : [var ?TokenIdentifier__1];
+  stable var admin : Principal;
+  stable var airdrop_codes : Nat;
+  stable var count_available : Nat;
+  stable var count_total_added : Nat;
+  stable var last_given_idx : Nat;
+  stable var randomNumber : Nat
+};
