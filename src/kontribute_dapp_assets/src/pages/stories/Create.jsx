@@ -13,6 +13,7 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
+  HStack,
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -21,13 +22,24 @@ import {
 } from "../../containers/colormode/Colors";
 
 const Create = () => {
+  const [storyOption, setStoryOption] = useState("New story");
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
 
   return (
-    <Container maxW="7xl" py={12}>
-      <ActionButtons />
-      <Container maxW="2xl" color={textColor}>
-        <Input placeholder="Title" variant="flushed" size="lg" />
+    <Container maxW="5xl" py={10}>
+      <ActionButtons
+        setStoryOption={setStoryOption}
+        storyOption={storyOption}
+      />
+      <Container maxW="3xl" py={10} color={textColor}>
+        <HStack spacing={10} py={2}>
+          {storyOption === "New story" ? (
+            <Input placeholder="Title" variant="flushed" size="lg" />
+          ) : (
+            <PickChapter />
+          )}
+          <Input placeholder="Chapter" variant="flushed" size="lg" />
+        </HStack>
         <StoryEditor />
       </Container>
     </Container>
@@ -42,20 +54,12 @@ const StoryEditor = () => {
   return <ReactQuill theme={"bubble"} value={value} onChange={setValue} />;
 };
 
-const ActionButtons = () => {
+const ActionButtons = ({ setStoryOption, storyOption }) => {
   return (
     <Flex gap={2}>
+      <StoryPicker setStoryOption={setStoryOption} storyOption={storyOption} />
+      <AddProposals />
       <Spacer />
-      <StoryPicker />
-      <Button
-        rightIcon={<AddIcon />}
-        boxShadow="base"
-        _hover={{
-          boxShadow: "md",
-        }}
-      >
-        Add Proposals
-      </Button>
       <Button
         rightIcon={<CheckIcon />}
         boxShadow="base"
@@ -69,8 +73,45 @@ const ActionButtons = () => {
   );
 };
 
-const StoryPicker = () => {
-const [currentOption, setCurrentOption] = useState("New story")
+const AddProposals = () => {
+  return (
+    <Button
+      rightIcon={<AddIcon />}
+      boxShadow="base"
+      _hover={{
+        boxShadow: "md",
+      }}
+    >
+      Add Proposals
+    </Button>
+  );
+};
+
+const PickChapter = () => {
+  return (
+    <Menu>
+      <MenuButton
+        w="full"
+        as={Button}
+        boxShadow="base"
+        _hover={{
+          boxShadow: "md",
+        }}
+        rightIcon={<ChevronDownIcon />}
+      >
+        Testing
+      </MenuButton>
+      <MenuList minWidth="240px">
+        <MenuOptionGroup defaultValue="New story" title="My current stories">
+          <MenuItemOption value={"New story"}>New story</MenuItemOption>
+          <MenuItemOption value={"New chapter"}>New chapter</MenuItemOption>
+        </MenuOptionGroup>
+      </MenuList>
+    </Menu>
+  );
+};
+
+const StoryPicker = ({ setStoryOption, storyOption }) => {
   return (
     <Menu>
       <MenuButton
@@ -81,14 +122,20 @@ const [currentOption, setCurrentOption] = useState("New story")
         }}
         rightIcon={<ChevronDownIcon />}
       >
-        {currentOption}
+        {storyOption}
       </MenuButton>
       <MenuList minWidth="240px">
         <MenuOptionGroup defaultValue="New story" title="Story options">
-          <MenuItemOption value={"New story"}>
+          <MenuItemOption
+            value={"New story"}
+            onClick={() => setStoryOption("New story")}
+          >
             New story
           </MenuItemOption>
-          <MenuItemOption value={"New chapter"}>
+          <MenuItemOption
+            value={"New chapter"}
+            onClick={() => setStoryOption("New chapter")}
+          >
             New chapter
           </MenuItemOption>
         </MenuOptionGroup>

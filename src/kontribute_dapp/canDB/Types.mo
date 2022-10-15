@@ -28,6 +28,7 @@ module {
         title : Text;
         body : Text;
         votes : Int;
+        open : Bool;
     };
 
     public type ScanProposalResult = {

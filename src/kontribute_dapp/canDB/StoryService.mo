@@ -7,6 +7,8 @@ import Nat "mo:base/Nat";
 import Option "mo:base/Option";
 import Result "mo:base/Result";
 import Array "mo:base/Array";
+import Int "mo:base/Int";
+import Buffer "mo:base/Buffer";
 
 shared ({ caller = owner }) actor class StoryService({
     partitionKey : Text;
@@ -75,6 +77,7 @@ shared ({ caller = owner }) actor class StoryService({
                             ("title", #text(p.title)),
                             ("body", #text(p.body)),
                             ("votes", #int(0)),
+                            ("open", #bool(true)),
                         ];
                     },
                 );
@@ -188,23 +191,6 @@ shared ({ caller = owner }) actor class StoryService({
         };
     };
 
-    public query func scanAllStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesResult {
-        let { entities; nextKey } = CanDB.scan(
-            db,
-            {
-                skLowerBound = skLowerBound;
-                skUpperBound = skUpperBound;
-                limit = limit;
-                ascending = ascending;
-            },
-        );
-
-        {
-            stories = unwrapValidStories(entities);
-            nextKey = nextKey;
-        };
-    };
-
     /* 
     Vote API:
     */
@@ -217,12 +203,13 @@ shared ({ caller = owner }) actor class StoryService({
 
         switch (proposal) {
             case null { null };
-            case (?{ title; body; votes; proposalNumber }) {
+            case (?{ title; body; votes; proposalNumber; open }) {
                 ?({
                     title;
                     body;
                     votes;
                     proposalNumber;
+                    open;
                 });
             };
         };
@@ -303,6 +290,92 @@ shared ({ caller = owner }) actor class StoryService({
         };
     };
 
+    public shared ({ caller }) func closeProposals(storySK : Text) : async Text {
+        // get proposal amount, loop through SKs and get each proposal and update the bool to false
+
+        // get proposal amount from story
+        let story = switch (CanDB.get(db, { sk = storySK })) {
+            case null { null };
+            case (?storyEntity) { unwrapStory(storyEntity) };
+        };
+
+        let proposalAmount = switch (story) {
+            case null { null };
+            case (?{ proposals }) {
+                ?({
+                    proposals;
+                });
+            };
+        };
+
+        let unwrappedProposalAmount = Option.get(proposalAmount, { proposals = 0 }).proposals;
+
+        let updatedOpenAttribute = [("open", #bool(false))];
+
+        func updateAttributes(attributeMap : ?Entity.AttributeMap) : Entity.AttributeMap {
+            switch (attributeMap) {
+                case null {
+                    Entity.createAttributeMapFromKVPairs(updatedOpenAttribute);
+                };
+                case (?map) {
+                    Entity.updateAttributeMapWithKVPairs(map, updatedOpenAttribute);
+                };
+            };
+        };
+
+        var i = 1;
+        label lo loop {
+            if (i > unwrappedProposalAmount) {
+                break lo;
+            };
+
+            let updated = switch (
+                CanDB.update(
+                    db,
+                    {
+                        pk = canisterParition;
+                        sk = "proposal#" # Nat.toText(i) # "for#" # storySK;
+                        updateAttributeMapFunction = updateAttributes;
+                    },
+                ),
+            ) {
+                case null { null };
+                case (?entity) {
+                    ?{
+                        pk = entity.pk;
+                        sk = entity.sk;
+                        attributes = Entity.extractKVPairsFromAttributeMap(entity.attributes);
+                    };
+                };
+            };
+
+            i += 1;
+        };
+
+        return Int.toText(unwrappedProposalAmount) # " Proposals closed";
+    };
+
+    /* 
+    Scan API:
+    */
+
+    public query func scanAllStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesResult {
+        let { entities; nextKey } = CanDB.scan(
+            db,
+            {
+                skLowerBound = skLowerBound;
+                skUpperBound = skUpperBound;
+                limit = limit;
+                ascending = ascending;
+            },
+        );
+
+        {
+            stories = unwrapValidStories(entities);
+            nextKey = nextKey;
+        }
+    };
+
     /* 
     Utility API:
     */
@@ -322,14 +395,16 @@ shared ({ caller = owner }) actor class StoryService({
         let proposalBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
         let proposalVotesValue = Entity.getAttributeMapValueForKey(attributes, "votes");
         let proposalNumberValue = Entity.getAttributeMapValueForKey(attributes, "proposal#");
+        let proposalOpenValue = Entity.getAttributeMapValueForKey(attributes, "open");
 
-        switch (proposalTitleValue, proposalBodyValue, proposalVotesValue, proposalNumberValue) {
+        switch (proposalTitleValue, proposalBodyValue, proposalVotesValue, proposalNumberValue, proposalOpenValue) {
             case (
                 ?(#text(title)),
                 ?(#text(body)),
                 ?(#int(votes)),
                 ?(#int(proposalNumber)),
-            ) { ?{ title; body; votes; proposalNumber } };
+                ?(#bool(open)),
+            ) { ?{ title; body; votes; proposalNumber; open } };
             case _ {
                 null;
             };
