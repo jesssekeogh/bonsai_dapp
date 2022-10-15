@@ -1,3 +1,11 @@
+type VotingProposal = 
+ record {
+   body: text;
+   open: bool;
+   proposalNumber: int;
+   title: text;
+   votes: int;
+ };
 type Tree = 
  variant {
    leaf;
@@ -14,20 +22,25 @@ type Tree =
  };
 type StoryService = 
  service {
+   closeProposals: (text) -> (text);
    getPK: () -> (text) query;
+   getProposal: (text) -> (opt VotingProposal) query;
    getStory: (text) -> (opt SingleStory) query;
    likeStory: (text) -> (Result);
-   putStory: (SingleStory) -> (text);
+   putStory: (SingleStory, vec VotingProposal) -> (text);
    scanAllStories: (text, text, nat, opt bool) -> (ScanStoriesResult) query;
    skExists: (text) -> (bool) query;
    transferCycles: () -> ();
+   voteOnProposal: (text, text) -> (Result);
    whoami: () -> (principal);
  };
 type SingleStory = 
  record {
+   author: text;
    body: text;
    groupName: text;
    likes: int;
+   proposals: int;
    title: text;
    views: int;
  };

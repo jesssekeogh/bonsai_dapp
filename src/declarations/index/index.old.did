@@ -1,7 +1,7 @@
 service : {
   autoScaleStoryServiceCanister: (text) -> (text);
   createStoryServiceCanisterParitition: (text) -> (opt text);
-  deleteStoryServiceCanister: (text) -> ();
+  deleteServiceCanister: (text) -> ();
   getCanistersByPK: (text) -> (vec text) query;
-  upgradeStoryCanistersByPK: (text, blob) -> (text);
+  upgradeStoryServiceCanistersByPK: (text, blob) -> (text);
 }

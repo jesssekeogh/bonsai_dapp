@@ -17,7 +17,7 @@ export const startIndexClient = () => {
   });
 };
 
-export const startUserServiceClient = (indexClient) => {
+export const startStoryServiceClient = (indexClient) => {
 
   return new ActorClient({
     actorOptions: {

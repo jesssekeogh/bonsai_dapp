@@ -94,7 +94,7 @@ shared ({ caller = owner }) actor class StoryService({
     */
 
     public shared ({ caller }) func likeStory(storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
-        let sortKeyForLikes = "user#" # Principal.toText(caller) # "liked#" # storySK;
+        let sortKeyForLikes = "liked#" # Principal.toText(caller) # "likedOn#" # storySK;
 
         // get a stories previous likes total
         let story = switch (CanDB.get(db, { sk = storySK })) {
@@ -216,7 +216,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func voteOnProposal(proposalNumber : Text, storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
-        let sortKeyForVotes = "user#" # Principal.toText(caller) # "votedOn#" # storySK; // stored to ensure 1 user gets 1 vote per story
+        let sortKeyForVotes = "voted#" # Principal.toText(caller) # "votedOn#" # storySK; // stored to ensure 1 user gets 1 vote per story
         let sortKeyForProposal = "proposal#" # proposalNumber # "for#" # storySK; // general proposal sort key so we can update specific proposals
 
         // get a votes previous likes

@@ -56,22 +56,34 @@ export interface SingleStory {
   'title' : string,
   'views' : bigint,
   'body' : string,
+  'author' : string,
   'likes' : bigint,
+  'proposals' : bigint,
   'groupName' : string,
 }
 export interface StoryService {
+  'closeProposals' : ActorMethod<[string], string>,
   'getPK' : ActorMethod<[], string>,
+  'getProposal' : ActorMethod<[string], [] | [VotingProposal]>,
   'getStory' : ActorMethod<[string], [] | [SingleStory]>,
   'likeStory' : ActorMethod<[string], Result>,
-  'putStory' : ActorMethod<[SingleStory], string>,
+  'putStory' : ActorMethod<[SingleStory, Array<VotingProposal>], string>,
   'scanAllStories' : ActorMethod<
     [string, string, bigint, [] | [boolean]],
     ScanStoriesResult,
   >,
   'skExists' : ActorMethod<[string], boolean>,
   'transferCycles' : ActorMethod<[], undefined>,
+  'voteOnProposal' : ActorMethod<[string, string], Result>,
   'whoami' : ActorMethod<[], Principal>,
 }
 export type Tree = { 'leaf' : null } |
   { 'node' : [Color, Tree, [string, [] | [AttributeValueRBTreeValue]], Tree] };
+export interface VotingProposal {
+  'title' : string,
+  'votes' : bigint,
+  'body' : string,
+  'open' : boolean,
+  'proposalNumber' : bigint,
+}
 export interface _SERVICE extends StoryService {}

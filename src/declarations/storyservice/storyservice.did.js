@@ -13,11 +13,20 @@ export const idlFactory = ({ IDL }) => {
     'autoScalingHook' : AutoScalingCanisterSharedFunctionHook,
     'sizeLimit' : ScalingLimitType,
   });
+  const VotingProposal = IDL.Record({
+    'title' : IDL.Text,
+    'votes' : IDL.Int,
+    'body' : IDL.Text,
+    'open' : IDL.Bool,
+    'proposalNumber' : IDL.Int,
+  });
   const SingleStory = IDL.Record({
     'title' : IDL.Text,
     'views' : IDL.Int,
     'body' : IDL.Text,
+    'author' : IDL.Text,
     'likes' : IDL.Int,
+    'proposals' : IDL.Int,
     'groupName' : IDL.Text,
   });
   const PK = IDL.Text;
@@ -80,10 +89,16 @@ export const idlFactory = ({ IDL }) => {
     'nextKey' : IDL.Opt(IDL.Text),
   });
   const StoryService = IDL.Service({
+    'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
+    'getProposal' : IDL.Func([IDL.Text], [IDL.Opt(VotingProposal)], ['query']),
     'getStory' : IDL.Func([IDL.Text], [IDL.Opt(SingleStory)], ['query']),
     'likeStory' : IDL.Func([IDL.Text], [Result], []),
-    'putStory' : IDL.Func([SingleStory], [IDL.Text], []),
+    'putStory' : IDL.Func(
+        [SingleStory, IDL.Vec(VotingProposal)],
+        [IDL.Text],
+        [],
+      ),
     'scanAllStories' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],
         [ScanStoriesResult],
@@ -91,6 +106,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'skExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'transferCycles' : IDL.Func([], [], []),
+    'voteOnProposal' : IDL.Func([IDL.Text, IDL.Text], [Result], []),
     'whoami' : IDL.Func([], [IDL.Principal], []),
   });
   return StoryService;
