@@ -86,10 +86,12 @@ const Create = () => {
   const getMyStories = async () => {
     // some util help:
 
-    // return await indexClient.indexCanisterActor.deleteServiceCanister(partitionKey);
-    // return await indexClient.indexCanisterActor.createStoryServiceCanisterParitition(
+    // await indexClient.indexCanisterActor.deleteServiceCanister(partitionKey);
+    // await indexClient.indexCanisterActor.createStoryServiceCanisterParitition(
     //   partitionKey
     // );
+    // return console.log("done!")
+
     let skLowerBound = `author#${userId}`;
     let skUpperBound = `author#${userId}~`;
     let limit = 1000;

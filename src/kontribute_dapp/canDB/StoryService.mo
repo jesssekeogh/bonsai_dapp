@@ -8,7 +8,6 @@ import Option "mo:base/Option";
 import Result "mo:base/Result";
 import Array "mo:base/Array";
 import Int "mo:base/Int";
-import Buffer "mo:base/Buffer";
 
 shared ({ caller = owner }) actor class StoryService({
     partitionKey : Text;
@@ -359,7 +358,8 @@ shared ({ caller = owner }) actor class StoryService({
     Scan API:
     */
 
-    public query func scanAllStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesResult {
+    public query func scanAllStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesQuickReturn {
+        // the structure of our frontend means we only need to return groupname and sortkey from this query
         let { entities; nextKey } = CanDB.scan(
             db,
             {
@@ -370,10 +370,20 @@ shared ({ caller = owner }) actor class StoryService({
             },
         );
 
-        {
-            stories = unwrapValidStories(entities);
-            nextKey = nextKey;
-        }
+        let filtered = Array.mapFilter<Types.SingleStory, Types.ScanStoriesQuickElement>(
+            unwrapValidStories(entities),
+            func(e) {
+                let {author; groupName; title} = e;
+                let sortKey = "author#" # author # "#groupedStory#" # groupName # "#singleStory#" # title;
+                
+                ?{
+                    sortKey;
+                    groupName;
+                };
+            },
+        );
+
+        { stories = filtered; nextKey = nextKey };
     };
 
     /* 

@@ -12,11 +12,6 @@ module {
         proposals: Int; // so we can determine how many proposals attached to the story 
     };
 
-    public type ScanStoriesResult = {
-        stories : [SingleStory];
-        nextKey : ?Text;
-    };
-
     public type ConsumableEntity = {
         pk : Entity.PK;
         sk : Entity.SK;
@@ -31,9 +26,19 @@ module {
         open : Bool;
     };
 
-    public type ScanProposalResult = {
-        proposals : [VotingProposal];
+    public type ScanStoriesResult = {
+        stories : [SingleStory];
         nextKey : ?Text;
+    };
+    
+    public type ScanStoriesQuickElement = {
+        sortKey: Text;
+        groupName: Text;
+    };
+
+    public type ScanStoriesQuickReturn = {
+        stories: [ScanStoriesQuickElement];
+        nextKey: ?Text
     };
 
 };

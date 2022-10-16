@@ -84,8 +84,12 @@ export const idlFactory = ({ IDL }) => {
     'ok' : IDL.Opt(ConsumableEntity),
     'err' : IDL.Text,
   });
-  const ScanStoriesResult = IDL.Record({
-    'stories' : IDL.Vec(SingleStory),
+  const ScanStoriesQuickElement = IDL.Record({
+    'sortKey' : IDL.Text,
+    'groupName' : IDL.Text,
+  });
+  const ScanStoriesQuickReturn = IDL.Record({
+    'stories' : IDL.Vec(ScanStoriesQuickElement),
     'nextKey' : IDL.Opt(IDL.Text),
   });
   const StoryService = IDL.Service({
@@ -101,7 +105,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'scanAllStories' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],
-        [ScanStoriesResult],
+        [ScanStoriesQuickReturn],
         ['query'],
       ),
     'skExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),

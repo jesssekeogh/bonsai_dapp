@@ -48,8 +48,12 @@ export interface ScalingOptions {
   'autoScalingHook' : AutoScalingCanisterSharedFunctionHook,
   'sizeLimit' : ScalingLimitType,
 }
-export interface ScanStoriesResult {
-  'stories' : Array<SingleStory>,
+export interface ScanStoriesQuickElement {
+  'sortKey' : string,
+  'groupName' : string,
+}
+export interface ScanStoriesQuickReturn {
+  'stories' : Array<ScanStoriesQuickElement>,
   'nextKey' : [] | [string],
 }
 export interface SingleStory {
@@ -70,7 +74,7 @@ export interface StoryService {
   'putStory' : ActorMethod<[SingleStory, Array<VotingProposal>], string>,
   'scanAllStories' : ActorMethod<
     [string, string, bigint, [] | [boolean]],
-    ScanStoriesResult,
+    ScanStoriesQuickReturn,
   >,
   'skExists' : ActorMethod<[string], boolean>,
   'transferCycles' : ActorMethod<[], undefined>,

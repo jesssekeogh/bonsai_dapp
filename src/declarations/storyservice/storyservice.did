@@ -28,7 +28,8 @@ type StoryService =
    getStory: (text) -> (opt SingleStory) query;
    likeStory: (text) -> (Result);
    putStory: (SingleStory, vec VotingProposal) -> (text);
-   scanAllStories: (text, text, nat, opt bool) -> (ScanStoriesResult) query;
+   scanAllStories: (text, text, nat, opt bool) ->
+    (ScanStoriesQuickReturn) query;
    skExists: (text) -> (bool) query;
    transferCycles: () -> ();
    voteOnProposal: (text, text) -> (Result);
@@ -44,10 +45,15 @@ type SingleStory =
    title: text;
    views: int;
  };
-type ScanStoriesResult = 
+type ScanStoriesQuickReturn = 
  record {
    nextKey: opt text;
-   stories: vec SingleStory;
+   stories: vec ScanStoriesQuickElement;
+ };
+type ScanStoriesQuickElement = 
+ record {
+   groupName: text;
+   sortKey: text;
  };
 type ScalingOptions = 
  record {
