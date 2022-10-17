@@ -14,8 +14,19 @@ import {
   MenuList,
   MenuOptionGroup,
   HStack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Center,
+  VStack,
+  IconButton,
 } from "@chakra-ui/react";
-import { AddIcon, CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { AddIcon, CheckIcon, ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
 import {
   TextColorDark,
   TextColorLight,
@@ -32,15 +43,14 @@ const partitionKey = "StoryService";
 const Create = () => {
   const userId = useSelector((state) => state.Profile.principal);
 
-  // for adding to current story:
-  const [myStories, setMyStories] = useState([]);
-  const [currentStory, setCurrentStory] = useState("Pick a story:");
-
   const [storyTitle, setStoryTitle] = useState("");
   const [chapterTitle, setChapterTitle] = useState("");
   const [storyBody, setStoryBody] = useState("Write your story...");
 
-  const [storyOption, setStoryOption] = useState("New story");
+  // for adding to current story:
+  const [storyOption, setStoryOption] = useState("New story"); // or new chapter
+  const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
+  const [currentStory, setCurrentStory] = useState("Pick a story:"); // button state to display current selected author story
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
 
@@ -183,16 +193,72 @@ const ActionButtons = ({ setStoryOption, storyOption, addStory }) => {
 };
 
 const AddProposals = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [proposalAmount, setProposalAmount] = useState([1, 2]); // minimum of two vote options
+
+  const addProposal = () => {
+    if (proposalAmount.length < 5) {
+      let newAmount = [];
+
+      for (let i = 0; i <= proposalAmount.length; i++) {
+        newAmount.push(i + 1);
+      }
+
+      setProposalAmount(newAmount);
+    }
+  };
+
+  const closeModal = () => {
+    onClose()
+    setProposalAmount([1, 2])
+  }
+
+  // min 2 max 5
+  // have an "added" state to add to story
   return (
-    <Button
-      rightIcon={<AddIcon />}
-      boxShadow="base"
-      _hover={{
-        boxShadow: "md",
-      }}
-    >
-      Add Proposals
-    </Button>
+    <>
+      <Button
+        rightIcon={<AddIcon />}
+        boxShadow="base"
+        _hover={{
+          boxShadow: "md",
+        }}
+        onClick={onOpen}
+      >
+        Add Polls
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={closeModal} isCentered trapFocus={false}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            <Center>Add poll options </Center>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input
+              mx={2}
+              variant="flushed"
+              placeholder="Ask a question to your audience..."
+            />
+            <VStack m={2} p={1} gap={1}>
+              {proposalAmount.map((inp) => (
+                <Input
+                  key={inp}
+                  variant="outline"
+                  placeholder={`Choice ${inp}`}
+                />
+              ))}
+              <IconButton icon={<AddIcon />} onClick={() => addProposal()} />
+            </VStack>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button>Add</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 
