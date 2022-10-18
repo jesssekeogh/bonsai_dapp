@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import {
@@ -40,19 +40,41 @@ import { FailedToast } from "../../containers/toasts/Toasts";
 
 const partitionKey = "StoryService";
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "updateGroupName":
+      return {
+        ...state,
+        groupName: action.payload,
+      };
+    case "updateTitle":
+      return {
+        ...state,
+        title: action.payload,
+      };
+    case "updateBody":
+      return {
+        ...state,
+        body: action.payload,
+      };
+  }
+};
+
 const Create = () => {
   const userId = useSelector((state) => state.Profile.principal);
 
-  const [storyTitle, setStoryTitle] = useState("");
-  const [chapterTitle, setChapterTitle] = useState("");
-  const [storyBody, setStoryBody] = useState("Write your story...");
-
-  // for adding to current story:
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
   const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
-  const [currentStory, setCurrentStory] = useState("Pick a story:"); // button state to display current selected author story
 
-  const textColor = useColorModeValue(TextColorLight, TextColorDark);
+  const [storyState, dispatch] = useReducer(reducer, {
+    groupName: "", // overall story title
+    title: "", // individual story title
+    body: "Write your story...", // story body
+    likes: 0,
+    views: 0,
+    author: userId,
+    proposals: 0,
+  });
 
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
@@ -68,23 +90,20 @@ const Create = () => {
       open: false,
     };
 
-    if (storyOption === "New chapter" && currentStory === "Pick a story:") {
+    if (storyOption === "New chapter" && storyState.groupName === "") {
       return FailedToast("Failed", "Pick a story to add a chapter!");
     }
 
     const update = await storyServiceClient.update(partitionKey, "", (actor) =>
       actor.putStory(
         {
-          groupName:
-            storyOption === "New story"
-              ? encodeURIComponent(storyTitle)
-              : encodeURIComponent(currentStory),
-          title: encodeURIComponent(chapterTitle),
-          body: encodeURIComponent(storyBody),
-          likes: 0,
-          views: 0,
-          author: userId,
-          proposals: 0, //change this if proposals are added
+          groupName: encodeURIComponent(storyState.groupName),
+          title: encodeURIComponent(storyState.title),
+          body: encodeURIComponent(storyState.body),
+          likes: storyState.likes,
+          views: storyState.views,
+          author: storyState.author,
+          proposals: storyState.proposals, // change this if proposals are added
         },
         [emptyProposal]
       )
@@ -130,6 +149,8 @@ const Create = () => {
     }
   }, [userId]);
 
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
+
   return (
     <Container maxW="5xl" py={10}>
       <ActionButtons
@@ -144,26 +165,26 @@ const Create = () => {
               placeholder="Title"
               variant="flushed"
               size="lg"
-              onChange={(e) => setStoryTitle(e.target.value)}
+              onChange={(e) =>
+                dispatch({ type: "updateGroupName", payload: e.target.value })
+              }
             />
           ) : (
-            <PickChapter
-              myStories={myStories}
-              currentStory={currentStory}
-              setCurrentStory={setCurrentStory}
-            />
+            <PickChapter myStories={myStories} dispatch={dispatch} />
           )}
           <Input
             placeholder="Chapter"
             variant="flushed"
             size="lg"
-            onChange={(e) => setChapterTitle(e.target.value)}
+            onChange={(e) =>
+              dispatch({ type: "updateTitle", payload: e.target.value })
+            }
           />
         </HStack>
         <ReactQuill
           theme={"bubble"}
-          value={storyBody}
-          onChange={setStoryBody}
+          value={storyState.body}
+          onChange={(e) => dispatch({ type: "updateBody", payload: e })}
         />
       </Container>
     </Container>
@@ -209,9 +230,9 @@ const AddProposals = () => {
   };
 
   const closeModal = () => {
-    onClose()
-    setProposalAmount([1, 2])
-  }
+    onClose();
+    setProposalAmount([1, 2]);
+  };
 
   // min 2 max 5
   // have an "added" state to add to story
@@ -262,8 +283,15 @@ const AddProposals = () => {
   );
 };
 
-const PickChapter = ({ myStories, currentStory, setCurrentStory }) => {
+const PickChapter = ({ myStories, dispatch }) => {
   if (myStories.length < 1) return;
+
+  const [currentStory, setCurrentStory] = useState("Pick a story:");
+
+  const updateStory = (title) => {
+    setCurrentStory(title);
+    dispatch({ type: "updateGroupName", payload: title });
+  };
 
   return (
     <Menu>
@@ -284,7 +312,7 @@ const PickChapter = ({ myStories, currentStory, setCurrentStory }) => {
             <MenuItemOption
               key={storyTitle}
               value={storyTitle}
-              onClick={() => setCurrentStory(storyTitle)}
+              onClick={() => updateStory(storyTitle)}
             >
               {storyTitle}
             </MenuItemOption>
