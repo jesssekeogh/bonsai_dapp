@@ -58,9 +58,11 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     };
   };
 
-  // Partition HelloService canisters by the region passed in
-  public shared ({ caller = creator }) func createStoryServiceCanisterParitition(serviceId : Text) : async ?Text {
-    let pk = serviceId;
+  // Partition HelloService canisters by user
+  public shared ({ caller }) func createStoryServiceCanisterParitition() : async ?Text {
+    // valid principals can create their own canister partitions
+    assert (Principal.isAnonymous(caller) == false);
+    let pk = "user#" # Principal.toText(caller);
     let canisterIds = getCanisterIdsIfExists(pk);
 
     if (canisterIds == []) {
@@ -111,9 +113,9 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   */
 
   public shared ({ caller }) func deleteServiceCanister(serviceId : Text) : async () {
-    // assert(caller == owner);
-
-    let pk = serviceId;
+    // assert(caller == owner); // enable this in Prod
+    // admin can delete any pk by passing in service id of user principal
+    let pk = "user#" # serviceId;
 
     let canisterIds = getCanisterIdsIfExists(pk);
     if (canisterIds == []) {
@@ -128,7 +130,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   public shared ({ caller }) func upgradeStoryServiceCanistersByPK(serviceId : Text, wasmModule : Blob) : async Text {
     // assert(caller == owner);
 
-    let pk = serviceId;
+    let pk = "user#" # serviceId;
     let scalingOptions = {
       autoScalingHook = autoScaleStoryServiceCanister;
       sizeLimit = #heapSize(200_000_000); // Scale out at 200MB

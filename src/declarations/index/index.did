@@ -1,7 +1,7 @@
 type IndexCanister = 
  service {
    autoScaleStoryServiceCanister: (text) -> (text);
-   createStoryServiceCanisterParitition: (text) -> (opt text);
+   createStoryServiceCanisterParitition: () -> (opt text);
    deleteServiceCanister: (text) -> ();
    getCanistersByPK: (text) -> (vec text) query;
    upgradeStoryServiceCanistersByPK: (text, blob) -> (text);

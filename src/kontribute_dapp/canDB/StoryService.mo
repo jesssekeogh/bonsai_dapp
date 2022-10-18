@@ -15,7 +15,8 @@ shared ({ caller = owner }) actor class StoryService({
     owners : ?[Principal];
 }) {
 
-    let canisterParition = "StoryService";
+    // each user gets their own story service canister
+    let canisterParition = partitionKey;
 
     stable let db = CanDB.init({
         pk = partitionKey;
@@ -39,7 +40,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func putStory(singleStory : Types.SingleStory, proposals : [Types.VotingProposal]) : async Text {
-        // assert (Principal.isAnonymous(caller) == false);
+        assert ("user#" # Principal.toText(caller) == partitionKey);
         assert (checkStory(singleStory) == true);
 
         let storySortKey = "author#" # Principal.toText(caller) # "#groupedStory#" # singleStory.groupName # "#singleStory#" # singleStory.title;
@@ -290,6 +291,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func closeProposals(storySK : Text) : async Text {
+        assert ("user#" # Principal.toText(caller) == partitionKey);
         // get proposal amount, loop through SKs and get each proposal and update the bool to false
 
         // get proposal amount from story

@@ -3,7 +3,7 @@ import type { ActorMethod } from '@dfinity/agent';
 
 export interface IndexCanister {
   'autoScaleStoryServiceCanister' : ActorMethod<[string], string>,
-  'createStoryServiceCanisterParitition' : ActorMethod<[string], [] | [string]>,
+  'createStoryServiceCanisterParitition' : ActorMethod<[], [] | [string]>,
   'deleteServiceCanister' : ActorMethod<[string], undefined>,
   'getCanistersByPK' : ActorMethod<[string], Array<string>>,
   'upgradeStoryServiceCanistersByPK' : ActorMethod<

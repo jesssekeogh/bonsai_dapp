@@ -38,8 +38,6 @@ import {
 import { useSelector } from "react-redux";
 import { FailedToast } from "../../containers/toasts/Toasts";
 
-const partitionKey = "StoryService";
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "updateGroupName":
@@ -62,6 +60,7 @@ const reducer = (state, action) => {
 
 const Create = () => {
   const userId = useSelector((state) => state.Profile.principal);
+  const partitionKey = `user#${userId}`;
 
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
   const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
@@ -69,7 +68,7 @@ const Create = () => {
   const [storyState, dispatch] = useReducer(reducer, {
     groupName: "", // overall story title
     title: "", // individual story title
-    body: "Write your story...", // story body
+    body: "Write your story...",
     likes: 0,
     views: 0,
     author: userId,
@@ -80,6 +79,10 @@ const Create = () => {
   const storyServiceClient = startStoryServiceClient(indexClient);
 
   const addStory = async () => {
+    console.log("creating..");
+    const creation =
+      await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
+    console.log("canister", creation);
     console.log("adding...");
 
     let emptyProposal = {
@@ -109,20 +112,16 @@ const Create = () => {
       )
     );
 
-    console.log(update);
+    console.log("done", update);
   };
 
   const getMyStories = async () => {
     // some util help:
-
     // await indexClient.indexCanisterActor.deleteServiceCanister(partitionKey);
-    // await indexClient.indexCanisterActor.createStoryServiceCanisterParitition(
-    //   partitionKey
-    // );
     // return console.log("done!")
 
-    let skLowerBound = `author#${userId}`;
-    let skUpperBound = `author#${userId}~`;
+    let skLowerBound = "";
+    let skUpperBound = "~";
     let limit = 1000;
     let ascending = [false];
 

@@ -2,7 +2,7 @@ export const idlFactory = ({ IDL }) => {
   const IndexCanister = IDL.Service({
     'autoScaleStoryServiceCanister' : IDL.Func([IDL.Text], [IDL.Text], []),
     'createStoryServiceCanisterParitition' : IDL.Func(
-        [IDL.Text],
+        [],
         [IDL.Opt(IDL.Text)],
         [],
       ),
