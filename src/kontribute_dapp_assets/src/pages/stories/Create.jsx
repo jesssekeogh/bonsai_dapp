@@ -21,12 +21,18 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  FormErrorMessage,
+  FormControl,
   useDisclosure,
   Center,
-  VStack,
+  Tooltip,
+  Text,
+  Box,
   IconButton,
+  Textarea,
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon, ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
+import { BiPoll } from "react-icons/bi";
 import {
   TextColorDark,
   TextColorLight,
@@ -214,23 +220,63 @@ const ActionButtons = ({ setStoryOption, storyOption, addStory }) => {
 
 const AddProposals = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [proposalAmount, setProposalAmount] = useState([1, 2]); // minimum of two vote options
+  const [maxAmountError, setMaxAmountError] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [pollTitle, setPollTitle] = useState("");
 
-  const addProposal = () => {
-    if (proposalAmount.length < 5) {
+  const [pollOptions, setPollOption] = useState(["", ""]); // and array of body text
+
+  const CHOICESALLOWED = 5;
+
+  const addProposalChoice = () => {
+    setSubmitted(false);
+    if (pollOptions.length < CHOICESALLOWED) {
       let newAmount = [];
-
-      for (let i = 0; i <= proposalAmount.length; i++) {
-        newAmount.push(i + 1);
+      for (let i = 0; i < pollOptions.length; i++) {
+        newAmount.push(pollOptions[i]);
       }
+      newAmount.push("");
 
-      setProposalAmount(newAmount);
+      setPollOption(newAmount);
+    } else {
+      setMaxAmountError(true);
     }
   };
 
   const closeModal = () => {
     onClose();
-    setProposalAmount([1, 2]);
+    setPollOption(["", ""]);
+    setMaxAmountError(false);
+    setSubmitted(false);
+  };
+
+  const inputPollChoice = (newBody, index) => {
+    const newPollOptions = [...pollOptions];
+    newPollOptions[index] = newBody;
+
+    setPollOption(newPollOptions);
+  };
+
+  const submitPoll = async () => {
+    setSubmitted(true);
+    let storyProposals = [];
+
+    // error to check poll title
+
+    for (let i = 0; i < pollOptions.length; i++) {
+      if (pollOptions[i] == "") return;
+
+      storyProposals.push({
+        proposalNumber: i + 1,
+        title: pollTitle,
+        body: pollOptions[i].replace(/\n/g, encodeURIComponent("<br/>")),
+        votes: 0,
+        open: true,
+      });
+    }
+
+    console.log(storyProposals)
+    // send to upper parent component as ready array of objects
   };
 
   // min 2 max 5
@@ -238,21 +284,21 @@ const AddProposals = () => {
   return (
     <>
       <Button
-        rightIcon={<AddIcon />}
+        rightIcon={<BiPoll />}
         boxShadow="base"
         _hover={{
           boxShadow: "md",
         }}
         onClick={onOpen}
       >
-        Add Polls
+        Add poll
       </Button>
 
-      <Modal isOpen={isOpen} onClose={closeModal} isCentered trapFocus={false}>
+      <Modal isOpen={isOpen} onClose={closeModal} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Center>Add poll options </Center>
+            <Center>Poll options</Center>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -260,21 +306,60 @@ const AddProposals = () => {
               mx={2}
               variant="flushed"
               placeholder="Ask a question to your audience..."
+              size="lg"
+              onChange={(e) => setPollTitle(e.target.value)}
             />
-            <VStack m={2} p={1} gap={1}>
-              {proposalAmount.map((inp) => (
-                <Input
-                  key={inp}
-                  variant="outline"
-                  placeholder={`Choice ${inp}`}
-                />
-              ))}
-              <IconButton icon={<AddIcon />} onClick={() => addProposal()} />
-            </VStack>
+            <Box p={3}>
+              {pollOptions.map((item, index) => {
+                if (index + 1 == pollOptions.length) {
+                  return (
+                    <Box key={index}>
+                      <Flex mb={3} gap={2} align="center">
+                        <Textarea
+                          placeholder={`Choice ${index + 1}`}
+                          isInvalid={submitted && item == "" ? true : false}
+                          maxW="80%"
+                          value={item}
+                          onChange={(e) =>
+                            inputPollChoice(e.target.value, index)
+                          }
+                        />
+                        <Spacer />
+                        <Tooltip label="Add choice">
+                          <IconButton
+                            icon={<AddIcon />}
+                            onClick={() => addProposalChoice()}
+                            size="lg"
+                          />
+                        </Tooltip>
+                      </Flex>
+                      <FormControl isInvalid={maxAmountError}>
+                        <FormErrorMessage>
+                          max {CHOICESALLOWED} choices allowed!
+                        </FormErrorMessage>
+                      </FormControl>
+                    </Box>
+                  );
+                }
+                return (
+                  <Flex key={index} mb={3}>
+                    <Textarea
+                      placeholder={`Choice ${index + 1}`}
+                      isInvalid={submitted && item == "" ? true : false}
+                      maxW="80%"
+                      value={item}
+                      onChange={(e) => inputPollChoice(e.target.value, index)}
+                    />
+                  </Flex>
+                );
+              })}
+            </Box>
           </ModalBody>
 
           <ModalFooter>
-            <Button>Add</Button>
+            <Button rightIcon={<CheckIcon />} onClick={() => submitPoll()}>
+              Submit
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

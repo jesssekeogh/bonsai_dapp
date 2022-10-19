@@ -19,7 +19,7 @@ module {
     };
 
     public type VotingProposal = {
-        proposalNumber: Int;
+        proposalNumber: Int; // starts at 1
         title : Text;
         body : Text;
         votes : Int;
