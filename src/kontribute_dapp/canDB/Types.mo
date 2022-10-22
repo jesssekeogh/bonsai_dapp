@@ -30,7 +30,12 @@ module {
         stories : [SingleStory];
         nextKey : ?Text;
     };
-    
+
+    public type ScanProposalResult = {
+        proposals : [VotingProposal];
+        nextKey : ?Text;
+    };
+
     public type ScanStoriesQuickElement = {
         sortKey: Text;
         groupName: Text;

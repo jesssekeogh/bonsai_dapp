@@ -69,7 +69,7 @@ shared ({ caller = owner }) actor class StoryService({
             var proposalsAmount = 1;
 
             for (p in proposals.vals()) {
-                proposalSK := "proposal#" # Nat.toText(proposalsAmount) # "for#" # storySortKey;
+                proposalSK := "proposal#" # Nat.toText(proposalsAmount) # "#for#" # storySortKey;
 
                 await CanDB.put(
                     db,
@@ -201,26 +201,20 @@ shared ({ caller = owner }) actor class StoryService({
     public query func getProposal(proposalSK : Text) : async Result.Result<?Types.VotingProposal, Text> {
         let proposal = switch (CanDB.get(db, { sk = proposalSK })) {
             case null { null };
-            case (?userEntity) { unwrapProposal(userEntity) };
+            case (?proposalEntity) { unwrapProposal(proposalEntity) };
         };
-    
+
         switch (proposal) {
             case null { #err("Proposal not found") };
             case (?{ title; body; votes; proposalNumber; open }) {
-                #ok(?({
-                    title;
-                    body;
-                    votes;
-                    proposalNumber;
-                    open;
-                }));
+                #ok(?({ title; body; votes; proposalNumber; open }));
             };
         };
     };
 
     public shared ({ caller }) func voteOnProposal(proposalNumber : Text, storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
         let sortKeyForVotes = "voted#" # Principal.toText(caller) # "votedOn#" # storySK; // stored to ensure 1 user gets 1 vote per story
-        let sortKeyForProposal = "proposal#" # proposalNumber # "for#" # storySK; // general proposal sort key so we can update specific proposals
+        let sortKeyForProposal = "proposal#" # proposalNumber # "#for#" # storySK; // general proposal sort key so we can update specific proposals
 
         // get a votes previous likes
         let proposal = switch (CanDB.get(db, { sk = sortKeyForProposal })) {
@@ -338,7 +332,7 @@ shared ({ caller = owner }) actor class StoryService({
                     db,
                     {
                         pk = canisterParition;
-                        sk = "proposal#" # Nat.toText(i) # "for#" # storySK;
+                        sk = "proposal#" # Nat.toText(i) # "#for#" # storySK;
                         updateAttributeMapFunction = updateAttributes;
                     },
                 ),
@@ -378,9 +372,9 @@ shared ({ caller = owner }) actor class StoryService({
         let filtered = Array.mapFilter<Types.SingleStory, Types.ScanStoriesQuickElement>(
             unwrapValidStories(entities),
             func(e) {
-                let {author; groupName; title} = e;
+                let { author; groupName; title } = e;
                 let sortKey = "author#" # author # "#groupedStory#" # groupName # "#singleStory#" # title;
-                
+
                 ?{
                     sortKey;
                     groupName;
@@ -409,7 +403,7 @@ shared ({ caller = owner }) actor class StoryService({
         let proposalTitleValue = Entity.getAttributeMapValueForKey(attributes, "title");
         let proposalBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
         let proposalVotesValue = Entity.getAttributeMapValueForKey(attributes, "votes");
-        let proposalNumberValue = Entity.getAttributeMapValueForKey(attributes, "proposal#");
+        let proposalNumberValue = Entity.getAttributeMapValueForKey(attributes, "proposalNumber");
         let proposalOpenValue = Entity.getAttributeMapValueForKey(attributes, "open");
 
         switch (proposalTitleValue, proposalBodyValue, proposalVotesValue, proposalNumberValue, proposalOpenValue) {
@@ -495,5 +489,5 @@ shared ({ caller = owner }) actor class StoryService({
             },
         );
     };
-
+    // end
 };

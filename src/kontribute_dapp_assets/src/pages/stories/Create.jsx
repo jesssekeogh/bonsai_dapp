@@ -22,6 +22,7 @@ import {
   ModalBody,
   ModalCloseButton,
   FormErrorMessage,
+  createStandaloneToast,
   FormControl,
   useDisclosure,
   Center,
@@ -36,6 +37,10 @@ import {
 import { AddIcon, CheckIcon, ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
 import { BiPoll } from "react-icons/bi";
 import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
@@ -44,8 +49,15 @@ import {
   startStoryServiceClient,
 } from "../CanDBClient/client";
 import { useSelector } from "react-redux";
-import { FailedToast } from "../../containers/toasts/Toasts";
+import {
+  FailedToast,
+  SendingToast,
+  SuccessToast,
+} from "../../containers/toasts/Toasts";
 import { PollSection } from "./components";
+import { LoadingSpinner } from "../../containers/index";
+
+const { toast } = createStandaloneToast();
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -69,8 +81,8 @@ const reducer = (state, action) => {
 
 const Create = () => {
   const userId = useSelector((state) => state.Profile.principal);
-  const partitionKey = `user#${userId}`;
 
+  const partitionKey = `user#${userId}`;
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
   const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
 
@@ -98,32 +110,38 @@ const Create = () => {
   const storyServiceClient = startStoryServiceClient(indexClient);
 
   const addStory = async () => {
-    console.log("creating..");
-    const creation =
-      await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
-    console.log("canister", creation);
-    console.log("adding...");
-
     if (storyOption === "New chapter" && storyState.groupName === "") {
       return FailedToast("Failed", "Pick a story to add a chapter!");
     }
 
-    const update = await storyServiceClient.update(partitionKey, "", (actor) =>
-      actor.putStory(
-        {
-          groupName: encodeURIComponent(storyState.groupName),
-          title: encodeURIComponent(storyState.title),
-          body: encodeURIComponent(storyState.body),
-          likes: storyState.likes,
-          views: storyState.views,
-          author: storyState.author,
-          proposals: proposalsArray.length, // change this if proposals are added
-        },
-        proposalsArray
-      )
-    );
+    if (storyState.groupName === "" || storyState.title === "") {
+      return FailedToast("Failed", "Story fields cannot be empty!");
+    }
 
-    console.log("done", update);
+    SendingToast("Publishing story...");
+    await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
+    try {
+      await storyServiceClient.update(partitionKey, "", (actor) =>
+        actor.putStory(
+          {
+            groupName: encodeURIComponent(storyState.groupName),
+            title: encodeURIComponent(storyState.title),
+            body: encodeURIComponent(storyState.body),
+            likes: storyState.likes,
+            views: storyState.views,
+            author: storyState.author,
+            proposals: proposalsArray.length,
+          },
+          proposalsArray
+        )
+      );
+      toast.closeAll();
+      SuccessToast("Success", "Congratulations on publishing your story!");
+      // naviage to story here
+    } catch (e) {
+      toast.closeAll();
+      FailedToast("Failed", e.toString());
+    }
   };
 
   const getMyStories = async () => {
@@ -136,18 +154,11 @@ const Create = () => {
     let limit = 1000;
     let ascending = [false];
 
-    // const propo = await storyServiceClient.query(partitionKey, (actor) =>
-    //   actor.skExists("proposal#4for#author#ntohy-uex3p-ricj3-dhz7a-enmvo-szydx-l77yh-kftxfh25x3-j6feg-2ae#groupedStory#vfwd#singleStory#vrewvrew")
-    // );
-
-    // console.log("here", propo)
-
     const stories = await storyServiceClient.query(partitionKey, (actor) =>
       actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
     );
 
-
-    if (stories[0].value.stories.length > 0) {
+    if (stories.length > 0 && stories[0].value.stories.length > 0) {
       let authorStories = stories[0].value.stories;
       let newArray = [];
 
@@ -169,59 +180,64 @@ const Create = () => {
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
     <Container maxW="6xl" py={12}>
-      <SimpleGrid
-        columns={{ base: 1, lg: 2 }}
-        templateColumns={{ base: null, lg: "1fr 500px" }}
-        gap={6}
-      >
-        <GridItem>
-          <Container minW={{ lg: "2xl" }} minH="xl" color={textColor}>
-            <HStack spacing={10} py={2}>
-              {storyOption === "New story" ? (
+      {userId ? (
+        <SimpleGrid
+          columns={{ base: 1, lg: 2 }}
+          templateColumns={{ base: null, lg: "1fr 500px" }}
+          gap={6}
+        >
+          <GridItem>
+            <Container minW={{ lg: "2xl" }} minH="xl" color={textColor}>
+              <HStack spacing={10} py={2}>
+                {storyOption === "New story" ? (
+                  <Input
+                    placeholder="Title"
+                    variant="flushed"
+                    size="lg"
+                    onChange={(e) =>
+                      dispatch({
+                        type: "updateGroupName",
+                        payload: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  <PickChapter myStories={myStories} dispatch={dispatch} />
+                )}
                 <Input
-                  placeholder="Title"
+                  placeholder="Chapter"
                   variant="flushed"
                   size="lg"
                   onChange={(e) =>
-                    dispatch({
-                      type: "updateGroupName",
-                      payload: e.target.value,
-                    })
+                    dispatch({ type: "updateTitle", payload: e.target.value })
                   }
                 />
-              ) : (
-                <PickChapter myStories={myStories} dispatch={dispatch} />
-              )}
-              <Input
-                placeholder="Chapter"
-                variant="flushed"
-                size="lg"
-                onChange={(e) =>
-                  dispatch({ type: "updateTitle", payload: e.target.value })
-                }
+              </HStack>
+              <ReactQuill
+                theme={"bubble"}
+                value={storyState.body}
+                onChange={(e) => dispatch({ type: "updateBody", payload: e })}
               />
-            </HStack>
-            <ReactQuill
-              theme={"bubble"}
-              value={storyState.body}
-              onChange={(e) => dispatch({ type: "updateBody", payload: e })}
-            />
-          </Container>
-        </GridItem>
-        <GridItem>
-          <Box pos="sticky" top="20">
-            <ActionButtons
-              setStoryOption={setStoryOption}
-              storyOption={storyOption}
-              addStory={addStory}
-              setProposalsArray={setProposalsArray}
-            />
-            {proposalsArray.length > 1 ? (
-              <PollSection pollData={proposalsArray} />
-            ) : null}
-          </Box>
-        </GridItem>
-      </SimpleGrid>
+            </Container>
+          </GridItem>
+          <GridItem>
+            <Box pos="sticky" top="20">
+              <ActionButtons
+                setStoryOption={setStoryOption}
+                storyOption={storyOption}
+                addStory={addStory}
+                setProposalsArray={setProposalsArray}
+                myStories={myStories}
+              />
+              {proposalsArray.length > 1 ? (
+                <PollSection pollData={proposalsArray} />
+              ) : null}
+            </Box>
+          </GridItem>
+        </SimpleGrid>
+      ) : (
+        <LoadingSpinner />
+      )}
     </Container>
   );
 };
@@ -233,8 +249,15 @@ const ActionButtons = ({
   storyOption,
   setProposalsArray,
   addStory,
+  myStories,
 }) => {
   const bgColor = useColorModeValue("white", "#111111");
+  const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
   return (
     <Stack
       gap={2}
@@ -249,11 +272,14 @@ const ActionButtons = ({
         <StoryPicker
           setStoryOption={setStoryOption}
           storyOption={storyOption}
+          myStories={myStories}
         />
         <AddProposals setProposalsArray={setProposalsArray} />
       </HStack>
       <Button
         rightIcon={<CheckIcon />}
+        bg={buttonBg}
+        color={buttonTextColor}
         boxShadow="base"
         _hover={{
           boxShadow: "md",
@@ -457,7 +483,7 @@ const PickChapter = ({ myStories, dispatch }) => {
   );
 };
 
-const StoryPicker = ({ setStoryOption, storyOption }) => {
+const StoryPicker = ({ setStoryOption, storyOption, myStories }) => {
   return (
     <Menu>
       <MenuButton
@@ -479,12 +505,14 @@ const StoryPicker = ({ setStoryOption, storyOption }) => {
           >
             New story
           </MenuItemOption>
-          <MenuItemOption
-            value={"New chapter"}
-            onClick={() => setStoryOption("New chapter")}
-          >
-            New chapter
-          </MenuItemOption>
+          {myStories.length > 0 ? (
+            <MenuItemOption
+              value={"New chapter"}
+              onClick={() => setStoryOption("New chapter")}
+            >
+              New chapter
+            </MenuItemOption>
+          ) : null}
         </MenuOptionGroup>
       </MenuList>
     </Menu>

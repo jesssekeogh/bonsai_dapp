@@ -96,6 +96,10 @@ export const idlFactory = ({ IDL }) => {
     'stories' : IDL.Vec(ScanStoriesQuickElement),
     'nextKey' : IDL.Opt(IDL.Text),
   });
+  const ScanProposalResult = IDL.Record({
+    'nextKey' : IDL.Opt(IDL.Text),
+    'proposals' : IDL.Vec(VotingProposal),
+  });
   const StoryService = IDL.Service({
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
@@ -110,6 +114,11 @@ export const idlFactory = ({ IDL }) => {
     'scanAllStories' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],
         [ScanStoriesQuickReturn],
+        ['query'],
+      ),
+    'scanProposals' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],
+        [ScanProposalResult],
         ['query'],
       ),
     'skExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
