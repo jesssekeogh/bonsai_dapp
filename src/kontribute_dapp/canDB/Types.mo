@@ -6,10 +6,11 @@ module {
         groupName : Text; // the name of the grouped story eg. "Bonsai Warriors"
         title : Text;
         body : Text;
+        genre : Text;
         likes : Int;
         views : Int;
-        author: Text;
-        proposals: Int; // so we can determine how many proposals attached to the story 
+        author : Text;
+        proposals : Int; // so we can determine how many proposals attached to the story
     };
 
     public type ConsumableEntity = {
@@ -19,7 +20,7 @@ module {
     };
 
     public type VotingProposal = {
-        proposalNumber: Int; // starts at 1
+        proposalNumber : Int; // starts at 1
         title : Text;
         body : Text;
         votes : Int;
@@ -37,13 +38,14 @@ module {
     };
 
     public type ScanStoriesQuickElement = {
-        sortKey: Text;
-        groupName: Text;
+        sortKey : Text;
+        groupName : Text;
+        genre : Text;
     };
 
     public type ScanStoriesQuickReturn = {
-        stories: [ScanStoriesQuickElement];
-        nextKey: ?Text
+        stories : [ScanStoriesQuickElement];
+        nextKey : ?Text;
     };
 
 };

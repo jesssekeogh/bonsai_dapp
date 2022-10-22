@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Irish+Grover&family=Noto+Sans+JP:wght@700&family=Orienta&family=Risque&display=swap");
 
-.story {
-  font-size: "21px";
+.ql-container {
+  font-size: 21px !important;
+  line-height: 1.5 !important;
+  font-family: "Times New Roman", Times, serif !important;
 }
 
 .footer {

@@ -53,6 +53,7 @@ shared ({ caller = owner }) actor class StoryService({
                     ("groupName", #text(singleStory.groupName)),
                     ("title", #text(singleStory.title)),
                     ("body", #text(singleStory.body)),
+                    ("genre", #text(singleStory.genre)),
                     ("likes", #int(0)),
                     ("views", #int(0)),
                     ("author", #text(Principal.toText(caller))),
@@ -97,7 +98,7 @@ shared ({ caller = owner }) actor class StoryService({
     */
 
     public shared ({ caller }) func likeStory(storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
-        let sortKeyForLikes = "liked#" # Principal.toText(caller) # "likedOn#" # storySK;
+        let sortKeyForLikes = "liked#" # Principal.toText(caller) # "#likedOn#" # storySK;
 
         // get a stories previous likes total
         let story = switch (CanDB.get(db, { sk = storySK })) {
@@ -175,16 +176,17 @@ shared ({ caller = owner }) actor class StoryService({
     public query func getStory(storySK : Text) : async ?Types.SingleStory {
         let story = switch (CanDB.get(db, { sk = storySK })) {
             case null { null };
-            case (?userEntity) { unwrapStory(userEntity) };
+            case (?storyEntity) { unwrapStory(storyEntity) };
         };
 
         switch (story) {
             case null { null };
-            case (?{ groupName; title; body; likes; views; author; proposals }) {
+            case (?{ groupName; title; body; genre; likes; views; author; proposals }) {
                 ?({
                     groupName;
                     title;
                     body;
+                    genre;
                     likes;
                     views;
                     author;
@@ -213,7 +215,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func voteOnProposal(proposalNumber : Text, storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
-        let sortKeyForVotes = "voted#" # Principal.toText(caller) # "votedOn#" # storySK; // stored to ensure 1 user gets 1 vote per story
+        let sortKeyForVotes = "voted#" # Principal.toText(caller) # "#votedOn#" # storySK; // stored to ensure 1 user gets 1 vote per story
         let sortKeyForProposal = "proposal#" # proposalNumber # "#for#" # storySK; // general proposal sort key so we can update specific proposals
 
         // get a votes previous likes
@@ -372,12 +374,13 @@ shared ({ caller = owner }) actor class StoryService({
         let filtered = Array.mapFilter<Types.SingleStory, Types.ScanStoriesQuickElement>(
             unwrapValidStories(entities),
             func(e) {
-                let { author; groupName; title } = e;
+                let { author; groupName; title ; genre } = e;
                 let sortKey = "author#" # author # "#groupedStory#" # groupName # "#singleStory#" # title;
 
                 ?{
                     sortKey;
                     groupName;
+                    genre;
                 };
             },
         );
@@ -427,21 +430,34 @@ shared ({ caller = owner }) actor class StoryService({
         let storyGroupNameValue = Entity.getAttributeMapValueForKey(attributes, "groupName");
         let storyTitleValue = Entity.getAttributeMapValueForKey(attributes, "title");
         let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
+        let storyGenreValue = Entity.getAttributeMapValueForKey(attributes, "genre");
         let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
         let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
         let storyAuthorValue = Entity.getAttributeMapValueForKey(attributes, "author");
         let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
 
-        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
+        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
             case (
                 ?(#text(groupName)),
                 ?(#text(title)),
                 ?(#text(body)),
+                ?(#text(genre)),
                 ?(#int(likes)),
                 ?(#int(views)),
                 ?(#text(author)),
                 ?(#int(proposals)),
-            ) { ?{ groupName; title; body; likes; views; author; proposals } };
+            ) {
+                ?{
+                    groupName;
+                    title;
+                    body;
+                    genre;
+                    likes;
+                    views;
+                    author;
+                    proposals;
+                };
+            };
             case _ {
                 null;
             };
@@ -457,16 +473,18 @@ shared ({ caller = owner }) actor class StoryService({
                 let storyGroupNameValue = Entity.getAttributeMapValueForKey(attributes, "groupName");
                 let storyTitleValue = Entity.getAttributeMapValueForKey(attributes, "title");
                 let storyBodyValue = Entity.getAttributeMapValueForKey(attributes, "body");
+                let storyGenreValue = Entity.getAttributeMapValueForKey(attributes, "genre");
                 let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
                 let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
                 let storyAuthorValue = Entity.getAttributeMapValueForKey(attributes, "author");
                 let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
 
-                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
+                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
                     case (
                         ?(#text(groupName)),
                         ?(#text(title)),
                         ?(#text(body)),
+                        ?(#text(genre)),
                         ?(#int(likes)),
                         ?(#int(views)),
                         ?(#text(author)),
@@ -476,6 +494,7 @@ shared ({ caller = owner }) actor class StoryService({
                             groupName;
                             title;
                             body;
+                            genre;
                             likes;
                             views;
                             author;

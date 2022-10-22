@@ -29,6 +29,10 @@ import {
   Box,
 } from "@chakra-ui/react";
 import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
   TextColorDark,
   TextColorLight,
 } from "../../../containers/colormode/Colors";
@@ -45,12 +49,18 @@ const PollSection = ({ pollData, storySortKey }) => {
   console.log(optionSelected);
   // function here tp place vote
   // have show results option to show each votes result - show when voted and when closed
+  // author can close poll
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
   const borderColor = useColorModeValue("#ebeff4", "#373737");
   const selectedColor = useColorModeValue("#3181ce", "#90ccf4");
+  const buttonText = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+  const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
   return (
-    <Flex rounded={"lg"} my={3}>
+    <Flex rounded={"lg"} m={3}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Text
           fontWeight={600}
@@ -105,6 +115,9 @@ const PollSection = ({ pollData, storySortKey }) => {
           <Button
             rightIcon={<MdOutlineHowToVote />}
             boxShadow="base"
+            isDisabled
+            bg={buttonBg}
+            color={buttonText}
             _hover={{
               boxShadow: "md",
             }}

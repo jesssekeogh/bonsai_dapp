@@ -4,6 +4,7 @@ type IndexCanister =
    createStoryServiceCanisterParitition: () -> (opt text);
    deleteServiceCanister: (text) -> ();
    getCanistersByPK: (text) -> (vec text) query;
+   getPKs: () -> (vec text) query;
    upgradeStoryServiceCanistersByPK: (text, blob) -> (text);
  };
 service : () -> IndexCanister

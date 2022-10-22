@@ -9,6 +9,7 @@ import CanisterMap "mo:candb/CanisterMap";
 import Utils "mo:candb/Utils";
 import Buffer "mo:stable-buffer/StableBuffer";
 import Admin "mo:candb/CanDBAdmin";
+import Iter "mo:base/Iter";
 
 import StoryService "./StoryService";
 
@@ -25,6 +26,19 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   /// This method is called often by the candb-client query & update methods.
   public shared query ({ caller = caller }) func getCanistersByPK(pk : Text) : async [Text] {
     getCanisterIdsIfExists(pk);
+  };
+
+  public shared query func getPKs() : async [Text] {
+    let allPks = CanisterMap.entries(pkToCanisterMap);
+
+    let iterOfPks = Iter.map<(Text, CanisterMap.CanisterIdList), Text>(
+      allPks,
+      func(e) {
+        e.0;
+      },
+    );
+
+    return Iter.toArray(iterOfPks)
   };
 
   /// @required function (Do not delete or change)

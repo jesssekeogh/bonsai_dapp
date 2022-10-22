@@ -30,7 +30,6 @@ type StoryService =
    putStory: (SingleStory, vec VotingProposal) -> (text);
    scanAllStories: (text, text, nat, opt bool) ->
     (ScanStoriesQuickReturn) query;
-   scanProposals: (text, text, nat, opt bool) -> (ScanProposalResult) query;
    skExists: (text) -> (bool) query;
    transferCycles: () -> ();
    voteOnProposal: (text, text) -> (Result);
@@ -40,6 +39,7 @@ type SingleStory =
  record {
    author: text;
    body: text;
+   genre: text;
    groupName: text;
    likes: int;
    proposals: int;
@@ -53,13 +53,9 @@ type ScanStoriesQuickReturn =
  };
 type ScanStoriesQuickElement = 
  record {
+   genre: text;
    groupName: text;
    sortKey: text;
- };
-type ScanProposalResult = 
- record {
-   nextKey: opt text;
-   proposals: vec VotingProposal;
  };
 type ScalingOptions = 
  record {

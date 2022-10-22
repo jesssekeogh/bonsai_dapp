@@ -50,12 +50,9 @@ export interface ScalingOptions {
   'autoScalingHook' : AutoScalingCanisterSharedFunctionHook,
   'sizeLimit' : ScalingLimitType,
 }
-export interface ScanProposalResult {
-  'nextKey' : [] | [string],
-  'proposals' : Array<VotingProposal>,
-}
 export interface ScanStoriesQuickElement {
   'sortKey' : string,
+  'genre' : string,
   'groupName' : string,
 }
 export interface ScanStoriesQuickReturn {
@@ -68,6 +65,7 @@ export interface SingleStory {
   'body' : string,
   'author' : string,
   'likes' : bigint,
+  'genre' : string,
   'proposals' : bigint,
   'groupName' : string,
 }
@@ -81,10 +79,6 @@ export interface StoryService {
   'scanAllStories' : ActorMethod<
     [string, string, bigint, [] | [boolean]],
     ScanStoriesQuickReturn,
-  >,
-  'scanProposals' : ActorMethod<
-    [string, string, bigint, [] | [boolean]],
-    ScanProposalResult,
   >,
   'skExists' : ActorMethod<[string], boolean>,
   'transferCycles' : ActorMethod<[], undefined>,

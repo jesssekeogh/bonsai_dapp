@@ -30,6 +30,7 @@ export const idlFactory = ({ IDL }) => {
     'body' : IDL.Text,
     'author' : IDL.Text,
     'likes' : IDL.Int,
+    'genre' : IDL.Text,
     'proposals' : IDL.Int,
     'groupName' : IDL.Text,
   });
@@ -90,15 +91,12 @@ export const idlFactory = ({ IDL }) => {
   });
   const ScanStoriesQuickElement = IDL.Record({
     'sortKey' : IDL.Text,
+    'genre' : IDL.Text,
     'groupName' : IDL.Text,
   });
   const ScanStoriesQuickReturn = IDL.Record({
     'stories' : IDL.Vec(ScanStoriesQuickElement),
     'nextKey' : IDL.Opt(IDL.Text),
-  });
-  const ScanProposalResult = IDL.Record({
-    'nextKey' : IDL.Opt(IDL.Text),
-    'proposals' : IDL.Vec(VotingProposal),
   });
   const StoryService = IDL.Service({
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
@@ -114,11 +112,6 @@ export const idlFactory = ({ IDL }) => {
     'scanAllStories' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],
         [ScanStoriesQuickReturn],
-        ['query'],
-      ),
-    'scanProposals' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],
-        [ScanProposalResult],
         ['query'],
       ),
     'skExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),

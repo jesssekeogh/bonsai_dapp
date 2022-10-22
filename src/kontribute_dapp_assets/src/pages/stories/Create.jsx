@@ -25,6 +25,7 @@ import {
   createStandaloneToast,
   FormControl,
   useDisclosure,
+  Divider,
   Center,
   Tooltip,
   Stack,
@@ -56,6 +57,7 @@ import {
 } from "../../containers/toasts/Toasts";
 import { PollSection } from "./components";
 import { LoadingSpinner } from "../../containers/index";
+import "../../../assets/main.css";
 
 const { toast } = createStandaloneToast();
 
@@ -76,6 +78,11 @@ const reducer = (state, action) => {
         ...state,
         body: action.payload,
       };
+    case "updateGenre":
+      return {
+        ...state,
+        genre: action.payload,
+      };
   }
 };
 
@@ -85,6 +92,7 @@ const Create = () => {
   const partitionKey = `user#${userId}`;
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
   const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
+  const [publishDisable, setPublishDisable] = useState(false);
 
   const [proposalsArray, setProposalsArray] = useState([
     {
@@ -100,6 +108,7 @@ const Create = () => {
     groupName: "", // overall story title
     title: "", // individual story title
     body: "Write your story...",
+    genre: "",
     likes: 0,
     views: 0,
     author: userId,
@@ -116,9 +125,13 @@ const Create = () => {
 
     if (storyState.groupName === "" || storyState.title === "") {
       return FailedToast("Failed", "Story fields cannot be empty!");
+    } else if (storyState.genre === "") {
+      return FailedToast("Failed", "Please pick a genre!");
     }
 
+    setPublishDisable(true);
     SendingToast("Publishing story...");
+
     await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
     try {
       await storyServiceClient.update(partitionKey, "", (actor) =>
@@ -127,6 +140,7 @@ const Create = () => {
             groupName: encodeURIComponent(storyState.groupName),
             title: encodeURIComponent(storyState.title),
             body: encodeURIComponent(storyState.body),
+            genre: storyState.genre,
             likes: storyState.likes,
             views: storyState.views,
             author: storyState.author,
@@ -137,10 +151,12 @@ const Create = () => {
       );
       toast.closeAll();
       SuccessToast("Success", "Congratulations on publishing your story!");
+      setPublishDisable(false);
       // naviage to story here
     } catch (e) {
       toast.closeAll();
       FailedToast("Failed", e.toString());
+      setPublishDisable(false);
     }
   };
 
@@ -179,66 +195,86 @@ const Create = () => {
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
-    <Container maxW="6xl" py={12}>
+    <Box py={{ base: 10, md: 5, lg: 12 }}>
       {userId ? (
-        <SimpleGrid
-          columns={{ base: 1, lg: 2 }}
-          templateColumns={{ base: null, lg: "1fr 500px" }}
-          gap={6}
-        >
-          <GridItem>
-            <Container minW={{ lg: "2xl" }} minH="xl" color={textColor}>
-              <HStack spacing={10} py={2}>
-                {storyOption === "New story" ? (
+        <Center>
+          <SimpleGrid
+            columns={{ base: 1, lg: 2 }}
+            templateColumns={{ base: "auto", lg: "1fr 500px" }}
+          >
+            <GridItem
+              boxShadow={"lg"}
+              p={{ base: 0, lg: 2 }}
+              borderRadius="lg"
+              ml={{ base: 0, lg: 20 }}
+            >
+              <Container minW={{ lg: "2xl" }} minH="xl" color={textColor}>
+                <HStack spacing={10} py={2}>
+                  {storyOption === "New story" ? (
+                    <Input
+                      placeholder="Title"
+                      variant="flushed"
+                      size="lg"
+                      fontSize="31px"
+                      fontFamily="'Times New Roman', Times, serif"
+                      onChange={(e) =>
+                        dispatch({
+                          type: "updateGroupName",
+                          payload: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <PickChapter myStories={myStories} dispatch={dispatch} />
+                  )}
                   <Input
-                    placeholder="Title"
+                    placeholder="Chapter"
                     variant="flushed"
                     size="lg"
+                    fontSize="31px"
+                    fontFamily="'Times New Roman', Times, serif"
                     onChange={(e) =>
-                      dispatch({
-                        type: "updateGroupName",
-                        payload: e.target.value,
-                      })
+                      dispatch({ type: "updateTitle", payload: e.target.value })
                     }
                   />
-                ) : (
-                  <PickChapter myStories={myStories} dispatch={dispatch} />
-                )}
-                <Input
-                  placeholder="Chapter"
-                  variant="flushed"
-                  size="lg"
-                  onChange={(e) =>
-                    dispatch({ type: "updateTitle", payload: e.target.value })
-                  }
+                </HStack>
+                <div className="ql-container">
+                  <ReactQuill
+                    theme={"bubble"}
+                    value={storyState.body}
+                    onChange={(e) =>
+                      dispatch({ type: "updateBody", payload: e })
+                    }
+                  />
+                </div>
+              </Container>
+            </GridItem>
+            <GridItem>
+              <Box
+                pos={{ base: "auto", md: "sticky" }}
+                top={{ base: "auto", md: "20" }}
+              >
+                <ActionButtons
+                  setStoryOption={setStoryOption}
+                  storyOption={storyOption}
+                  addStory={addStory}
+                  setProposalsArray={setProposalsArray}
+                  myStories={myStories}
+                  genre={storyState.genre}
+                  dispatch={dispatch}
+                  publishDisable={publishDisable}
                 />
-              </HStack>
-              <ReactQuill
-                theme={"bubble"}
-                value={storyState.body}
-                onChange={(e) => dispatch({ type: "updateBody", payload: e })}
-              />
-            </Container>
-          </GridItem>
-          <GridItem>
-            <Box pos="sticky" top="20">
-              <ActionButtons
-                setStoryOption={setStoryOption}
-                storyOption={storyOption}
-                addStory={addStory}
-                setProposalsArray={setProposalsArray}
-                myStories={myStories}
-              />
-              {proposalsArray.length > 1 ? (
-                <PollSection pollData={proposalsArray} />
-              ) : null}
-            </Box>
-          </GridItem>
-        </SimpleGrid>
+                {proposalsArray.length > 1 ? (
+                  <PollSection pollData={proposalsArray} />
+                ) : null}
+              </Box>
+            </GridItem>
+          </SimpleGrid>
+        </Center>
       ) : (
         <LoadingSpinner />
       )}
-    </Container>
+    </Box>
   );
 };
 
@@ -250,6 +286,9 @@ const ActionButtons = ({
   setProposalsArray,
   addStory,
   myStories,
+  publishDisable,
+  genre,
+  dispatch,
 }) => {
   const bgColor = useColorModeValue("white", "#111111");
   const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
@@ -265,20 +304,24 @@ const ActionButtons = ({
       boxShadow={"xl"}
       rounded={"lg"}
       p={4}
-      mt={3}
-      maxW="350px"
+      m={3}
+      maxW={{ base: "auto", lg: "350px" }}
     >
       <HStack>
         <StoryPicker
           setStoryOption={setStoryOption}
           storyOption={storyOption}
           myStories={myStories}
+          dispatch={dispatch}
         />
         <AddProposals setProposalsArray={setProposalsArray} />
       </HStack>
+      <PickGenre genre={genre} dispatch={dispatch} />
+      <Divider />
       <Button
         rightIcon={<CheckIcon />}
         bg={buttonBg}
+        isLoading={publishDisable}
         color={buttonTextColor}
         boxShadow="base"
         _hover={{
@@ -289,6 +332,50 @@ const ActionButtons = ({
         Publish
       </Button>
     </Stack>
+  );
+};
+
+const PickGenre = ({ genre, dispatch }) => {
+  const Genres = [
+    "Fantasy",
+    "Action / Adventure",
+    "Mystery / Thriller",
+    "Romance",
+    "Science Fiction",
+    "Historical Fiction",
+    "Non-Fiction",
+    "Short Story",
+  ];
+
+  return (
+    <Menu>
+      <MenuButton
+        w="full"
+        as={Button}
+        boxShadow="base"
+        _hover={{
+          boxShadow: "md",
+        }}
+        rightIcon={<ChevronDownIcon />}
+      >
+        {genre === "" ? "Genre" : genre}
+      </MenuButton>
+      <MenuList minWidth="240px">
+        <MenuOptionGroup defaultValue="Genre" title="Genres">
+          {Genres.map((genreTitle) => (
+            <MenuItemOption
+              key={genreTitle}
+              value={genreTitle}
+              onClick={() =>
+                dispatch({ type: "updateGenre", payload: genreTitle })
+              }
+            >
+              {genreTitle}
+            </MenuItemOption>
+          ))}
+        </MenuOptionGroup>
+      </MenuList>
+    </Menu>
   );
 };
 
@@ -371,7 +458,7 @@ const AddProposals = ({ setProposalsArray }) => {
 
       <Modal isOpen={isOpen} onClose={closeModal} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent mx={2}>
           <ModalHeader>
             <Center>Poll options</Center>
           </ModalHeader>
@@ -458,7 +545,7 @@ const PickChapter = ({ myStories, dispatch }) => {
       <MenuButton
         w="full"
         as={Button}
-        boxShadow="base"
+        variant="outline"
         _hover={{
           boxShadow: "md",
         }}
@@ -483,7 +570,7 @@ const PickChapter = ({ myStories, dispatch }) => {
   );
 };
 
-const StoryPicker = ({ setStoryOption, storyOption, myStories }) => {
+const StoryPicker = ({ setStoryOption, storyOption, myStories, dispatch }) => {
   return (
     <Menu>
       <MenuButton
@@ -508,7 +595,13 @@ const StoryPicker = ({ setStoryOption, storyOption, myStories }) => {
           {myStories.length > 0 ? (
             <MenuItemOption
               value={"New chapter"}
-              onClick={() => setStoryOption("New chapter")}
+              onClick={() => {
+                setStoryOption("New chapter")
+                dispatch({
+                  type: "updateGroupName",
+                  payload: "",
+                })
+              }}
             >
               New chapter
             </MenuItemOption>
