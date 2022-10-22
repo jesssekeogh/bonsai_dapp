@@ -41,6 +41,8 @@ export interface ConsumableEntity {
 export type PK = string;
 export type Result = { 'ok' : [] | [ConsumableEntity] } |
   { 'err' : string };
+export type Result_1 = { 'ok' : [] | [VotingProposal] } |
+  { 'err' : string };
 export type SK = string;
 export type ScalingLimitType = { 'heapSize' : bigint } |
   { 'count' : bigint };
@@ -68,7 +70,7 @@ export interface SingleStory {
 export interface StoryService {
   'closeProposals' : ActorMethod<[string], string>,
   'getPK' : ActorMethod<[], string>,
-  'getProposal' : ActorMethod<[string], [] | [VotingProposal]>,
+  'getProposal' : ActorMethod<[string], Result_1>,
   'getStory' : ActorMethod<[string], [] | [SingleStory]>,
   'likeStory' : ActorMethod<[string], Result>,
   'putStory' : ActorMethod<[SingleStory, Array<VotingProposal>], string>,

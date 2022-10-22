@@ -115,7 +115,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   public shared ({ caller }) func deleteServiceCanister(serviceId : Text) : async () {
     // assert(caller == owner); // enable this in Prod
     // admin can delete any pk by passing in service id of user principal
-    let pk = "user#" # serviceId;
+    let pk = serviceId;
 
     let canisterIds = getCanisterIdsIfExists(pk);
     if (canisterIds == []) {
@@ -130,7 +130,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   public shared ({ caller }) func upgradeStoryServiceCanistersByPK(serviceId : Text, wasmModule : Blob) : async Text {
     // assert(caller == owner);
 
-    let pk = "user#" # serviceId;
+    let pk = serviceId;
     let scalingOptions = {
       autoScalingHook = autoScaleStoryServiceCanister;
       sizeLimit = #heapSize(200_000_000); // Scale out at 200MB

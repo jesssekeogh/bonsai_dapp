@@ -62,16 +62,19 @@ shared ({ caller = owner }) actor class StoryService({
         );
 
         /* if there is proposals(checked from story input -> passed from frontend) we add them,
-        otherwise proposals is an empty object in an array */
+        otherwise proposals is an empty object in an array of length 1 */
+        var proposalSK = "";
 
-        if (singleStory.proposals > 0) {
+        if (singleStory.proposals > 1) {
             var proposalsAmount = 1;
 
             for (p in proposals.vals()) {
+                proposalSK := "proposal#" # Nat.toText(proposalsAmount) # "for#" # storySortKey;
+
                 await CanDB.put(
                     db,
                     {
-                        sk = "proposal#" # Nat.toText(proposalsAmount) # "for#" # storySortKey; // general proposal sort key so we can update specific proposals
+                        sk = proposalSK; // general proposal sort key so we can update specific proposals
                         attributes = [
                             ("proposalNumber", #int(proposalsAmount)), // passed into the voteOnProposal function
                             ("title", #text(p.title)),
@@ -86,7 +89,7 @@ shared ({ caller = owner }) actor class StoryService({
             };
         };
 
-        return storySortKey;
+        return "STORY SORT KEY: " # storySortKey # " PROPOSAL SORT KEY: " # proposalSK;
     };
 
     /* 
@@ -195,22 +198,22 @@ shared ({ caller = owner }) actor class StoryService({
     Vote API:
     */
 
-    public query func getProposal(proposalSK : Text) : async ?Types.VotingProposal {
+    public query func getProposal(proposalSK : Text) : async Result.Result<?Types.VotingProposal, Text> {
         let proposal = switch (CanDB.get(db, { sk = proposalSK })) {
             case null { null };
             case (?userEntity) { unwrapProposal(userEntity) };
         };
-
+    
         switch (proposal) {
-            case null { null };
+            case null { #err("Proposal not found") };
             case (?{ title; body; votes; proposalNumber; open }) {
-                ?({
+                #ok(?({
                     title;
                     body;
                     votes;
                     proposalNumber;
                     open;
-                });
+                }));
             };
         };
     };

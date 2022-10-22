@@ -1,0 +1,54 @@
+// Version: 1.0.0
+type AttributeKey = Text;
+type AttributeMap = Tree<AttributeKey, AttributeValue>;
+type AttributeValue =
+  {
+    #arrayBool : [Bool];
+    #arrayFloat : [Float];
+    #arrayInt : [Int];
+    #arrayText : [Text];
+    #blob : Blob;
+    #bool : Bool;
+    #float : Float;
+    #int : Int;
+    #text : Text;
+    #tree : Tree<Text, AttributeValueRBTreeValue>;
+    #tuple : [AttributeValuePrimitive]
+  };
+type AttributeValuePrimitive =
+  {#bool : Bool; #float : Float; #int : Int; #text : Text};
+type AttributeValueRBTreeValue =
+  {
+    #arrayBool : [Bool];
+    #arrayFloat : [Float];
+    #arrayInt : [Int];
+    #arrayText : [Text];
+    #blob : Blob;
+    #bool : Bool;
+    #float : Float;
+    #int : Int;
+    #text : Text;
+    #tuple : [AttributeValuePrimitive]
+  };
+type AutoScalingCanisterSharedFunctionHook = shared Text -> async Text;
+type Color = {#B; #R};
+type PK = Text;
+type RangeTree = Tree<SK, AttributeMap>;
+type SK = Text;
+type ScalingLimitType = {#count : Nat; #heapSize : Nat};
+type ScalingOptions =
+  {
+    autoScalingHook : AutoScalingCanisterSharedFunctionHook;
+    sizeLimit : ScalingLimitType
+  };
+type Tree<K, V> = {#leaf; #node : (Color, Tree<K, V>, (K, ?V), Tree<K, V>)};
+actor {
+  stable db :
+    {
+      var count : Nat;
+      var data : RangeTree;
+      pk : PK;
+      var scalingOptions : ScalingOptions;
+      var scalingStatus : {#complete; #not_started; #started}
+    }
+};

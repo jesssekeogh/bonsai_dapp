@@ -20,6 +20,10 @@ export const idlFactory = ({ IDL }) => {
     'open' : IDL.Bool,
     'proposalNumber' : IDL.Int,
   });
+  const Result_1 = IDL.Variant({
+    'ok' : IDL.Opt(VotingProposal),
+    'err' : IDL.Text,
+  });
   const SingleStory = IDL.Record({
     'title' : IDL.Text,
     'views' : IDL.Int,
@@ -95,7 +99,7 @@ export const idlFactory = ({ IDL }) => {
   const StoryService = IDL.Service({
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
-    'getProposal' : IDL.Func([IDL.Text], [IDL.Opt(VotingProposal)], ['query']),
+    'getProposal' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'getStory' : IDL.Func([IDL.Text], [IDL.Opt(SingleStory)], ['query']),
     'likeStory' : IDL.Func([IDL.Text], [Result], []),
     'putStory' : IDL.Func(

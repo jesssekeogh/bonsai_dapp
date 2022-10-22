@@ -24,7 +24,7 @@ type StoryService =
  service {
    closeProposals: (text) -> (text);
    getPK: () -> (text) query;
-   getProposal: (text) -> (opt VotingProposal) query;
+   getProposal: (text) -> (Result_1) query;
    getStory: (text) -> (opt SingleStory) query;
    likeStory: (text) -> (Result);
    putStory: (SingleStory, vec VotingProposal) -> (text);
@@ -66,6 +66,11 @@ type ScalingLimitType =
    heapSize: nat;
  };
 type SK = text;
+type Result_1 = 
+ variant {
+   err: text;
+   ok: opt VotingProposal;
+ };
 type Result = 
  variant {
    err: text;

@@ -26,10 +26,12 @@ import {
   useDisclosure,
   Center,
   Tooltip,
-  Text,
+  Stack,
   Box,
   IconButton,
   Textarea,
+  SimpleGrid,
+  GridItem,
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon, ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
 import { BiPoll } from "react-icons/bi";
@@ -43,6 +45,7 @@ import {
 } from "../CanDBClient/client";
 import { useSelector } from "react-redux";
 import { FailedToast } from "../../containers/toasts/Toasts";
+import { PollSection } from "./components";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -71,6 +74,16 @@ const Create = () => {
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
   const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
 
+  const [proposalsArray, setProposalsArray] = useState([
+    {
+      proposalNumber: 0,
+      title: "",
+      body: "",
+      votes: 0,
+      open: true,
+    },
+  ]); // sent from poll option
+
   const [storyState, dispatch] = useReducer(reducer, {
     groupName: "", // overall story title
     title: "", // individual story title
@@ -91,14 +104,6 @@ const Create = () => {
     console.log("canister", creation);
     console.log("adding...");
 
-    let emptyProposal = {
-      proposalNumber: 0,
-      title: "",
-      body: "",
-      votes: 0,
-      open: false,
-    };
-
     if (storyOption === "New chapter" && storyState.groupName === "") {
       return FailedToast("Failed", "Pick a story to add a chapter!");
     }
@@ -112,9 +117,9 @@ const Create = () => {
           likes: storyState.likes,
           views: storyState.views,
           author: storyState.author,
-          proposals: storyState.proposals, // change this if proposals are added
+          proposals: proposalsArray.length, // change this if proposals are added
         },
-        [emptyProposal]
+        proposalsArray
       )
     );
 
@@ -123,17 +128,24 @@ const Create = () => {
 
   const getMyStories = async () => {
     // some util help:
-    // await indexClient.indexCanisterActor.deleteServiceCanister(partitionKey);
-    // return console.log("done!")
+    // const resp = await indexClient.indexCanisterActor.deleteServiceCanister(partitionKey);
+    // return console.log("done!", resp)
 
     let skLowerBound = "";
     let skUpperBound = "~";
     let limit = 1000;
     let ascending = [false];
 
+    // const propo = await storyServiceClient.query(partitionKey, (actor) =>
+    //   actor.skExists("proposal#4for#author#ntohy-uex3p-ricj3-dhz7a-enmvo-szydx-l77yh-kftxfh25x3-j6feg-2ae#groupedStory#vfwd#singleStory#vrewvrew")
+    // );
+
+    // console.log("here", propo)
+
     const stories = await storyServiceClient.query(partitionKey, (actor) =>
       actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
     );
+
 
     if (stories[0].value.stories.length > 0) {
       let authorStories = stories[0].value.stories;
@@ -155,55 +167,91 @@ const Create = () => {
   }, [userId]);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
-
   return (
-    <Container maxW="5xl" py={10}>
-      <ActionButtons
-        setStoryOption={setStoryOption}
-        storyOption={storyOption}
-        addStory={addStory}
-      />
-      <Container maxW="3xl" py={10} color={textColor}>
-        <HStack spacing={10} py={2}>
-          {storyOption === "New story" ? (
-            <Input
-              placeholder="Title"
-              variant="flushed"
-              size="lg"
-              onChange={(e) =>
-                dispatch({ type: "updateGroupName", payload: e.target.value })
-              }
+    <Container maxW="6xl" py={12}>
+      <SimpleGrid
+        columns={{ base: 1, lg: 2 }}
+        templateColumns={{ base: null, lg: "1fr 500px" }}
+        gap={6}
+      >
+        <GridItem>
+          <Container minW={{ lg: "2xl" }} minH="xl" color={textColor}>
+            <HStack spacing={10} py={2}>
+              {storyOption === "New story" ? (
+                <Input
+                  placeholder="Title"
+                  variant="flushed"
+                  size="lg"
+                  onChange={(e) =>
+                    dispatch({
+                      type: "updateGroupName",
+                      payload: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <PickChapter myStories={myStories} dispatch={dispatch} />
+              )}
+              <Input
+                placeholder="Chapter"
+                variant="flushed"
+                size="lg"
+                onChange={(e) =>
+                  dispatch({ type: "updateTitle", payload: e.target.value })
+                }
+              />
+            </HStack>
+            <ReactQuill
+              theme={"bubble"}
+              value={storyState.body}
+              onChange={(e) => dispatch({ type: "updateBody", payload: e })}
             />
-          ) : (
-            <PickChapter myStories={myStories} dispatch={dispatch} />
-          )}
-          <Input
-            placeholder="Chapter"
-            variant="flushed"
-            size="lg"
-            onChange={(e) =>
-              dispatch({ type: "updateTitle", payload: e.target.value })
-            }
-          />
-        </HStack>
-        <ReactQuill
-          theme={"bubble"}
-          value={storyState.body}
-          onChange={(e) => dispatch({ type: "updateBody", payload: e })}
-        />
-      </Container>
+          </Container>
+        </GridItem>
+        <GridItem>
+          <Box pos="sticky" top="20">
+            <ActionButtons
+              setStoryOption={setStoryOption}
+              storyOption={storyOption}
+              addStory={addStory}
+              setProposalsArray={setProposalsArray}
+            />
+            {proposalsArray.length > 1 ? (
+              <PollSection pollData={proposalsArray} />
+            ) : null}
+          </Box>
+        </GridItem>
+      </SimpleGrid>
     </Container>
   );
 };
 
 export default Create;
 
-const ActionButtons = ({ setStoryOption, storyOption, addStory }) => {
+const ActionButtons = ({
+  setStoryOption,
+  storyOption,
+  setProposalsArray,
+  addStory,
+}) => {
+  const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Flex gap={2}>
-      <StoryPicker setStoryOption={setStoryOption} storyOption={storyOption} />
-      <AddProposals />
-      <Spacer />
+    <Stack
+      gap={2}
+      bg={bgColor}
+      boxShadow={"xl"}
+      rounded={"lg"}
+      p={4}
+      mt={3}
+      maxW="350px"
+    >
+      <HStack>
+        <StoryPicker
+          setStoryOption={setStoryOption}
+          storyOption={storyOption}
+        />
+        <AddProposals setProposalsArray={setProposalsArray} />
+      </HStack>
       <Button
         rightIcon={<CheckIcon />}
         boxShadow="base"
@@ -214,11 +262,11 @@ const ActionButtons = ({ setStoryOption, storyOption, addStory }) => {
       >
         Publish
       </Button>
-    </Flex>
+    </Stack>
   );
 };
 
-const AddProposals = () => {
+const AddProposals = ({ setProposalsArray }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [maxAmountError, setMaxAmountError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -247,6 +295,7 @@ const AddProposals = () => {
     onClose();
     setPollOption(["", ""]);
     setMaxAmountError(false);
+    setPollTitle("");
     setSubmitted(false);
   };
 
@@ -262,7 +311,7 @@ const AddProposals = () => {
     let storyProposals = [];
 
     // error to check poll title
-
+    if (pollTitle == "") return;
     for (let i = 0; i < pollOptions.length; i++) {
       if (pollOptions[i] == "") return;
 
@@ -275,17 +324,17 @@ const AddProposals = () => {
       });
     }
 
-    console.log(storyProposals)
     // send to upper parent component as ready array of objects
+    setProposalsArray(storyProposals);
+    closeModal();
   };
 
-  // min 2 max 5
-  // have an "added" state to add to story
   return (
     <>
       <Button
         rightIcon={<BiPoll />}
         boxShadow="base"
+        w="full"
         _hover={{
           boxShadow: "md",
         }}
@@ -308,6 +357,7 @@ const AddProposals = () => {
               placeholder="Ask a question to your audience..."
               size="lg"
               onChange={(e) => setPollTitle(e.target.value)}
+              isInvalid={submitted && pollTitle == "" ? true : false}
             />
             <Box p={3}>
               {pollOptions.map((item, index) => {
@@ -358,7 +408,7 @@ const AddProposals = () => {
 
           <ModalFooter>
             <Button rightIcon={<CheckIcon />} onClick={() => submitPoll()}>
-              Submit
+              Add
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -411,6 +461,7 @@ const StoryPicker = ({ setStoryOption, storyOption }) => {
   return (
     <Menu>
       <MenuButton
+        w="full"
         as={Button}
         boxShadow="base"
         _hover={{
