@@ -120,7 +120,7 @@ const Create = () => {
 
   const addStory = async () => {
     if (storyOption === "New chapter" && storyState.groupName === "") {
-      return FailedToast("Failed", "Pick a story to add a chapter!");
+      return FailedToast("Failed", "Please pick a story to add a chapter!");
     }
 
     if (storyState.groupName === "" || storyState.title === "") {
@@ -194,8 +194,9 @@ const Create = () => {
   }, [userId]);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
+  const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Box py={{ base: 10, md: 5, lg: 12 }}>
+    <Box py={{ base: 5, md: 5, lg: 12 }} pb={{ base: 10 }}>
       {userId ? (
         <Center>
           <SimpleGrid
@@ -204,19 +205,22 @@ const Create = () => {
           >
             <GridItem
               boxShadow={"lg"}
+              bg={bgColor}
               p={{ base: 0, lg: 2 }}
               borderRadius="lg"
               ml={{ base: 0, lg: 20 }}
             >
-              <Container minW={{ lg: "2xl" }} minH="xl" color={textColor}>
-                <HStack spacing={10} py={2}>
+              <Container minW={{ lg: "2xl" }} minH="2xl" color={textColor}>
+                <Stack p={2} align="center">
                   {storyOption === "New story" ? (
                     <Input
                       placeholder="Title"
-                      variant="flushed"
+                      variant="unstyled"
+                      textAlign="center"
                       size="lg"
-                      fontSize="31px"
+                      fontSize="34px"
                       fontFamily="'Times New Roman', Times, serif"
+                      fontWeight="bold"
                       onChange={(e) =>
                         dispatch({
                           type: "updateGroupName",
@@ -229,15 +233,20 @@ const Create = () => {
                   )}
                   <Input
                     placeholder="Chapter"
-                    variant="flushed"
+                    variant="unstyled"
+                    textAlign="center"
                     size="lg"
-                    fontSize="31px"
+                    fontSize="28px"
                     fontFamily="'Times New Roman', Times, serif"
+                    fontWeight="bold"
                     onChange={(e) =>
-                      dispatch({ type: "updateTitle", payload: e.target.value })
+                      dispatch({
+                        type: "updateTitle",
+                        payload: e.target.value,
+                      })
                     }
                   />
-                </HStack>
+                </Stack>
                 <div className="ql-container">
                   <ReactQuill
                     theme={"bubble"}
@@ -245,6 +254,16 @@ const Create = () => {
                     onChange={(e) =>
                       dispatch({ type: "updateBody", payload: e })
                     }
+                    modules={{
+                      toolbar: [
+                        { header: 2 },
+                        "bold",
+                        "italic",
+                        "underline",
+                        "blockquote",
+                        "strike",
+                      ],
+                    }}
                   />
                 </div>
               </Container>
@@ -303,8 +322,8 @@ const ActionButtons = ({
       bg={bgColor}
       boxShadow={"xl"}
       rounded={"lg"}
-      p={4}
-      m={3}
+      p={{ base: 3, lg: 5 }}
+      m={2}
       maxW={{ base: "auto", lg: "350px" }}
     >
       <HStack>
@@ -543,7 +562,7 @@ const PickChapter = ({ myStories, dispatch }) => {
   return (
     <Menu>
       <MenuButton
-        w="full"
+        textTransform="uppercase"
         as={Button}
         variant="outline"
         _hover={{
@@ -596,11 +615,11 @@ const StoryPicker = ({ setStoryOption, storyOption, myStories, dispatch }) => {
             <MenuItemOption
               value={"New chapter"}
               onClick={() => {
-                setStoryOption("New chapter")
+                setStoryOption("New chapter");
                 dispatch({
                   type: "updateGroupName",
                   payload: "",
-                })
+                });
               }}
             >
               New chapter
