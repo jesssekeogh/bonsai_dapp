@@ -43,7 +43,7 @@ const PollSection = ({ pollData, storySortKey }) => {
   const [optionSelected, setOption] = useState("");
 
   const totalVotes = pollData.reduce((accumulator, value) => {
-    return accumulator + value.votes;
+    return Number(accumulator) + Number(value.votes);
   }, 0);
 
   console.log(optionSelected);
@@ -61,13 +61,14 @@ const PollSection = ({ pollData, storySortKey }) => {
   const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
   return (
     <Flex rounded={"lg"} m={3}>
-      <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
-        <Text
-          fontWeight={600}
-          color={textColor}
-          fontSize={{ base: "md", md: "lg" }}
-          mb={2}
-        >
+      <Container
+        bg={bgColor}
+        color={textColor}
+        boxShadow={"xl"}
+        rounded={"lg"}
+        p={4}
+      >
+        <Text fontWeight={600} fontSize={{ base: "md", md: "lg" }} mb={2}>
           {pollData[0].title}
         </Text>
         <RadioGroup onChange={setOption} value={optionSelected}>

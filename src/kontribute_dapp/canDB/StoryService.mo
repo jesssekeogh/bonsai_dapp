@@ -40,10 +40,10 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func putStory(singleStory : Types.SingleStory, proposals : [Types.VotingProposal]) : async Text {
-        assert ("user#" # Principal.toText(caller) == partitionKey);
+        assert ("user_" # Principal.toText(caller) == partitionKey);
         assert (checkStory(singleStory) == true);
 
-        let storySortKey = "author#" # Principal.toText(caller) # "#groupedStory#" # singleStory.groupName # "#singleStory#" # singleStory.title;
+        let storySortKey = returnStorySortKey(Principal.toText(caller), singleStory.groupName, singleStory.title);
 
         await CanDB.put(
             db,
@@ -64,18 +64,15 @@ shared ({ caller = owner }) actor class StoryService({
 
         /* if there is proposals(checked from story input -> passed from frontend) we add them,
         otherwise proposals is an empty object in an array of length 1 */
-        var proposalSK = "";
 
         if (singleStory.proposals > 1) {
             var proposalsAmount = 1;
 
             for (p in proposals.vals()) {
-                proposalSK := "proposal#" # Nat.toText(proposalsAmount) # "#for#" # storySortKey;
-
                 await CanDB.put(
                     db,
                     {
-                        sk = proposalSK; // general proposal sort key so we can update specific proposals
+                        sk = returnProposalSortKey(Nat.toText(proposalsAmount), storySortKey); // general proposal sort key so we can update specific proposals
                         attributes = [
                             ("proposalNumber", #int(proposalsAmount)), // passed into the voteOnProposal function
                             ("title", #text(p.title)),
@@ -90,7 +87,7 @@ shared ({ caller = owner }) actor class StoryService({
             };
         };
 
-        return "STORY SORT KEY: " # storySortKey # " PROPOSAL SORT KEY: " # proposalSK;
+        return "STORY SORT KEY: " # storySortKey;
     };
 
     /* 
@@ -98,7 +95,7 @@ shared ({ caller = owner }) actor class StoryService({
     */
 
     public shared ({ caller }) func likeStory(storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
-        let sortKeyForLikes = "liked#" # Principal.toText(caller) # "#likedOn#" # storySK;
+        let sortKeyForLikes = returnLikedSortKey(Principal.toText(caller), storySK);
 
         // get a stories previous likes total
         let story = switch (CanDB.get(db, { sk = storySK })) {
@@ -215,8 +212,8 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func voteOnProposal(proposalNumber : Text, storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
-        let sortKeyForVotes = "voted#" # Principal.toText(caller) # "#votedOn#" # storySK; // stored to ensure 1 user gets 1 vote per story
-        let sortKeyForProposal = "proposal#" # proposalNumber # "#for#" # storySK; // general proposal sort key so we can update specific proposals
+        let sortKeyForVotes = returnVotedSortKey(Principal.toText(caller), storySK); // stored to ensure 1 user gets 1 vote per story
+        let sortKeyForProposal = returnProposalSortKey(proposalNumber, storySK); // general proposal sort key so we can update specific proposals
 
         // get a votes previous likes
         let proposal = switch (CanDB.get(db, { sk = sortKeyForProposal })) {
@@ -290,7 +287,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func closeProposals(storySK : Text) : async Text {
-        assert ("user#" # Principal.toText(caller) == partitionKey);
+        assert ("user_" # Principal.toText(caller) == partitionKey);
         // get proposal amount, loop through SKs and get each proposal and update the bool to false
 
         // get proposal amount from story
@@ -334,7 +331,7 @@ shared ({ caller = owner }) actor class StoryService({
                     db,
                     {
                         pk = canisterParition;
-                        sk = "proposal#" # Nat.toText(i) # "#for#" # storySK;
+                        sk = returnProposalSortKey(Nat.toText(i), storySK);
                         updateAttributeMapFunction = updateAttributes;
                     },
                 ),
@@ -374,8 +371,8 @@ shared ({ caller = owner }) actor class StoryService({
         let filtered = Array.mapFilter<Types.SingleStory, Types.ScanStoriesQuickElement>(
             unwrapValidStories(entities),
             func(e) {
-                let { author; groupName; title ; genre } = e;
-                let sortKey = "author#" # author # "#groupedStory#" # groupName # "#singleStory#" # title;
+                let { author; groupName; title; genre } = e;
+                let sortKey = returnStorySortKey(author, groupName, title);
 
                 ?{
                     sortKey;
@@ -391,6 +388,22 @@ shared ({ caller = owner }) actor class StoryService({
     /* 
     Utility API:
     */
+
+    private func returnStorySortKey(author : Text, groupName : Text, title : Text) : Text {
+        return "author_" # author # "_story_" # groupName # "_chapter_" # title;
+    };
+
+    private func returnProposalSortKey(proposalNumber : Text, storySK : Text) : Text {
+        return "proposal_" # proposalNumber # "_for_" # storySK;
+    };
+
+    private func returnVotedSortKey(user : Text, storySK : Text) : Text {
+        return "voted_" # user # "_votedOn_" # storySK;
+    };
+
+    private func returnLikedSortKey(user : Text, storySK : Text) : Text {
+        return "liked_" # user # "_likedOn_" # storySK;
+    };
 
     private func checkStory(story : Types.SingleStory) : Bool {
         if (story.title == "" or story.body == "" or story.groupName == "") {

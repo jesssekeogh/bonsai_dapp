@@ -76,7 +76,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   public shared ({ caller }) func createStoryServiceCanisterParitition() : async ?Text {
     // valid principals can create their own canister partitions
     assert (Principal.isAnonymous(caller) == false);
-    let pk = "user#" # Principal.toText(caller);
+    let pk = "user_" # Principal.toText(caller);
     let canisterIds = getCanisterIdsIfExists(pk);
 
     if (canisterIds == []) {

@@ -9,6 +9,7 @@ import {
   LargeNft,
   Create,
   PendragonNft,
+  SingleStory
 } from "./pages";
 import { Box, useColorMode } from "@chakra-ui/react";
 import { CheckStats } from "./tools";
@@ -16,6 +17,7 @@ import { NavBar, LoadingSpinner } from "./containers";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import { Footer } from "./containers";
 import { BgColorDark, BgColorLight } from "./containers/colormode/Colors";
+import banner from "../assets/scrollbg.png"
 
 function App() {
   const loaded = useAnvilSelector((state) => state.user.map.history);
@@ -35,9 +37,10 @@ function App() {
           <Route path="/nft/:tokenid" element={<LargeNft />} />
           <Route path="/stories" element={<Stories />} />
           <Route path="/stories/create" element={<Create />} />
-          {/* <Route path="/stories/:storySortKey" element={<Story />} /> */}
+          <Route path="/stories/:storySortKey" element={<SingleStory />} />
           <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
           <Route path="/tools/stats" element={<CheckStats />} />
+          <Route path="/banner" element={<img src={banner} />} />
         </Routes>
         <Footer />
       </Router>

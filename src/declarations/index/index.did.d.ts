@@ -6,6 +6,7 @@ export interface IndexCanister {
   'createStoryServiceCanisterParitition' : ActorMethod<[], [] | [string]>,
   'deleteServiceCanister' : ActorMethod<[string], undefined>,
   'getCanistersByPK' : ActorMethod<[string], Array<string>>,
+  'getPKs' : ActorMethod<[], Array<string>>,
   'upgradeStoryServiceCanistersByPK' : ActorMethod<
     [string, Array<number>],
     string,

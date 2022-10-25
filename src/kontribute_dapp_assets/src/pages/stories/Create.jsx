@@ -89,7 +89,7 @@ const reducer = (state, action) => {
 const Create = () => {
   const userId = useSelector((state) => state.Profile.principal);
 
-  const partitionKey = `user#${userId}`;
+  const partitionKey = `user_${userId}`;
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
   const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
   const [publishDisable, setPublishDisable] = useState(false);
@@ -134,7 +134,7 @@ const Create = () => {
 
     await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
     try {
-      await storyServiceClient.update(partitionKey, "", (actor) =>
+      const keys = await storyServiceClient.update(partitionKey, "", (actor) =>
         actor.putStory(
           {
             groupName: encodeURIComponent(storyState.groupName),
@@ -152,6 +152,8 @@ const Create = () => {
       toast.closeAll();
       SuccessToast("Success", "Congratulations on publishing your story!");
       setPublishDisable(false);
+
+      console.log(keys);
       // naviage to story here
     } catch (e) {
       toast.closeAll();
@@ -211,7 +213,7 @@ const Create = () => {
               ml={{ base: 0, lg: 20 }}
             >
               <Container minW={{ lg: "2xl" }} minH="2xl" color={textColor}>
-                <Stack p={2} align="center">
+                <Stack p={2} pb={4} align="center">
                   {storyOption === "New story" ? (
                     <Input
                       placeholder="Title"
