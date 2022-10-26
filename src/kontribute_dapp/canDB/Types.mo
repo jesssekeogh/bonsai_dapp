@@ -27,6 +27,11 @@ module {
         open : Bool;
     };
 
+    public type UserVotedProposal = {
+        voted : Bool;
+        proposal : Text;
+    };
+
     public type ScanStoriesResult = {
         stories : [SingleStory];
         nextKey : ?Text;

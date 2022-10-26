@@ -25,7 +25,8 @@ import {
   useColorModeValue,
   Radio,
   RadioGroup,
-  Checkbox,
+  Heading,
+  Progress,
   Box,
 } from "@chakra-ui/react";
 import {
@@ -37,19 +38,64 @@ import {
   TextColorLight,
 } from "../../../containers/colormode/Colors";
 import { MdOutlineHowToVote } from "react-icons/md";
+import {
+  startIndexClient,
+  startStoryServiceClient,
+} from "../../CanDBClient/client";
+import { useSelector } from "react-redux";
 
-// visual only element
-const PollSection = ({ pollData, storySortKey }) => {
+const PollSection = ({ justCreated, pollData, storySortKey }) => {
   const [optionSelected, setOption] = useState("");
+  const [optionVotedOn, setOptionVotedOn] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const [totalVotes, setTotalVotes] = useState(0);
+  const userId = useSelector((state) => state.Profile.principal);
 
-  const totalVotes = pollData.reduce((accumulator, value) => {
-    return Number(accumulator) + Number(value.votes);
-  }, 0);
+  const indexClient = startIndexClient();
+  const storyServiceClient = startStoryServiceClient(indexClient);
 
-  console.log(optionSelected);
-  // function here tp place vote
-  // have show results option to show each votes result - show when voted and when closed
-  // author can close poll
+  let partitionKey = "";
+  if (storySortKey) {
+    partitionKey = `user_${storySortKey.split("_")[1]}`;
+  }
+
+  // function so author can close poll
+
+  const voteOnChoice = async (proposalNumber) => {
+    setTotalVotes(totalVotes + 1);
+    setShowResults(true);
+    setOptionVotedOn(proposalNumber);
+
+    const vote = await storyServiceClient.update(partitionKey, "", (actor) =>
+      actor.voteOnProposal(proposalNumber, storySortKey)
+    );
+
+    console.log(vote);
+  };
+
+  const load = async () => {
+    setTotalVotes(
+      pollData.reduce((accumulator, value) => {
+        return Number(accumulator) + Number(value.votes);
+      }, 0)
+    );
+
+    if (storySortKey) {
+      const hasVoted = await storyServiceClient.query(partitionKey, (actor) =>
+        actor.checkIfVoted(storySortKey)
+      );
+
+      if (hasVoted[0].value) {
+        setShowResults(true);
+        console.log(hasVoted[0].value)
+      }
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, [userId]);
+
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
   const borderColor = useColorModeValue("#ebeff4", "#373737");
@@ -68,34 +114,89 @@ const PollSection = ({ pollData, storySortKey }) => {
         rounded={"lg"}
         p={4}
       >
-        <Text fontWeight={600} fontSize={{ base: "md", md: "lg" }} mb={2}>
+        <Heading fontWeight={600} mb={3} size="md">
           {pollData[0].title}
-        </Text>
-        <RadioGroup onChange={setOption} value={optionSelected}>
+        </Heading>
+        <RadioGroup
+          onChange={setOption}
+          value={optionSelected}
+          defaultValue={optionVotedOn}
+        >
           <Stack spacing={3}>
-            {pollData.map((item) => (
-              <Radio
-                key={item.proposalNumber}
-                size="lg"
-                colorScheme="blue"
-                value={item.proposalNumber.toString()}
-              >
-                {" "}
-                <Text
-                  p={2}
-                  borderRadius="lg"
-                  border="solid 2px"
-                  borderColor={
-                    optionSelected == item.proposalNumber.toString()
-                      ? selectedColor
-                      : borderColor
-                  }
-                  dangerouslySetInnerHTML={{
-                    __html: decodeURIComponent(item.body),
-                  }}
-                />
-              </Radio>
-            ))}
+            {!showResults
+              ? pollData.map((item) => (
+                  <Radio
+                    key={item.proposalNumber}
+                    size="lg"
+                    colorScheme="blue"
+                    value={item.proposalNumber.toString()}
+                  >
+                    {" "}
+                    <Text
+                      p={2}
+                      borderRadius="lg"
+                      border="solid 2px"
+                      borderColor={
+                        optionSelected == item.proposalNumber.toString()
+                          ? selectedColor
+                          : borderColor
+                      }
+                      dangerouslySetInnerHTML={{
+                        __html: decodeURIComponent(item.body),
+                      }}
+                    />
+                  </Radio>
+                ))
+              : null}
+            {showResults
+              ? pollData.map((item) => (
+                  <Box key={item.proposalNumber}>
+                    <Radio
+                      size="lg"
+                      colorScheme="blue"
+                      value={item.proposalNumber.toString()}
+                      isDisabled
+                    >
+                      {" "}
+                      <Text
+                        p={2}
+                        borderRadius="lg"
+                        border="solid 2px"
+                        borderColor={
+                          optionSelected == item.proposalNumber.toString()
+                            ? selectedColor
+                            : borderColor
+                        }
+                        dangerouslySetInnerHTML={{
+                          __html: decodeURIComponent(item.body),
+                        }}
+                      />
+                    </Radio>
+                    <Stack mt={1} mb={3} mx={7}>
+                      <Text size="xs" color="gray">
+                        {optionVotedOn === item.proposalNumber.toString()
+                          ? Math.round(
+                              ((Number(item.votes) + 1) / totalVotes) * 100
+                            )
+                          : Math.round((Number(item.votes) / totalVotes) * 100)}
+                        %
+                      </Text>
+                      <Progress
+                        borderRadius="lg"
+                        value={
+                          optionVotedOn === item.proposalNumber.toString()
+                            ? Math.round(
+                                ((Number(item.votes) + 1) / totalVotes) * 100
+                              )
+                            : Math.round(
+                                (Number(item.votes) / totalVotes) * 100
+                              )
+                        }
+                      />
+                    </Stack>
+                  </Box>
+                ))
+              : null}
           </Stack>
         </RadioGroup>
         <Flex mt={5} align="center" gap={6} overflow="hidden">
@@ -116,13 +217,13 @@ const PollSection = ({ pollData, storySortKey }) => {
           <Button
             rightIcon={<MdOutlineHowToVote />}
             boxShadow="base"
-            isDisabled
+            isDisabled={justCreated || showResults || !userId}
             bg={buttonBg}
             color={buttonText}
             _hover={{
               boxShadow: "md",
             }}
-            // onClick={() => addStory()}
+            onClick={() => voteOnChoice(optionSelected)}
           >
             Vote
           </Button>

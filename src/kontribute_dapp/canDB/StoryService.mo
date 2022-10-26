@@ -211,6 +211,24 @@ shared ({ caller = owner }) actor class StoryService({
         };
     };
 
+    public shared query ({ caller }) func checkIfVoted(storySK : Text) : async Bool {
+        if (Principal.isAnonymous(caller)) {
+            return false;
+        };
+
+        let sortKeyForVotes = returnVotedSortKey(Principal.toText(caller), storySK);
+
+        let votedProposal = switch (CanDB.get(db, { sk = sortKeyForVotes })) {
+            case null {
+                return false;
+            };
+            case (?votedProposalEntity) {
+                return true;
+            };
+        };
+
+    };
+
     public shared ({ caller }) func voteOnProposal(proposalNumber : Text, storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
         let sortKeyForVotes = returnVotedSortKey(Principal.toText(caller), storySK); // stored to ensure 1 user gets 1 vote per story
         let sortKeyForProposal = returnProposalSortKey(proposalNumber, storySK); // general proposal sort key so we can update specific proposals
@@ -274,7 +292,10 @@ shared ({ caller = owner }) actor class StoryService({
                     db,
                     {
                         sk = sortKeyForVotes;
-                        attributes = [("voted", #bool(true))];
+                        attributes = [
+                            ("voted", #bool(true)),
+                            ("proposal", #text(proposalNumber)),
+                        ];
                     },
                 );
 

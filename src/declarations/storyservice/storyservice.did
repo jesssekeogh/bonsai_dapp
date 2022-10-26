@@ -22,6 +22,7 @@ type Tree =
  };
 type StoryService = 
  service {
+   checkIfVoted: (text) -> (bool) query;
    closeProposals: (text) -> (text);
    getPK: () -> (text) query;
    getProposal: (text) -> (Result_1) query;

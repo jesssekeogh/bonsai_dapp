@@ -70,6 +70,7 @@ export interface SingleStory {
   'groupName' : string,
 }
 export interface StoryService {
+  'checkIfVoted' : ActorMethod<[string], boolean>,
   'closeProposals' : ActorMethod<[string], string>,
   'getPK' : ActorMethod<[], string>,
   'getProposal' : ActorMethod<[string], Result_1>,

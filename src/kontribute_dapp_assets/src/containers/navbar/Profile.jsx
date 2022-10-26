@@ -46,7 +46,7 @@ const Profile = () => {
   const { onCopy } = useClipboard(address);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const SignInFunctions = (principal, identity) => {
+  const SignInFunctions = async (principal, identity) => {
     dispatch(setLogin());
     anvilDispatch(user_login());
     dispatch(setPrincipal(principal.toString()));
@@ -89,7 +89,8 @@ const Profile = () => {
           `toolbar=0,location=0,menubar=0,width=525,height=705`,
       });
     });
-    SignInFunctions(principal);
+    await SignInFunctions(principal);
+    window.location.reload();
   };
 
   const signOut = async () => {
@@ -97,7 +98,8 @@ const Profile = () => {
     dispatch(setLogout());
     dispatch(setPrincipal(""));
     Usergeek.setPrincipal(undefined);
-    return navigate("/");
+    navigate("/");
+    window.location.reload();
   };
 
   useEffect(() => {

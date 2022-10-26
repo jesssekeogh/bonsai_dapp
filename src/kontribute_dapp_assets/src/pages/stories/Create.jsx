@@ -286,7 +286,7 @@ const Create = () => {
                   publishDisable={publishDisable}
                 />
                 {proposalsArray.length > 1 ? (
-                  <PollSection pollData={proposalsArray} />
+                  <PollSection justCreated={true} pollData={proposalsArray} />
                 ) : null}
               </Box>
             </GridItem>
@@ -357,16 +357,7 @@ const ActionButtons = ({
 };
 
 const PickGenre = ({ genre, dispatch }) => {
-  const Genres = [
-    "Fantasy",
-    "Action / Adventure",
-    "Mystery / Thriller",
-    "Romance",
-    "Science Fiction",
-    "Historical Fiction",
-    "Non-Fiction",
-    "Short Story",
-  ];
+  const Genres = ["Fiction", "Non-Fiction", "Short Story", "Blog", "Other"];
 
   return (
     <Menu>

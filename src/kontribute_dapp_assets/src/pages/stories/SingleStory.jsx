@@ -115,6 +115,7 @@ const SingleStory = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     loadStory();
   }, []);
 
@@ -172,7 +173,7 @@ const SingleStory = () => {
               >
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (
-                  <PollSection pollData={proposalsArray} />
+                  <PollSection justCreated={false} pollData={proposalsArray} storySortKey={encodeURIComponent(storySortKey)} />
                 ) : null}
               </Box>
             </GridItem>

@@ -99,6 +99,7 @@ export const idlFactory = ({ IDL }) => {
     'nextKey' : IDL.Opt(IDL.Text),
   });
   const StoryService = IDL.Service({
+    'checkIfVoted' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
     'getProposal' : IDL.Func([IDL.Text], [Result_1], ['query']),
