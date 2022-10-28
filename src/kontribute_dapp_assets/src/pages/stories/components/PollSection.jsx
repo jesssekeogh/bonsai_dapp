@@ -49,7 +49,7 @@ const PollSection = ({ justCreated, pollData, storySortKey }) => {
   const [optionVotedOn, setOptionVotedOn] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
-  const userId = useSelector((state) => state.Profile.principal);
+  const loggedIn = useSelector((state) => state.Profile.loggedIn);
 
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
@@ -66,11 +66,9 @@ const PollSection = ({ justCreated, pollData, storySortKey }) => {
     setShowResults(true);
     setOptionVotedOn(proposalNumber);
 
-    const vote = await storyServiceClient.update(partitionKey, "", (actor) =>
+    await storyServiceClient.update(partitionKey, "", (actor) =>
       actor.voteOnProposal(proposalNumber, storySortKey)
     );
-
-    console.log(vote);
   };
 
   const load = async () => {
@@ -80,21 +78,20 @@ const PollSection = ({ justCreated, pollData, storySortKey }) => {
       }, 0)
     );
 
-    if (storySortKey) {
+    if (storySortKey && loggedIn) {
       const hasVoted = await storyServiceClient.query(partitionKey, (actor) =>
         actor.checkIfVoted(storySortKey)
       );
 
       if (hasVoted[0].value) {
         setShowResults(true);
-        console.log(hasVoted[0].value)
       }
     }
   };
 
   useEffect(() => {
     load();
-  }, [userId]);
+  }, [loggedIn]);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
@@ -217,7 +214,7 @@ const PollSection = ({ justCreated, pollData, storySortKey }) => {
           <Button
             rightIcon={<MdOutlineHowToVote />}
             boxShadow="base"
-            isDisabled={justCreated || showResults || !userId}
+            isDisabled={justCreated || showResults || !loggedIn}
             bg={buttonBg}
             color={buttonText}
             _hover={{

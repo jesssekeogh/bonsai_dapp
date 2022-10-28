@@ -90,7 +90,6 @@ const Profile = () => {
       });
     });
     await SignInFunctions(principal);
-    window.location.reload();
   };
 
   const signOut = async () => {
@@ -99,7 +98,6 @@ const Profile = () => {
     dispatch(setPrincipal(""));
     Usergeek.setPrincipal(undefined);
     navigate("/");
-    window.location.reload();
   };
 
   useEffect(() => {

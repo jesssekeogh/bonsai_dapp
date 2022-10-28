@@ -36,6 +36,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon, ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 import { BiPoll } from "react-icons/bi";
 import {
   ButtonColorDark,
@@ -117,6 +118,7 @@ const Create = () => {
 
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
+  const navigate = useNavigate();
 
   const addStory = async () => {
     if (storyOption === "New chapter" && storyState.groupName === "") {
@@ -153,8 +155,8 @@ const Create = () => {
       SuccessToast("Success", "Congratulations on publishing your story!");
       setPublishDisable(false);
 
-      console.log(keys);
-      // naviage to story here
+      let sk = keys.replace("STORY SORT KEY: ", "");
+      return navigate(`/stories/${sk}`);
     } catch (e) {
       toast.closeAll();
       FailedToast("Failed", e.toString());
