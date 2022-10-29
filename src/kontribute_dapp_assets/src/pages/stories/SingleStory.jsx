@@ -19,8 +19,9 @@ import {
   TextColorLight,
 } from "../../containers/colormode/Colors";
 import { LoadingSpinner } from "../../containers/index";
-import PollSection from "./components/PollSection";
+import { PollSection, StoryUtils } from "./components";
 import { useSelector } from "react-redux";
+
 
 const unwrapStory = (data) => {
   for (let settledResult of data) {
@@ -155,6 +156,7 @@ const SingleStory = () => {
                 pos={{ base: "auto", md: "sticky" }}
                 top={{ base: "auto", md: "20" }}
               >
+                <StoryUtils />
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (
                   <PollSection

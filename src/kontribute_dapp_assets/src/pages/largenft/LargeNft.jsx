@@ -6,7 +6,6 @@ import {
   Heading,
   Stack,
   Text,
-  useColorModeValue,
   HStack,
   Box,
   Skeleton,
@@ -22,12 +21,6 @@ import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { LoadingSpinner } from "../../containers/index";
 import { Link, useLocation } from "react-router-dom";
 import { Confetti, GetMine } from "../components";
-import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
-} from "../../containers/colormode/Colors";
 import ForSale from "./ForSale";
 import Owned from "./Owned";
 

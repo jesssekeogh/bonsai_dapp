@@ -5,23 +5,7 @@ import {
   Container,
   Flex,
   Tooltip,
-  useBreakpointValue,
   Stack,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Center,
-  FormControl,
-  FormLabel,
-  Input,
-  FormHelperText,
-  createStandaloneToast,
-  Tooltip,
   Spacer,
   useColorModeValue,
   Radio,
@@ -48,7 +32,7 @@ import {
 import { useSelector } from "react-redux";
 import { FailedToast } from "../../../containers/toasts/Toasts";
 
-const PollSection = ({ justCreated, pollData, storySortKey, hasVoted}) => {
+const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
   const [optionSelected, setOption] = useState("");
   const [optionVotedOn, setOptionVotedOn] = useState("");
   const [showResults, setShowResults] = useState(false);
@@ -82,7 +66,7 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted}) => {
 
       setClosingPoll(false);
       setPollClosed(true);
-      setShowResults(true)
+      setShowResults(true);
     } catch (e) {
       setClosingPoll(false);
       FailedToast("Failed", e.toString());
@@ -114,7 +98,6 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted}) => {
     );
 
     if (storySortKey && loggedIn) {
-
       if (hasVoted) {
         setShowResults(true);
       }
