@@ -20,8 +20,7 @@ import {
 } from "../../containers/colormode/Colors";
 import { LoadingSpinner } from "../../containers/index";
 import PollSection from "./components/PollSection";
-
-// author_ntohy-uex3p-ricj3-dhz7a-enmvo-szydx-l77yh-kftxf-h25x3-j6feg-2ae_story_putting%20a%20large%20story_chapter_vfebtrewb%20bgfdsbg
+import { useSelector } from "react-redux";
 
 const unwrapStory = (data) => {
   for (let settledResult of data) {
@@ -53,12 +52,14 @@ const SingleStory = () => {
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
   const storySortKey = params.storySortKey;
+  const loggedIn = useSelector((state) => state.Profile.loggedIn);
 
   const partitionKey = `user_${storySortKey.split("_")[1]}`;
 
   const [storyContent, setStoryContent] = useState({});
   const [proposalsArray, setProposalsArray] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [hasVoted, setHasVoted] = useState(false);
 
   const loadStory = async () => {
     const storyData = await storyServiceClient.query(partitionKey, (actor) =>
@@ -84,6 +85,14 @@ const SingleStory = () => {
       }
     }
 
+    const hasVoted = await storyServiceClient.query(partitionKey, (actor) =>
+      actor.checkIfVoted(storySortKey)
+    );
+    
+    if (hasVoted[0].value) {
+      setHasVoted(true);
+    }
+
     setStoryContent(result);
     setProposalsArray(proposals);
     setLoaded(true);
@@ -92,7 +101,7 @@ const SingleStory = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadStory();
-  }, []);
+  }, [loggedIn]);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
@@ -148,7 +157,12 @@ const SingleStory = () => {
               >
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (
-                  <PollSection justCreated={false} pollData={proposalsArray} storySortKey={encodeURIComponent(storySortKey)} />
+                  <PollSection
+                    justCreated={false}
+                    pollData={proposalsArray}
+                    storySortKey={encodeURIComponent(storySortKey)}
+                    setLoaded={setLoaded}
+                  />
                 ) : null}
               </Box>
             </GridItem>

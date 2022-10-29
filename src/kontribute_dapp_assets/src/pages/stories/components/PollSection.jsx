@@ -21,12 +21,14 @@ import {
   Input,
   FormHelperText,
   createStandaloneToast,
+  Tooltip,
   Spacer,
   useColorModeValue,
   Radio,
   RadioGroup,
   Heading,
   Progress,
+  IconButton,
   Box,
 } from "@chakra-ui/react";
 import {
@@ -38,37 +40,70 @@ import {
   TextColorLight,
 } from "../../../containers/colormode/Colors";
 import { MdOutlineHowToVote } from "react-icons/md";
+import { LockIcon } from "@chakra-ui/icons";
 import {
   startIndexClient,
   startStoryServiceClient,
 } from "../../CanDBClient/client";
 import { useSelector } from "react-redux";
+import { FailedToast } from "../../../containers/toasts/Toasts";
 
-const PollSection = ({ justCreated, pollData, storySortKey }) => {
+const PollSection = ({ justCreated, pollData, storySortKey, hasVoted}) => {
   const [optionSelected, setOption] = useState("");
   const [optionVotedOn, setOptionVotedOn] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
+  const userId = useSelector((state) => state.Profile.principal);
+
+  // working state:
+  const [closingPoll, setClosingPoll] = useState(false);
+  const [votingPoll, setVotingPoll] = useState(false);
+  const [pollClosed, setPollClosed] = useState(false);
 
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
 
+  let author = "";
   let partitionKey = "";
+
   if (storySortKey) {
-    partitionKey = `user_${storySortKey.split("_")[1]}`;
+    author = storySortKey.split("_")[1];
+    partitionKey = `user_${author}`;
   }
 
-  // function so author can close poll
+  const closePoll = async () => {
+    setClosingPoll(true);
+
+    try {
+      await storyServiceClient.update(partitionKey, "", (actor) =>
+        actor.closeProposals(storySortKey)
+      );
+
+      setClosingPoll(false);
+      setPollClosed(true);
+      setShowResults(true)
+    } catch (e) {
+      setClosingPoll(false);
+      FailedToast("Failed", e.toString());
+    }
+  };
 
   const voteOnChoice = async (proposalNumber) => {
-    setTotalVotes(totalVotes + 1);
-    setShowResults(true);
+    setVotingPoll(true);
     setOptionVotedOn(proposalNumber);
 
-    await storyServiceClient.update(partitionKey, "", (actor) =>
-      actor.voteOnProposal(proposalNumber, storySortKey)
-    );
+    try {
+      await storyServiceClient.update(partitionKey, "", (actor) =>
+        actor.voteOnProposal(proposalNumber, storySortKey)
+      );
+      setTotalVotes(totalVotes + 1);
+      setShowResults(true);
+      setVotingPoll(false);
+    } catch (e) {
+      setVotingPoll(false);
+      FailedToast("Failed", e.toString());
+    }
   };
 
   const load = async () => {
@@ -79,13 +114,14 @@ const PollSection = ({ justCreated, pollData, storySortKey }) => {
     );
 
     if (storySortKey && loggedIn) {
-      const hasVoted = await storyServiceClient.query(partitionKey, (actor) =>
-        actor.checkIfVoted(storySortKey)
-      );
 
-      if (hasVoted[0].value) {
+      if (hasVoted) {
         setShowResults(true);
       }
+    }
+
+    if (!pollData[0].open || pollClosed) {
+      setShowResults(true);
     }
   };
 
@@ -198,23 +234,38 @@ const PollSection = ({ justCreated, pollData, storySortKey }) => {
         </RadioGroup>
         <Flex mt={5} align="center" gap={6} overflow="hidden">
           <Box fontSize="sm" color="#b2b8be">
-            Total votes:{" "}
+            Votes:{" "}
             <Text color={textColor} fontWeight="bold">
               &nbsp;{totalVotes}
             </Text>
           </Box>
           <Box fontSize="sm" color="#b2b8be">
             Status:{" "}
-            <Text color={pollData[0].open ? "green" : "red"} fontWeight="bold">
-              &nbsp;{pollData[0].open ? "Open" : "Closed"}
+            <Text
+              color={pollData[0].open && !pollClosed ? "green" : "red"}
+              fontWeight="bold"
+            >
+              &nbsp;{pollData[0].open && !pollClosed ? "Open" : "Closed"}
             </Text>
           </Box>
 
           <Spacer />
+          {author === userId ? (
+            <Tooltip label="Close poll">
+              <IconButton
+                icon={<LockIcon />}
+                isLoading={closingPoll}
+                isDisabled={!pollData[0].open || pollClosed}
+                me={-3}
+                onClick={() => closePoll()}
+              />
+            </Tooltip>
+          ) : null}
           <Button
             rightIcon={<MdOutlineHowToVote />}
             boxShadow="base"
             isDisabled={justCreated || showResults || !loggedIn}
+            isLoading={votingPoll}
             bg={buttonBg}
             color={buttonText}
             _hover={{
