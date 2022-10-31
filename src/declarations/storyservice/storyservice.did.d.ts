@@ -70,11 +70,13 @@ export interface SingleStory {
   'groupName' : string,
 }
 export interface StoryService {
+  'checkIfLiked' : ActorMethod<[string], boolean>,
   'checkIfVoted' : ActorMethod<[string], boolean>,
   'closeProposals' : ActorMethod<[string], string>,
   'getPK' : ActorMethod<[], string>,
   'getProposal' : ActorMethod<[string], Result_1>,
   'getStory' : ActorMethod<[string], [] | [SingleStory]>,
+  'incrementView' : ActorMethod<[string], [] | [ConsumableEntity]>,
   'likeStory' : ActorMethod<[string], Result>,
   'putStory' : ActorMethod<[SingleStory, Array<VotingProposal>], string>,
   'scanAllStories' : ActorMethod<

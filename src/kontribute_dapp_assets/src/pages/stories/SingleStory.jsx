@@ -22,7 +22,6 @@ import { LoadingSpinner } from "../../containers/index";
 import { PollSection, StoryUtils } from "./components";
 import { useSelector } from "react-redux";
 
-
 const unwrapStory = (data) => {
   for (let settledResult of data) {
     // handle settled result if fulfilled
@@ -52,7 +51,7 @@ const SingleStory = () => {
   const params = useParams();
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
-  const storySortKey = params.storySortKey;
+  const storySortKey = encodeURIComponent(params.storySortKey);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
 
   const partitionKey = `user_${storySortKey.split("_")[1]}`;
@@ -64,7 +63,7 @@ const SingleStory = () => {
 
   const loadStory = async () => {
     const storyData = await storyServiceClient.query(partitionKey, (actor) =>
-      actor.getStory(encodeURIComponent(storySortKey))
+      actor.getStory(storySortKey)
     );
 
     const result = unwrapStory(storyData);
@@ -74,9 +73,7 @@ const SingleStory = () => {
 
     if (result.proposals > 1) {
       for (let i = 0; i < result.proposals; i++) {
-        let proposalSK = `proposal_${i + 1}_for_${encodeURIComponent(
-          storySortKey
-        )}`;
+        let proposalSK = `proposal_${i + 1}_for_${storySortKey}`;
 
         const proposal = await storyServiceClient.query(partitionKey, (actor) =>
           actor.getProposal(proposalSK)
@@ -89,7 +86,7 @@ const SingleStory = () => {
     const hasVoted = await storyServiceClient.query(partitionKey, (actor) =>
       actor.checkIfVoted(storySortKey)
     );
-    
+
     if (hasVoted[0].value) {
       setHasVoted(true);
     }
@@ -156,14 +153,20 @@ const SingleStory = () => {
                 pos={{ base: "auto", md: "sticky" }}
                 top={{ base: "auto", md: "20" }}
               >
-                <StoryUtils />
+                <StoryUtils
+                  storySortKey={storySortKey}
+                  likes={Number(storyContent.likes)}
+                  views={storyContent.views.toLocaleString()}
+                  partitionKey={partitionKey}
+                  loggedIn={loggedIn}
+                />
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (
                   <PollSection
                     justCreated={false}
                     pollData={proposalsArray}
-                    storySortKey={encodeURIComponent(storySortKey)}
-                    setLoaded={setLoaded}
+                    storySortKey={storySortKey}
+                    hasVoted={hasVoted}
                   />
                 ) : null}
               </Box>

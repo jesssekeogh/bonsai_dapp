@@ -22,11 +22,13 @@ type Tree =
  };
 type StoryService = 
  service {
+   checkIfLiked: (text) -> (bool) query;
    checkIfVoted: (text) -> (bool) query;
    closeProposals: (text) -> (text);
    getPK: () -> (text) query;
    getProposal: (text) -> (Result_1) query;
    getStory: (text) -> (opt SingleStory) query;
+   incrementView: (text) -> (opt ConsumableEntity);
    likeStory: (text) -> (Result);
    putStory: (SingleStory, vec VotingProposal) -> (text);
    scanAllStories: (text, text, nat, opt bool) ->

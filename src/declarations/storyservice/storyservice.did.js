@@ -99,11 +99,13 @@ export const idlFactory = ({ IDL }) => {
     'nextKey' : IDL.Opt(IDL.Text),
   });
   const StoryService = IDL.Service({
+    'checkIfLiked' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'checkIfVoted' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
     'getProposal' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'getStory' : IDL.Func([IDL.Text], [IDL.Opt(SingleStory)], ['query']),
+    'incrementView' : IDL.Func([IDL.Text], [IDL.Opt(ConsumableEntity)], []),
     'likeStory' : IDL.Func([IDL.Text], [Result], []),
     'putStory' : IDL.Func(
         [SingleStory, IDL.Vec(VotingProposal)],

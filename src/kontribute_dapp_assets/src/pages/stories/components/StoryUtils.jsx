@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Flex,
@@ -13,14 +13,53 @@ import {
 } from "../../../containers/colormode/Colors";
 import { useLocation } from "react-router-dom";
 import { ViewIcon } from "@chakra-ui/icons";
-import { FaHeart, FaRegHeart, FaTwitter, FaDonate } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaTwitter } from "react-icons/fa";
+import {
+  startIndexClient,
+  startStoryServiceClient,
+} from "../../CanDBClient/client";
 
-const StoryUtils = () => {
+const StoryUtils = ({ storySortKey, likes, partitionKey, loggedIn, views }) => {
   const location = useLocation();
+  const indexClient = startIndexClient();
+  const storyServiceClient = startStoryServiceClient(indexClient);
+
+  const [likesTotal, setLikesTotal] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const LikeStory = async () => {
+    setIsLiked(true);
+    setLikesTotal(likesTotal + 1);
+
+    await storyServiceClient.update(partitionKey, "", (actor) =>
+      actor.likeStory(storySortKey)
+    );
+  };
+
+  const checkIfLiked = async () => {
+    const hasLiked = await storyServiceClient.query(partitionKey, (actor) =>
+      actor.checkIfLiked(storySortKey)
+    );
+
+    if (hasLiked[0].value) {
+      setIsLiked(true);
+    }
+  };
+
+  const incrementView = async () => {
+    await storyServiceClient.update(partitionKey, "", (actor) =>
+      actor.incrementView(storySortKey)
+    );
+  };
+
+  useEffect(() => {
+    setLikesTotal(likes);
+    checkIfLiked();
+    incrementView()
+  }, []);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
-  console.log(location);
   return (
     <Flex rounded={"lg"} m={3}>
       <Container
@@ -36,13 +75,16 @@ const StoryUtils = () => {
             leftIcon={<ViewIcon />}
             _hover={{ bg: "none", cursor: "default" }}
           >
-            25
+            {views}
           </Button>
           <Spacer />
-          <Button>
-            <FaDonate />
+          <Button
+            leftIcon={isLiked ? <FaHeart /> : <FaRegHeart />}
+            onClick={() => LikeStory()}
+            isDisabled={isLiked ? true : false || !loggedIn}
+          >
+            {likesTotal.toString()}
           </Button>
-          <Button leftIcon={<FaRegHeart />}>25</Button>
           <a
             href={`https://twitter.com/intent/tweet?text=Check out this story on Kontribute📜%0a&url=https://3ezq7-iqaaa-aaaal-aaacq-cai.raw.ic0.app${encodeURIComponent(
               location.pathname

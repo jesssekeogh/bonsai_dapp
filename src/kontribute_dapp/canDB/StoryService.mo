@@ -170,6 +170,24 @@ shared ({ caller = owner }) actor class StoryService({
 
     };
 
+    public shared query ({ caller }) func checkIfLiked(storySK : Text) : async Bool {
+        if (Principal.isAnonymous(caller)) {
+            return false;
+        };
+
+        let sortKeyForLikes = returnLikedSortKey(Principal.toText(caller), storySK);
+
+        // check if user has liked by searching the sk
+        let likedStory = switch (CanDB.get(db, { sk = sortKeyForLikes })) {
+            case null {
+                return false;
+            };
+            case (?likedEntity) {
+                return true;
+            };
+        };
+    };
+
     public query func getStory(storySK : Text) : async ?Types.SingleStory {
         let story = switch (CanDB.get(db, { sk = storySK })) {
             case null { null };
@@ -189,6 +207,58 @@ shared ({ caller = owner }) actor class StoryService({
                     author;
                     proposals;
                 });
+            };
+        };
+    };
+
+    public func incrementView(storySK : Text) : async ?Types.ConsumableEntity {
+        // get a stories previous views total
+        let story = switch (CanDB.get(db, { sk = storySK })) {
+            case null { null };
+            case (?storyEntity) { unwrapStory(storyEntity) };
+        };
+
+        let viewsResult = switch (story) {
+            case null { null };
+            case (?{ views }) {
+                ?({
+                    views;
+                });
+            };
+        };
+
+        let newViews = Option.get(viewsResult, { views = 0 }).views + 1;
+
+        let updatedViewAttribute = [("views", #int(newViews))];
+
+        func updateAttributes(attributeMap : ?Entity.AttributeMap) : Entity.AttributeMap {
+            switch (attributeMap) {
+                case null {
+                    Entity.createAttributeMapFromKVPairs(updatedViewAttribute);
+                };
+                case (?map) {
+                    Entity.updateAttributeMapWithKVPairs(map, updatedViewAttribute);
+                };
+            };
+        };
+
+        let updated = switch (
+            CanDB.update(
+                db,
+                {
+                    pk = canisterParition;
+                    sk = storySK;
+                    updateAttributeMapFunction = updateAttributes;
+                },
+            ),
+        ) {
+            case null { null };
+            case (?entity) {
+                ?{
+                    pk = entity.pk;
+                    sk = entity.sk;
+                    attributes = Entity.extractKVPairsFromAttributeMap(entity.attributes);
+                };
             };
         };
     };

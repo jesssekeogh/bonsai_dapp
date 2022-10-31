@@ -81,6 +81,7 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
       await storyServiceClient.update(partitionKey, "", (actor) =>
         actor.voteOnProposal(proposalNumber, storySortKey)
       );
+
       setTotalVotes(totalVotes + 1);
       setShowResults(true);
       setVotingPoll(false);
