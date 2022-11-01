@@ -152,11 +152,11 @@ const Create = () => {
         )
       );
       toast.closeAll();
-      SuccessToast("Success", "Congratulations on publishing your story!");
+      SuccessToast("Success", "Congratulations your story is published!");
       setPublishDisable(false);
 
       let sk = keys.replace("STORY SORT KEY: ", "");
-      return navigate(`/stories/${sk}`);
+      return navigate(`/stories/${sk}`, { state: { showConfetti: true } });
     } catch (e) {
       toast.closeAll();
       FailedToast("Failed", e.toString());
@@ -259,14 +259,7 @@ const Create = () => {
                       dispatch({ type: "updateBody", payload: e })
                     }
                     modules={{
-                      toolbar: [
-                        { header: 2 },
-                        "bold",
-                        "italic",
-                        "underline",
-                        "blockquote",
-                        "strike",
-                      ],
+                      toolbar: [{ header: 2 }, "bold", "italic", "underline"],
                     }}
                   />
                 </div>

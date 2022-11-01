@@ -3,7 +3,7 @@ import {
   startIndexClient,
   startStoryServiceClient,
 } from "../CanDBClient/client";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   Container,
   useColorModeValue,
@@ -21,6 +21,8 @@ import {
 import { LoadingSpinner } from "../../containers/index";
 import { PollSection, StoryUtils } from "./components";
 import { useSelector } from "react-redux";
+import { Confetti } from "../components";
+import "../../../assets/main.css";
 
 const unwrapStory = (data) => {
   for (let settledResult of data) {
@@ -53,6 +55,8 @@ const SingleStory = () => {
   const storyServiceClient = startStoryServiceClient(indexClient);
   const storySortKey = encodeURIComponent(params.storySortKey);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
+  const location = useLocation();
+  console.log(location.state);
 
   const partitionKey = `user_${storySortKey.split("_")[1]}`;
 
@@ -104,9 +108,10 @@ const SingleStory = () => {
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Box py={{ base: 5, md: 5, lg: 12 }} pb={{ base: 10 }}>
+    <Box py={{ base: 0, md: 5, lg: 12 }} pb={{ base: 10 }}>
       {loaded ? (
         <Center>
+          {location.state ? <Confetti /> : null}
           <SimpleGrid
             columns={{ base: 1, lg: 2 }}
             templateColumns={{ base: "auto", lg: "1fr 500px" }}
@@ -117,8 +122,14 @@ const SingleStory = () => {
               p={{ base: 0, lg: 2 }}
               borderRadius="lg"
               ml={{ base: 0, lg: 20 }}
+              m={2}
             >
-              <Container minW={{ lg: "2xl" }} minH="2xl" color={textColor}>
+              <Container
+                minW={{ lg: "2xl" }}
+                minH="2xl"
+                color={textColor}
+                className={"ql-container"}
+              >
                 <Stack p={2} pb={4} align="center">
                   <Text
                     fontSize="34px"
@@ -144,7 +155,6 @@ const SingleStory = () => {
                   dangerouslySetInnerHTML={{
                     __html: decodeURIComponent(storyContent.body),
                   }}
-                  mb={20}
                 />
               </Container>
             </GridItem>

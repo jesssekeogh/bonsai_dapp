@@ -137,7 +137,6 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
         <RadioGroup
           onChange={setOption}
           value={optionSelected}
-          defaultValue={optionVotedOn}
         >
           <Stack spacing={3}>
             {!showResults
@@ -248,7 +247,7 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
           <Button
             rightIcon={<MdOutlineHowToVote />}
             boxShadow="base"
-            isDisabled={justCreated || showResults || !loggedIn}
+            isDisabled={justCreated || showResults || !loggedIn || optionSelected === ""}
             isLoading={votingPoll}
             bg={buttonBg}
             color={buttonText}
