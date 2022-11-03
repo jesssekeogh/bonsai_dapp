@@ -58,6 +58,7 @@ import {
 } from "../../containers/toasts/Toasts";
 import { PollSection } from "./components";
 import { LoadingSpinner } from "../../containers/index";
+import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import "../../../assets/main.css";
 
 const { toast } = createStandaloneToast();
@@ -89,6 +90,7 @@ const reducer = (state, action) => {
 
 const Create = () => {
   const userId = useSelector((state) => state.Profile.principal);
+  const address = useAnvilSelector((state) => state.user.address);
 
   const partitionKey = `user_${userId}`;
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
@@ -113,6 +115,8 @@ const Create = () => {
     likes: 0,
     views: 0,
     author: userId,
+    address: address,
+    time: 0,
     proposals: 0,
   });
 
@@ -146,6 +150,8 @@ const Create = () => {
             likes: storyState.likes,
             views: storyState.views,
             author: storyState.author,
+            address: storyState.address,
+            time: storyState.time,
             proposals: proposalsArray.length,
           },
           proposalsArray
@@ -169,10 +175,10 @@ const Create = () => {
     // const resp = await indexClient.indexCanisterActor.deleteServiceCanister(partitionKey);
     // return console.log("done!", resp)
 
-    let skLowerBound = "";
-    let skUpperBound = "~";
-    let limit = 1000;
-    let ascending = [false];
+    const skLowerBound = "";
+    const skUpperBound = "~";
+    const limit = 1000;
+    const ascending = [false];
 
     const stories = await storyServiceClient.query(partitionKey, (actor) =>
       actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)

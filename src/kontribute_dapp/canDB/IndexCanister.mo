@@ -28,7 +28,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     getCanisterIdsIfExists(pk);
   };
 
-  public shared query func getPKs() : async [Text] {
+  public query func getPKs() : async [Text] {
     let allPks = CanisterMap.entries(pkToCanisterMap);
 
     let iterOfPks = Iter.map<(Text, CanisterMap.CanisterIdList), Text>(

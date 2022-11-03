@@ -10,6 +10,8 @@ module {
         likes : Int;
         views : Int;
         author : Text;
+        address: Text;
+        time: Int;
         proposals : Int; // so we can determine how many proposals attached to the story
     };
 

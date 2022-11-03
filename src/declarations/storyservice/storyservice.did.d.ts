@@ -63,9 +63,11 @@ export interface SingleStory {
   'title' : string,
   'views' : bigint,
   'body' : string,
+  'time' : bigint,
   'author' : string,
   'likes' : bigint,
   'genre' : string,
+  'address' : string,
   'proposals' : bigint,
   'groupName' : string,
 }

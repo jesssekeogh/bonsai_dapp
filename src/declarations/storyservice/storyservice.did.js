@@ -28,9 +28,11 @@ export const idlFactory = ({ IDL }) => {
     'title' : IDL.Text,
     'views' : IDL.Int,
     'body' : IDL.Text,
+    'time' : IDL.Int,
     'author' : IDL.Text,
     'likes' : IDL.Int,
     'genre' : IDL.Text,
+    'address' : IDL.Text,
     'proposals' : IDL.Int,
     'groupName' : IDL.Text,
   });

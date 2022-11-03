@@ -8,6 +8,7 @@ import Option "mo:base/Option";
 import Result "mo:base/Result";
 import Array "mo:base/Array";
 import Int "mo:base/Int";
+import Time "mo:base/Time";
 
 shared ({ caller = owner }) actor class StoryService({
     partitionKey : Text;
@@ -57,6 +58,8 @@ shared ({ caller = owner }) actor class StoryService({
                     ("likes", #int(0)),
                     ("views", #int(0)),
                     ("author", #text(Principal.toText(caller))),
+                    ("address", #text(singleStory.address)),
+                    ("time", #int(Time.now())),
                     ("proposals", #int(singleStory.proposals)), // pass in the proposals array length/amount
                 ];
             },
@@ -196,7 +199,7 @@ shared ({ caller = owner }) actor class StoryService({
 
         switch (story) {
             case null { null };
-            case (?{ groupName; title; body; genre; likes; views; author; proposals }) {
+            case (?{ groupName; title; body; genre; likes; views; author; address; time; proposals }) {
                 ?({
                     groupName;
                     title;
@@ -205,6 +208,8 @@ shared ({ caller = owner }) actor class StoryService({
                     likes;
                     views;
                     author;
+                    address;
+                    time;
                     proposals;
                 });
             };
@@ -538,9 +543,11 @@ shared ({ caller = owner }) actor class StoryService({
         let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
         let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
         let storyAuthorValue = Entity.getAttributeMapValueForKey(attributes, "author");
+        let storyAddressValue = Entity.getAttributeMapValueForKey(attributes, "address");
+        let storyTimeValue = Entity.getAttributeMapValueForKey(attributes, "time");
         let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
 
-        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
+        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue) {
             case (
                 ?(#text(groupName)),
                 ?(#text(title)),
@@ -549,6 +556,8 @@ shared ({ caller = owner }) actor class StoryService({
                 ?(#int(likes)),
                 ?(#int(views)),
                 ?(#text(author)),
+                ?(#text(address)),
+                ?(#int(time)),
                 ?(#int(proposals)),
             ) {
                 ?{
@@ -559,6 +568,8 @@ shared ({ caller = owner }) actor class StoryService({
                     likes;
                     views;
                     author;
+                    address;
+                    time;
                     proposals;
                 };
             };
@@ -581,9 +592,11 @@ shared ({ caller = owner }) actor class StoryService({
                 let storyLikesValue = Entity.getAttributeMapValueForKey(attributes, "likes");
                 let storyViewsValue = Entity.getAttributeMapValueForKey(attributes, "views");
                 let storyAuthorValue = Entity.getAttributeMapValueForKey(attributes, "author");
+                let storyAddressValue = Entity.getAttributeMapValueForKey(attributes, "address");
+                let storyTimeValue = Entity.getAttributeMapValueForKey(attributes, "time");
                 let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
 
-                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyProposalsValue) {
+                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue) {
                     case (
                         ?(#text(groupName)),
                         ?(#text(title)),
@@ -592,6 +605,8 @@ shared ({ caller = owner }) actor class StoryService({
                         ?(#int(likes)),
                         ?(#int(views)),
                         ?(#text(author)),
+                        ?(#text(address)),
+                        ?(#int(time)),
                         ?(#int(proposals)),
                     ) {
                         ?{
@@ -602,6 +617,8 @@ shared ({ caller = owner }) actor class StoryService({
                             likes;
                             views;
                             author;
+                            address;
+                            time;
                             proposals;
                         };
                     };

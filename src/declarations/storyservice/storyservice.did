@@ -40,12 +40,14 @@ type StoryService =
  };
 type SingleStory = 
  record {
+   address: text;
    author: text;
    body: text;
    genre: text;
    groupName: text;
    likes: int;
    proposals: int;
+   time: int;
    title: text;
    views: int;
  };
