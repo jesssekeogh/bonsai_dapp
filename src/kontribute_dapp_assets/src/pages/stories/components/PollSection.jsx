@@ -239,7 +239,7 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
                 icon={<LockIcon />}
                 isLoading={closingPoll}
                 isDisabled={!pollData[0].open || pollClosed}
-                me={-3}
+                me={-4}
                 onClick={() => closePoll()}
               />
             </Tooltip>

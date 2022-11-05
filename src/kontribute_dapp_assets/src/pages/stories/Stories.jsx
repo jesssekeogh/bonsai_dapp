@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
-  Box,
   Heading,
   SlideFade,
-  Image as ChakraImage,
-  HStack,
   Skeleton,
   Flex,
   Tag,
   Container,
   Center,
-  SimpleGrid,
   useColorModeValue,
-  Avatar,
   Heading,
   Button,
   SkeletonText,
@@ -84,7 +79,6 @@ const Stories = () => {
 
   useEffect(() => {
     loadLatest();
-    window.scrollTo(0, 0);
   }, [storiesShowing]);
 
   useEffect(() => {
@@ -101,29 +95,36 @@ const Stories = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {Loaded ? (
-              <>
-                {stories.map((item) => (
-                  <StoryCard key={item.groupName} data={{ ...item }} />
-                ))}
-                <Center>
-                  <Button
-                    onClick={() => {
-                      setLoaded(false);
-                      setStoriesShowing(storiesShowing + 5);
-                    }}
-                  >
-                    Load more...
-                  </Button>
-                </Center>
-              </>
-            ) : (
-              <>
-                {[...Array(storiesShowing).keys()].map((item) => (
-                  <LoadingStoryCard key={item} />
-                ))}
-              </>
-            )}
+            <SlideFade in={true} offsetY='20px'>
+              {Loaded ? (
+                <>
+                  {stories.map((item) => (
+                    <StoryCard key={item.groupName} data={{ ...item }} />
+                  ))}
+                  <Center>
+                    <Button
+                      onClick={() => {
+                        setLoaded(false);
+                        setStoriesShowing(storiesShowing + 5);
+                      }}
+                    >
+                      Load more...
+                    </Button>
+                  </Center>
+                </>
+              ) : (
+                <>
+                  {stories.map((item) => (
+                    <StoryCard key={item.groupName} data={{ ...item }} />
+                  ))}
+                  {[...Array(storiesShowing - stories.length).keys()].map(
+                    (item) => (
+                      <LoadingStoryCard key={item} />
+                    )
+                  )}
+                </>
+              )}
+            </SlideFade>
           </TabPanel>
         </TabPanels>
       </Tabs>

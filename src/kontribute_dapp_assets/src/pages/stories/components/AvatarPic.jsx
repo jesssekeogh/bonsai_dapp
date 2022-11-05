@@ -68,7 +68,7 @@ const AvatarPic = ({ author, address, smallView }) => {
             <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
           </Flex>
           {!smallView ? (
-            <Text mt={2} color={"gray.500"}>
+            <Text my={3} color={"gray.500"}>
               "{authorDetails.bio}"
             </Text>
           ) : null}
