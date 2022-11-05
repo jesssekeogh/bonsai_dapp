@@ -13,6 +13,15 @@ export const idlFactory = ({ IDL }) => {
     'autoScalingHook' : AutoScalingCanisterSharedFunctionHook,
     'sizeLimit' : ScalingLimitType,
   });
+  const AuthorDetails = IDL.Record({
+    'bio' : IDL.Text,
+    'pseudonym' : IDL.Text,
+    'nftProfilePic' : IDL.Text,
+  });
+  const Result_2 = IDL.Variant({
+    'ok' : IDL.Opt(AuthorDetails),
+    'err' : IDL.Text,
+  });
   const VotingProposal = IDL.Record({
     'title' : IDL.Text,
     'votes' : IDL.Int,
@@ -104,11 +113,13 @@ export const idlFactory = ({ IDL }) => {
     'checkIfLiked' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'checkIfVoted' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
+    'getAuthorDetails' : IDL.Func([IDL.Text], [Result_2], ['query']),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
     'getProposal' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'getStory' : IDL.Func([IDL.Text], [IDL.Opt(SingleStory)], ['query']),
     'incrementView' : IDL.Func([IDL.Text], [IDL.Opt(ConsumableEntity)], []),
     'likeStory' : IDL.Func([IDL.Text], [Result], []),
+    'putAuthorDetails' : IDL.Func([AuthorDetails], [IDL.Text], []),
     'putStory' : IDL.Func(
         [SingleStory, IDL.Vec(VotingProposal)],
         [IDL.Text],

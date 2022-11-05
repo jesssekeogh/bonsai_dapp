@@ -35,9 +35,16 @@ import {
   SimpleGrid,
   GridItem,
 } from "@chakra-ui/react";
-import { AddIcon, CheckIcon, ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  AddIcon,
+  InfoIcon,
+} from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { BiPoll } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
 import {
   ButtonColorDark,
   ButtonColorLight,
@@ -276,6 +283,7 @@ const Create = () => {
                 pos={{ base: "auto", md: "sticky" }}
                 top={{ base: "auto", md: "20" }}
               >
+                <PutAuthorDetails pk={partitionKey} />
                 <ActionButtons
                   setStoryOption={setStoryOption}
                   storyOption={storyOption}
@@ -301,6 +309,113 @@ const Create = () => {
 };
 
 export default Create;
+
+const PutAuthorDetails = ({ pk }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const bgColor = useColorModeValue("white", "#111111");
+
+  const indexClient = startIndexClient();
+  const storyServiceClient = startStoryServiceClient(indexClient);
+
+  const [profilePicId, setProfilePicId] = useState("nfta");
+  const [pseudonym, setPseudonym] = useState("");
+  const [bio, setBio] = useState("");
+
+  const saveAuthorDetails = async () => {
+    if (profilePicId.toLowerCase().substring(0, 4) !== "nfta") {
+      return FailedToast("Failed", "Invalid NFTA token ID");
+    } else if (pseudonym.length > 15) {
+      return FailedToast("Failed", "Name cannot be greater than 15 characters");
+    } else if (bio.length > 160) {
+      return FailedToast("Failed", "Bio cannot be greater than 160 characters");
+    }
+    onClose();
+    SendingToast("Updating profile info...");
+
+    await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
+    try {
+      await storyServiceClient.update(pk, "", (actor) =>
+        actor.putAuthorDetails({
+          nftProfilePic: profilePicId,
+          pseudonym: pseudonym,
+          bio: bio,
+        })
+      );
+      toast.closeAll();
+      SuccessToast("Success", "Profile updated!");
+    } catch (e) {
+      toast.closeAll();
+      FailedToast("Failed", e.toString());
+    }
+  };
+  return (
+    <Stack
+      gap={2}
+      bg={bgColor}
+      boxShadow={"xl"}
+      rounded={"lg"}
+      p={{ base: 3, lg: 5 }}
+      m={2}
+      maxW={{ base: "auto", lg: "350px" }}
+    >
+      <Button
+        leftIcon={<CgProfile />}
+        boxShadow="base"
+        w="full"
+        _hover={{
+          boxShadow: "md",
+        }}
+        onClick={onOpen}
+      >
+        Edit profile
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent mx={2}>
+          <ModalHeader>
+            <Center>Profile details</Center>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box p={3}>
+              <Input
+                variant="flushed"
+                placeholder="Profile pic ID...NFTAB8XUQ"
+                mb={3}
+                isInvalid={
+                  profilePicId.toLowerCase().substring(0, 4) !== "nfta"
+                }
+                onChange={(e) => setProfilePicId(e.target.value)}
+              />
+              <Input
+                variant="flushed"
+                placeholder="name..."
+                mb={3}
+                isInvalid={pseudonym.length > 15}
+                onChange={(e) => setPseudonym(e.target.value)}
+              />
+              <Textarea
+                placeholder="bio..."
+                isInvalid={bio.length > 160}
+                onChange={(e) => setBio(e.target.value)}
+              />
+            </Box>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              rightIcon={<CheckIcon />}
+              onClick={() => saveAuthorDetails()}
+            >
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Stack>
+  );
+};
 
 const ActionButtons = ({
   setStoryOption,

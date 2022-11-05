@@ -145,6 +145,8 @@ const SingleStory = () => {
                   views={storyContent.views.toLocaleString()}
                   partitionKey={partitionKey}
                   loggedIn={loggedIn}
+                  address={storyContent.address}
+                  author={storyContent.author}
                 />
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (

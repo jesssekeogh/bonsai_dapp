@@ -6,6 +6,7 @@ import {
   Button,
   useColorModeValue,
   Hide,
+  Text,
 } from "@chakra-ui/react";
 import {
   TextColorDark,
@@ -13,13 +14,22 @@ import {
 } from "../../../containers/colormode/Colors";
 import { useLocation } from "react-router-dom";
 import { ViewIcon } from "@chakra-ui/icons";
-import { FaHeart, FaRegHeart, FaTwitter } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaTwitter, FaDonate } from "react-icons/fa";
 import {
   startIndexClient,
   startStoryServiceClient,
 } from "../../CanDBClient/client";
+import { AvatarPic } from "./index";
 
-const StoryUtils = ({ storySortKey, likes, partitionKey, loggedIn, views }) => {
+const StoryUtils = ({
+  storySortKey,
+  likes,
+  partitionKey,
+  loggedIn,
+  views,
+  address,
+  author,
+}) => {
   const location = useLocation();
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
@@ -55,7 +65,7 @@ const StoryUtils = ({ storySortKey, likes, partitionKey, loggedIn, views }) => {
   useEffect(() => {
     setLikesTotal(likes);
     checkIfLiked();
-    incrementView()
+    incrementView();
   }, []);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
@@ -69,7 +79,8 @@ const StoryUtils = ({ storySortKey, likes, partitionKey, loggedIn, views }) => {
         rounded={"lg"}
         p={4}
       >
-        <Flex align="center" gap={3}>
+        <AvatarPic author={author} address={address} smallView={false} />
+        <Flex align="center" gap={3} mt={3}>
           <Button
             bg={"none"}
             leftIcon={<ViewIcon />}
@@ -85,6 +96,7 @@ const StoryUtils = ({ storySortKey, likes, partitionKey, loggedIn, views }) => {
           >
             {likesTotal.toString()}
           </Button>
+          <Button leftIcon={<FaDonate />}>Tip</Button>
           <a
             href={`https://twitter.com/intent/tweet?text=Check out this story on Kontribute📜%0a&url=https://3ezq7-iqaaa-aaaal-aaacq-cai.raw.ic0.app${encodeURIComponent(
               location.pathname

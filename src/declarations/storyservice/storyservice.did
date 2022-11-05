@@ -25,11 +25,13 @@ type StoryService =
    checkIfLiked: (text) -> (bool) query;
    checkIfVoted: (text) -> (bool) query;
    closeProposals: (text) -> (text);
+   getAuthorDetails: (text) -> (Result_2) query;
    getPK: () -> (text) query;
    getProposal: (text) -> (Result_1) query;
    getStory: (text) -> (opt SingleStory) query;
    incrementView: (text) -> (opt ConsumableEntity);
    likeStory: (text) -> (Result);
+   putAuthorDetails: (AuthorDetails) -> (text);
    putStory: (SingleStory, vec VotingProposal) -> (text);
    scanAllStories: (text, text, nat, opt bool) ->
     (ScanStoriesQuickReturn) query;
@@ -73,6 +75,11 @@ type ScalingLimitType =
    heapSize: nat;
  };
 type SK = text;
+type Result_2 = 
+ variant {
+   err: text;
+   ok: opt AuthorDetails;
+ };
 type Result_1 = 
  variant {
    err: text;
@@ -99,6 +106,12 @@ type Color =
    R;
  };
 type AutoScalingCanisterSharedFunctionHook = func (text) -> (text);
+type AuthorDetails = 
+ record {
+   bio: text;
+   nftProfilePic: text;
+   pseudonym: text;
+ };
 type AttributeValueRBTreeValue = 
  variant {
    arrayBool: vec bool;

@@ -93,6 +93,43 @@ shared ({ caller = owner }) actor class StoryService({
         return "STORY SORT KEY: " # storySortKey;
     };
 
+    /*
+    Author details:
+    */
+
+    public shared ({ caller }) func putAuthorDetails(authorDetails : Types.AuthorDetails) : async Text {
+        assert ("user_" # Principal.toText(caller) == partitionKey);
+        assert (checkAuthorDetails(authorDetails) == true);
+
+        await CanDB.put(
+            db,
+            {
+                sk = returnAuthorDetailsSortKey(Principal.toText(caller));
+                attributes = [
+                    ("nftProfilePic", #text(authorDetails.nftProfilePic)), // passed into the voteOnProposal function
+                    ("pseudonym", #text(authorDetails.pseudonym)),
+                    ("bio", #text(authorDetails.bio)),
+                ];
+            },
+        );
+
+        return returnAuthorDetailsSortKey(Principal.toText(caller));
+    };
+
+    public query func getAuthorDetails(authorSK : Text) : async Result.Result<?Types.AuthorDetails, Text> {
+        let details = switch (CanDB.get(db, { sk = authorSK })) {
+            case null { return #err("No details found") };
+            case (?authorEntity) { unwrapAuthorDetails(authorEntity) };
+        };
+
+        switch (details) {
+            case null { #err("No details found") };
+            case (?{ nftProfilePic; pseudonym; bio }) {
+                #ok(?({ nftProfilePic; pseudonym; bio }));
+            };
+        };
+    };
+
     /* 
     Story API:
     */
@@ -501,11 +538,42 @@ shared ({ caller = owner }) actor class StoryService({
         return "liked_" # user # "_likedOn_" # storySK;
     };
 
+    private func returnAuthorDetailsSortKey(user : Text) : Text {
+        return "AuthorDetailsFor_" # user;
+    };
+
     private func checkStory(story : Types.SingleStory) : Bool {
         if (story.title == "" or story.body == "" or story.groupName == "") {
             return false;
         };
         return true;
+    };
+
+    private func checkAuthorDetails(authorDetails : Types.AuthorDetails) : Bool {
+        if (authorDetails.pseudonym.size() > 15 or authorDetails.bio.size() > 160) {
+            return false;
+        };
+        return true;
+    };
+
+    // unwrap a single author details
+    private func unwrapAuthorDetails(entity : Entity.Entity) : ?Types.AuthorDetails {
+        let { sk; attributes } = entity;
+
+        let authorNftProfilePicValue = Entity.getAttributeMapValueForKey(attributes, "nftProfilePic");
+        let authorPseudonymValue = Entity.getAttributeMapValueForKey(attributes, "pseudonym");
+        let authorBioValue = Entity.getAttributeMapValueForKey(attributes, "bio");
+
+        switch (authorNftProfilePicValue, authorPseudonymValue, authorBioValue) {
+            case (
+                ?(#text(nftProfilePic)),
+                ?(#text(pseudonym)),
+                ?(#text(bio)),
+            ) { ?{ nftProfilePic; pseudonym; bio } };
+            case _ {
+                null;
+            };
+        };
     };
 
     // unwrap a single proposal

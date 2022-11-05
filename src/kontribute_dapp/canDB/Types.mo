@@ -10,9 +10,15 @@ module {
         likes : Int;
         views : Int;
         author : Text;
-        address: Text;
-        time: Int;
+        address : Text;
+        time : Int;
         proposals : Int; // so we can determine how many proposals attached to the story
+    };
+
+    public type AuthorDetails = {
+        nftProfilePic : Text;
+        pseudonym : Text;
+        bio : Text;
     };
 
     public type ConsumableEntity = {

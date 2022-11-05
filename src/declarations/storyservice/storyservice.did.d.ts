@@ -27,6 +27,11 @@ export type AttributeValueRBTreeValue = { 'int' : bigint } |
   { 'arrayText' : Array<string> } |
   { 'arrayInt' : Array<bigint> } |
   { 'arrayFloat' : Array<number> };
+export interface AuthorDetails {
+  'bio' : string,
+  'pseudonym' : string,
+  'nftProfilePic' : string,
+}
 export type AutoScalingCanisterSharedFunctionHook = ActorMethod<
   [string],
   string,
@@ -42,6 +47,8 @@ export type PK = string;
 export type Result = { 'ok' : [] | [ConsumableEntity] } |
   { 'err' : string };
 export type Result_1 = { 'ok' : [] | [VotingProposal] } |
+  { 'err' : string };
+export type Result_2 = { 'ok' : [] | [AuthorDetails] } |
   { 'err' : string };
 export type SK = string;
 export type ScalingLimitType = { 'heapSize' : bigint } |
@@ -75,11 +82,13 @@ export interface StoryService {
   'checkIfLiked' : ActorMethod<[string], boolean>,
   'checkIfVoted' : ActorMethod<[string], boolean>,
   'closeProposals' : ActorMethod<[string], string>,
+  'getAuthorDetails' : ActorMethod<[string], Result_2>,
   'getPK' : ActorMethod<[], string>,
   'getProposal' : ActorMethod<[string], Result_1>,
   'getStory' : ActorMethod<[string], [] | [SingleStory]>,
   'incrementView' : ActorMethod<[string], [] | [ConsumableEntity]>,
   'likeStory' : ActorMethod<[string], Result>,
+  'putAuthorDetails' : ActorMethod<[AuthorDetails], string>,
   'putStory' : ActorMethod<[SingleStory, Array<VotingProposal>], string>,
   'scanAllStories' : ActorMethod<
     [string, string, bigint, [] | [boolean]],
