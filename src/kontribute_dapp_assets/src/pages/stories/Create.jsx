@@ -67,6 +67,7 @@ import { PollSection } from "./components";
 import { LoadingSpinner } from "../../containers/index";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import "../../../assets/main.css";
+import AvatarPic from "./components/AvatarPic";
 
 const { toast } = createStandaloneToast();
 
@@ -283,7 +284,11 @@ const Create = () => {
                 pos={{ base: "auto", md: "sticky" }}
                 top={{ base: "auto", md: "20" }}
               >
-                <PutAuthorDetails pk={partitionKey} />
+                <PutAuthorDetails
+                  pk={partitionKey}
+                  address={address}
+                  author={userId}
+                />
                 <ActionButtons
                   setStoryOption={setStoryOption}
                   storyOption={storyOption}
@@ -310,7 +315,7 @@ const Create = () => {
 
 export default Create;
 
-const PutAuthorDetails = ({ pk }) => {
+const PutAuthorDetails = ({ pk, address, author }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const bgColor = useColorModeValue("white", "#111111");
 
@@ -321,8 +326,12 @@ const PutAuthorDetails = ({ pk }) => {
   const [pseudonym, setPseudonym] = useState("");
   const [bio, setBio] = useState("");
 
+  const [refresh, setRefresh] = useState(false);
+
   const saveAuthorDetails = async () => {
-    if (profilePicId.toLowerCase().substring(0, 4) !== "nfta") {
+    if (pseudonym === "" || bio === "") {
+      return FailedToast("Failed", "Fields cannot be empty");
+    } else if (profilePicId.toLowerCase().substring(0, 4) !== "nfta") {
       return FailedToast("Failed", "Invalid NFTA token ID");
     } else if (pseudonym.length > 15) {
       return FailedToast("Failed", "Name cannot be greater than 15 characters");
@@ -343,11 +352,13 @@ const PutAuthorDetails = ({ pk }) => {
       );
       toast.closeAll();
       SuccessToast("Success", "Profile updated!");
+      setRefresh(true);
     } catch (e) {
       toast.closeAll();
       FailedToast("Failed", e.toString());
     }
   };
+  
   return (
     <Stack
       gap={2}
@@ -358,6 +369,7 @@ const PutAuthorDetails = ({ pk }) => {
       m={2}
       maxW={{ base: "auto", lg: "350px" }}
     >
+      <AvatarPic refresh={refresh} author={author} address={address} smallView={false} />
       <Button
         leftIcon={<CgProfile />}
         boxShadow="base"
@@ -381,7 +393,7 @@ const PutAuthorDetails = ({ pk }) => {
             <Box p={3}>
               <Input
                 variant="flushed"
-                placeholder="Profile pic ID...NFTAB8XUQ"
+                placeholder="profile picture: NFTAB8XUQ...."
                 mb={3}
                 isInvalid={
                   profilePicId.toLowerCase().substring(0, 4) !== "nfta"
@@ -390,13 +402,13 @@ const PutAuthorDetails = ({ pk }) => {
               />
               <Input
                 variant="flushed"
-                placeholder="name..."
+                placeholder="username..."
                 mb={3}
                 isInvalid={pseudonym.length > 15}
                 onChange={(e) => setPseudonym(e.target.value)}
               />
               <Textarea
-                placeholder="bio..."
+                placeholder="tell us a little about yourself..."
                 isInvalid={bio.length > 160}
                 onChange={(e) => setBio(e.target.value)}
               />

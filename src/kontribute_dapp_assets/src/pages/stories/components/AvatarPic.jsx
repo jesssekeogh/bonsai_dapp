@@ -16,13 +16,12 @@ import {
 } from "../../CanDBClient/client";
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
 
-const AvatarPic = ({ author, address, smallView }) => {
+const AvatarPic = ({ author, address, smallView, refresh }) => {
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
   const partitionKey = `user_${author}`;
   const queryParam = `AuthorDetailsFor_${author}`;
   const dispatch = useAnvilDispatch();
-
   const [src, setSrc] = useState("");
   const [defaultId, setDefaultId] = useState(true);
   const [authorDetails, setAuthorDetails] = useState({});
@@ -49,7 +48,7 @@ const AvatarPic = ({ author, address, smallView }) => {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -68,7 +67,7 @@ const AvatarPic = ({ author, address, smallView }) => {
             <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
           </Flex>
           {!smallView ? (
-            <Text my={3} color={"gray.500"}>
+            <Text mt={3} color={"gray.500"}>
               "{authorDetails.bio}"
             </Text>
           ) : null}

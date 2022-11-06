@@ -84,7 +84,7 @@ const SingleStory = () => {
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Box py={{ base: 0, md: 5, lg: 12 }} pb={{ base: 10 }}>
+    <Box py={{ base: 0, md: 10, lg: 12 }} pb={{ base: 10 }}>
       {loaded ? (
         <Center>
           {location.state ? <Confetti /> : null}
@@ -105,6 +105,7 @@ const SingleStory = () => {
                 minH="2xl"
                 color={textColor}
                 className={"ql-container"}
+                pb={8}
               >
                 <Stack p={2} pb={4} align="center">
                   <Text

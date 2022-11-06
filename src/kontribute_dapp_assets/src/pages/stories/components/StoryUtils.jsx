@@ -106,6 +106,7 @@ const StoryUtils = ({
             bg={"none"}
             leftIcon={<ViewIcon />}
             _hover={{ bg: "none", cursor: "default" }}
+            p={1}
           >
             {views}
           </Button>
