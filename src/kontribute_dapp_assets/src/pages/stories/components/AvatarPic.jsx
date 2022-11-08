@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Flex,
-  Spacer,
-  Button,
-  useColorModeValue,
-  Hide,
-  Box,
-  Avatar,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Box, Avatar, Text } from "@chakra-ui/react";
 import {
   startIndexClient,
   startStoryServiceClient,
 } from "../../CanDBClient/client";
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
+import { NavLink } from "react-router-dom";
 
 const AvatarPic = ({ author, address, smallView, refresh }) => {
   const indexClient = startIndexClient();
@@ -53,19 +44,31 @@ const AvatarPic = ({ author, address, smallView, refresh }) => {
   return (
     <>
       {defaultId ? (
-        <Flex align={smallView ? "center" : "end"} gap={2}>
-          <Avatar size={smallView ? "sm" : "md"} bg="teal.500" />{" "}
-          <Text color={"gray.500"}>{`${address.substring(
-            0,
-            5
-          )}...${address.substring(59, 64)}`}</Text>
-        </Flex>
+        <NavLink to={`/author/${author}/${address}`}>
+          <Flex
+            align={smallView ? "center" : "end"}
+            gap={2}
+            _hover={{ opacity: "0.9" }}
+          >
+            <Avatar size={smallView ? "sm" : "md"} bg="teal.500" />{" "}
+            <Text color={"gray.500"}>{`${address.substring(
+              0,
+              5
+            )}...${address.substring(59, 64)}`}</Text>
+          </Flex>
+        </NavLink>
       ) : (
         <Box>
-          <Flex align={smallView ? "center" : "end"} gap={2}>
-            <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
-            <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
-          </Flex>
+          <NavLink to={`/author/${author}/${address}`}>
+            <Flex
+              align={smallView ? "center" : "end"}
+              gap={2}
+              _hover={{ opacity: "0.9" }}
+            >
+              <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
+              <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
+            </Flex>
+          </NavLink>
           {!smallView ? (
             <Text mt={3} color={"gray.500"}>
               "{authorDetails.bio}"

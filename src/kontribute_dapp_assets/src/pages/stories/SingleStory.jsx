@@ -32,7 +32,6 @@ const SingleStory = () => {
   const storySortKey = encodeURIComponent(params.storySortKey);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
   const location = useLocation();
-  console.log(location.state);
 
   const partitionKey = `user_${storySortKey.split("_")[1]}`;
 
@@ -50,17 +49,25 @@ const SingleStory = () => {
 
     if (!result) return;
     let proposals = [];
+    let proposalPromises = [];
 
     if (result.proposals > 1) {
       for (let i = 0; i < result.proposals; i++) {
         let proposalSK = `proposal_${i + 1}_for_${storySortKey}`;
 
-        const proposal = await storyServiceClient.query(partitionKey, (actor) =>
+        const proposal = storyServiceClient.query(partitionKey, (actor) =>
           actor.getProposal(proposalSK)
         );
 
-        proposals.push(unwrapProposal(proposal));
+        proposalPromises.push(proposal);
       }
+
+      await Promise.allSettled(
+        proposalPromises.map(async (data) => {
+          const proposal = await data;
+          proposals.push(unwrapProposal(proposal));
+        })
+      );
     }
 
     const hasVoted = await storyServiceClient.query(partitionKey, (actor) =>
@@ -163,7 +170,7 @@ const SingleStory = () => {
           </SimpleGrid>
         </Center>
       ) : (
-        <LoadingSpinner label="fetching story..." />
+        <LoadingSpinner label="loading story..." />
       )}
     </Box>
   );

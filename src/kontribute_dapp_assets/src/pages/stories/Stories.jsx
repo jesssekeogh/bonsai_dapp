@@ -2,41 +2,29 @@ import React, { useState, useEffect } from "react";
 import {
   Heading,
   SlideFade,
-  Skeleton,
   Flex,
-  Tag,
   Container,
   Center,
   useColorModeValue,
   Heading,
   Button,
-  SkeletonText,
-  SkeletonCircle,
-  Skeleton,
   Tabs,
   TabList,
   TabPanels,
   Tab,
   TabPanel,
-  Text,
   SimpleGrid,
   GridItem,
   Box,
 } from "@chakra-ui/react";
 import {
-  TextColorDark,
-  TextColorLight,
-} from "../../containers/colormode/Colors";
-import {
   startIndexClient,
   startStoryServiceClient,
 } from "../CanDBClient/client";
 import { unwrapStory } from "./components/Unwrapping";
-import moment from "moment";
-import { NavLink } from "react-router-dom";
-import { ViewIcon, SpinnerIcon } from "@chakra-ui/icons";
-import { FaHeart } from "react-icons/fa";
-import AvatarPic from "./components/AvatarPic";
+import { SpinnerIcon } from "@chakra-ui/icons";
+import StoryCard from "./components/StoryCard";
+import { LoadingStoryCard, StoryCard } from "./components";
 
 const Stories = () => {
   const indexClient = startIndexClient();
@@ -195,103 +183,8 @@ const Stories = () => {
     </Center>
   );
 };
+
 export default Stories;
-
-const StoryCard = ({ data }) => {
-  let created = Number(data.time) / 1000000;
-
-  const time = new Date(created);
-
-  const textColor = useColorModeValue(TextColorLight, TextColorDark);
-  const bgColor = useColorModeValue("white", "#111111");
-  return (
-    <NavLink
-      to={`/stories/author_${data.author}_story_${data.groupName}_chapter_${data.title}`}
-    >
-      <Flex rounded={"lg"} my={3} _hover={{ boxShadow: "md" }}>
-        <Container
-          bg={bgColor}
-          color={textColor}
-          boxShadow={"xl"}
-          rounded={"lg"}
-          p={4}
-        >
-          <Flex align="center" gap={2}>
-            <AvatarPic
-              author={data.author}
-              address={data.address}
-              smallView={true}
-            />
-            ·<Text color={"gray.500"}>{moment(time.getTime()).fromNow()}</Text>
-          </Flex>
-          <Heading size={"md"} mt={1} noOfLines={1}>
-            {decodeURIComponent(data.groupName)}
-          </Heading>
-          <Heading size={"sm"} my={2} noOfLines={1}>
-            {decodeURIComponent(data.title)}
-          </Heading>
-          <Text noOfLines={2}>
-            {decodeURIComponent(data.body).replace(/(<([^>]+)>)/gi, " ")}
-          </Text>
-          <Flex mt={3} gap={{ base: 1, md: 2 }} align={"center"}>
-            <Tag>{data.genre}</Tag>
-            {data.proposals > 1 ? <Tag>Poll ✅</Tag> : null}·
-            <Button
-              bg={"none"}
-              p={0}
-              m={0}
-              size="sm"
-              color="gray.500"
-              leftIcon={<ViewIcon />}
-              _hover={{ bg: "none", cursor: "default" }}
-            >
-              {data.views.toString()}
-            </Button>
-            ·
-            <Button
-              bg={"none"}
-              p={0}
-              m={0}
-              size="sm"
-              color="gray.500"
-              leftIcon={<FaHeart />}
-              _hover={{ bg: "none", cursor: "default" }}
-            >
-              {data.likes.toString()}
-            </Button>
-          </Flex>
-        </Container>
-      </Flex>
-    </NavLink>
-  );
-};
-
-const LoadingStoryCard = () => {
-  const textColor = useColorModeValue(TextColorLight, TextColorDark);
-  const bgColor = useColorModeValue("white", "#111111");
-  return (
-    <Flex rounded={"lg"} my={3} _hover={{ boxShadow: "md" }}>
-      <Container
-        bg={bgColor}
-        color={textColor}
-        boxShadow={"xl"}
-        rounded={"lg"}
-        p={4}
-      >
-        <Flex align="center" gap={2}>
-          <SkeletonCircle size="8" />
-          <Skeleton height="15px" w={"100px"} />
-        </Flex>
-        <SkeletonText
-          mt="4"
-          noOfLines={4}
-          spacing="4"
-          w={{ base: "250px", md: "550px" }}
-        />
-      </Container>
-    </Flex>
-  );
-};
 
 const BrowseUtils = ({ storyFilter, setStoryFilter, Loaded }) => {
   const bgColor = useColorModeValue("white", "#111111");
@@ -312,9 +205,7 @@ const BrowseUtils = ({ storyFilter, setStoryFilter, Loaded }) => {
           {Genres.map((item) => (
             <GridItem m={2} p={2} key={item}>
               <Button
-                isLoading={
-                  storyFilter === item && Loaded === false ? true : false
-                }
+                isDisabled={storyFilter === item ? true : false}
                 onClick={() => setStoryFilter(item)}
               >
                 {item}
