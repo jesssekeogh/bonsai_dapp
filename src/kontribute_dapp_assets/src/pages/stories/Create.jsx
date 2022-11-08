@@ -35,16 +35,9 @@ import {
   SimpleGrid,
   GridItem,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  AddIcon,
-  InfoIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { BiPoll } from "react-icons/bi";
-import { CgProfile } from "react-icons/cg";
 import {
   ButtonColorDark,
   ButtonColorLight,
@@ -63,11 +56,10 @@ import {
   SendingToast,
   SuccessToast,
 } from "../../containers/toasts/Toasts";
-import { PollSection } from "./components";
+import { PollSection, PutAuthor } from "./components";
 import { LoadingSpinner } from "../../containers/index";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 import "../../../assets/main.css";
-import AvatarPic from "./components/AvatarPic";
 
 const { toast } = createStandaloneToast();
 
@@ -284,7 +276,7 @@ const Create = () => {
                 pos={{ base: "auto", md: "sticky" }}
                 top={{ base: "auto", md: "20" }}
               >
-                <PutAuthorDetails
+                <PutAuthor
                   pk={partitionKey}
                   address={address}
                   author={userId}
@@ -307,127 +299,13 @@ const Create = () => {
           </SimpleGrid>
         </Center>
       ) : (
-        <LoadingSpinner />
+        <LoadingSpinner label="Please log in" />
       )}
     </Box>
   );
 };
 
 export default Create;
-
-const PutAuthorDetails = ({ pk, address, author }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const bgColor = useColorModeValue("white", "#111111");
-
-  const indexClient = startIndexClient();
-  const storyServiceClient = startStoryServiceClient(indexClient);
-
-  const [profilePicId, setProfilePicId] = useState("nfta");
-  const [pseudonym, setPseudonym] = useState("");
-  const [bio, setBio] = useState("");
-
-  const [refresh, setRefresh] = useState(false);
-
-  const saveAuthorDetails = async () => {
-    if (pseudonym === "" || bio === "") {
-      return FailedToast("Failed", "Fields cannot be empty");
-    } else if (profilePicId.toLowerCase().substring(0, 4) !== "nfta") {
-      return FailedToast("Failed", "Invalid NFTA token ID");
-    } else if (pseudonym.length > 15) {
-      return FailedToast("Failed", "Name cannot be greater than 15 characters");
-    } else if (bio.length > 160) {
-      return FailedToast("Failed", "Bio cannot be greater than 160 characters");
-    }
-    onClose();
-    SendingToast("Updating profile info...");
-
-    await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
-    try {
-      await storyServiceClient.update(pk, "", (actor) =>
-        actor.putAuthorDetails({
-          nftProfilePic: profilePicId,
-          pseudonym: pseudonym,
-          bio: bio,
-        })
-      );
-      toast.closeAll();
-      SuccessToast("Success", "Profile updated!");
-      setRefresh(true);
-    } catch (e) {
-      toast.closeAll();
-      FailedToast("Failed", e.toString());
-    }
-  };
-  
-  return (
-    <Stack
-      gap={2}
-      bg={bgColor}
-      boxShadow={"xl"}
-      rounded={"lg"}
-      p={{ base: 3, lg: 5 }}
-      m={2}
-      maxW={{ base: "auto", lg: "350px" }}
-    >
-      <AvatarPic refresh={refresh} author={author} address={address} smallView={false} />
-      <Button
-        leftIcon={<CgProfile />}
-        boxShadow="base"
-        w="full"
-        _hover={{
-          boxShadow: "md",
-        }}
-        onClick={onOpen}
-      >
-        Edit profile
-      </Button>
-
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent mx={2}>
-          <ModalHeader>
-            <Center>Profile details</Center>
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box p={3}>
-              <Input
-                variant="flushed"
-                placeholder="profile picture: NFTAB8XUQ...."
-                mb={3}
-                isInvalid={
-                  profilePicId.toLowerCase().substring(0, 4) !== "nfta"
-                }
-                onChange={(e) => setProfilePicId(e.target.value)}
-              />
-              <Input
-                variant="flushed"
-                placeholder="username..."
-                mb={3}
-                isInvalid={pseudonym.length > 15}
-                onChange={(e) => setPseudonym(e.target.value)}
-              />
-              <Textarea
-                placeholder="tell us a little about yourself..."
-                isInvalid={bio.length > 160}
-                onChange={(e) => setBio(e.target.value)}
-              />
-            </Box>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button
-              rightIcon={<CheckIcon />}
-              onClick={() => saveAuthorDetails()}
-            >
-              Save
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Stack>
-  );
-};
 
 const ActionButtons = ({
   setStoryOption,

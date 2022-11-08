@@ -31,7 +31,7 @@ import {
 import { unwrapStory } from "./components/Unwrapping";
 import moment from "moment";
 import { NavLink } from "react-router-dom";
-import { ViewIcon } from "@chakra-ui/icons";
+import { ViewIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { FaHeart } from "react-icons/fa";
 import AvatarPic from "./components/AvatarPic";
 
@@ -45,6 +45,7 @@ const Stories = () => {
   const [storiesShowing, setStoriesShowing] = useState(8);
 
   const loadLatest = async () => {
+    console.time("loop");
     const usersMap = await indexClient.indexCanisterActor.getPKs();
 
     const skLowerBound = "";
@@ -53,28 +54,42 @@ const Stories = () => {
     const ascending = [false];
 
     let storiesToShow = [];
+    let storyPromises = [];
 
     // simple getLatest algo, a more advanced algo is needed later on:
     for (let user of usersMap) {
-      const stories = await storyServiceClient.query(user, (actor) =>
-        actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
-      );
+      if (storyPromises.length < storiesShowing) {
+        const stories = await storyServiceClient.query(user, (actor) =>
+          actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
+        );
 
-      const latestStoryFromAuthor = stories[0].value.stories;
+        const latestStoryFromAuthor = stories[0].value.stories;
 
-      for (let story of latestStoryFromAuthor) {
-        if (storiesToShow.length < storiesShowing) {
-          const storyData = await storyServiceClient.query(user, (actor) =>
-            actor.getStory(story.sortKey)
-          );
-
-          storiesToShow.push(unwrapStory(storyData));
+        for (let story of latestStoryFromAuthor) {
+          if (storyPromises.length < storiesShowing) {
+            const storyData = storyServiceClient.query(user, (actor) =>
+              actor.getStory(story.sortKey)
+            );
+            storyPromises.push(storyData);
+          } else {
+            break;
+          }
         }
+      } else {
+        break;
       }
     }
 
-    setStories(storiesToShow);
+    await Promise.allSettled(
+      storyPromises.map(async (data) => {
+        const story = await data;
+        storiesToShow.push(unwrapStory(story));
+      })
+    );
+
+    setStories(storiesToShow.sort((a, b) => Number(b.time) - Number(a.time)));
     setLoaded(true);
+    console.timeEnd("loop");
   };
 
   useEffect(() => {
@@ -95,7 +110,7 @@ const Stories = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <SlideFade in={true} offsetY='20px'>
+            <SlideFade in={true} offsetY="20px">
               {Loaded ? (
                 <>
                   {stories.map((item) => (
@@ -107,6 +122,7 @@ const Stories = () => {
                         setLoaded(false);
                         setStoriesShowing(storiesShowing + 5);
                       }}
+                      leftIcon={<SpinnerIcon />}
                     >
                       Load more...
                     </Button>
