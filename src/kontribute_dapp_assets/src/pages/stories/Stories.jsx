@@ -19,6 +19,9 @@ import {
   Tab,
   TabPanel,
   Text,
+  SimpleGrid,
+  GridItem,
+  Box,
 } from "@chakra-ui/react";
 import {
   TextColorDark,
@@ -42,10 +45,11 @@ const Stories = () => {
   const [stories, setStories] = useState([]);
   const [Loaded, setLoaded] = useState(false);
 
+  const [storyFilter, setStoryFilter] = useState("Latest");
   const [storiesShowing, setStoriesShowing] = useState(8);
 
   const loadLatest = async () => {
-    console.time("loop");
+    setLoaded(false);
     const usersMap = await indexClient.indexCanisterActor.getPKs();
 
     const skLowerBound = "";
@@ -87,14 +91,28 @@ const Stories = () => {
       })
     );
 
-    setStories(storiesToShow.sort((a, b) => Number(b.time) - Number(a.time)));
+    const filterByLatest = storiesToShow.sort(
+      (a, b) => Number(b.time) - Number(a.time)
+    );
+
+    if (storyFilter !== "Latest") {
+      const filterByFilter = filterByLatest.filter((a) => {
+        if (a.genre === storyFilter) {
+          return a;
+        }
+      });
+
+      setStories(filterByFilter);
+      return setLoaded(true);
+    }
+
+    setStories(filterByLatest);
     setLoaded(true);
-    console.timeEnd("loop");
   };
 
   useEffect(() => {
     loadLatest();
-  }, [storiesShowing]);
+  }, [storiesShowing, storyFilter]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -102,48 +120,78 @@ const Stories = () => {
 
   return (
     <Center my={8} pb={10}>
-      <Tabs variant="line" colorScheme="cyan" mx={3}>
-        <TabList>
-          <Tab>
-            <Heading size="lg">Latest</Heading>
-          </Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <SlideFade in={true} offsetY="20px">
-              {Loaded ? (
-                <>
-                  {stories.map((item) => (
-                    <StoryCard key={item.groupName} data={{ ...item }} />
-                  ))}
-                  <Center>
-                    <Button
-                      onClick={() => {
-                        setLoaded(false);
-                        setStoriesShowing(storiesShowing + 5);
-                      }}
-                      leftIcon={<SpinnerIcon />}
-                    >
-                      Load more...
-                    </Button>
-                  </Center>
-                </>
-              ) : (
-                <>
-                  {stories.map((item) => (
-                    <StoryCard key={item.groupName} data={{ ...item }} />
-                  ))}
-                  {[...Array(storiesShowing - stories.length).keys()].map(
-                    (item) => (
-                      <LoadingStoryCard key={item} />
-                    )
+      <SimpleGrid
+        columns={{ base: 1, lg: 2 }}
+        templateColumns={{ base: "auto", lg: "1fr 350px" }}
+      >
+        <GridItem ml={{ base: 0, lg: 20 }}>
+          <Tabs variant="line" colorScheme="cyan" mx={3}>
+            <TabList>
+              <Tab>
+                <Heading size="lg">{storyFilter}</Heading>
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <SlideFade in={true} offsetY="20px">
+                  {Loaded ? (
+                    <>
+                      {stories.map((item) => (
+                        <StoryCard key={item.groupName} data={{ ...item }} />
+                      ))}
+                      <Center>
+                        <Button
+                          onClick={() => {
+                            setLoaded(false);
+                            setStoriesShowing(storiesShowing + 5);
+                          }}
+                          leftIcon={<SpinnerIcon />}
+                          mt={3}
+                        >
+                          Load more...
+                        </Button>
+                      </Center>
+                    </>
+                  ) : (
+                    <>
+                      {stories.map((item) => {
+                        if (
+                          storyFilter === "Latest" ||
+                          storyFilter === item.genre
+                        ) {
+                          return (
+                            <StoryCard
+                              key={item.groupName}
+                              data={{ ...item }}
+                            />
+                          );
+                        }
+                      })}
+                      {[...Array(storiesShowing - stories.length).keys()].map(
+                        (item) => (
+                          <LoadingStoryCard key={item} />
+                        )
+                      )}
+                    </>
                   )}
-                </>
-              )}
-            </SlideFade>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+                </SlideFade>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </GridItem>
+        <GridItem>
+          <Box
+            pos={{ base: "auto", md: "sticky" }}
+            top={{ base: "auto", md: "20" }}
+          >
+            <BrowseUtils
+              storyFilter={storyFilter}
+              setStoryFilter={setStoryFilter}
+              Loaded={Loaded}
+            />
+          </Box>
+        </GridItem>
+      </SimpleGrid>
     </Center>
   );
 };
@@ -185,9 +233,9 @@ const StoryCard = ({ data }) => {
           <Text noOfLines={2}>
             {decodeURIComponent(data.body).replace(/(<([^>]+)>)/gi, " ")}
           </Text>
-          <Flex mt={3} gap={2} align={"center"}>
-            <Tag>{data.genre}</Tag>·
-            {/* {data.proposals > 1 ? <Tag>Poll ✅</Tag> : null}· */}
+          <Flex mt={3} gap={{ base: 1, md: 2 }} align={"center"}>
+            <Tag>{data.genre}</Tag>
+            {data.proposals > 1 ? <Tag>Poll ✅</Tag> : null}·
             <Button
               bg={"none"}
               p={0}
@@ -240,6 +288,40 @@ const LoadingStoryCard = () => {
           spacing="4"
           w={{ base: "250px", md: "550px" }}
         />
+      </Container>
+    </Flex>
+  );
+};
+
+const BrowseUtils = ({ storyFilter, setStoryFilter, Loaded }) => {
+  const bgColor = useColorModeValue("white", "#111111");
+
+  const Genres = [
+    "Latest",
+    "Fiction",
+    "Non-Fiction",
+    "Short Story",
+    "Blog",
+    "Other",
+  ];
+  return (
+    <Flex rounded={"lg"} mt={{ base: 3, md: 20 }} m={3}>
+      <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
+        <Heading size="md">Topics</Heading>
+        <SimpleGrid columns={2} spacing={0}>
+          {Genres.map((item) => (
+            <GridItem m={2} p={2} key={item}>
+              <Button
+                isLoading={
+                  storyFilter === item && Loaded === false ? true : false
+                }
+                onClick={() => setStoryFilter(item)}
+              >
+                {item}
+              </Button>
+            </GridItem>
+          ))}
+        </SimpleGrid>
       </Container>
     </Flex>
   );
