@@ -24,6 +24,7 @@ import {
   FormErrorMessage,
   createStandaloneToast,
   FormControl,
+  FormLabel,
   useDisclosure,
   Divider,
   Center,
@@ -34,8 +35,14 @@ import {
   Textarea,
   SimpleGrid,
   GridItem,
+  Switch,
 } from "@chakra-ui/react";
-import { AddIcon, CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { BiPoll } from "react-icons/bi";
 import {
@@ -85,6 +92,16 @@ const reducer = (state, action) => {
         ...state,
         genre: action.payload,
       };
+    case "updateMonetized":
+      return {
+        ...state,
+        monetized: action.payload,
+      };
+    case "updateMonetizedAddress":
+      return {
+        ...state,
+        monetizedAddress: action.payload,
+      };
   }
 };
 
@@ -118,6 +135,8 @@ const Create = () => {
     address: address,
     time: 0,
     proposals: 0,
+    monetized: false,
+    monetizedAddress: address,
   });
 
   const indexClient = startIndexClient();
@@ -133,6 +152,10 @@ const Create = () => {
       return FailedToast("Failed", "Story fields cannot be empty!");
     } else if (storyState.genre === "") {
       return FailedToast("Failed", "Please pick a genre!");
+    } else if (
+      storyState.monetizedAddress.toLowerCase().substring(0, 3) !== "a00"
+    ) {
+      return FailedToast("Failed", "Invalid address!");
     }
 
     setPublishDisable(true);
@@ -153,6 +176,8 @@ const Create = () => {
             address: storyState.address,
             time: storyState.time,
             proposals: proposalsArray.length,
+            monetized: storyState.monetized,
+            monetizedAddress: storyState.monetizedAddress,
           },
           proposalsArray
         )
@@ -290,6 +315,7 @@ const Create = () => {
                   genre={storyState.genre}
                   dispatch={dispatch}
                   publishDisable={publishDisable}
+                  storyState={storyState}
                 />
                 {proposalsArray.length > 1 ? (
                   <PollSection justCreated={true} pollData={proposalsArray} />
@@ -316,6 +342,7 @@ const ActionButtons = ({
   publishDisable,
   genre,
   dispatch,
+  storyState,
 }) => {
   const bgColor = useColorModeValue("white", "#111111");
   const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
@@ -345,6 +372,7 @@ const ActionButtons = ({
       </HStack>
       <PickGenre genre={genre} dispatch={dispatch} />
       <Divider />
+      <Monetization dispatch={dispatch} storyState={storyState} />
       <Button
         rightIcon={<CheckIcon />}
         bg={buttonBg}
@@ -359,6 +387,65 @@ const ActionButtons = ({
         Publish
       </Button>
     </Stack>
+  );
+};
+
+const Monetization = ({ dispatch, storyState }) => {
+  const [isMonetized, setIsMonetized] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const enable = () => {
+    dispatch({ type: "updateMonetized", payload: isMonetized });
+    setIsMonetized(!isMonetized);
+  };
+
+  return (
+    <>
+      <FormControl display="flex" alignItems="center">
+        <FormLabel htmlFor="enable-monetized" mb="0">
+          Enable collectible gating?
+        </FormLabel>
+        <Switch id="enable-monetized" onChange={() => enable()} />
+      </FormControl>
+      {!isMonetized ? (
+        <>
+          Minting address:
+          <Flex align="center" gap={2}>
+            {isEditing ? (
+              <Input
+                isInvalid={
+                  storyState.monetizedAddress.toLowerCase().substring(0, 3) ===
+                  "a00"
+                    ? false
+                    : true
+                }
+                onChange={(e) =>
+                  dispatch({
+                    type: "updateMonetizedAddress",
+                    payload: e.target.value,
+                  })
+                }
+              />
+            ) : (
+              `${storyState.monetizedAddress.substring(
+                0,
+                5
+              )}...${storyState.monetizedAddress.substring(59, 64)}`
+            )}
+            <IconButton
+              icon={isEditing ? <CheckIcon /> : <EditIcon />}
+              size="sm"
+              onClick={() =>
+                storyState.monetizedAddress.toLowerCase().substring(0, 3) ===
+                "a00"
+                  ? setIsEditing(!isEditing)
+                  : null
+              }
+            />
+          </Flex>
+        </>
+      ) : null}
+    </>
   );
 };
 

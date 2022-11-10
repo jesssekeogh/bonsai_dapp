@@ -155,6 +155,8 @@ const SingleStory = () => {
                   loggedIn={loggedIn}
                   address={storyContent.address}
                   author={storyContent.author}
+                  monetizedAddress={storyContent.monetizedAddress}
+                  monetized={storyContent.monetized}
                 />
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (
@@ -163,6 +165,8 @@ const SingleStory = () => {
                     pollData={proposalsArray}
                     storySortKey={storySortKey}
                     hasVoted={hasVoted}
+                    monetized={storyContent.monetized}
+                    monetizedAddress={storyContent.monetizedAddress}
                   />
                 ) : null}
               </Box>

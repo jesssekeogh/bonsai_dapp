@@ -44,6 +44,8 @@ export const idlFactory = ({ IDL }) => {
     'address' : IDL.Text,
     'proposals' : IDL.Int,
     'groupName' : IDL.Text,
+    'monetizedAddress' : IDL.Text,
+    'monetized' : IDL.Bool,
   });
   const PK = IDL.Text;
   const SK = IDL.Text;

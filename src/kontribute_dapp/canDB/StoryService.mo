@@ -61,6 +61,8 @@ shared ({ caller = owner }) actor class StoryService({
                     ("address", #text(singleStory.address)),
                     ("time", #int(Time.now())),
                     ("proposals", #int(singleStory.proposals)), // pass in the proposals array length/amount
+                    ("monetized", #bool(singleStory.monetized)),
+                    ("monetizedAddress", #text(singleStory.monetizedAddress)),
                 ];
             },
         );
@@ -236,7 +238,7 @@ shared ({ caller = owner }) actor class StoryService({
 
         switch (story) {
             case null { null };
-            case (?{ groupName; title; body; genre; likes; views; author; address; time; proposals }) {
+            case (?{ groupName; title; body; genre; likes; views; author; address; time; proposals; monetized; monetizedAddress }) {
                 ?({
                     groupName;
                     title;
@@ -248,6 +250,8 @@ shared ({ caller = owner }) actor class StoryService({
                     address;
                     time;
                     proposals;
+                    monetized;
+                    monetizedAddress;
                 });
             };
         };
@@ -342,6 +346,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func voteOnProposal(proposalNumber : Text, storySK : Text) : async Result.Result<?Types.ConsumableEntity, Text> {
+        assert (Principal.isAnonymous(caller) == false);
         let sortKeyForVotes = returnVotedSortKey(Principal.toText(caller), storySK); // stored to ensure 1 user gets 1 vote per story
         let sortKeyForProposal = returnProposalSortKey(proposalNumber, storySK); // general proposal sort key so we can update specific proposals
 
@@ -614,8 +619,10 @@ shared ({ caller = owner }) actor class StoryService({
         let storyAddressValue = Entity.getAttributeMapValueForKey(attributes, "address");
         let storyTimeValue = Entity.getAttributeMapValueForKey(attributes, "time");
         let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
+        let storyMonetizedValue = Entity.getAttributeMapValueForKey(attributes, "monetized");
+        let storyMonetizedAddressValue = Entity.getAttributeMapValueForKey(attributes, "monetizedAddress");
 
-        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue) {
+        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue, storyMonetizedValue, storyMonetizedAddressValue) {
             case (
                 ?(#text(groupName)),
                 ?(#text(title)),
@@ -627,6 +634,8 @@ shared ({ caller = owner }) actor class StoryService({
                 ?(#text(address)),
                 ?(#int(time)),
                 ?(#int(proposals)),
+                ?(#bool(monetized)),
+                ?(#text(monetizedAddress)),
             ) {
                 ?{
                     groupName;
@@ -639,6 +648,8 @@ shared ({ caller = owner }) actor class StoryService({
                     address;
                     time;
                     proposals;
+                    monetized;
+                    monetizedAddress;
                 };
             };
             case _ {
@@ -663,8 +674,10 @@ shared ({ caller = owner }) actor class StoryService({
                 let storyAddressValue = Entity.getAttributeMapValueForKey(attributes, "address");
                 let storyTimeValue = Entity.getAttributeMapValueForKey(attributes, "time");
                 let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
+                let storyMonetizedValue = Entity.getAttributeMapValueForKey(attributes, "monetized");
+                let storyMonetizedAddressValue = Entity.getAttributeMapValueForKey(attributes, "monetizedAddress");
 
-                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue) {
+                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue, storyMonetizedValue, storyMonetizedAddressValue) {
                     case (
                         ?(#text(groupName)),
                         ?(#text(title)),
@@ -676,6 +689,8 @@ shared ({ caller = owner }) actor class StoryService({
                         ?(#text(address)),
                         ?(#int(time)),
                         ?(#int(proposals)),
+                        ?(#bool(monetized)),
+                        ?(#text(monetizedAddress)),
                     ) {
                         ?{
                             groupName;
@@ -688,6 +703,8 @@ shared ({ caller = owner }) actor class StoryService({
                             address;
                             time;
                             proposals;
+                            monetized;
+                            monetizedAddress;
                         };
                     };
                     case _ {

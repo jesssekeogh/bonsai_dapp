@@ -10,7 +10,6 @@ import {
   Create,
   PendragonNft,
   SingleStory,
-  Author,
 } from "./pages";
 import { Box, useColorMode } from "@chakra-ui/react";
 import { CheckStats } from "./tools";
@@ -38,7 +37,6 @@ function App() {
           <Route path="/stories" element={<Stories />} />
           <Route path="/stories/create" element={<Create />} />
           <Route path="/stories/:storySortKey" element={<SingleStory />} />
-          <Route path="/author/:author/:address" element={<Author />} />
           <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
           <Route path="/tools/stats" element={<CheckStats />} />
         </Routes>

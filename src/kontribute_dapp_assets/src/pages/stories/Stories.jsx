@@ -186,7 +186,7 @@ const Stories = () => {
 
 export default Stories;
 
-const BrowseUtils = ({ storyFilter, setStoryFilter, Loaded }) => {
+const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
   const bgColor = useColorModeValue("white", "#111111");
 
   const Genres = [

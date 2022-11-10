@@ -14,6 +14,8 @@ import {
   Progress,
   IconButton,
   Box,
+  Tag,
+  TagLeftIcon,
 } from "@chakra-ui/react";
 import {
   ButtonColorDark,
@@ -31,15 +33,25 @@ import {
 } from "../../CanDBClient/client";
 import { useSelector } from "react-redux";
 import { FailedToast } from "../../../containers/toasts/Toasts";
+import { GetMine } from "../../components/index";
+import { nft_fetch, useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
+import { tokenToText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 
-const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
+const PollSection = ({
+  justCreated,
+  pollData,
+  storySortKey,
+  hasVoted,
+  monetized,
+  monetizedAddress,
+}) => {
   const [optionSelected, setOption] = useState("");
   const [optionVotedOn, setOptionVotedOn] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
   const userId = useSelector((state) => state.Profile.principal);
-
+  const anvilDispatch = useAnvilDispatch();
   // working state:
   const [closingPoll, setClosingPoll] = useState(false);
   const [votingPoll, setVotingPoll] = useState(false);
@@ -73,8 +85,36 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
     }
   };
 
+  const CheckIfOwns = async () => {
+    let tokens = await anvilDispatch(GetMine());
+    for (let token of tokens) {
+      try {
+        let { author } = await anvilDispatch(nft_fetch(tokenToText(token)));
+        if (author == monetizedAddress) {
+          return true;
+        }
+      } catch (e) {
+        console.log(e.toString());
+      }
+    }
+
+    return false;
+  };
+
   const voteOnChoice = async (proposalNumber) => {
     setVotingPoll(true);
+
+    if (monetized) {
+      let owns = await CheckIfOwns();
+      console.log(owns);
+      if (!owns) {
+        setVotingPoll(false);
+        return FailedToast(
+          "Failed",
+          "You do not own any of this authors collectibles"
+        );
+      }
+    }
     setOptionVotedOn(proposalNumber);
 
     try {
@@ -131,13 +171,19 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
         rounded={"lg"}
         p={4}
       >
+        {monetized ? (
+          <Flex>
+            <Spacer />
+            <Tag colorScheme="red">
+              <TagLeftIcon boxSize="12px" as={LockIcon} />
+              Gated
+            </Tag>
+          </Flex>
+        ) : null}
         <Heading fontWeight={600} mb={3} size="md">
           {pollData[0].title}
         </Heading>
-        <RadioGroup
-          onChange={setOption}
-          value={optionSelected}
-        >
+        <RadioGroup onChange={setOption} value={optionSelected}>
           <Stack spacing={3}>
             {!showResults
               ? pollData.map((item) => (
@@ -247,7 +293,9 @@ const PollSection = ({ justCreated, pollData, storySortKey, hasVoted }) => {
           <Button
             rightIcon={<MdOutlineHowToVote />}
             boxShadow="base"
-            isDisabled={justCreated || showResults || !loggedIn || optionSelected === ""}
+            isDisabled={
+              justCreated || showResults || !loggedIn || optionSelected === ""
+            }
             isLoading={votingPoll}
             bg={buttonBg}
             color={buttonText}

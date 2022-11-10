@@ -77,6 +77,8 @@ export interface SingleStory {
   'address' : string,
   'proposals' : bigint,
   'groupName' : string,
+  'monetizedAddress' : string,
+  'monetized' : boolean,
 }
 export interface StoryService {
   'checkIfLiked' : ActorMethod<[string], boolean>,

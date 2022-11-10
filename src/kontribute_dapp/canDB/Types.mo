@@ -13,6 +13,8 @@ module {
         address : Text;
         time : Int;
         proposals : Int; // so we can determine how many proposals attached to the story
+        monetized: Bool;
+        monetizedAddress: Text;
     };
 
     public type AuthorDetails = {

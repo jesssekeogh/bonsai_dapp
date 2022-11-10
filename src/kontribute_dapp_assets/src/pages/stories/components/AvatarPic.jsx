@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Box, Avatar, Text } from "@chakra-ui/react";
+import { Flex, Box, Avatar, Text, Tag } from "@chakra-ui/react";
 import {
   startIndexClient,
   startStoryServiceClient,
@@ -7,7 +7,14 @@ import {
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
 import { NavLink } from "react-router-dom";
 
-const AvatarPic = ({ author, address, smallView, refresh }) => {
+const AvatarPic = ({
+  author,
+  address,
+  smallView,
+  refresh,
+  monetizedAddress,
+  monetized,
+}) => {
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
   const partitionKey = `user_${author}`;
@@ -22,18 +29,20 @@ const AvatarPic = ({ author, address, smallView, refresh }) => {
       actor.getAuthorDetails(queryParam)
     );
 
-    if ("err" in details[0].value) {
-      setDefaultId(true);
-    } else {
-      const meta = await dispatch(
-        nft_fetch(details[0].value.ok[0].nftProfilePic.toLowerCase())
-      );
+    if (details.length > 0) {
+      if ("err" in details[0].value) {
+        setDefaultId(true);
+      } else {
+        const meta = await dispatch(
+          nft_fetch(details[0].value.ok[0].nftProfilePic.toLowerCase())
+        );
 
-      meta.thumb.internal
-        ? setSrc(meta.thumb.internal.url)
-        : setSrc(meta.thumb.external);
-      setDefaultId(false);
-      setAuthorDetails(details[0].value.ok[0]);
+        meta.thumb.internal
+          ? setSrc(meta.thumb.internal.url)
+          : setSrc(meta.thumb.external);
+        setDefaultId(false);
+        setAuthorDetails(details[0].value.ok[0]);
+      }
     }
   };
 
@@ -44,7 +53,7 @@ const AvatarPic = ({ author, address, smallView, refresh }) => {
   return (
     <>
       {defaultId ? (
-        <NavLink to={`/author/${author}/${address}`}>
+        <NavLink to={`/marketplace/${monetizedAddress}`}>
           <Flex
             align={smallView ? "center" : "end"}
             gap={2}
@@ -55,11 +64,12 @@ const AvatarPic = ({ author, address, smallView, refresh }) => {
               0,
               5
             )}...${address.substring(59, 64)}`}</Text>
+            {monetized && !smallView ? <Tag>Selling!</Tag> : null}
           </Flex>
         </NavLink>
       ) : (
         <Box>
-          <NavLink to={`/author/${author}/${address}`}>
+          <NavLink to={`/marketplace/${monetizedAddress}`}>
             <Flex
               align={smallView ? "center" : "end"}
               gap={2}
@@ -67,6 +77,7 @@ const AvatarPic = ({ author, address, smallView, refresh }) => {
             >
               <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
               <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
+              {monetized && !smallView ? <Tag>Selling!</Tag> : null}
             </Flex>
           </NavLink>
           {!smallView ? (

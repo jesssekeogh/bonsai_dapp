@@ -27,25 +27,27 @@ const StoryCard = ({ data }) => {
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
   return (
-    <NavLink
-      to={`/stories/author_${data.author}_story_${data.groupName}_chapter_${data.title}`}
-    >
-      <Flex rounded={"lg"} my={3} _hover={{ boxShadow: "md" }}>
-        <Container
-          bg={bgColor}
-          color={textColor}
-          boxShadow={"xl"}
-          rounded={"lg"}
-          p={4}
+    <Flex rounded={"lg"} my={3} _hover={{ boxShadow: "md" }}>
+      <Container
+        bg={bgColor}
+        color={textColor}
+        boxShadow={"xl"}
+        rounded={"lg"}
+        p={4}
+      >
+        <Flex align="center" gap={2}>
+          <AvatarPic
+            author={data.author}
+            address={data.address}
+            smallView={true}
+            monetizedAddress={data.monetizedAddress}
+            monetized={data.monetized}
+          />
+          ·<Text color={"gray.500"}>{moment(time.getTime()).fromNow()}</Text>
+        </Flex>
+        <NavLink
+          to={`/stories/author_${data.author}_story_${data.groupName}_chapter_${data.title}`}
         >
-          <Flex align="center" gap={2}>
-            <AvatarPic
-              author={data.author}
-              address={data.address}
-              smallView={true}
-            />
-            ·<Text color={"gray.500"}>{moment(time.getTime()).fromNow()}</Text>
-          </Flex>
           <Heading size={"md"} mt={1} noOfLines={1}>
             {decodeURIComponent(data.groupName)}
           </Heading>
@@ -82,9 +84,9 @@ const StoryCard = ({ data }) => {
               {data.likes.toString()}
             </Button>
           </Flex>
-        </Container>
-      </Flex>
-    </NavLink>
+        </NavLink>
+      </Container>
+    </Flex>
   );
 };
 

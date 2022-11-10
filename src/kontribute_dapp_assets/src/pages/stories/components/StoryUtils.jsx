@@ -17,7 +17,6 @@ import {
   RadioGroup,
   Input,
   Stack,
-  IconButton,
 } from "@chakra-ui/react";
 import {
   TextColorDark,
@@ -50,6 +49,8 @@ const StoryUtils = ({
   views,
   address,
   author,
+  monetizedAddress,
+  monetized,
 }) => {
   const location = useLocation();
   const indexClient = startIndexClient();
@@ -100,7 +101,13 @@ const StoryUtils = ({
         rounded={"lg"}
         p={4}
       >
-        <AvatarPic author={author} address={address} smallView={false} />
+        <AvatarPic
+          author={author}
+          address={address}
+          smallView={false}
+          monetizedAddress={monetizedAddress}
+          monetized={monetized}
+        />
         <Flex align="center" gap={2} mt={5}>
           <Button
             bg={"none"}

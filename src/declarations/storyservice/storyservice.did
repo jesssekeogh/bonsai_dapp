@@ -48,6 +48,8 @@ type SingleStory =
    genre: text;
    groupName: text;
    likes: int;
+   monetized: bool;
+   monetizedAddress: text;
    proposals: int;
    time: int;
    title: text;
