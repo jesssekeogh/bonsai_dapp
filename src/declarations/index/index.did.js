@@ -1,5 +1,6 @@
 export const idlFactory = ({ IDL }) => {
   const IndexCanister = IDL.Service({
+    'authTest' : IDL.Func([], [IDL.Text], []),
     'autoScaleStoryServiceCanister' : IDL.Func([IDL.Text], [IDL.Text], []),
     'createStoryServiceCanisterParitition' : IDL.Func(
         [],

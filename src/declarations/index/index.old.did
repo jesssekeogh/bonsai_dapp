@@ -1,4 +1,5 @@
 service : {
+  authTest: () -> (text);
   autoScaleStoryServiceCanister: (text) -> (text);
   createStoryServiceCanisterParitition: () -> (opt text);
   deleteServiceCanister: (text) -> ();

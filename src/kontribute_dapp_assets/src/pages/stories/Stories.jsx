@@ -16,6 +16,8 @@ import {
   SimpleGrid,
   GridItem,
   Box,
+  Tag,
+  Text,
 } from "@chakra-ui/react";
 import {
   startIndexClient,
@@ -50,25 +52,17 @@ const Stories = () => {
 
     // simple getLatest algo, a more advanced algo is needed later on:
     for (let user of usersMap) {
-      if (storyPromises.length < storiesShowing) {
-        const stories = await storyServiceClient.query(user, (actor) =>
-          actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
+      const stories = await storyServiceClient.query(user, (actor) =>
+        actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
+      );
+
+      const latestStoryFromAuthor = stories[0].value.stories;
+
+      for (let story of latestStoryFromAuthor) {
+        const storyData = storyServiceClient.query(user, (actor) =>
+          actor.getStory(story.sortKey)
         );
-
-        const latestStoryFromAuthor = stories[0].value.stories;
-
-        for (let story of latestStoryFromAuthor) {
-          if (storyPromises.length < storiesShowing) {
-            const storyData = storyServiceClient.query(user, (actor) =>
-              actor.getStory(story.sortKey)
-            );
-            storyPromises.push(storyData);
-          } else {
-            break;
-          }
-        }
-      } else {
-        break;
+        storyPromises.push(storyData);
       }
     }
 
@@ -90,11 +84,11 @@ const Stories = () => {
         }
       });
 
-      setStories(filterByFilter);
+      setStories(filterByFilter.slice(0, storiesShowing));
       return setLoaded(true);
     }
 
-    setStories(filterByLatest);
+    setStories(filterByLatest.slice(0, storiesShowing));
     setLoaded(true);
   };
 
@@ -125,7 +119,7 @@ const Stories = () => {
                   {Loaded ? (
                     <>
                       {stories.map((item) => (
-                        <StoryCard key={item.groupName} data={{ ...item }} />
+                        <StoryCard key={item.time} data={{ ...item }} />
                       ))}
                       <Center>
                         <Button
@@ -148,10 +142,7 @@ const Stories = () => {
                           storyFilter === item.genre
                         ) {
                           return (
-                            <StoryCard
-                              key={item.groupName}
-                              data={{ ...item }}
-                            />
+                            <StoryCard key={item.time} data={{ ...item }} />
                           );
                         }
                       })}
@@ -172,6 +163,7 @@ const Stories = () => {
             pos={{ base: "auto", md: "sticky" }}
             top={{ base: "auto", md: "20" }}
           >
+            <BetaInfo />
             <BrowseUtils
               storyFilter={storyFilter}
               setStoryFilter={setStoryFilter}
@@ -198,7 +190,7 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
     "Other",
   ];
   return (
-    <Flex rounded={"lg"} mt={{ base: 3, md: 20 }} m={3}>
+    <Flex rounded={"lg"} m={3}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Heading size="md">Topics</Heading>
         <SimpleGrid columns={2} spacing={0}>
@@ -213,6 +205,26 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
             </GridItem>
           ))}
         </SimpleGrid>
+      </Container>
+    </Flex>
+  );
+};
+
+const BetaInfo = () => {
+  const bgColor = useColorModeValue("white", "#111111");
+  return (
+    <Flex rounded={"lg"} mt={{ base: 3, md: 20 }} m={3}>
+      <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
+        <Flex align="center">
+          <Heading size="md" flex="1">
+            Welcome👋🏻
+          </Heading>
+          <Tag colorScheme="green">Beta release</Tag>
+        </Flex>
+        <Text mt={3}>
+          sit back grab a ☕️ and enjoy some of the web3 stories on Kontribute.
+          We appreciate any feedback at this early stage.
+        </Text>
       </Container>
     </Flex>
   );

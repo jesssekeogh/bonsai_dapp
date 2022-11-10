@@ -2,6 +2,7 @@ import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 
 export interface IndexCanister {
+  'authTest' : ActorMethod<[], string>,
   'autoScaleStoryServiceCanister' : ActorMethod<[string], string>,
   'createStoryServiceCanisterParitition' : ActorMethod<[], [] | [string]>,
   'deleteServiceCanister' : ActorMethod<[string], undefined>,

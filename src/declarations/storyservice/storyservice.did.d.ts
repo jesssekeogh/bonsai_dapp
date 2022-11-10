@@ -84,6 +84,7 @@ export interface StoryService {
   'checkIfLiked' : ActorMethod<[string], boolean>,
   'checkIfVoted' : ActorMethod<[string], boolean>,
   'closeProposals' : ActorMethod<[string], string>,
+  'deleteStory' : ActorMethod<[string], [] | [ConsumableEntity]>,
   'getAuthorDetails' : ActorMethod<[string], Result_2>,
   'getPK' : ActorMethod<[], string>,
   'getProposal' : ActorMethod<[string], Result_1>,

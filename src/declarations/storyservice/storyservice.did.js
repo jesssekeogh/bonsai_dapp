@@ -13,40 +13,6 @@ export const idlFactory = ({ IDL }) => {
     'autoScalingHook' : AutoScalingCanisterSharedFunctionHook,
     'sizeLimit' : ScalingLimitType,
   });
-  const AuthorDetails = IDL.Record({
-    'bio' : IDL.Text,
-    'pseudonym' : IDL.Text,
-    'nftProfilePic' : IDL.Text,
-  });
-  const Result_2 = IDL.Variant({
-    'ok' : IDL.Opt(AuthorDetails),
-    'err' : IDL.Text,
-  });
-  const VotingProposal = IDL.Record({
-    'title' : IDL.Text,
-    'votes' : IDL.Int,
-    'body' : IDL.Text,
-    'open' : IDL.Bool,
-    'proposalNumber' : IDL.Int,
-  });
-  const Result_1 = IDL.Variant({
-    'ok' : IDL.Opt(VotingProposal),
-    'err' : IDL.Text,
-  });
-  const SingleStory = IDL.Record({
-    'title' : IDL.Text,
-    'views' : IDL.Int,
-    'body' : IDL.Text,
-    'time' : IDL.Int,
-    'author' : IDL.Text,
-    'likes' : IDL.Int,
-    'genre' : IDL.Text,
-    'address' : IDL.Text,
-    'proposals' : IDL.Int,
-    'groupName' : IDL.Text,
-    'monetizedAddress' : IDL.Text,
-    'monetized' : IDL.Bool,
-  });
   const PK = IDL.Text;
   const SK = IDL.Text;
   const AttributeKey = IDL.Text;
@@ -98,6 +64,40 @@ export const idlFactory = ({ IDL }) => {
     'sk' : SK,
     'attributes' : IDL.Vec(IDL.Tuple(AttributeKey, AttributeValue)),
   });
+  const AuthorDetails = IDL.Record({
+    'bio' : IDL.Text,
+    'pseudonym' : IDL.Text,
+    'nftProfilePic' : IDL.Text,
+  });
+  const Result_2 = IDL.Variant({
+    'ok' : IDL.Opt(AuthorDetails),
+    'err' : IDL.Text,
+  });
+  const VotingProposal = IDL.Record({
+    'title' : IDL.Text,
+    'votes' : IDL.Int,
+    'body' : IDL.Text,
+    'open' : IDL.Bool,
+    'proposalNumber' : IDL.Int,
+  });
+  const Result_1 = IDL.Variant({
+    'ok' : IDL.Opt(VotingProposal),
+    'err' : IDL.Text,
+  });
+  const SingleStory = IDL.Record({
+    'title' : IDL.Text,
+    'views' : IDL.Int,
+    'body' : IDL.Text,
+    'time' : IDL.Int,
+    'author' : IDL.Text,
+    'likes' : IDL.Int,
+    'genre' : IDL.Text,
+    'address' : IDL.Text,
+    'proposals' : IDL.Int,
+    'groupName' : IDL.Text,
+    'monetizedAddress' : IDL.Text,
+    'monetized' : IDL.Bool,
+  });
   const Result = IDL.Variant({
     'ok' : IDL.Opt(ConsumableEntity),
     'err' : IDL.Text,
@@ -115,6 +115,7 @@ export const idlFactory = ({ IDL }) => {
     'checkIfLiked' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'checkIfVoted' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
+    'deleteStory' : IDL.Func([IDL.Text], [IDL.Opt(ConsumableEntity)], []),
     'getAuthorDetails' : IDL.Func([IDL.Text], [Result_2], ['query']),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
     'getProposal' : IDL.Func([IDL.Text], [Result_1], ['query']),

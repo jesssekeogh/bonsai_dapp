@@ -114,7 +114,7 @@ function BasicStatistics({ nftsTotal }) {
           onCopy={copy}
         />
         <StatsCard title={"ICP"} stat={user_icp} />
-        <StatsCard title={"NFTs"} stat={nftsTotal} />
+        <StatsCard title={"Collectibles"} stat={nftsTotal} />
       </SimpleGrid>
     </Box>
   );

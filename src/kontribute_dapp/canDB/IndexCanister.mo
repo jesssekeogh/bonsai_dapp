@@ -38,7 +38,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
       },
     );
 
-    return Iter.toArray(iterOfPks)
+    return Iter.toArray(iterOfPks);
   };
 
   /// @required function (Do not delete or change)
@@ -127,7 +127,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   */
 
   public shared ({ caller }) func deleteServiceCanister(serviceId : Text) : async () {
-    assert(caller == owner); // enable this in Prod
+    assert (caller == owner); // enable this in Prod
     // admin can delete any pk by passing in service id of user principal
     let pk = serviceId;
 
@@ -142,7 +142,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   };
 
   public shared ({ caller }) func upgradeStoryServiceCanistersByPK(serviceId : Text, wasmModule : Blob) : async Text {
-    assert(caller == owner);
+    assert (caller == owner);
 
     let pk = serviceId;
     let scalingOptions = {
@@ -153,6 +153,11 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     let result = await Admin.upgradeCanistersByPK(pkToCanisterMap, pk, wasmModule, scalingOptions);
 
     return "Canisters in PK " # pk # " upgraded";
+  };
+
+  public shared ({ caller }) func authTest() : async Text {
+    assert (caller == owner);
+    return "Passed";
   };
 
 };

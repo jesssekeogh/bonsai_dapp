@@ -4,6 +4,7 @@ import "react-quill/dist/quill.bubble.css";
 import {
   Container,
   Input,
+  Text,
   Flex,
   Spacer,
   Button,
@@ -30,6 +31,7 @@ import {
   Center,
   Tooltip,
   Stack,
+  Tag,
   Box,
   IconButton,
   Textarea,
@@ -244,6 +246,8 @@ const Create = () => {
               p={{ base: 0, lg: 2 }}
               borderRadius="lg"
               ml={{ base: 0, lg: 20 }}
+              mr={{ base: 0, md: 3 }}
+              mb={3}
             >
               <Container minW={{ lg: "2xl" }} minH="2xl" color={textColor}>
                 <Stack p={2} pb={4} align="center">
@@ -316,6 +320,7 @@ const Create = () => {
                   dispatch={dispatch}
                   publishDisable={publishDisable}
                   storyState={storyState}
+                  proposals={proposalsArray.length}
                 />
                 {proposalsArray.length > 1 ? (
                   <PollSection justCreated={true} pollData={proposalsArray} />
@@ -343,6 +348,7 @@ const ActionButtons = ({
   genre,
   dispatch,
   storyState,
+  proposals,
 }) => {
   const bgColor = useColorModeValue("white", "#111111");
   const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
@@ -358,7 +364,7 @@ const ActionButtons = ({
       boxShadow={"xl"}
       rounded={"lg"}
       p={{ base: 3, lg: 5 }}
-      m={2}
+      mb={3}
       maxW={{ base: "auto", lg: "350px" }}
     >
       <HStack>
@@ -372,7 +378,9 @@ const ActionButtons = ({
       </HStack>
       <PickGenre genre={genre} dispatch={dispatch} />
       <Divider />
-      <Monetization dispatch={dispatch} storyState={storyState} />
+      {proposals > 1 ? (
+        <Monetization dispatch={dispatch} storyState={storyState} />
+      ) : null}
       <Button
         rightIcon={<CheckIcon />}
         bg={buttonBg}
@@ -403,16 +411,22 @@ const Monetization = ({ dispatch, storyState }) => {
     <>
       <FormControl display="flex" alignItems="center">
         <FormLabel htmlFor="enable-monetized" mb="0">
-          Enable collectible gating?
+          Enable poll gating?
         </FormLabel>
         <Switch id="enable-monetized" onChange={() => enable()} />
       </FormControl>
       {!isMonetized ? (
         <>
-          Minting address:
+          <Text size="xs" color="gray.500">
+            Only those who own some of your minted collectibles can vote on your
+            poll. A <Tag>Collectible Seller</Tag> badge will appear next to your
+            profile when enabled.
+          </Text>
+          <Text>Minting address used:</Text>
           <Flex align="center" gap={2}>
             {isEditing ? (
               <Input
+                placeholder="a00fe60cfc..."
                 isInvalid={
                   storyState.monetizedAddress.toLowerCase().substring(0, 3) ===
                   "a00"

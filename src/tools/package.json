@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@dfinity/agent": "^0.13.3",
-    "candb-client-typescript": "^0.0.0-alpha.0"
+    "candb-client-typescript": "^0.0.0-alpha.1",
+    "os": "^0.1.2"
   }
 }

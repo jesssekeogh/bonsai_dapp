@@ -163,7 +163,7 @@ const PollSection = ({
   );
   const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
   return (
-    <Flex rounded={"lg"} m={3}>
+    <Flex rounded={"lg"} mb={3}>
       <Container
         bg={bgColor}
         color={textColor}
@@ -171,18 +171,17 @@ const PollSection = ({
         rounded={"lg"}
         p={4}
       >
-        {monetized ? (
-          <Flex>
-            <Spacer />
+        <Flex align="center" mb={3}>
+          <Heading fontWeight={600} size="md" flex='1'>
+            {pollData[0].title}
+          </Heading>
+          {monetized ? (
             <Tag colorScheme="red">
               <TagLeftIcon boxSize="12px" as={LockIcon} />
               Gated
             </Tag>
-          </Flex>
-        ) : null}
-        <Heading fontWeight={600} mb={3} size="md">
-          {pollData[0].title}
-        </Heading>
+          ) : null}
+        </Flex>
         <RadioGroup onChange={setOption} value={optionSelected}>
           <Stack spacing={3}>
             {!showResults

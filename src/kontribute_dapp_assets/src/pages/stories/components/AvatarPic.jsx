@@ -64,7 +64,7 @@ const AvatarPic = ({
               0,
               5
             )}...${address.substring(59, 64)}`}</Text>
-            {monetized && !smallView ? <Tag>Selling!</Tag> : null}
+            {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
           </Flex>
         </NavLink>
       ) : (
@@ -77,7 +77,7 @@ const AvatarPic = ({
             >
               <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
               <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
-              {monetized && !smallView ? <Tag>Selling!</Tag> : null}
+              {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
             </Flex>
           </NavLink>
           {!smallView ? (

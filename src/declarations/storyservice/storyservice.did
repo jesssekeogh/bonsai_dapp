@@ -25,6 +25,7 @@ type StoryService =
    checkIfLiked: (text) -> (bool) query;
    checkIfVoted: (text) -> (bool) query;
    closeProposals: (text) -> (text);
+   deleteStory: (text) -> (opt ConsumableEntity);
    getAuthorDetails: (text) -> (Result_2) query;
    getPK: () -> (text) query;
    getProposal: (text) -> (Result_1) query;

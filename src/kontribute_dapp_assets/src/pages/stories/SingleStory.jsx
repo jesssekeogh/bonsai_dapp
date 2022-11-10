@@ -105,7 +105,8 @@ const SingleStory = () => {
               p={{ base: 0, lg: 2 }}
               borderRadius="lg"
               ml={{ base: 0, lg: 20 }}
-              m={2}
+              mr={{ base: 0, md: 3 }}
+              mb={3}
             >
               <Container
                 minW={{ lg: "2xl" }}

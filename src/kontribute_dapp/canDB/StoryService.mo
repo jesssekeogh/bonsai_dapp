@@ -494,6 +494,63 @@ shared ({ caller = owner }) actor class StoryService({
     Scan API:
     */
 
+    // delete story function:
+    public shared ({ caller }) func deleteStory(storySK : Text) : async ?Types.ConsumableEntity {
+        assert ("user_" # Principal.toText(caller) == partitionKey);
+
+        // find if there is poll
+        let story = switch (CanDB.get(db, { sk = storySK })) {
+            case null { null };
+            case (?storyEntity) { unwrapStory(storyEntity) };
+        };
+
+        let proposalAmount = switch (story) {
+            case null { null };
+            case (?{ proposals }) {
+                ?({
+                    proposals;
+                });
+            };
+        };
+
+        let unwrappedProposalAmount = Option.get(proposalAmount, { proposals = 0 }).proposals;
+
+        if (unwrappedProposalAmount > 0) {
+            var i = 1;
+            label lo loop {
+                if (i > unwrappedProposalAmount) {
+                    break lo;
+                };
+
+                var del = switch (CanDB.remove(db, { sk = returnProposalSortKey(Nat.toText(i), storySK) })) {
+                    case null { null };
+                    case (?entity) {
+                        ?{
+                            pk = entity.pk;
+                            sk = entity.sk;
+                            attributes = Entity.extractKVPairsFromAttributeMap(entity.attributes);
+                        };
+                    };
+                };
+
+                i += 1;
+            };
+        };
+
+        let res = switch (CanDB.remove(db, { sk = storySK })) {
+            case null { null };
+            case (?entity) {
+                ?{
+                    pk = entity.pk;
+                    sk = entity.sk;
+                    attributes = Entity.extractKVPairsFromAttributeMap(entity.attributes);
+                };
+            };
+        };
+
+        return res;
+    };
+
     public query func scanAllStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesQuickReturn {
         // the structure of our frontend means we only need to return groupname and sortkey from this query
         let { entities; nextKey } = CanDB.scan(

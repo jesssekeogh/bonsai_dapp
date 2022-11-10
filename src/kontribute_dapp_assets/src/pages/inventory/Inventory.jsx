@@ -63,7 +63,7 @@ const Inventory = () => {
     initialLoad();
   }, []);
 
-  if (!Loaded) return <LoadingSpinner label="Fetching NFTs..." />;
+  if (!Loaded) return <LoadingSpinner label="loading collectibles..." />;
   return (
     <Box pb={20} pt={3}>
       <InventoryStats totalnfts={allTokens} />
@@ -93,7 +93,7 @@ const Inventory = () => {
             borderRadius="lg"
             backgroundColor="#16171b"
           >
-            <Text color="#f0e6d3">You have no NFTs here!😕</Text>
+            <Text color="#f0e6d3">You have no collectibles here!😕</Text>
           </Kbd>
         )}
       </Center>

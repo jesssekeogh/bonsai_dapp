@@ -24,7 +24,14 @@ import {
 } from "../../../containers/colormode/Colors";
 import { useLocation } from "react-router-dom";
 import { ViewIcon } from "@chakra-ui/icons";
-import { FaHeart, FaRegHeart, FaTwitter, FaDonate } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import {
+  FaHeart,
+  FaRegHeart,
+  FaTwitter,
+  FaDonate,
+  FaTrash,
+} from "react-icons/fa";
 import {
   startIndexClient,
   startStoryServiceClient,
@@ -34,12 +41,13 @@ import {
   useAnvilDispatch,
   user_transfer_icp,
 } from "@vvv-interactive/nftanvil-react";
-import { FailedToast } from "../../../containers/toasts/Toasts";
+import { FailedToast, SuccessToast } from "../../../containers/toasts/Toasts";
 import ReactCanvasConfetti from "react-canvas-confetti";
 import {
   e8sToIcp,
   icpToE8s,
 } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
+import { useSelector } from "react-redux";
 
 const StoryUtils = ({
   storySortKey,
@@ -55,9 +63,12 @@ const StoryUtils = ({
   const location = useLocation();
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
+  const userId = useSelector((state) => state.Profile.principal);
 
   const [likesTotal, setLikesTotal] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const navigate = useNavigate();
 
   const LikeStory = async () => {
     setIsLiked(true);
@@ -84,6 +95,21 @@ const StoryUtils = ({
     );
   };
 
+  const deleteStory = async () => {
+    setDeleting(true);
+    try {
+      await storyServiceClient.update(partitionKey, "", (actor) =>
+        actor.deleteStory(storySortKey)
+      );
+      setDeleting(false);
+      SuccessToast("Success", "Story deleted");
+      return navigate("/stories");
+    } catch (e) {
+      setDeleting(false);
+      return FailedToast("Failed!", e.toString());
+    }
+  };
+
   useEffect(() => {
     setLikesTotal(likes);
     checkIfLiked();
@@ -93,7 +119,7 @@ const StoryUtils = ({
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Flex rounded={"lg"} m={3}>
+    <Flex rounded={"lg"} mb={3}>
       <Container
         bg={bgColor}
         color={textColor}
@@ -108,7 +134,7 @@ const StoryUtils = ({
           monetizedAddress={monetizedAddress}
           monetized={monetized}
         />
-        <Flex align="center" gap={2} mt={5}>
+        <Flex align="center" gap={1.5} mt={5}>
           <Button
             bg={"none"}
             leftIcon={<ViewIcon />}
@@ -118,6 +144,31 @@ const StoryUtils = ({
             {views}
           </Button>
           <Spacer />
+          {author === userId ? (
+            <Popover>
+              <PopoverTrigger>
+                  <Button>
+                    <FaTrash />
+                  </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverHeader>Confirm deletion!</PopoverHeader>
+                <PopoverBody>
+                  Are you sure you want to delete this story?{" "}
+                </PopoverBody>
+                <Button
+                  m={3}
+                  leftIcon={<FaTrash />}
+                  isLoading={deleting}
+                  onClick={() => deleteStory()}
+                >
+                  Delete
+                </Button>
+              </PopoverContent>
+            </Popover>
+          ) : null}
           <Button
             leftIcon={isLiked ? <FaHeart /> : <FaRegHeart />}
             onClick={() => LikeStory()}

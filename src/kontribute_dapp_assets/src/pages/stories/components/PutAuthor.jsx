@@ -149,8 +149,8 @@ const PutAuthor = ({ pk, address, author }) => {
       boxShadow={"xl"}
       rounded={"lg"}
       p={{ base: 3, lg: 5 }}
-      m={2}
       maxW={{ base: "auto", lg: "350px" }}
+      mb={3}
     >
       <AvatarPic
         refresh={refresh}
@@ -205,7 +205,7 @@ const PutAuthor = ({ pk, address, author }) => {
                     </Flex>
                   </MenuButton>
                   <MenuList>
-                    <MenuGroup title="owned digital collectibles">
+                    <MenuGroup title="owned collectibles">
                       {ownedTokens.map((token) => (
                         <MenuItem
                           minH="48px"
