@@ -96,7 +96,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     // Pre-load 6T cycles for the creation of a new storyservice canister
     // Note that canister creation costs 100 billion cycles, meaning there are 5.9T
     // left over for the new canister when it is created
-    Cycles.add(600_000_000_000_000);
+    Cycles.add(6_000_000_000_000);
     let newStoryServiceCanister = await StoryService.StoryService({
       partitionKey = pk;
       scalingOptions = {
@@ -155,6 +155,15 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     let result = await Admin.upgradeCanistersByPK(pkToCanisterMap, pk, wasmModule, scalingOptions);
 
     return "Canisters in PK " # pk # " upgraded";
+  };
+
+  // api for getting canisters relating to a PK
+  public shared ({ caller = caller }) func getAllCanisterIdsByPK(pk : Text) : async [Text] {
+    assert (caller == owner);
+    switch (CanisterMap.get(pkToCanisterMap, pk)) {
+      case null { [] };
+      case (?canisterIdsBuffer) { Buffer.toArray(canisterIdsBuffer) };
+    };
   };
 
   // test to check permissions

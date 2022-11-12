@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Confetti } from "../components";
 import "../../../assets/main.css";
 import { unwrapProposal, unwrapStory } from "./components/Unwrapping";
+import AuthorsCollectibles from "./components/AuthorsCollectibles";
 
 const SingleStory = () => {
   const params = useParams();
@@ -159,6 +160,7 @@ const SingleStory = () => {
                   monetizedAddress={storyContent.monetizedAddress}
                   monetized={storyContent.monetized}
                 />
+                <AuthorsCollectibles address={storyContent.monetizedAddress} />
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (
                   <PollSection

@@ -49,7 +49,7 @@ const Footer = () => {
           <Stack direction={"row"} spacing={6}>
             <SocialButton
               label={"Discord"}
-              href={"https://discord.gg/S3qRpq8R6e"}
+              href={"https://discord.gg/mWEzS9gvbZ"}
               icon={<FaDiscord />}
             />
             <SocialButton

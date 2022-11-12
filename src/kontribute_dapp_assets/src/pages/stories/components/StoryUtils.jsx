@@ -147,9 +147,9 @@ const StoryUtils = ({
           {author === userId ? (
             <Popover>
               <PopoverTrigger>
-                  <Button>
-                    <FaTrash />
-                  </Button>
+                <Button>
+                  <FaTrash />
+                </Button>
               </PopoverTrigger>
               <PopoverContent>
                 <PopoverArrow />

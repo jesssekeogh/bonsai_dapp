@@ -74,7 +74,9 @@ const PutAuthor = ({ pk, address, author }) => {
     onClose();
     SendingToast("Updating profile info...");
 
-    await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
+    const can =
+      await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
+    console.log("Your canister:", can);
     try {
       await storyServiceClient.update(pk, "", (actor) =>
         actor.putAuthorDetails({

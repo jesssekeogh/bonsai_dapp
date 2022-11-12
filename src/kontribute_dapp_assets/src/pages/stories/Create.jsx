@@ -68,6 +68,7 @@ import {
 import { PollSection, PutAuthor } from "./components";
 import { LoadingSpinner } from "../../containers/index";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
+import { Usergeek } from "usergeek-ic-js";
 import "../../../assets/main.css";
 
 const { toast } = createStandaloneToast();
@@ -163,7 +164,9 @@ const Create = () => {
     setPublishDisable(true);
     SendingToast("Publishing story...");
 
-    await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
+    const can =
+      await indexClient.indexCanisterActor.createStoryServiceCanisterParitition();
+    console.log("Your canister:", can);
     try {
       const keys = await storyServiceClient.update(partitionKey, "", (actor) =>
         actor.putStory(
@@ -178,6 +181,7 @@ const Create = () => {
             address: storyState.address,
             time: storyState.time,
             proposals: proposalsArray.length,
+            responses: 0,
             monetized: storyState.monetized,
             monetizedAddress: storyState.monetizedAddress,
           },
@@ -187,6 +191,7 @@ const Create = () => {
       toast.closeAll();
       SuccessToast("Success", "Congratulations your story is published!");
       setPublishDisable(false);
+      Usergeek.trackEvent("StoryPosted");
 
       let sk = keys.replace("STORY SORT KEY: ", "");
       return navigate(`/stories/${sk}`, { state: { showConfetti: true } });
@@ -346,6 +351,7 @@ const ActionButtons = ({
   storyState,
   proposals,
 }) => {
+  const [advanced, setAdvanced] = useState(false);
   const bgColor = useColorModeValue("white", "#111111");
   const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
   const buttonTextColor = useColorModeValue(
@@ -373,10 +379,22 @@ const ActionButtons = ({
         <AddProposals setProposalsArray={setProposalsArray} />
       </HStack>
       <PickGenre genre={genre} dispatch={dispatch} />
-      <Divider />
-      {proposals > 1 ? (
-        <Monetization dispatch={dispatch} storyState={storyState} />
+      <FormControl display="flex" alignItems="center">
+        <FormLabel htmlFor="enable-advanced" mb="0">
+          Advanced options
+        </FormLabel>
+        <Switch id="enable-advanced" onChange={() => setAdvanced(!advanced)} />
+      </FormControl>
+      {advanced ? (
+        <>
+          <Divider />
+          <UpdateAddress dispatch={dispatch} storyState={storyState} />
+          {proposals > 1 ? (
+            <Monetization dispatch={dispatch} storyState={storyState} />
+          ) : null}
+        </>
       ) : null}
+      <Divider />
       <Button
         rightIcon={<CheckIcon />}
         bg={buttonBg}
@@ -394,13 +412,51 @@ const ActionButtons = ({
   );
 };
 
-const Monetization = ({ dispatch, storyState }) => {
-  const [isMonetized, setIsMonetized] = useState(true);
+const UpdateAddress = ({ dispatch, storyState }) => {
   const [isEditing, setIsEditing] = useState(false);
+  return (
+    <>
+      <Text fontWeight={500}>Minting address used:</Text>
+      <Flex align="center" gap={2}>
+        {isEditing ? (
+          <Input
+            placeholder="a00fe60cfc..."
+            isInvalid={
+              storyState.monetizedAddress.toLowerCase().substring(0, 3) ===
+              "a00"
+                ? false
+                : true
+            }
+            onChange={(e) =>
+              dispatch({
+                type: "updateMonetizedAddress",
+                payload: e.target.value,
+              })
+            }
+          />
+        ) : (
+          `${storyState.monetizedAddress.substring(
+            0,
+            5
+          )}...${storyState.monetizedAddress.substring(59, 64)}`
+        )}
+        <IconButton
+          icon={isEditing ? <CheckIcon /> : <EditIcon />}
+          size="sm"
+          onClick={() =>
+            storyState.monetizedAddress.toLowerCase().substring(0, 3) === "a00"
+              ? setIsEditing(!isEditing)
+              : null
+          }
+        />
+      </Flex>
+    </>
+  );
+};
 
+const Monetization = ({ dispatch, storyState }) => {
   const enable = () => {
-    dispatch({ type: "updateMonetized", payload: isMonetized });
-    setIsMonetized(!isMonetized);
+    dispatch({ type: "updateMonetized", payload: !storyState.monetized });
   };
 
   return (
@@ -409,50 +465,19 @@ const Monetization = ({ dispatch, storyState }) => {
         <FormLabel htmlFor="enable-monetized" mb="0">
           Enable poll gating?
         </FormLabel>
-        <Switch id="enable-monetized" onChange={() => enable()} />
+        <Switch
+          id="enable-monetized"
+          isChecked={storyState.monetized}
+          onChange={() => enable()}
+        />
       </FormControl>
-      {!isMonetized ? (
+      {storyState.monetized ? (
         <>
           <Text size="xs" color="gray.500">
             Only those who own some of your minted collectibles can vote on your
             poll. A <Tag>Collectible Seller</Tag> badge will appear next to your
             profile when enabled.
           </Text>
-          <Text>Minting address used:</Text>
-          <Flex align="center" gap={2}>
-            {isEditing ? (
-              <Input
-                placeholder="a00fe60cfc..."
-                isInvalid={
-                  storyState.monetizedAddress.toLowerCase().substring(0, 3) ===
-                  "a00"
-                    ? false
-                    : true
-                }
-                onChange={(e) =>
-                  dispatch({
-                    type: "updateMonetizedAddress",
-                    payload: e.target.value,
-                  })
-                }
-              />
-            ) : (
-              `${storyState.monetizedAddress.substring(
-                0,
-                5
-              )}...${storyState.monetizedAddress.substring(59, 64)}`
-            )}
-            <IconButton
-              icon={isEditing ? <CheckIcon /> : <EditIcon />}
-              size="sm"
-              onClick={() =>
-                storyState.monetizedAddress.toLowerCase().substring(0, 3) ===
-                "a00"
-                  ? setIsEditing(!isEditing)
-                  : null
-              }
-            />
-          </Flex>
         </>
       ) : null}
     </>

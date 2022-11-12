@@ -229,7 +229,7 @@ const BetaInfo = () => {
           <Link
             fontWeight="bold"
             color="#7289da"
-            href={"https://discord.gg/S3qRpq8R6e"}
+            href={"https://discord.gg/mWEzS9gvbZ"}
             isExternal
           >
             Discord <ExternalLinkIcon mx="2px" />

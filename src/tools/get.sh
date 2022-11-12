@@ -1,0 +1,1 @@
+npx node src/get_cans.js

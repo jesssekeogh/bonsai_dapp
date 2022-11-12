@@ -117,23 +117,21 @@ const LargeNft = () => {
         >
           <HStack>
             <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
-              <Button
-                _hover={{ boxShadow: "base" }}
-              >
+              <Button _hover={{ boxShadow: "base" }}>
                 <Text>Go Back</Text>
               </Button>
             </Link>
             {pathData.amount > 1 ? (
               <Link to="/marketplace">
-                <Button
-                  _hover={{ opacity: "0.8" }}
-                >
+                <Button _hover={{ opacity: "0.8" }}>
                   <Text>{"+ " + (pathData.amount - 1) + " other NFTs"}</Text>
                 </Button>
               </Link>
             ) : null}
           </HStack>
-          {address ? <Owned tokenId={data.id} tokens={ownedTokens} price={data.price} /> : null}
+          {address ? (
+            <Owned tokenId={data.id} tokens={ownedTokens} price={data.price} />
+          ) : null}
           {data.price > 0 ? (
             <ForSale Icp={data.price} tokenId={data.id} tokens={ownedTokens} />
           ) : null}

@@ -6,6 +6,7 @@ export interface IndexCanister {
   'autoScaleStoryServiceCanister' : ActorMethod<[string], string>,
   'createStoryServiceCanisterParitition' : ActorMethod<[], [] | [string]>,
   'deleteServiceCanister' : ActorMethod<[string], undefined>,
+  'getAllCanisterIdsByPK' : ActorMethod<[string], Array<string>>,
   'getCanistersByPK' : ActorMethod<[string], Array<string>>,
   'getPKs' : ActorMethod<[], Array<string>>,
   'upgradeStoryServiceCanistersByPK' : ActorMethod<

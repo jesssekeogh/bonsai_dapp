@@ -9,7 +9,6 @@ import {
   Container,
   Stack,
   Button,
-  useColorModeValue,
   Heading,
   Text,
   VStack,
