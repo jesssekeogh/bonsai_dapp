@@ -26,11 +26,11 @@ const LoadingStoryCard = () => {
       >
         <Flex align="center" gap={2}>
           <SkeletonCircle size="8" />
-          <Skeleton height="15px" w={"100px"} />
+          <Skeleton height="15px" w={"150px"} />
         </Flex>
         <SkeletonText
           mt="4"
-          noOfLines={4}
+          noOfLines={5}
           spacing="4"
           w={{ base: "250px", md: "550px" }}
         />

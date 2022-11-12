@@ -111,7 +111,7 @@ const Create = () => {
   const userId = useSelector((state) => state.Profile.principal);
   const address = useAnvilSelector((state) => state.user.address);
 
-  const partitionKey = `user_${userId}`;
+  const partitionKey = `author_${userId}`;
   const [storyOption, setStoryOption] = useState("New story"); // or new chapter
   const [myStories, setMyStories] = useState([]); // array of author stories returned from backend
   const [publishDisable, setPublishDisable] = useState(false);
@@ -198,10 +198,6 @@ const Create = () => {
   };
 
   const getMyStories = async () => {
-    // some util help:
-    // const resp = await indexClient.indexCanisterActor.deleteServiceCanister(partitionKey);
-    // return console.log("done!", resp)
-
     const skLowerBound = "";
     const skUpperBound = "~";
     const limit = 1000;

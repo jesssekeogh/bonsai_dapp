@@ -8,8 +8,9 @@ import {
   Image as ChakraImage,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-import galactic from "../../../assets/galactic_guardians.png";
+import pendragon from "../../../assets/pendragon.png";
 import bonsai from "../../../assets/Bonsai_Warriors_Background_1.png";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 const PopularDrops = () => {
   return (
@@ -19,7 +20,7 @@ const PopularDrops = () => {
           fontWeight={"bold"}
           fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
         >
-          Popular Stories
+          Popular art collections
         </Heading>
       </Center>
       <Center mt={1}>
@@ -30,13 +31,17 @@ const PopularDrops = () => {
           maxW="1250px"
         >
           <PopularCard
-            mainImg={galactic}
-            link={"/stories/story/26"}
-            name={"Galactic Guardians"}
+            mainImg={pendragon}
+            link={
+              "/marketplace/a00b8f555f7b02edaf9854ea727e83adb7e6b84cca023f784d70369e5223cfd5"
+            }
+            name={"Pendragon Quest"}
           />
           <PopularCard
             mainImg={bonsai}
-            link={"/stories/story/6"}
+            link={
+              "/marketplace/a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77"
+            }
             name={"Bonsai Warriors"}
           />
         </SimpleGrid>
@@ -70,15 +75,24 @@ const PopularCard = ({ mainImg, link, name }) => {
             }}
           />
         </Box>
-        <Heading
-          pos={"absolute"}
-          mt={-10}
-          mx={5}
-          fontSize={{ base: "md", sm: "md", md: "xl" }}
-          color="white"
+        <Box
+          pos={"relative"}
+          mt={{ base: -8, md: -9 }}
+          pb={3}
+          zIndex={1}
+          background={
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)"
+          }
+          rounded="lg"
         >
-          {name}
-        </Heading>
+          <Heading
+            mx={5}
+            fontSize={{ base: "md", sm: "md", md: "xl" }}
+            color="white"
+          >
+            {name} <ArrowForwardIcon />
+          </Heading>
+        </Box>
       </Box>
     </NavLink>
   );

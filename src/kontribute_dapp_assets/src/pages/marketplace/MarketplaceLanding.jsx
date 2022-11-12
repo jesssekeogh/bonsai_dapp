@@ -22,6 +22,7 @@ import pendragonBG from "../../../assets/pendragon.png";
 import pendragonLogo from "../../../assets/pendragon_logo.png";
 import anvLogo from "../../../assets/anvillogo.svg";
 import badbotBg from "../../../assets/badbot-ninja-bg.png";
+import ratokoBG from "../../../assets/ratokoBG.png";
 
 const MarketplaceLanding = () => {
   useEffect(() => {
@@ -30,7 +31,7 @@ const MarketplaceLanding = () => {
   const bgColor = useColorModeValue("White", "#1d1d20");
 
   return (
-    <Center my={8}>
+    <Center mt={{ base: 0, md: 8 }} mb={8}>
       <Tabs variant="line" colorScheme="cyan" mx={5}>
         <TabList>
           <Tab>
@@ -46,7 +47,7 @@ const MarketplaceLanding = () => {
               borderRadius="lg"
               bg={bgColor}
             >
-              Collect NFTs of characters, accessories, or anything else from a
+              Collect art of characters, accessories, or anything else from a
               story featured on Kontribute
             </Heading>
             <NftCards />
@@ -67,6 +68,14 @@ const NftCards = () => {
       gap={5}
       maxW="1250px"
     >
+      <CollectionThumb
+        colimg={ratokoBG}
+        title={"Ratoko"}
+        authorimg={anvLogo}
+        link={
+          "bbd87200973033cb69bc0aee03e90df1a1de01e28aa0246bb175baabfd071754"
+        }
+      />
       <CollectionThumb
         colimg={pendragonBG}
         title={"Pendragon Quest"}

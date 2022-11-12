@@ -33,7 +33,7 @@ const SingleStory = () => {
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
   const location = useLocation();
 
-  const partitionKey = `user_${storySortKey.split("_")[1]}`;
+  const partitionKey = `author_${storySortKey.split("_")[1]}`;
 
   const [storyContent, setStoryContent] = useState({});
   const [proposalsArray, setProposalsArray] = useState([]);

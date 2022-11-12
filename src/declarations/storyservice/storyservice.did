@@ -52,6 +52,7 @@ type SingleStory =
    monetized: bool;
    monetizedAddress: text;
    proposals: int;
+   responses: int;
    time: int;
    title: text;
    views: int;

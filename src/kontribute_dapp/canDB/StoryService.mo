@@ -41,7 +41,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func putStory(singleStory : Types.SingleStory, proposals : [Types.VotingProposal]) : async Text {
-        assert ("user_" # Principal.toText(caller) == partitionKey);
+        assert ("author_" # Principal.toText(caller) == partitionKey);
         assert (checkStory(singleStory) == true);
 
         let storySortKey = returnStorySortKey(Principal.toText(caller), singleStory.groupName, singleStory.title);
@@ -61,6 +61,7 @@ shared ({ caller = owner }) actor class StoryService({
                     ("address", #text(singleStory.address)),
                     ("time", #int(Time.now())),
                     ("proposals", #int(singleStory.proposals)), // pass in the proposals array length/amount
+                    ("responses", #int(singleStory.responses)),
                     ("monetized", #bool(singleStory.monetized)),
                     ("monetizedAddress", #text(singleStory.monetizedAddress)),
                 ];
@@ -100,7 +101,7 @@ shared ({ caller = owner }) actor class StoryService({
     */
 
     public shared ({ caller }) func putAuthorDetails(authorDetails : Types.AuthorDetails) : async Text {
-        assert ("user_" # Principal.toText(caller) == partitionKey);
+        assert ("author_" # Principal.toText(caller) == partitionKey);
         assert (checkAuthorDetails(authorDetails) == true);
 
         await CanDB.put(
@@ -238,7 +239,7 @@ shared ({ caller = owner }) actor class StoryService({
 
         switch (story) {
             case null { null };
-            case (?{ groupName; title; body; genre; likes; views; author; address; time; proposals; monetized; monetizedAddress }) {
+            case (?{ groupName; title; body; genre; likes; views; author; address; time; proposals; responses; monetized; monetizedAddress }) {
                 ?({
                     groupName;
                     title;
@@ -250,6 +251,7 @@ shared ({ caller = owner }) actor class StoryService({
                     address;
                     time;
                     proposals;
+                    responses;
                     monetized;
                     monetizedAddress;
                 });
@@ -425,7 +427,7 @@ shared ({ caller = owner }) actor class StoryService({
     };
 
     public shared ({ caller }) func closeProposals(storySK : Text) : async Text {
-        assert ("user_" # Principal.toText(caller) == partitionKey);
+        assert ("author_" # Principal.toText(caller) == partitionKey);
         // get proposal amount, loop through SKs and get each proposal and update the bool to false
 
         // get proposal amount from story
@@ -496,7 +498,7 @@ shared ({ caller = owner }) actor class StoryService({
 
     // delete story function:
     public shared ({ caller }) func deleteStory(storySK : Text) : async ?Types.ConsumableEntity {
-        assert ("user_" # Principal.toText(caller) == partitionKey);
+        assert ("author_" # Principal.toText(caller) == partitionKey);
 
         // find if there is poll
         let story = switch (CanDB.get(db, { sk = storySK })) {
@@ -676,10 +678,11 @@ shared ({ caller = owner }) actor class StoryService({
         let storyAddressValue = Entity.getAttributeMapValueForKey(attributes, "address");
         let storyTimeValue = Entity.getAttributeMapValueForKey(attributes, "time");
         let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
+        let storyResponsesValue = Entity.getAttributeMapValueForKey(attributes, "responses");
         let storyMonetizedValue = Entity.getAttributeMapValueForKey(attributes, "monetized");
         let storyMonetizedAddressValue = Entity.getAttributeMapValueForKey(attributes, "monetizedAddress");
 
-        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue, storyMonetizedValue, storyMonetizedAddressValue) {
+        switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue, storyResponsesValue, storyMonetizedValue, storyMonetizedAddressValue) {
             case (
                 ?(#text(groupName)),
                 ?(#text(title)),
@@ -691,6 +694,7 @@ shared ({ caller = owner }) actor class StoryService({
                 ?(#text(address)),
                 ?(#int(time)),
                 ?(#int(proposals)),
+                ?(#int(responses)),
                 ?(#bool(monetized)),
                 ?(#text(monetizedAddress)),
             ) {
@@ -705,6 +709,7 @@ shared ({ caller = owner }) actor class StoryService({
                     address;
                     time;
                     proposals;
+                    responses;
                     monetized;
                     monetizedAddress;
                 };
@@ -731,10 +736,11 @@ shared ({ caller = owner }) actor class StoryService({
                 let storyAddressValue = Entity.getAttributeMapValueForKey(attributes, "address");
                 let storyTimeValue = Entity.getAttributeMapValueForKey(attributes, "time");
                 let storyProposalsValue = Entity.getAttributeMapValueForKey(attributes, "proposals");
+                let storyResponsesValue = Entity.getAttributeMapValueForKey(attributes, "responses");
                 let storyMonetizedValue = Entity.getAttributeMapValueForKey(attributes, "monetized");
                 let storyMonetizedAddressValue = Entity.getAttributeMapValueForKey(attributes, "monetizedAddress");
 
-                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue, storyMonetizedValue, storyMonetizedAddressValue) {
+                switch (storyGroupNameValue, storyTitleValue, storyBodyValue, storyGenreValue, storyLikesValue, storyViewsValue, storyAuthorValue, storyAddressValue, storyTimeValue, storyProposalsValue, storyResponsesValue, storyMonetizedValue, storyMonetizedAddressValue) {
                     case (
                         ?(#text(groupName)),
                         ?(#text(title)),
@@ -746,6 +752,7 @@ shared ({ caller = owner }) actor class StoryService({
                         ?(#text(address)),
                         ?(#int(time)),
                         ?(#int(proposals)),
+                        ?(#int(responses)),
                         ?(#bool(monetized)),
                         ?(#text(monetizedAddress)),
                     ) {
@@ -760,6 +767,7 @@ shared ({ caller = owner }) actor class StoryService({
                             address;
                             time;
                             proposals;
+                            responses;
                             monetized;
                             monetizedAddress;
                         };

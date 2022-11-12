@@ -65,7 +65,7 @@ const PollSection = ({
 
   if (storySortKey) {
     author = storySortKey.split("_")[1];
-    partitionKey = `user_${author}`;
+    partitionKey = `author_${author}`;
   }
 
   const closePoll = async () => {

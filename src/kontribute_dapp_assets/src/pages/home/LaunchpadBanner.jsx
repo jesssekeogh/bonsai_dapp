@@ -48,7 +48,7 @@ const LaunchpadBanner = ({ mainImg, logoImg, link, name }) => {
           <Flex p={2} align="center">
             <ChakraImage
               src={logoImg}
-              h={["30px", null, "50px"]}
+              h={["30px", null, "40px"]}
               w={"auto"}
               rounded="full"
             />

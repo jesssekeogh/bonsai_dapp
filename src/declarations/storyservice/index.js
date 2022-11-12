@@ -35,4 +35,4 @@ export const createActor = (canisterId, options) => {
  * A ready-to-use agent for the storyservice canister
  * @type {import("@dfinity/agent").ActorSubclass<import("./storyservice.did.js")._SERVICE>}
  */
-// export const storyservice = createActor(canisterId);
+export const storyservice = createActor(canisterId);

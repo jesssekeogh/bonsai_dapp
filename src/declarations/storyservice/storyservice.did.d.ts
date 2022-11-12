@@ -68,6 +68,7 @@ export interface ScanStoriesQuickReturn {
 }
 export interface SingleStory {
   'title' : string,
+  'responses' : bigint,
   'views' : bigint,
   'body' : string,
   'time' : bigint,

@@ -17,12 +17,14 @@ import {
   GridItem,
   Box,
   Tag,
+  Link,
   Text,
 } from "@chakra-ui/react";
 import {
   startIndexClient,
   startStoryServiceClient,
 } from "../CanDBClient/client";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { unwrapStory } from "./components/Unwrapping";
 import { SpinnerIcon } from "@chakra-ui/icons";
 import StoryCard from "./components/StoryCard";
@@ -101,7 +103,7 @@ const Stories = () => {
   }, []);
 
   return (
-    <Center my={8} pb={10}>
+    <Center mt={{ base: 0, md: 8 }} mb={8} pb={10}>
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         templateColumns={{ base: "auto", lg: "1fr 350px" }}
@@ -190,7 +192,7 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
     "Other",
   ];
   return (
-    <Flex rounded={"lg"} m={3}>
+    <Flex rounded={"lg"} my={3}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Heading size="md">Topics</Heading>
         <SimpleGrid columns={2} spacing={0}>
@@ -213,17 +215,35 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
 const BetaInfo = () => {
   const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Flex rounded={"lg"} mt={{ base: 3, md: 20 }} m={3}>
+    <Flex rounded={"lg"} mt={{ base: 3, md: 20 }}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Flex align="center">
           <Heading size="md" flex="1">
             Welcome👋🏻
           </Heading>
-          <Tag colorScheme="green">Beta release</Tag>
+          <Tag colorScheme="green">1.0.0-beta release</Tag>
         </Flex>
         <Text mt={3}>
-          sit back grab a ☕️ and enjoy some of the web3 stories on Kontribute.
-          We appreciate any feedback at this early stage.
+          Sit back grab a ☕️ and enjoy some of the web3 stories on Kontribute.
+          You can connect with us on our{" "}
+          <Link
+            fontWeight="bold"
+            color="#7289da"
+            href={"https://discord.gg/S3qRpq8R6e"}
+            isExternal
+          >
+            Discord <ExternalLinkIcon mx="2px" />
+          </Link>{" "}
+          and{" "}
+          <Link
+            fontWeight="bold"
+            color="#1DA1F2"
+            href={"https://mobile.twitter.com/TeamBonsai_ICP"}
+            isExternal
+          >
+            Twitter <ExternalLinkIcon mx="2px" />
+          </Link>{" "}
+          for updates.
         </Text>
       </Container>
     </Flex>

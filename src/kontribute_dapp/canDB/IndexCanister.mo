@@ -28,6 +28,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     getCanisterIdsIfExists(pk);
   };
 
+  // returns all ouser partitions
   public query func getPKs() : async [Text] {
     let allPks = CanisterMap.entries(pkToCanisterMap);
 
@@ -62,6 +63,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   /*
     API for story service:
   */
+
   public shared ({ caller = caller }) func autoScaleStoryServiceCanister(pk : Text) : async Text {
     // Auto-Scaling Authorization - if the request to auto-scale the partition is not coming from an existing canister in the partition, reject it
     if (Utils.callingCanisterOwnsPK(caller, pkToCanisterMap, pk)) {
@@ -72,11 +74,11 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     };
   };
 
-  // Partition HelloService canisters by user
+  // Partition storyservice canisters by user
   public shared ({ caller }) func createStoryServiceCanisterParitition() : async ?Text {
     // valid principals can create their own canister partitions
     assert (Principal.isAnonymous(caller) == false);
-    let pk = "user_" # Principal.toText(caller);
+    let pk = "author_" # Principal.toText(caller);
     let canisterIds = getCanisterIdsIfExists(pk);
 
     if (canisterIds == []) {
@@ -88,13 +90,13 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     };
   };
 
-  // Spins up a new HelloService canister with the provided pk and controllers
+  // Spins up a new storyservice canister with the provided pk and controllers
   func createStoryServiceCanister(pk : Text, controllers : ?[Principal]) : async Text {
     Debug.print("creating new story service canister with pk=" # pk);
-    // Pre-load 300 billion cycles for the creation of a new Hello Service canister
-    // Note that canister creation costs 100 billion cycles, meaning there are 200 billion
+    // Pre-load 6T cycles for the creation of a new storyservice canister
+    // Note that canister creation costs 100 billion cycles, meaning there are 5.9T
     // left over for the new canister when it is created
-    Cycles.add(300_000_000_000);
+    Cycles.add(600_000_000_000_000);
     let newStoryServiceCanister = await StoryService.StoryService({
       partitionKey = pk;
       scalingOptions = {
@@ -115,7 +117,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     });
 
     let newStoryServiceCanisterId = Principal.toText(newStoryServiceCanisterPrincipal);
-    // After creating the new Hello Service canister, add it to the pkToCanisterMap
+    // After creating the new story service canister, add it to the pkToCanisterMap
     pkToCanisterMap := CanisterMap.add(pkToCanisterMap, pk, newStoryServiceCanisterId);
 
     Debug.print("new story service canisterId=" # newStoryServiceCanisterId);
@@ -127,7 +129,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   */
 
   public shared ({ caller }) func deleteServiceCanister(serviceId : Text) : async () {
-    assert (caller == owner); // enable this in Prod
+    assert (caller == owner);
     // admin can delete any pk by passing in service id of user principal
     let pk = serviceId;
 
@@ -155,6 +157,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     return "Canisters in PK " # pk # " upgraded";
   };
 
+  // test to check permissions
   public shared ({ caller }) func authTest() : async Text {
     assert (caller == owner);
     return "Passed";

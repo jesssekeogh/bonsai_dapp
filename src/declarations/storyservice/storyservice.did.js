@@ -86,6 +86,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const SingleStory = IDL.Record({
     'title' : IDL.Text,
+    'responses' : IDL.Int,
     'views' : IDL.Int,
     'body' : IDL.Text,
     'time' : IDL.Int,
