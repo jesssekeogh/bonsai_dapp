@@ -81,7 +81,7 @@ const AvatarPic = ({
             </Flex>
           </NavLink>
           {!smallView ? (
-            <Text mt={3} color={"gray.500"}>
+            <Text mt={3} color={"gray.500"} maxW={["320px", null, "500px"]}>
               "{authorDetails.bio}"
             </Text>
           ) : null}
