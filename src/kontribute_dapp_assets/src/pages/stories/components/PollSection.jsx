@@ -36,6 +36,7 @@ import { FailedToast } from "../../../containers/toasts/Toasts";
 import { GetMine } from "../../components/index";
 import { nft_fetch, useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 import { tokenToText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
+import * as DOMPurify from "dompurify";
 
 const PollSection = ({
   justCreated,
@@ -172,7 +173,7 @@ const PollSection = ({
         p={4}
       >
         <Flex align="center" mb={3}>
-          <Heading fontWeight={600} size="md" flex='1'>
+          <Heading fontWeight={600} size="md" flex="1">
             {pollData[0].title}
           </Heading>
           {monetized ? (
@@ -203,7 +204,10 @@ const PollSection = ({
                           : borderColor
                       }
                       dangerouslySetInnerHTML={{
-                        __html: decodeURIComponent(item.body),
+                        __html: DOMPurify.sanitize(
+                          decodeURIComponent(item.body),
+                          { FORBID_ATTR: ["style"], FORBID_TAGS: ["style"] }
+                        ),
                       }}
                     />
                   </Radio>
@@ -229,7 +233,10 @@ const PollSection = ({
                             : borderColor
                         }
                         dangerouslySetInnerHTML={{
-                          __html: decodeURIComponent(item.body),
+                          __html: DOMPurify.sanitize(
+                            decodeURIComponent(item.body),
+                            { FORBID_ATTR: ["style"], FORBID_TAGS: ["style"] }
+                          ),
                         }}
                       />
                     </Radio>

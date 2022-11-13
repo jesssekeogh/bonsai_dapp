@@ -6,6 +6,10 @@
   font-family: "Times New Roman", Times, serif !important;
 }
 
+.ql-container ul {
+  margin-left: 40px !important;
+}
+
 .ql-container h2 {
   font-size: 26px !important;
   font-weight: bold;

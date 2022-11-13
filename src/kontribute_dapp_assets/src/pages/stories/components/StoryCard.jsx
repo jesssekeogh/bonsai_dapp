@@ -18,6 +18,7 @@ import { NavLink } from "react-router-dom";
 import { ViewIcon } from "@chakra-ui/icons";
 import { FaHeart } from "react-icons/fa";
 import AvatarPic from "./AvatarPic";
+import * as DOMPurify from "dompurify";
 
 const StoryCard = ({ data }) => {
   let created = Number(data.time) / 1000000;
@@ -55,7 +56,9 @@ const StoryCard = ({ data }) => {
             {decodeURIComponent(data.title)}
           </Heading>
           <Text noOfLines={2}>
-            {decodeURIComponent(data.body).replace(/(<([^>]+)>)/gi, " ")}
+            {DOMPurify.sanitize(decodeURIComponent(data.body), {
+              ALLOWED_TAGS: [""],
+            })}
           </Text>
           <Flex mt={3} gap={{ base: 1, md: 2 }} align={"center"}>
             <Tag>{data.genre}</Tag>

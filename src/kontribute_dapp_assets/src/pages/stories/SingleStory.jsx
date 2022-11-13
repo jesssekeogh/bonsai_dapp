@@ -25,6 +25,7 @@ import { Confetti } from "../components";
 import "../../../assets/main.css";
 import { unwrapProposal, unwrapStory } from "./components/Unwrapping";
 import AuthorsCollectibles from "./components/AuthorsCollectibles";
+import * as DOMPurify from "dompurify";
 
 const SingleStory = () => {
   const params = useParams();
@@ -123,7 +124,10 @@ const SingleStory = () => {
                     fontWeight="bold"
                     textAlign="center"
                   >
-                    {decodeURIComponent(storyContent.groupName)}
+                    {DOMPurify.sanitize(
+                      decodeURIComponent(storyContent.groupName),
+                      { FORBID_ATTR: ["style"], FORBID_TAGS: ["style"] }
+                    )}
                   </Text>
                   <Text
                     fontSize="28px"
@@ -131,7 +135,10 @@ const SingleStory = () => {
                     fontWeight="bold"
                     textAlign="center"
                   >
-                    {decodeURIComponent(storyContent.title)}
+                    {DOMPurify.sanitize(
+                      decodeURIComponent(storyContent.title),
+                      { FORBID_ATTR: ["style"], FORBID_TAGS: ["style"] }
+                    )}
                   </Text>
                 </Stack>
                 <Text
@@ -139,7 +146,10 @@ const SingleStory = () => {
                   fontSize={"21px"}
                   fontFamily="'Times New Roman', Times, serif"
                   dangerouslySetInnerHTML={{
-                    __html: decodeURIComponent(storyContent.body),
+                    __html: DOMPurify.sanitize(
+                      decodeURIComponent(storyContent.body),
+                      { FORBID_ATTR: ["style"], FORBID_TAGS: ["style"] }
+                    ),
                   }}
                 />
               </Container>
