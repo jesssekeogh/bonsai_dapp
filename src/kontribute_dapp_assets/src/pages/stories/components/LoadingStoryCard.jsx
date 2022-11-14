@@ -23,16 +23,17 @@ const LoadingStoryCard = () => {
         boxShadow={"xl"}
         rounded={"lg"}
         p={4}
+        overflow="hidden"
       >
         <Flex align="center" gap={2}>
-          <SkeletonCircle size="8" />
+          <SkeletonCircle size="9" />
           <Skeleton height="15px" w={"150px"} />
         </Flex>
         <SkeletonText
-          mt="4"
-          noOfLines={5}
+          my={3}
+          noOfLines={6}
           spacing="4"
-          w={{ base: "250px", md: "550px" }}
+          w={{ base: "280px", md: "570px" }}
         />
       </Container>
     </Flex>

@@ -57,7 +57,6 @@ const StoryUtils = ({
   views,
   address,
   author,
-  monetizedAddress,
   monetized,
 }) => {
   const location = useLocation();
@@ -131,7 +130,6 @@ const StoryUtils = ({
           author={author}
           address={address}
           smallView={false}
-          monetizedAddress={monetizedAddress}
           monetized={monetized}
         />
         <Flex align="center" gap={1.5} mt={5}>

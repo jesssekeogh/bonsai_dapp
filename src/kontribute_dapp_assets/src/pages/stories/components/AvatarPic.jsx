@@ -5,16 +5,8 @@ import {
   startStoryServiceClient,
 } from "../../CanDBClient/client";
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
-import { NavLink } from "react-router-dom";
 
-const AvatarPic = ({
-  author,
-  address,
-  smallView,
-  refresh,
-  monetizedAddress,
-  monetized,
-}) => {
+const AvatarPic = ({ author, address, smallView, refresh, monetized }) => {
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
   const partitionKey = `author_${author}`;
@@ -53,33 +45,21 @@ const AvatarPic = ({
   return (
     <>
       {defaultId ? (
-        <NavLink to={`/marketplace/${monetizedAddress}`}>
-          <Flex
-            align={smallView ? "center" : "end"}
-            gap={2}
-            _hover={{ opacity: "0.9" }}
-          >
-            <Avatar size={smallView ? "sm" : "md"} bg="teal.500" />{" "}
-            <Text color={"gray.500"}>{`${address.substring(
-              0,
-              5
-            )}...${address.substring(59, 64)}`}</Text>
-            {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
-          </Flex>
-        </NavLink>
+        <Flex align={smallView ? "center" : "end"} gap={2}>
+          <Avatar size={smallView ? "sm" : "md"} bg="teal.500" />{" "}
+          <Text color={"gray.500"}>{`${address.substring(
+            0,
+            5
+          )}...${address.substring(59, 64)}`}</Text>
+          {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
+        </Flex>
       ) : (
         <Box>
-          <NavLink to={`/marketplace/${monetizedAddress}`}>
-            <Flex
-              align={smallView ? "center" : "end"}
-              gap={2}
-              _hover={{ opacity: "0.9" }}
-            >
-              <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
-              <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
-              {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
-            </Flex>
-          </NavLink>
+          <Flex align={smallView ? "center" : "end"} gap={2}>
+            <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
+            <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
+            {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
+          </Flex>
           {!smallView ? (
             <Text mt={3} color={"gray.500"} maxW={["320px", null, "500px"]}>
               "{authorDetails.bio}"

@@ -31,7 +31,7 @@ const AuthorsCollectibles = ({ address }) => {
         forSale.push(nft[0]);
       }
 
-      if (forSale.length > 4) {
+      if (forSale.length > 3) {
         break;
       }
     }
@@ -90,7 +90,7 @@ const SmallNft = ({ tokenId }) => {
   useEffect(() => {
     load();
   }, []);
-  const size = useBreakpointValue({ base: "60px", lg: "85px" });
+  const size = useBreakpointValue({ base: "75px", lg: "110px" });
   return (
     <NavLink
       to={`/nft/${tokenToText(tokenId)}`}

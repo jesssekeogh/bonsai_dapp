@@ -167,7 +167,6 @@ const SingleStory = () => {
                   loggedIn={loggedIn}
                   address={storyContent.address}
                   author={storyContent.author}
-                  monetizedAddress={storyContent.monetizedAddress}
                   monetized={storyContent.monetized}
                 />
                 <AuthorsCollectibles address={storyContent.monetizedAddress} />
