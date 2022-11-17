@@ -190,6 +190,7 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
     "Short Story",
     "Blog",
     "Other",
+    "Web3Author Competition",
   ];
   return (
     <Flex rounded={"lg"} my={3}>

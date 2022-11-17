@@ -1,12 +1,21 @@
 import { startIndexClient } from "./client.js";
 
-const pk = "author_ntohy-uex3p-ricj3-dhz7a-enmvo-szydx-l77yh-kftxf-h25x3-j6feg-2ae"
-
-const delete_pk = async () => {
+const get_cans = async () => {
+  console.log("getting all user canisters...");
   const indexClient = await startIndexClient();
 
-  const cans = await indexClient.indexCanisterActor.getAllCanisterIdsByPK(pk);
-  console.log(cans);
+  let allCans = [];
+
+  const pks = await indexClient.indexCanisterActor.getPKs();
+
+  for (let pk of pks) {
+    let cans = await indexClient.indexCanisterActor.getAllCanisterIdsByPK(pk);
+    for (let singleCan of cans) {
+      allCans.push(singleCan);
+    }
+  }
+
+  console.log(allCans);
 };
 
-delete_pk();
+get_cans();
