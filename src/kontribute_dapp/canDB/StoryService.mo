@@ -9,6 +9,7 @@ import Result "mo:base/Result";
 import Array "mo:base/Array";
 import Int "mo:base/Int";
 import Time "mo:base/Time";
+import List "mo:base/List";
 
 shared ({ caller = owner }) actor class StoryService({
     partitionKey : Text;
@@ -315,6 +316,7 @@ shared ({ caller = owner }) actor class StoryService({
     Vote API:
     */
 
+    // @deprecated:
     public query func getProposal(proposalSK : Text) : async Result.Result<?Types.VotingProposal, Text> {
         let proposal = switch (CanDB.get(db, { sk = proposalSK })) {
             case null { null };
@@ -327,6 +329,44 @@ shared ({ caller = owner }) actor class StoryService({
                 #ok(?({ title; body; votes; proposalNumber; open }));
             };
         };
+    };
+
+    // return all proposals from a story in a single query
+    public query func getProposals(storySK : Text) : async Result.Result<[?Types.VotingProposal], Text> {
+        let story = switch (CanDB.get(db, { sk = storySK })) {
+            case null { null };
+            case (?storyEntity) { unwrapStory(storyEntity) };
+        };
+
+        let proposalAmount = switch (story) {
+            case null { null };
+            case (?{ proposals }) {
+                ?({
+                    proposals;
+                });
+            };
+        };
+
+        let unwrappedProposalAmount = Option.get(proposalAmount, { proposals = 0 }).proposals;
+        var newList = List.nil<?Types.VotingProposal>();
+        var i = 1;
+
+        label lo loop {
+            if (i > unwrappedProposalAmount) {
+                break lo;
+            };
+
+            let proposal = switch (CanDB.get(db, { sk = returnProposalSortKey(Nat.toText(i), storySK) })) {
+                case null { return #err("proposal not found") };
+                case (?proposalEntity) {
+                    newList := List.push(unwrapProposal(proposalEntity), newList);
+                };
+            };
+
+            i += 1;
+        };
+
+        return #ok(List.toArray(List.reverse(newList)));
     };
 
     public shared query ({ caller }) func checkIfVoted(storySK : Text) : async Bool {
@@ -492,10 +532,6 @@ shared ({ caller = owner }) actor class StoryService({
         return Int.toText(unwrappedProposalAmount) # " Proposals closed";
     };
 
-    /* 
-    Scan API:
-    */
-
     // delete story function:
     public shared ({ caller }) func deleteStory(storySK : Text) : async ?Types.ConsumableEntity {
         assert ("author_" # Principal.toText(caller) == partitionKey);
@@ -553,6 +589,11 @@ shared ({ caller = owner }) actor class StoryService({
         return res;
     };
 
+    /* 
+    Scan API:
+    */
+
+    // return just a small amount of story data
     public query func scanAllStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesQuickReturn {
         // the structure of our frontend means we only need to return groupname and sortkey from this query
         let { entities; nextKey } = CanDB.scan(
@@ -580,6 +621,21 @@ shared ({ caller = owner }) actor class StoryService({
         );
 
         { stories = filtered; nextKey = nextKey };
+    };
+
+    // return all full stories
+    public query func scanAllFullStories(skLowerBound : Text, skUpperBound : Text, limit : Nat, ascending : ?Bool) : async Types.ScanStoriesResult {
+        let { entities; nextKey } = CanDB.scan(
+            db,
+            {
+                skLowerBound = skLowerBound;
+                skUpperBound = skUpperBound;
+                limit = limit;
+                ascending = ascending;
+            },
+        );
+
+        { stories = unwrapValidStories(entities); nextKey = nextKey };
     };
 
     /* 

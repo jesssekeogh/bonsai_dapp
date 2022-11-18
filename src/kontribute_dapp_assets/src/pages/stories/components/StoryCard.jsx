@@ -8,6 +8,7 @@ import {
   Heading,
   Button,
   Text,
+  Wrap,
 } from "@chakra-ui/react";
 import {
   TextColorDark,
@@ -60,7 +61,11 @@ const StoryCard = ({ data }) => {
             })}
           </Text>
           <Flex mt={3} gap={{ base: 1, md: 2 }} align={"center"}>
-            <Tag>{data.genre}</Tag>
+            <Tag>
+              {data.genre === "Web3Author Competition"
+                ? "Competition"
+                : data.genre}
+            </Tag>
             {data.proposals > 1 ? <Tag>Poll ✅</Tag> : null}·
             <Button
               bg={"none"}

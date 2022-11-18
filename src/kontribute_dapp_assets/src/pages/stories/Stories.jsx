@@ -25,7 +25,6 @@ import {
   startStoryServiceClient,
 } from "../CanDBClient/client";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { unwrapStory } from "./components/Unwrapping";
 import { SpinnerIcon } from "@chakra-ui/icons";
 import StoryCard from "./components/StoryCard";
 import { LoadingStoryCard, StoryCard } from "./components";
@@ -42,36 +41,32 @@ const Stories = () => {
 
   const loadLatest = async () => {
     setLoaded(false);
+
     const usersMap = await indexClient.indexCanisterActor.getPKs();
 
-    const skLowerBound = "";
-    const skUpperBound = "~";
+    const skLowerBound = "author_";
+    const skUpperBound = "author_~";
     const limit = 1000;
     const ascending = [false];
 
     let storiesToShow = [];
     let storyPromises = [];
 
-    // simple getLatest algo, a more advanced algo is needed later on:
     for (let user of usersMap) {
-      const stories = await storyServiceClient.query(user, (actor) =>
-        actor.scanAllStories(skLowerBound, skUpperBound, limit, ascending)
+      const stories = storyServiceClient.query(user, (actor) =>
+        actor.scanAllFullStories(skLowerBound, skUpperBound, limit, ascending)
       );
 
-      const latestStoryFromAuthor = stories[0].value.stories;
-
-      for (let story of latestStoryFromAuthor) {
-        const storyData = storyServiceClient.query(user, (actor) =>
-          actor.getStory(story.sortKey)
-        );
-        storyPromises.push(storyData);
-      }
+      storyPromises.push(stories);
     }
 
     await Promise.allSettled(
-      storyPromises.map(async (data) => {
-        const story = await data;
-        storiesToShow.push(unwrapStory(story));
+      storyPromises.map(async (stories) => {
+        const latestStoryFromAuthor = await stories;
+
+        for (let story of latestStoryFromAuthor[0].value.stories) {
+          storiesToShow.push(story);
+        }
       })
     );
 

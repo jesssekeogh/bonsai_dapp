@@ -46,9 +46,11 @@ export interface ConsumableEntity {
 export type PK = string;
 export type Result = { 'ok' : [] | [ConsumableEntity] } |
   { 'err' : string };
-export type Result_1 = { 'ok' : [] | [VotingProposal] } |
+export type Result_1 = { 'ok' : Array<[] | [VotingProposal]> } |
   { 'err' : string };
-export type Result_2 = { 'ok' : [] | [AuthorDetails] } |
+export type Result_2 = { 'ok' : [] | [VotingProposal] } |
+  { 'err' : string };
+export type Result_3 = { 'ok' : [] | [AuthorDetails] } |
   { 'err' : string };
 export type SK = string;
 export type ScalingLimitType = { 'heapSize' : bigint } |
@@ -64,6 +66,10 @@ export interface ScanStoriesQuickElement {
 }
 export interface ScanStoriesQuickReturn {
   'stories' : Array<ScanStoriesQuickElement>,
+  'nextKey' : [] | [string],
+}
+export interface ScanStoriesResult {
+  'stories' : Array<SingleStory>,
   'nextKey' : [] | [string],
 }
 export interface SingleStory {
@@ -86,14 +92,19 @@ export interface StoryService {
   'checkIfVoted' : ActorMethod<[string], boolean>,
   'closeProposals' : ActorMethod<[string], string>,
   'deleteStory' : ActorMethod<[string], [] | [ConsumableEntity]>,
-  'getAuthorDetails' : ActorMethod<[string], Result_2>,
+  'getAuthorDetails' : ActorMethod<[string], Result_3>,
   'getPK' : ActorMethod<[], string>,
-  'getProposal' : ActorMethod<[string], Result_1>,
+  'getProposal' : ActorMethod<[string], Result_2>,
+  'getProposals' : ActorMethod<[string], Result_1>,
   'getStory' : ActorMethod<[string], [] | [SingleStory]>,
   'incrementView' : ActorMethod<[string], [] | [ConsumableEntity]>,
   'likeStory' : ActorMethod<[string], Result>,
   'putAuthorDetails' : ActorMethod<[AuthorDetails], string>,
   'putStory' : ActorMethod<[SingleStory, Array<VotingProposal>], string>,
+  'scanAllFullStories' : ActorMethod<
+    [string, string, bigint, [] | [boolean]],
+    ScanStoriesResult,
+  >,
   'scanAllStories' : ActorMethod<
     [string, string, bigint, [] | [boolean]],
     ScanStoriesQuickReturn,

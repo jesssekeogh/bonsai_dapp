@@ -12,13 +12,17 @@ export const unwrapStory = (data) => {
   }
 };
 
-export const unwrapProposal = (data) => {
+export const unwrapAllProposals = (data) => {
+  let allUnwrapped = [];
+
   for (let settledResult of data) {
     // handle settled result if fulfilled
     if (settledResult.status === "fulfilled" && "ok" in settledResult.value) {
-      return Array.isArray(settledResult.value.ok)
-        ? settledResult.value.ok[0]
-        : settledResult.value.ok;
+      if (Array.isArray(settledResult.value.ok))
+        for (let val of settledResult.value.ok) {
+          allUnwrapped.push(val[0]);
+        }
+      return allUnwrapped;
     }
   }
 };

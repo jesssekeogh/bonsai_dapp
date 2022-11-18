@@ -69,7 +69,7 @@ export const idlFactory = ({ IDL }) => {
     'pseudonym' : IDL.Text,
     'nftProfilePic' : IDL.Text,
   });
-  const Result_2 = IDL.Variant({
+  const Result_3 = IDL.Variant({
     'ok' : IDL.Opt(AuthorDetails),
     'err' : IDL.Text,
   });
@@ -80,8 +80,12 @@ export const idlFactory = ({ IDL }) => {
     'open' : IDL.Bool,
     'proposalNumber' : IDL.Int,
   });
-  const Result_1 = IDL.Variant({
+  const Result_2 = IDL.Variant({
     'ok' : IDL.Opt(VotingProposal),
+    'err' : IDL.Text,
+  });
+  const Result_1 = IDL.Variant({
+    'ok' : IDL.Vec(IDL.Opt(VotingProposal)),
     'err' : IDL.Text,
   });
   const SingleStory = IDL.Record({
@@ -103,6 +107,10 @@ export const idlFactory = ({ IDL }) => {
     'ok' : IDL.Opt(ConsumableEntity),
     'err' : IDL.Text,
   });
+  const ScanStoriesResult = IDL.Record({
+    'stories' : IDL.Vec(SingleStory),
+    'nextKey' : IDL.Opt(IDL.Text),
+  });
   const ScanStoriesQuickElement = IDL.Record({
     'sortKey' : IDL.Text,
     'genre' : IDL.Text,
@@ -117,9 +125,10 @@ export const idlFactory = ({ IDL }) => {
     'checkIfVoted' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'closeProposals' : IDL.Func([IDL.Text], [IDL.Text], []),
     'deleteStory' : IDL.Func([IDL.Text], [IDL.Opt(ConsumableEntity)], []),
-    'getAuthorDetails' : IDL.Func([IDL.Text], [Result_2], ['query']),
+    'getAuthorDetails' : IDL.Func([IDL.Text], [Result_3], ['query']),
     'getPK' : IDL.Func([], [IDL.Text], ['query']),
-    'getProposal' : IDL.Func([IDL.Text], [Result_1], ['query']),
+    'getProposal' : IDL.Func([IDL.Text], [Result_2], ['query']),
+    'getProposals' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'getStory' : IDL.Func([IDL.Text], [IDL.Opt(SingleStory)], ['query']),
     'incrementView' : IDL.Func([IDL.Text], [IDL.Opt(ConsumableEntity)], []),
     'likeStory' : IDL.Func([IDL.Text], [Result], []),
@@ -128,6 +137,11 @@ export const idlFactory = ({ IDL }) => {
         [SingleStory, IDL.Vec(VotingProposal)],
         [IDL.Text],
         [],
+      ),
+    'scanAllFullStories' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],
+        [ScanStoriesResult],
+        ['query'],
       ),
     'scanAllStories' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Nat, IDL.Opt(IDL.Bool)],

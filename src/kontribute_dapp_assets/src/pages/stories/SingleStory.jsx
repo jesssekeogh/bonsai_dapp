@@ -23,7 +23,7 @@ import { PollSection, StoryUtils } from "./components";
 import { useSelector } from "react-redux";
 import { Confetti } from "../components";
 import "../../../assets/main.css";
-import { unwrapProposal, unwrapStory } from "./components/Unwrapping";
+import { unwrapAllProposals, unwrapStory } from "./components/Unwrapping";
 import AuthorsCollectibles from "./components/AuthorsCollectibles";
 import * as DOMPurify from "dompurify";
 
@@ -51,25 +51,14 @@ const SingleStory = () => {
 
     if (!result) return;
     let proposals = [];
-    let proposalPromises = [];
 
     if (result.proposals > 1) {
-      for (let i = 0; i < result.proposals; i++) {
-        let proposalSK = `proposal_${i + 1}_for_${storySortKey}`;
-
-        const proposal = storyServiceClient.query(partitionKey, (actor) =>
-          actor.getProposal(proposalSK)
-        );
-
-        proposalPromises.push(proposal);
-      }
-
-      await Promise.allSettled(
-        proposalPromises.map(async (data) => {
-          const proposal = await data;
-          proposals.push(unwrapProposal(proposal));
-        })
+      const proposalData = await storyServiceClient.query(
+        partitionKey,
+        (actor) => actor.getProposals(storySortKey)
       );
+
+      proposals = unwrapAllProposals(proposalData);
     }
 
     const hasVoted = await storyServiceClient.query(partitionKey, (actor) =>

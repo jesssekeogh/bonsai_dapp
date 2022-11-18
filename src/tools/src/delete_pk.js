@@ -1,6 +1,6 @@
 import { startIndexClient } from "./client.js";
 
-const pk = "author_ntohy-uex3p-ricj3-dhz7a-enmvo-szydx-l77yh-kftxf-h25x3-j6feg-2ae"
+const pk = "author_x4frj-bde26-i36op-k26wj-qsjhh-6tzic-pbvbk-2w5fp-ezivd-dtdoj-gqe"
 
 const delete_pk = async () => {
   const indexClient = await startIndexClient();

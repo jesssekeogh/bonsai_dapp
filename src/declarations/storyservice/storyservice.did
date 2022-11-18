@@ -26,14 +26,17 @@ type StoryService =
    checkIfVoted: (text) -> (bool) query;
    closeProposals: (text) -> (text);
    deleteStory: (text) -> (opt ConsumableEntity);
-   getAuthorDetails: (text) -> (Result_2) query;
+   getAuthorDetails: (text) -> (Result_3) query;
    getPK: () -> (text) query;
-   getProposal: (text) -> (Result_1) query;
+   getProposal: (text) -> (Result_2) query;
+   getProposals: (text) -> (Result_1) query;
    getStory: (text) -> (opt SingleStory) query;
    incrementView: (text) -> (opt ConsumableEntity);
    likeStory: (text) -> (Result);
    putAuthorDetails: (AuthorDetails) -> (text);
    putStory: (SingleStory, vec VotingProposal) -> (text);
+   scanAllFullStories: (text, text, nat, opt bool) ->
+    (ScanStoriesResult) query;
    scanAllStories: (text, text, nat, opt bool) ->
     (ScanStoriesQuickReturn) query;
    skExists: (text) -> (bool) query;
@@ -57,6 +60,11 @@ type SingleStory =
    title: text;
    views: int;
  };
+type ScanStoriesResult = 
+ record {
+   nextKey: opt text;
+   stories: vec SingleStory;
+ };
 type ScanStoriesQuickReturn = 
  record {
    nextKey: opt text;
@@ -79,15 +87,20 @@ type ScalingLimitType =
    heapSize: nat;
  };
 type SK = text;
-type Result_2 = 
+type Result_3 = 
  variant {
    err: text;
    ok: opt AuthorDetails;
  };
-type Result_1 = 
+type Result_2 = 
  variant {
    err: text;
    ok: opt VotingProposal;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: vec opt VotingProposal;
  };
 type Result = 
  variant {
