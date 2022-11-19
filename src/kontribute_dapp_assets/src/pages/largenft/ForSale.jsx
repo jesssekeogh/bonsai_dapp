@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Button,
   Heading,
@@ -45,6 +45,7 @@ import { tokenFromText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 import { Usergeek } from "usergeek-ic-js";
 import IcpToDollars from "../components/IcpToDollars";
+import ReactCanvasConfetti from "react-canvas-confetti";
 
 const ForSale = ({ Icp, tokenId, tokens }) => {
   const [usdPrice, setUsdPrice] = useState(0);
@@ -97,14 +98,68 @@ const ForSale = ({ Icp, tokenId, tokens }) => {
 
 const { toast } = createStandaloneToast();
 
+const canvasStyles = {
+  position: "fixed",
+  pointerEvents: "none",
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+};
+
 const BuyButton = ({ tokenId, price, usd }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const address = useAnvilSelector((state) => state.user.address);
   const dispatch = useAnvilDispatch();
   // 0.01icp= 001000000 e8s
 
+  const refAnimationInstance = useRef(null);
+
+  const getInstance = useCallback((instance) => {
+    refAnimationInstance.current = instance;
+  }, []);
+
+  const makeShot = useCallback((particleRatio, opts) => {
+    refAnimationInstance.current &&
+      refAnimationInstance.current({
+        ...opts,
+        origin: { y: 0.7 },
+        particleCount: Math.floor(200 * particleRatio),
+      });
+  }, []);
+
+  const fire = useCallback(() => {
+    makeShot(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+
+    makeShot(0.2, {
+      spread: 60,
+    });
+
+    makeShot(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  }, [makeShot]);
+
   const PurchaseNft = async () => {
     onClose();
+    fire();
     let buyObj = {
       id: tokenId,
       amount: Number(price),
@@ -128,7 +183,6 @@ const BuyButton = ({ tokenId, price, usd }) => {
           tokenId.substring(0, 6) + "..." + tokenId.substring(15, 20)
         } bought for ${e8sToIcp(price)} ICP`
       );
-
       Usergeek.trackEvent("NftPurchase");
     } catch (e) {
       console.log(e);
@@ -145,6 +199,7 @@ const BuyButton = ({ tokenId, price, usd }) => {
 
   return (
     <>
+      <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
       <Button
         leftIcon={<MdOutlineAccountBalanceWallet />}
         bg={buttonBgColor}
