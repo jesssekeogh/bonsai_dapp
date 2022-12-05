@@ -176,7 +176,7 @@ const PutAuthor = ({ pk, address, author }) => {
         <ModalOverlay />
         <ModalContent mx={2}>
           <ModalHeader>
-            <Center>Profile details</Center>
+            <Center>New profile details</Center>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

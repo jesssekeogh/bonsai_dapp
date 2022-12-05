@@ -16,6 +16,7 @@ import {
   nft_fetch,
   useAnvilDispatch,
 } from "@vvv-interactive/nftanvil-react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
 import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { LoadingSpinner } from "../../containers/index";
@@ -89,7 +90,7 @@ const LargeNft = () => {
     };
   }, []);
 
-  if (!Loaded) return <LoadingSpinner label="Loading NFT..." />;
+  if (!Loaded) return <LoadingSpinner label="Loading Collectible..." />;
   return (
     <Center pt={2} pb={10}>
       {pathData.showConfetti ? <Confetti /> : null}
@@ -117,7 +118,10 @@ const LargeNft = () => {
         >
           <HStack>
             <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
-              <Button _hover={{ boxShadow: "base" }}>
+              <Button
+                leftIcon={<ArrowBackIcon />}
+                _hover={{ boxShadow: "base" }}
+              >
                 <Text>Go Back</Text>
               </Button>
             </Link>

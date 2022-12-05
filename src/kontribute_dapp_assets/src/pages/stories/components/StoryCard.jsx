@@ -5,10 +5,8 @@ import {
   Tag,
   Container,
   useColorModeValue,
-  Heading,
   Button,
   Text,
-  Wrap,
 } from "@chakra-ui/react";
 import {
   TextColorDark,

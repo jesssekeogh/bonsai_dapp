@@ -16,18 +16,14 @@ import {
   SimpleGrid,
   GridItem,
   Box,
-  Tag,
-  Link,
-  Text,
 } from "@chakra-ui/react";
 import {
   startIndexClient,
   startStoryServiceClient,
 } from "../CanDBClient/client";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { SpinnerIcon } from "@chakra-ui/icons";
 import StoryCard from "./components/StoryCard";
-import { LoadingStoryCard, StoryCard } from "./components";
+import { LoadingStoryCard, StoryCard, SmallPickBox } from "./components";
+import { SpinnerIcon } from "@chakra-ui/icons";
 
 const Stories = () => {
   const indexClient = startIndexClient();
@@ -37,7 +33,8 @@ const Stories = () => {
   const [Loaded, setLoaded] = useState(false);
 
   const [storyFilter, setStoryFilter] = useState("Latest");
-  const [storiesShowing, setStoriesShowing] = useState(8);
+
+  const [showAll, setShowAll] = useState(false);
 
   const loadLatest = async () => {
     setLoaded(false);
@@ -81,21 +78,26 @@ const Stories = () => {
         }
       });
 
-      setStories(filterByFilter.slice(0, storiesShowing));
+      if (showAll) {
+        setStories(filterByFilter);
+      } else {
+        setStories(filterByFilter.slice(0, 15));
+      }
       return setLoaded(true);
     }
 
-    setStories(filterByLatest.slice(0, storiesShowing));
+    if (showAll) {
+      setStories(filterByLatest);
+    } else {
+      setStories(filterByLatest.slice(0, 15));
+    }
     setLoaded(true);
   };
 
   useEffect(() => {
-    loadLatest();
-  }, [storiesShowing, storyFilter]);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    loadLatest();
+  }, [showAll, storyFilter]);
 
   return (
     <Center mt={{ base: 0, md: 8 }} mb={8} pb={10}>
@@ -121,9 +123,9 @@ const Stories = () => {
                       <Center>
                         <Button
                           onClick={() => {
-                            setLoaded(false);
-                            setStoriesShowing(storiesShowing + 5);
+                            setShowAll(true);
                           }}
+                          isDisabled={showAll}
                           leftIcon={<SpinnerIcon />}
                           mt={3}
                         >
@@ -133,21 +135,21 @@ const Stories = () => {
                     </>
                   ) : (
                     <>
-                      {stories.map((item) => {
-                        if (
-                          storyFilter === "Latest" ||
-                          storyFilter === item.genre
-                        ) {
-                          return (
-                            <StoryCard key={item.time} data={{ ...item }} />
-                          );
-                        }
-                      })}
-                      {[...Array(storiesShowing - stories.length).keys()].map(
-                        (item) => (
-                          <LoadingStoryCard key={item} />
-                        )
-                      )}
+                      {[...Array(10).keys()].map((item) => (
+                        <LoadingStoryCard key={item} />
+                      ))}
+                      <Center>
+                        <Button
+                          onClick={() => {
+                            setShowAll(true);
+                          }}
+                          isDisabled={showAll}
+                          leftIcon={<SpinnerIcon />}
+                          mt={3}
+                        >
+                          Load more...
+                        </Button>
+                      </Center>
                     </>
                   )}
                 </SlideFade>
@@ -159,8 +161,9 @@ const Stories = () => {
           <Box
             pos={{ base: "auto", md: "sticky" }}
             top={{ base: "auto", md: "20" }}
+            mt={{ base: 3, md: 20 }}
           >
-            <BetaInfo />
+            <OurPicks />
             <BrowseUtils
               storyFilter={storyFilter}
               setStoryFilter={setStoryFilter}
@@ -208,39 +211,29 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
   );
 };
 
-const BetaInfo = () => {
+const OurPicks = () => {
   const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Flex rounded={"lg"} mt={{ base: 3, md: 20 }}>
+    <Flex rounded={"lg"} mt={3}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
-        <Flex align="center">
-          <Heading size="md" flex="1">
-            Welcome👋🏻
-          </Heading>
-          <Tag colorScheme="green">1.0.0-beta release</Tag>
-        </Flex>
-        <Text mt={3}>
-          Sit back grab a ☕️ and enjoy some of the web3 stories on Kontribute.
-          You can connect with us on our{" "}
-          <Link
-            fontWeight="bold"
-            color="#7289da"
-            href={"https://discord.gg/mWEzS9gvbZ"}
-            isExternal
-          >
-            Discord <ExternalLinkIcon mx="2px" />
-          </Link>{" "}
-          and{" "}
-          <Link
-            fontWeight="bold"
-            color="#1DA1F2"
-            href={"https://mobile.twitter.com/TeamBonsai_ICP"}
-            isExternal
-          >
-            Twitter <ExternalLinkIcon mx="2px" />
-          </Link>{" "}
-          for updates.
-        </Text>
+        <Heading size="md" flex="1">
+          Our Picks ✍️
+        </Heading>
+        <SmallPickBox
+          storySortKey={
+            "author_3d2q2-ce4z5-osah6-dibbj-secst-grfxj-q3f7x-ahuhz-gk5ma-rsgjo-lae_story_The%20Kontribute%20Writathon!_chapter_Web3%20Author%20Competition"
+          }
+        />
+        <SmallPickBox
+          storySortKey={
+            "author_qflw3-vnfgg-ewg4g-rt7y7-zrana-4oruo-jfrbo-i3l5b-rid5c-7o7o2-pae_story_Interstellar%20Tales_chapter_Prologue"
+          }
+        />
+        <SmallPickBox
+          storySortKey={
+            "author_bc2fh-bgwnk-fupqb-53xlk-ulfsk-tl7y3-difge-krqya-gb3am-uhwp6-gae_story_Moonewalker%20Fan%20Fiction_chapter_Say%20hello%20to%20my%20little%20Pleth..."
+          }
+        />
       </Container>
     </Flex>
   );

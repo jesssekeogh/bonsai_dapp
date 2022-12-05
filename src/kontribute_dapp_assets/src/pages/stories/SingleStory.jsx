@@ -3,7 +3,7 @@ import {
   startIndexClient,
   startStoryServiceClient,
 } from "../CanDBClient/client";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import {
   Container,
   useColorModeValue,
@@ -13,11 +13,13 @@ import {
   SimpleGrid,
   GridItem,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import {
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import { LoadingSpinner } from "../../containers/index";
 import { PollSection, StoryUtils } from "./components";
 import { useSelector } from "react-redux";
@@ -34,6 +36,7 @@ const SingleStory = () => {
   const storySortKey = encodeURIComponent(params.storySortKey);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const partitionKey = `author_${storySortKey.split("_")[1]}`;
 
@@ -170,6 +173,16 @@ const SingleStory = () => {
                     monetizedAddress={storyContent.monetizedAddress}
                   />
                 ) : null}
+                <Center>
+                  <Button
+                    leftIcon={<ArrowBackIcon />}
+                    _hover={{ boxShadow: "base" }}
+                    mb={3}
+                    onClick={() => navigate("/stories")}
+                  >
+                    <Text>Go Back</Text>
+                  </Button>
+                </Center>
               </Box>
             </GridItem>
           </SimpleGrid>

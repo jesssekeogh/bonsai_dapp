@@ -311,6 +311,9 @@ const Create = () => {
                   address={address}
                   author={userId}
                 />
+                {proposalsArray.length > 1 ? (
+                  <PollSection justCreated={true} pollData={proposalsArray} />
+                ) : null}
                 <ActionButtons
                   setStoryOption={setStoryOption}
                   storyOption={storyOption}
@@ -323,9 +326,6 @@ const Create = () => {
                   storyState={storyState}
                   proposals={proposalsArray.length}
                 />
-                {proposalsArray.length > 1 ? (
-                  <PollSection justCreated={true} pollData={proposalsArray} />
-                ) : null}
               </Box>
             </GridItem>
           </SimpleGrid>
@@ -389,9 +389,11 @@ const ActionButtons = ({
         <>
           <Divider />
           <UpdateAddress dispatch={dispatch} storyState={storyState} />
-          {proposals > 1 ? (
-            <Monetization dispatch={dispatch} storyState={storyState} />
-          ) : null}
+          <Monetization
+            dispatch={dispatch}
+            storyState={storyState}
+            proposals={proposals}
+          />
         </>
       ) : null}
       <Divider />
@@ -415,7 +417,7 @@ const ActionButtons = ({
 const UpdateAddress = ({ dispatch, storyState }) => {
   const [isEditing, setIsEditing] = useState(false);
   return (
-    <>
+    <Box boxShadow="base" rounded="lg" p={3}>
       <Text fontWeight={500}>Minting address used:</Text>
       <Flex align="center" gap={2}>
         {isEditing ? (
@@ -450,37 +452,40 @@ const UpdateAddress = ({ dispatch, storyState }) => {
           }
         />
       </Flex>
-    </>
+    </Box>
   );
 };
 
-const Monetization = ({ dispatch, storyState }) => {
+const Monetization = ({ dispatch, storyState, proposals }) => {
   const enable = () => {
     dispatch({ type: "updateMonetized", payload: !storyState.monetized });
   };
 
   return (
-    <>
+    <Box boxShadow="base" rounded="lg" p={3}>
       <FormControl display="flex" alignItems="center">
         <FormLabel htmlFor="enable-monetized" mb="0">
           Enable poll gating?
         </FormLabel>
         <Switch
           id="enable-monetized"
+          isDisabled={proposals < 2}
           isChecked={storyState.monetized}
           onChange={() => enable()}
         />
       </FormControl>
-      {storyState.monetized ? (
-        <>
-          <Text size="xs" color="gray.500">
-            Only those who own some of your minted collectibles can vote on your
-            poll. A <Tag>Collectible Seller</Tag> badge will appear next to your
-            profile when enabled.
-          </Text>
-        </>
+      {proposals < 2 ? (
+        <Text size="7pt" color="gray.500">
+          Create a poll to enable!
+        </Text>
       ) : null}
-    </>
+      {storyState.monetized ? (
+        <Text size="xs" color="gray.500">
+          Only those who own some of your minted collectibles can vote on your
+          poll.
+        </Text>
+      ) : null}
+    </Box>
   );
 };
 
