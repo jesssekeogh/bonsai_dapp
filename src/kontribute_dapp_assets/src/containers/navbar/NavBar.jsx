@@ -29,6 +29,7 @@ const LinkItems = [
     name: "Marketplace",
     link: "/marketplace",
   },
+  { name: "Mint", link: "/mint" },
 ];
 
 const NavItem = ({ link, name }) => {

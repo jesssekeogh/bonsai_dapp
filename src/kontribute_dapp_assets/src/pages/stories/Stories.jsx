@@ -16,6 +16,8 @@ import {
   SimpleGrid,
   GridItem,
   Box,
+  Skeleton,
+  SkeletonCircle,
 } from "@chakra-ui/react";
 import {
   startIndexClient,
@@ -24,6 +26,7 @@ import {
 import StoryCard from "./components/StoryCard";
 import { LoadingStoryCard, StoryCard, SmallPickBox } from "./components";
 import { SpinnerIcon } from "@chakra-ui/icons";
+import { unwrapStory } from "./components/Unwrapping";
 
 const Stories = () => {
   const indexClient = startIndexClient();
@@ -213,27 +216,70 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
 
 const OurPicks = () => {
   const bgColor = useColorModeValue("white", "#111111");
+  const indexClient = startIndexClient();
+  const storyServiceClient = startStoryServiceClient(indexClient);
+
+  const [showOurPicks, setShowOurPicks] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
+  const sortKeysForPicks = [
+    "author_3d2q2-ce4z5-osah6-dibbj-secst-grfxj-q3f7x-ahuhz-gk5ma-rsgjo-lae_story_The%20Kontribute%20Writathon!_chapter_Web3%20Author%20Competition",
+    "author_qflw3-vnfgg-ewg4g-rt7y7-zrana-4oruo-jfrbo-i3l5b-rid5c-7o7o2-pae_story_Interstellar%20Tales_chapter_Prologue",
+    "author_bc2fh-bgwnk-fupqb-53xlk-ulfsk-tl7y3-difge-krqya-gb3am-uhwp6-gae_story_Moonewalker%20Fan%20Fiction_chapter_Say%20hello%20to%20my%20little%20Pleth...",
+  ];
+
+  const load = async () => {
+    let promises = [];
+    let pickedStories = [];
+
+    for (let sk of sortKeysForPicks) {
+      const partitionKey = `author_${sk.split("_")[1]}`;
+
+      const storyData = storyServiceClient.query(partitionKey, (actor) =>
+        actor.getStory(sk)
+      );
+
+      promises.push(storyData);
+    }
+
+    await Promise.allSettled(
+      promises.map(async (story) => {
+        const s = await story;
+        pickedStories.push(unwrapStory(s));
+      })
+    );
+
+    setShowOurPicks(pickedStories);
+    setLoaded(true);
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
   return (
     <Flex rounded={"lg"} mt={3}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Heading size="md" flex="1">
           Our Picks ✍️
         </Heading>
-        <SmallPickBox
-          storySortKey={
-            "author_3d2q2-ce4z5-osah6-dibbj-secst-grfxj-q3f7x-ahuhz-gk5ma-rsgjo-lae_story_The%20Kontribute%20Writathon!_chapter_Web3%20Author%20Competition"
-          }
-        />
-        <SmallPickBox
-          storySortKey={
-            "author_qflw3-vnfgg-ewg4g-rt7y7-zrana-4oruo-jfrbo-i3l5b-rid5c-7o7o2-pae_story_Interstellar%20Tales_chapter_Prologue"
-          }
-        />
-        <SmallPickBox
-          storySortKey={
-            "author_bc2fh-bgwnk-fupqb-53xlk-ulfsk-tl7y3-difge-krqya-gb3am-uhwp6-gae_story_Moonewalker%20Fan%20Fiction_chapter_Say%20hello%20to%20my%20little%20Pleth..."
-          }
-        />
+        {loaded ? (
+          <>
+            {showOurPicks.map((item) => (
+              <SmallPickBox data={item} key={item.time} />
+            ))}
+          </>
+        ) : (
+          sortKeysForPicks.map((item) => (
+            <Box key={item} mt={5}>
+              <Flex align="center" gap={2}>
+                <SkeletonCircle size="9" />
+                <Skeleton height="12px" w={"100px"} />
+              </Flex>
+              <Skeleton height="12px" mt={1} ms={1} w={"200px"} />
+            </Box>
+          ))
+        )}
       </Container>
     </Flex>
   );

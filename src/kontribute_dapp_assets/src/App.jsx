@@ -10,6 +10,7 @@ import {
   Create,
   PendragonNft,
   SingleStory,
+  Mint,
 } from "./pages";
 import { Box, useColorMode } from "@chakra-ui/react";
 import { NavBar, LoadingSpinner } from "./containers";
@@ -36,6 +37,7 @@ function App() {
           <Route path="/stories" element={<Stories />} />
           <Route path="/stories/create" element={<Create />} />
           <Route path="/stories/:storySortKey" element={<SingleStory />} />
+          <Route path="/mint" element={<Mint />} />
           <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
         </Routes>
         <Footer />

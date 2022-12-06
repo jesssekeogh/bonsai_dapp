@@ -9,6 +9,11 @@ import {
   HStack,
   Box,
   Skeleton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
@@ -56,6 +61,9 @@ const LargeNft = () => {
           content: meta.content.internal
             ? meta.content.internal.url
             : meta.content.external,
+          thumb: meta.thumb.internal
+            ? meta.thumb.internal.url
+            : meta.thumb.external,
         };
 
         setData(NftData);
@@ -90,16 +98,27 @@ const LargeNft = () => {
     };
   }, []);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   if (!Loaded) return <LoadingSpinner label="Loading Collectible..." />;
   return (
     <Center pt={2} pb={10}>
       {pathData.showConfetti ? <Confetti /> : null}
       <Stack
         direction={{ base: "column", md: "column", lg: "row" }}
-        p={{ base: 4, md: 10 }}
+        p={{ base: 3, md: 10 }}
       >
-        <Flex flex={1}>
+        <ChakraImage
+          borderRadius="lg"
+          boxSize={"100px"}
+          src={data.thumb}
+          fallback={<Skeleton borderRadius="lg" boxSize={"100px"} />}
+        />
+        <Flex flex={1} onClick={onOpen}>
           <ChakraImage
+            _hover={{
+              cursor: "pointer",
+            }}
             borderRadius="lg"
             boxSize={["100%", null, "600px"]}
             src={data.content}
@@ -108,6 +127,23 @@ const LargeNft = () => {
             }
           />
         </Flex>
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          isCentered
+          allowPinchZoom
+        >
+          <ModalOverlay />
+          <ModalContent maxW="90vh">
+            <ModalCloseButton />
+            <ChakraImage
+              borderRadius="lg"
+              height={"100%"}
+              src={data.content}
+              fallback={<Skeleton borderRadius="lg" height="100%" />}
+            />
+          </ModalContent>
+        </Modal>
         <Stack
           flex={1}
           flexDirection="column"

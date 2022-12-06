@@ -80,7 +80,7 @@ const HomeAlert = () => {
       mt={{ base: -1, lg: 0 }}
     >
       <AlertDescription>
-        ✍️ Win digital collectibles and participate now in the{" "}
+        ✍️ Win digital collectibles by participating in the{" "}
         <Link
           fontWeight="bold"
           href={
