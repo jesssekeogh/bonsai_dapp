@@ -153,7 +153,7 @@ const Profile = () => {
             </NavLink>
             <NavLink to={"/stories/create"}>
               <MenuItem closeOnSelect icon={<RiPencilFill />} maxW="240px">
-                Create
+                Create story
               </MenuItem>
             </NavLink>
             <MenuDivider />

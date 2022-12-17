@@ -4,11 +4,13 @@ import {
   useAnvilSelector,
   nft_transfer,
   nft_set_price,
+  nft_burn,
 } from "@vvv-interactive/nftanvil-react";
 import { tokenFromText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import {
   Button,
+  Heading,
   Text,
   Container,
   Flex,
@@ -34,6 +36,7 @@ import {
 import { InfoIcon } from "@chakra-ui/icons";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { MdSell, MdRemoveShoppingCart } from "react-icons/md";
+import { AiFillFire } from "react-icons/ai";
 import {
   FailedToast,
   SendingToast,
@@ -74,7 +77,10 @@ const Owned = ({ tokenId, tokens, price }) => {
           <SellButton tokenId={tokenId} />
           <TransferButton tokenId={tokenId} />
         </HStack>
-        {price > 0 ? <DelistButton tokenId={tokenId} /> : null}
+        <HStack align="center" mt={2}>
+          <BurnButton tokenId={tokenId} />
+          {price > 0 ? <DelistButton tokenId={tokenId} /> : null}
+        </HStack>
       </Container>
     </Flex>
   );
@@ -320,14 +326,91 @@ const DelistButton = ({ tokenId }) => {
     <Button
       bg={buttonBgColor}
       color={buttonTextColor}
-      mt={2}
       size="lg"
       leftIcon={<MdRemoveShoppingCart />}
       _hover={{ opacity: "0.8" }}
       onClick={() => updatePrice()}
     >
-      Delist from marketplace
+      Delist
     </Button>
   );
 };
+
+const BurnButton = ({ tokenId }) => {
+  const address = useAnvilSelector((state) => state.user.address);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useAnvilDispatch();
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
+
+  const BurnNft = async () => {
+    try {
+      onClose();
+      SendingToast("Burning NFT...");
+      await dispatch(nft_burn({ id: tokenId }));
+      toast.closeAll();
+      SuccessToast(
+        "Success",
+        `${tokenId.substring(0, 6) + "..." + tokenId.substring(15, 20)} Burned`
+      );
+    } catch (e) {
+      toast.closeAll();
+      FailedToast("Failed", e.toString());
+    }
+  };
+
+  return (
+    <>
+      <Button
+        leftIcon={<AiFillFire />}
+        bg={buttonBgColor}
+        color={buttonTextColor}
+        size="lg"
+        _hover={{ opacity: "0.8" }}
+        disabled={address ? false : true}
+        onClick={() => onOpen()}
+      >
+        Burn
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent mx="10%">
+          <ModalHeader>
+            <Center>Burn NFT</Center>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <Heading
+              fontSize={{ base: "xs", sm: "xs", md: "md" }}
+              fontWeight={600}
+              mb={2}
+            >
+              Item
+              <Text casing={"uppercase"}>{tokenId}</Text>
+            </Heading>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              leftIcon={<AiFillFire />}
+              bg={buttonBgColor}
+              color={buttonTextColor}
+              mt={2}
+              size={useBreakpointValue(["md", "lg"])}
+              _hover={{ opacity: "0.8" }}
+              width="100%"
+              onClick={() => BurnNft()}
+            >
+              Burn
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
 export default Owned;

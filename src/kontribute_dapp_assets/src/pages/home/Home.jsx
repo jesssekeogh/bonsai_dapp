@@ -98,7 +98,7 @@ const HomeAlert = () => {
 
 const HomeBanner = () => {
   return (
-    <Container maxW={"7xl"} mt={"-3rem"}>
+    <Container maxW={"7xl"} mt={"-3rem"} px={5}>
       <Stack
         align={"center"}
         spacing={{ base: 8, md: 10 }}

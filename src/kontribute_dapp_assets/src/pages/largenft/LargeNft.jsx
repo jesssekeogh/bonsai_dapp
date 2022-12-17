@@ -46,45 +46,49 @@ const LargeNft = () => {
   });
 
   const load = async () => {
-    await Promise.all([
-      (async () => {
-        let meta = await dispatch(nft_fetch(params.tokenid));
-        let NftData = {
-          id: params.tokenid,
-          name: meta.name,
-          lore: meta.lore,
-          attributes: meta.attributes,
-          tags: meta.tags,
-          color: itemQuality.light[meta.quality].color,
-          rating: itemQuality.light[meta.quality].label,
-          price: meta.price.amount,
-          content: meta.content.internal
-            ? meta.content.internal.url
-            : meta.content.external,
-          thumb: meta.thumb.internal
-            ? meta.thumb.internal.url
-            : meta.thumb.external,
-        };
+    try {
+      await Promise.all([
+        (async () => {
+          let meta = await dispatch(nft_fetch(params.tokenid));
+          let NftData = {
+            id: params.tokenid,
+            name: meta.name,
+            lore: meta.lore,
+            attributes: meta.attributes,
+            tags: meta.tags,
+            color: itemQuality.light[meta.quality].color,
+            rating: itemQuality.light[meta.quality].label,
+            price: meta.price.amount,
+            content: meta.content.internal
+              ? meta.content.internal.url
+              : meta.content.external,
+            thumb: meta.thumb.internal
+              ? meta.thumb.internal.url
+              : meta.thumb.external,
+          };
 
-        setData(NftData);
-      })(),
-      (async () => {
-        if (address) {
-          let allTokens = await dispatch(GetMine());
-          setOwnedTokens(allTokens);
-        }
-      })(),
-    ]);
+          setData(NftData);
+        })(),
+        (async () => {
+          if (address) {
+            let allTokens = await dispatch(GetMine());
+            setOwnedTokens(allTokens);
+          }
+        })(),
+      ]);
 
-    if (path.state !== null) {
-      setPathData({
-        prevPath: path.state.prev,
-        showConfetti: path.state.showConfetti,
-        amount: path.state.totalNfts,
-      });
+      if (path.state !== null) {
+        setPathData({
+          prevPath: path.state.prev,
+          showConfetti: path.state.showConfetti,
+          amount: path.state.totalNfts,
+        });
+      }
+
+      setLoaded(true);
+    } catch (e) {
+      console.log(e.toString());
     }
-
-    setLoaded(true);
   };
 
   useEffect(() => {
@@ -110,9 +114,10 @@ const LargeNft = () => {
       >
         <ChakraImage
           borderRadius="lg"
-          boxSize={"100px"}
+          boxSize={["100px", null, "150px"]}
           src={data.thumb}
           fallback={<Skeleton borderRadius="lg" boxSize={"100px"} />}
+          objectFit="contain"
         />
         <Flex flex={1} onClick={onOpen}>
           <ChakraImage
@@ -122,22 +127,18 @@ const LargeNft = () => {
             borderRadius="lg"
             boxSize={["100%", null, "600px"]}
             src={data.content}
+            objectFit="cover"
             fallback={
               <Skeleton borderRadius="lg" boxSize={["320px", null, "600px"]} />
             }
           />
         </Flex>
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          isCentered
-          allowPinchZoom
-        >
+        <Modal isOpen={isOpen} onClose={onClose} allowPinchZoom>
           <ModalOverlay />
           <ModalContent maxW="90vh">
             <ModalCloseButton />
             <ChakraImage
-              borderRadius="lg"
+              borderRadius="md"
               height={"100%"}
               src={data.content}
               fallback={<Skeleton borderRadius="lg" height="100%" />}

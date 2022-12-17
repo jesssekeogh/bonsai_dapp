@@ -107,11 +107,7 @@ const Inventory = () => {
   );
 };
 
-const PaginationButtons = ({
-  setPage,
-  page,
-  allNftsAfterFilter,
-}) => {
+const PaginationButtons = ({ setPage, page, allNftsAfterFilter }) => {
   const [totalPages, setTotalPages] = useState(0);
 
   const loadPages = () => {
