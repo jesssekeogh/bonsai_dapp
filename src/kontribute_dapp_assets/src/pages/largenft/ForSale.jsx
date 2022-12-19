@@ -28,10 +28,7 @@ import {
 } from "../../containers/colormode/Colors";
 import IcLogo from "../../../assets/ic-logo.png";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-import {
-  useAnvilSelector,
-  nft_purchase,
-} from "@vvv-interactive/nftanvil-react";
+import { nft_purchase } from "@vvv-interactive/nftanvil-react";
 import {
   SendingToast,
   SuccessToast,
@@ -43,6 +40,7 @@ import {
 } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { tokenFromText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
+import { useSelector } from "react-redux";
 import { Usergeek } from "usergeek-ic-js";
 import IcpToDollars from "../components/IcpToDollars";
 import ReactCanvasConfetti from "react-canvas-confetti";
@@ -109,7 +107,7 @@ const canvasStyles = {
 
 const BuyButton = ({ tokenId, price, usd }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const address = useAnvilSelector((state) => state.user.address);
+  const loggedIn = useSelector((state) => state.Profile.loggedIn);
   const dispatch = useAnvilDispatch();
   // 0.01icp= 001000000 e8s
 
@@ -208,7 +206,7 @@ const BuyButton = ({ tokenId, price, usd }) => {
         w="full"
         size="lg"
         _hover={{ opacity: "0.8" }}
-        disabled={address ? false : true}
+        disabled={loggedIn ? false : true}
         onClick={() => onOpen()}
       >
         Buy Now

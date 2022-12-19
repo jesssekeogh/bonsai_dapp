@@ -1,30 +1,12 @@
-import React, { useState, createRef, useReducer } from "react";
-import {
-  useAnvilDispatch,
-  useAnvilSelector,
-} from "@vvv-interactive/nftanvil-react";
+import React, { useState, createRef, useReducer, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
+import { useSelector } from "react-redux";
 import {
   nft_mint,
   nft_mint_quote,
-} from "@vvv-interactive/nftanvil-react/src/reducers/nft.js";
-import {
-  validateName,
-  validateExtensionCanister,
-  validateHoldId,
-  validateUseId,
-  validateDescription,
-  validateThumbInternal,
-  validateContentInternal,
-  validateExternal,
-  validateExternalType,
-  validateDescriptionOrNone,
-  validateCooldown,
-  validateAttributeName,
-  validateAttributeChange,
-  mintFormValidate,
-  validateDomain,
-  validateTagName,
-} from "@vvv-interactive/nftanvil-tools/cjs/validate.js";
+} from "@vvv-interactive/nftanvil-react/cjs/reducers/nft.js";
+import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { resizeImage } from "@vvv-interactive/nftanvil-tools/cjs/image.js";
 import {
   Center,
@@ -36,11 +18,15 @@ import {
   Button,
   Box,
   Input,
+  Text,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
   Tooltip,
   Heading,
   Image as ChakraImage,
   useColorModeValue,
-  createStandaloneToast,
   Textarea,
   Menu,
   MenuButton,
@@ -49,8 +35,9 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { ImInfinite } from "react-icons/im";
 import { ChevronDownIcon, CloseIcon } from "@chakra-ui/icons";
-import { FailedToast } from "../../containers/toasts/Toasts";
+import { FailedToast, SuccessToast } from "../../containers/toasts/Toasts";
 import {
   ButtonColorDark,
   ButtonColorLight,
@@ -60,7 +47,52 @@ import {
   HeadingColorLight,
 } from "../../containers/colormode/Colors";
 
-const { toast } = createStandaloneToast();
+const returnMintRecord = (
+  name,
+  lore,
+  quality,
+  nftContent,
+  nftThumb,
+  royalty
+) => {
+  return {
+    price: {
+      marketplace: [],
+      amount: 0,
+    },
+    domain: [],
+    authorShare: royalty,
+    name: [name],
+    lore: [lore],
+    transfer: {
+      ["unrestricted"]: null,
+    },
+    quality: quality,
+    ttl: [1036800], // 2 years
+    attributes: [],
+    tags: [],
+    content: [
+      {
+        internal: {
+          contentType: nftContent.type,
+          size: nftContent.size,
+          url: nftContent.url,
+        },
+      },
+    ],
+    thumb: {
+      internal: {
+        contentType: nftThumb.type,
+        size: nftThumb.size,
+        url: nftThumb.url,
+      },
+    },
+    secret: false,
+    custom: [],
+    rechargeable: true,
+    customVar: [],
+  };
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -79,6 +111,11 @@ const reducer = (state, action) => {
         ...state,
         quality: action.payload,
       };
+    case "updateRoyalty":
+      return {
+        ...state,
+        royalty: action.payload,
+      };
   }
 };
 
@@ -88,59 +125,96 @@ const Rarities = [
   "Rare",
   "Epic",
   "Legendary",
-  "Aritfact",
+  "Artifact",
 ];
 
 const Mint = () => {
   const anvilDispatch = useAnvilDispatch();
   const [nftContent, setNftContent] = useState("");
   const [nftThumb, setNftThumb] = useState("");
+  const [isMinting, setIsMinting] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+  const [pwrPrice, setPwrPrice] = useState(0);
+  const loggedIn = useSelector((state) => state.Profile.loggedIn);
 
+  const navigate = useNavigate();
   const inputRef = createRef();
 
-  // const [mintValues, dispatch] = useReducer(reducer, {
-  //   price: 0, // mint price?
-  //   domain: [],
-  //   authorShare: 150,
-  //   name: [],
-  //   lore: [],
-  //   transfer: 0,
-  //   quality: 1,
-  //   ttl: [0],
-  //   attributes: [],
-  //   tags: [],
-  //   content: [],
-  //   thumb: [],
-  //   secret: [],
-  //   custom: [],
-  //   rechargeable: true,
-  //   customVar: [],
-  // });
-
   const [mintValues, dispatch] = useReducer(reducer, {
-    authorShare: 150,
     name: "",
     lore: "",
     quality: "Common",
-    content: "",
-    thumb: "",
+    royalty: 1,
   });
 
   const MintNFT = async () => {
-    let data = await anvilDispatch(
-      nft_mint({
-        authorShare: mintValues.authorShare,
-        name: mintValues.name,
-        lore: mintValues.lore,
-        quality: Rarity2Number(mintValues.quality),
-        content: nftContent,
-        thumb: nftThumb,
-      })
-    );
-    console.log(data);
+    setIsClicked(true);
+    if (
+      mintValues.name === "" ||
+      mintValues.lore === "" ||
+      nftContent === "" ||
+      nftThumb === ""
+    ) {
+      return;
+    }
+
+    try {
+      setIsMinting(true);
+
+      let id = await anvilDispatch(
+        nft_mint(
+          returnMintRecord(
+            mintValues.name,
+            mintValues.lore,
+            Rarity2Number(mintValues.quality),
+            nftContent,
+            nftThumb,
+            Math.round(Number(mintValues.royalty) * 100)
+          )
+        )
+      );
+
+      SuccessToast(
+        "Congratulations!",
+        "Your new collectible is in your wallet"
+      );
+      setIsMinting(false);
+      return navigate("/nft/" + id, {
+        state: {
+          prev: "/mint",
+          showConfetti: true,
+          totalNfts: 1,
+        },
+      });
+    } catch (e) {
+      setIsMinting(false);
+      FailedToast("Failed", e.toString());
+    }
   };
 
-  // utility
+  const CheckMintPrice = async () => {
+    try {
+      let priceData = await anvilDispatch(
+        nft_mint_quote(
+          returnMintRecord(
+            mintValues.name,
+            mintValues.lore,
+            Rarity2Number(mintValues.quality),
+            nftContent,
+            nftThumb,
+            Math.round(Number(mintValues.royalty) * 100)
+          )
+        )
+      );
+
+      if (priceData) {
+        setPwrPrice(e8sToIcp(priceData.ops + priceData.storage));
+      }
+    } catch (e) {
+      console.log(e.toString());
+    }
+  };
+
   const Rarity2Number = (rarity) => {
     switch (rarity) {
       case "Common":
@@ -165,19 +239,28 @@ const Mint = () => {
     ButtonTextColorlight,
     ButtonTextColorDark
   );
+
+  useEffect(() => {
+    CheckMintPrice();
+  }, [nftThumb, mintValues.quality]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Box py={{ base: 0, md: 10, lg: 12 }} pb={{ base: 10 }} p={3}>
       <SlideFade in={true} offsetY="20px">
         <Center>
           <Stack align="center" mb={5}>
-            {/* <Heading
+            <Heading
               lineHeight={1.1}
               fontWeight={"bold"}
               fontSize={{ base: "xl", lg: "3xl" }}
               color={headingColor}
             >
-              Mint a collectible
-            </Heading> */}
+              Upload image
+            </Heading>
             <Heading size="sm" color="gray">
               PNG and JPG are allowed
             </Heading>
@@ -211,10 +294,10 @@ const Mint = () => {
 
                   if (type.indexOf("image/") !== -1) {
                     let content = await resizeImage(url, 1280, 1280);
-                    setNftContent(content.url);
+                    setNftContent(content);
 
                     let thumb = await resizeImage(url, 432, 432);
-                    setNftThumb(thumb.url);
+                    setNftThumb(thumb);
                   } else {
                     FailedToast("Failed", "File must be an image!");
                   }
@@ -224,6 +307,7 @@ const Mint = () => {
                 <Button
                   boxSize={["300px", null, "600px"]}
                   border="2px dashed"
+                  borderColor={isClicked && nftContent === "" ? "red" : "auto"}
                   onClick={() => {
                     if (inputRef?.current) {
                       inputRef.current.value = "";
@@ -241,7 +325,7 @@ const Mint = () => {
               ) : null}
               {nftContent !== "" ? (
                 <ChakraImage
-                  src={nftContent}
+                  src={nftContent.url}
                   borderRadius="lg"
                   boxSize={["100%", null, "auto"]}
                   fallbackSrc={
@@ -262,6 +346,7 @@ const Mint = () => {
                       onClick={() => {
                         setNftContent("");
                         setNftThumb("");
+                        setPwrPrice(0);
                       }}
                     >
                       <CloseIcon />
@@ -273,6 +358,7 @@ const Mint = () => {
                     placeholder="Name..."
                     size="md"
                     fontWeight="bold"
+                    isInvalid={isClicked && mintValues.name == ""}
                     onChange={(e) =>
                       dispatch({
                         type: "updateName",
@@ -284,6 +370,7 @@ const Mint = () => {
                     placeholder="Description..."
                     size="md"
                     fontWeight="bold"
+                    isInvalid={isClicked && mintValues.lore == ""}
                     resize="none"
                     maxLength={256}
                     onChange={(e) =>
@@ -293,6 +380,31 @@ const Mint = () => {
                       })
                     }
                   />
+                  <Text fontWeight={"bold"}>Royalties</Text>
+                  <Box px={5}>
+                    <Slider
+                      focusThumbOnChange={false}
+                      value={mintValues.royalty}
+                      min={1}
+                      max={10}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "updateRoyalty",
+                          payload: e,
+                        })
+                      }
+                    >
+                      <SliderTrack>
+                        <SliderFilledTrack />
+                      </SliderTrack>
+                      <SliderThumb
+                        fontSize="sm"
+                        boxSize="36px"
+                        color="black"
+                        children={`${mintValues.royalty}%`}
+                      />
+                    </Slider>
+                  </Box>
                   <Menu>
                     <MenuButton
                       as={Button}
@@ -325,9 +437,18 @@ const Mint = () => {
                   <Button
                     bg={buttonBg}
                     color={buttonTextColor}
+                    isLoading={isMinting}
+                    leftIcon={<ImInfinite />}
+                    rightIcon={<ImInfinite />}
+                    disabled={loggedIn ? false : true}
                     onClick={() => MintNFT()}
+                    boxShadow="base"
+                    _hover={{
+                      boxShadow: "md",
+                    }}
                   >
                     Mint
+                    {pwrPrice !== 0 ? ` for ${pwrPrice} ICP` : null}
                   </Button>
                 </Stack>
               </Box>
