@@ -61,10 +61,10 @@ const Owned = ({ tokenId, tokens, price }) => {
   if (!tokens.includes(tokenFromText(tokenId))) {
     return null;
   }
-
+  const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Flex bg={"gray.50"} rounded={"lg"}>
-      <Container bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
+    <Flex rounded={"lg"}>
+      <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Text
           fontWeight={600}
           fontSize={{ base: "md", md: "lg" }}

@@ -25,6 +25,8 @@ import {
   ButtonColorLight,
   ButtonTextColorDark,
   ButtonTextColorlight,
+  TextColorDark,
+  TextColorLight,
 } from "../../containers/colormode/Colors";
 import IcLogo from "../../../assets/ic-logo.png";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
@@ -56,9 +58,11 @@ const ForSale = ({ Icp, tokenId, tokens }) => {
     loadPrice();
   }, []);
 
+  const bgColor = useColorModeValue("white", "#111111");
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
-    <Flex bg={"gray.50"} rounded={"lg"} w={{ base: "100%", md: "60%" }}>
-      <Container bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
+    <Flex rounded={"lg"} w={{ base: "100%", md: "60%" }}>
+      <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Text
           fontWeight={600}
           fontSize={{ base: "md", md: "lg" }}
@@ -68,13 +72,13 @@ const ForSale = ({ Icp, tokenId, tokens }) => {
           Current Price
         </Text>
         <Flex align="baseline" gap={1}>
-          <Heading color={"#353840"} fontSize={{ base: "xl", md: "3xl" }}>
+          <Heading color={textColor} fontSize={{ base: "xl", md: "3xl" }}>
             {Number(e8sToIcp(Icp)).toFixed(2)}
           </Heading>
           <Text
+            color={textColor}
             fontSize={{ base: "md", md: "lg" }}
             fontWeight="bold"
-            color={"#353840"}
           >
             ICP
           </Text>
@@ -220,18 +224,18 @@ const BuyButton = ({ tokenId, price, usd }) => {
           <ModalCloseButton />
           <ModalBody pb={3}>
             <Heading
-              fontSize={{ base: "xs", sm: "xs", md: "md" }}
+              fontSize={{ base: "sm", md: "md" }}
               fontWeight={600}
               mb={2}
             >
-              Item
+              Item:
               <Text casing={"uppercase"}>{tokenId}</Text>
             </Heading>
             <Heading
-              fontSize={{ base: "xs", sm: "xs", md: "md" }}
+              fontSize={{ base: "sm", md: "md" }}
               fontWeight={600}
             >
-              Price
+              Price:
             </Heading>
             <Flex align="center" fontWeight={600}>
               <Tooltip label="ICP">
@@ -244,7 +248,7 @@ const BuyButton = ({ tokenId, price, usd }) => {
               &nbsp;
               {e8sToIcp(price)}
               &nbsp;
-              <Text>{usd}</Text>
+              <Text>({usd})</Text>
             </Flex>
           </ModalBody>
 

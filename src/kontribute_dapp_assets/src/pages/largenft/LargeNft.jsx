@@ -14,6 +14,8 @@ import {
   ModalContent,
   ModalCloseButton,
   useDisclosure,
+  useBreakpointValue,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import {
@@ -26,9 +28,13 @@ import { useParams } from "react-router-dom";
 import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { LoadingSpinner } from "../../containers/index";
 import { Link, useLocation } from "react-router-dom";
-import { Confetti, GetMine } from "../components";
+import { Confetti, GetMine, ChainAndStandard } from "../components";
 import ForSale from "./ForSale";
 import Owned from "./Owned";
+import {
+  TextColorDark,
+  TextColorLight,
+} from "../../containers/colormode/Colors";
 
 const LargeNft = () => {
   const params = useParams();
@@ -56,7 +62,8 @@ const LargeNft = () => {
             lore: meta.lore,
             attributes: meta.attributes,
             tags: meta.tags,
-            color: itemQuality.light[meta.quality].color,
+            colorDark: itemQuality.dark[meta.quality].color,
+            colorLight: itemQuality.light[meta.quality].color,
             rating: itemQuality.light[meta.quality].label,
             price: meta.price.amount,
             content: meta.content.internal
@@ -103,6 +110,10 @@ const LargeNft = () => {
   }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const modalPositionBool = useBreakpointValue({ base: true, md: false });
+  const bgColor = useColorModeValue("white", "#111111");
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
+  const nftNameColor = useColorModeValue(data.colorLight, data.colorDark);
 
   if (!Loaded) return <LoadingSpinner label="Loading Collectible..." />;
   return (
@@ -112,14 +123,24 @@ const LargeNft = () => {
         direction={{ base: "column", md: "column", lg: "row" }}
         p={{ base: 3, md: 10 }}
       >
-        <ChakraImage
+        <Box pt={{ base: 0, md: 2 }}>
+          <ChakraImage
+            borderRadius="lg"
+            boxSize={["100px", null, "150px"]}
+            boxShadow={"lg"}
+            src={data.thumb}
+            fallback={<Skeleton borderRadius="lg" boxSize={"100px"} />}
+            objectFit="contain"
+          />
+        </Box>
+        <Flex
+          flex={1}
+          onClick={onOpen}
+          p={2}
           borderRadius="lg"
-          boxSize={["100px", null, "150px"]}
-          src={data.thumb}
-          fallback={<Skeleton borderRadius="lg" boxSize={"100px"} />}
-          objectFit="contain"
-        />
-        <Flex flex={1} onClick={onOpen}>
+          boxShadow={"lg"}
+          bg={bgColor}
+        >
           <ChakraImage
             _hover={{
               cursor: "pointer",
@@ -133,7 +154,12 @@ const LargeNft = () => {
             }
           />
         </Flex>
-        <Modal isOpen={isOpen} onClose={onClose} allowPinchZoom>
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          isCentered={modalPositionBool}
+          allowPinchZoom
+        >
           <ModalOverlay />
           <ModalContent maxW="90vh">
             <ModalCloseButton />
@@ -170,15 +196,16 @@ const LargeNft = () => {
               </Link>
             ) : null}
           </HStack>
+          <ChainAndStandard />
           {address ? (
             <Owned tokenId={data.id} tokens={ownedTokens} price={data.price} />
           ) : null}
           {data.price > 0 ? (
             <ForSale Icp={data.price} tokenId={data.id} tokens={ownedTokens} />
           ) : null}
-          <Box bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
+          <Box bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
             <Heading
-              color={data.color}
+              color={nftNameColor}
               fontWeight="bold"
               fontSize={["lg", null, "4xl"]}
               fontStyle={"italic"}
@@ -195,8 +222,9 @@ const LargeNft = () => {
               </Text>
               <Text
                 casing={"uppercase"}
-                color="#353840"
-                fontSize={{ base: "xs", md: "md" }}
+                color={textColor}
+                fontSize={{ base: "sm", md: "md" }}
+                fontWeight={500}
               >
                 {data.id}
               </Text>
@@ -209,7 +237,9 @@ const LargeNft = () => {
               >
                 Rarity:&nbsp;
               </Text>
-              <Text color="#353840">{data.rating}</Text>
+              <Text fontWeight={500} color={textColor}>
+                {data.rating}
+              </Text>
             </Flex>
             <Text
               fontWeight={600}
@@ -218,7 +248,7 @@ const LargeNft = () => {
             >
               Description:
             </Text>
-            <Text fontWeight={600} color="#353840" mb={2} maxW="520px">
+            <Text fontWeight={500} color={textColor} mb={2} maxW="520px">
               {data.lore}
             </Text>
           </Box>

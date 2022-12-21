@@ -53,11 +53,15 @@ const StoryCard = ({ data }) => {
           <Heading size={"sm"} my={2} noOfLines={1}>
             {decodeURIComponent(data.title)}
           </Heading>
-          <Text noOfLines={2}>
-            {DOMPurify.sanitize(decodeURIComponent(data.body), {
-              ALLOWED_TAGS: [""],
-            })}
-          </Text>
+          <Text
+            noOfLines={2}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(decodeURIComponent(data.body), {
+                FORBID_ATTR: ["style"],
+                ALLOWED_TAGS: [""],
+              }),
+            }}
+          ></Text>
           <Flex mt={3} gap={{ base: 1, md: 2 }} align={"center"}>
             <Tag>
               {data.genre === "Web3Author Competition"

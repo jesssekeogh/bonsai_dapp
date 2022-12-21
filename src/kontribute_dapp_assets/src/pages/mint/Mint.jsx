@@ -43,9 +43,9 @@ import {
   ButtonColorLight,
   ButtonTextColorDark,
   ButtonTextColorlight,
-  HeadingColorDark,
-  HeadingColorLight,
 } from "../../containers/colormode/Colors";
+import ChainAndStandard from "../components/ChainAndStandard";
+import { Usergeek } from "usergeek-ic-js";
 
 const returnMintRecord = (
   name,
@@ -179,6 +179,7 @@ const Mint = () => {
         "Your new collectible is in your wallet"
       );
       setIsMinting(false);
+      Usergeek.trackEvent("NFTMinted");
       return navigate("/nft/" + id, {
         state: {
           prev: "/mint",
@@ -232,7 +233,6 @@ const Mint = () => {
     }
   };
 
-  const headingColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   const bgColor = useColorModeValue("white", "#111111");
   const buttonBg = useColorModeValue(ButtonColorLight, ButtonColorDark);
   const buttonTextColor = useColorModeValue(
@@ -249,21 +249,14 @@ const Mint = () => {
   }, []);
 
   return (
-    <Box py={{ base: 0, md: 10, lg: 12 }} pb={{ base: 10 }} p={3}>
+    <Box py={{ base: 0, md: 10, lg: 12 }} p={3}>
       <SlideFade in={true} offsetY="20px">
         <Center>
           <Stack align="center" mb={5}>
-            <Heading
-              lineHeight={1.1}
-              fontWeight={"bold"}
-              fontSize={{ base: "xl", lg: "3xl" }}
-              color={headingColor}
-            >
-              Upload image
-            </Heading>
             <Heading size="sm" color="gray">
               PNG and JPG are allowed
             </Heading>
+            <ChainAndStandard />
           </Stack>
         </Center>
 
@@ -275,7 +268,7 @@ const Mint = () => {
             <GridItem
               boxShadow={"lg"}
               bg={bgColor}
-              p={{ base: 0, lg: 2 }}
+              p={2}
               borderRadius="lg"
               ml={{ base: 0, lg: 20 }}
               mr={{ base: 0, md: 3 }}
@@ -305,7 +298,7 @@ const Mint = () => {
               />
               {nftContent == "" ? (
                 <Button
-                  boxSize={["300px", null, "600px"]}
+                  boxSize={["95vw", null, "600px"]}
                   border="2px dashed"
                   borderColor={isClicked && nftContent === "" ? "red" : "auto"}
                   onClick={() => {
@@ -334,10 +327,14 @@ const Mint = () => {
                 />
               ) : null}
             </GridItem>
-            <GridItem>
+            <GridItem mb={12}>
               <Box
                 pos={{ base: "auto", md: "sticky" }}
                 top={{ base: "auto", md: "20" }}
+                bg={bgColor}
+                boxShadow={"xl"}
+                rounded={"lg"}
+                p={{ base: 3, lg: 5 }}
               >
                 {nftContent !== "" ? (
                   <Tooltip label="Remove image">

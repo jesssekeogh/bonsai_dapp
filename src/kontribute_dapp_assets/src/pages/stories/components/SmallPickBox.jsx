@@ -1,9 +1,15 @@
 import React from "react";
 import AvatarPic from "./AvatarPic";
-import { Heading, Box } from "@chakra-ui/react";
+import { Heading, Box, useColorModeValue } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
+import {
+  TextColorDark,
+  TextColorLight,
+} from "../../../containers/colormode/Colors";
 
 const SmallPickBox = ({ data }) => {
+  const textColor = useColorModeValue(TextColorLight, TextColorDark);
+
   return (
     <NavLink
       to={`/stories/author_${data.author}_story_${data.groupName}_chapter_${data.title}`}
@@ -15,7 +21,7 @@ const SmallPickBox = ({ data }) => {
           smallView={true}
           monetized={data.monetized}
         />
-        <Heading ms={1} size={"sm"} mt={1} noOfLines={1}>
+        <Heading ms={1} size={"sm"} mt={1} noOfLines={1} color={textColor}>
           {decodeURIComponent(data.groupName)}
         </Heading>
       </Box>
