@@ -51,7 +51,7 @@ const AuthorsCollectibles = ({ address }) => {
             <Heading fontWeight={600} size="md">
               Authors Collectibles
             </Heading>
-            <Stack direction="row" my={3}>
+            <Stack direction="row" justify="center" my={3}>
               {tokens.map((item) => (
                 <SmallNft tokenId={item} key={item} />
               ))}
@@ -90,7 +90,7 @@ const SmallNft = ({ tokenId }) => {
   useEffect(() => {
     load();
   }, []);
-  const size = useBreakpointValue({ base: "75px", lg: "110px" });
+  const size = useBreakpointValue({ base: "75px", md: "110px" });
   return (
     <NavLink
       to={`/nft/${tokenToText(tokenId)}`}

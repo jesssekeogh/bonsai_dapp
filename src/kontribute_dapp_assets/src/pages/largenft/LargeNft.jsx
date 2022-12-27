@@ -140,17 +140,17 @@ const LargeNft = () => {
           borderRadius="lg"
           boxShadow={"lg"}
           bg={bgColor}
+          boxSize={["100%", null, "600px"]}
         >
           <ChakraImage
             _hover={{
               cursor: "pointer",
             }}
             borderRadius="lg"
-            boxSize={["100%", null, "600px"]}
             src={data.content}
             objectFit="cover"
             fallback={
-              <Skeleton borderRadius="lg" boxSize={["320px", null, "600px"]} />
+              <Skeleton borderRadius="lg" boxSize={["320px", null, "580px"]} />
             }
           />
         </Flex>
@@ -207,7 +207,7 @@ const LargeNft = () => {
             <Heading
               color={nftNameColor}
               fontWeight="bold"
-              fontSize={["lg", null, "4xl"]}
+              fontSize={["2xl", null, "4xl"]}
               fontStyle={"italic"}
             >
               {data.name}

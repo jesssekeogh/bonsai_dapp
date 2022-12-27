@@ -13,6 +13,7 @@ import {
   SimpleGrid,
   GridItem,
   Text,
+  Hide,
   Button,
 } from "@chakra-ui/react";
 import {
@@ -93,6 +94,22 @@ const SingleStory = () => {
             columns={{ base: 1, lg: 2 }}
             templateColumns={{ base: "auto", lg: "1fr 500px" }}
           >
+            {/* for mobile: */}
+            <Hide above="md">
+              <GridItem>
+                <StoryUtils
+                  storySortKey={storySortKey}
+                  likes={Number(storyContent.likes)}
+                  views={storyContent.views.toLocaleString()}
+                  partitionKey={partitionKey}
+                  loggedIn={loggedIn}
+                  address={storyContent.address}
+                  author={storyContent.author}
+                  monetized={storyContent.monetized}
+                />
+                <AuthorsCollectibles address={storyContent.monetizedAddress} />
+              </GridItem>
+            </Hide>
             <GridItem
               boxShadow={"lg"}
               bg={bgColor}
@@ -151,17 +168,21 @@ const SingleStory = () => {
                 pos={{ base: "auto", md: "sticky" }}
                 top={{ base: "auto", md: "20" }}
               >
-                <StoryUtils
-                  storySortKey={storySortKey}
-                  likes={Number(storyContent.likes)}
-                  views={storyContent.views.toLocaleString()}
-                  partitionKey={partitionKey}
-                  loggedIn={loggedIn}
-                  address={storyContent.address}
-                  author={storyContent.author}
-                  monetized={storyContent.monetized}
-                />
-                <AuthorsCollectibles address={storyContent.monetizedAddress} />
+                <Hide below="md">
+                  <StoryUtils
+                    storySortKey={storySortKey}
+                    likes={Number(storyContent.likes)}
+                    views={storyContent.views.toLocaleString()}
+                    partitionKey={partitionKey}
+                    loggedIn={loggedIn}
+                    address={storyContent.address}
+                    author={storyContent.author}
+                    monetized={storyContent.monetized}
+                  />
+                  <AuthorsCollectibles
+                    address={storyContent.monetizedAddress}
+                  />
+                </Hide>
                 {/* takes in an array of objects */}
                 {storyContent.proposals > 1 ? (
                   <PollSection
