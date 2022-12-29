@@ -39,14 +39,13 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
-  const userId = useSelector((state) => state.Profile.principal);
   const address = useAnvilSelector((state) => state.user.address);
   const user_icp = e8sToIcp(useAnvilSelector((state) => state.user.icp));
 
   const { onCopy } = useClipboard(address);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const SignInFunctions = async (principal, identity) => {
+  const SignInFunctions = async (principal) => {
     dispatch(setLogin());
     anvilDispatch(user_login());
     dispatch(setPrincipal(principal.toString()));
@@ -74,13 +73,13 @@ const Profile = () => {
   };
 
   const signIn = async () => {
-    const { identity, principal } = await new Promise((resolve, reject) => {
+    const { principal } = await new Promise((resolve, reject) => {
       client.login({
-        identityProvider: "https://identity.ic0.app", //"http://rno2w-sqaaa-aaaaa-aaacq-cai.localhost:8000/",
+        identityProvider: "https://identity.ic0.app",
         onSuccess: () => {
           const identity = client.getIdentity();
           const principal = identity.getPrincipal();
-          resolve({ identity, principal });
+          resolve({ principal });
         },
         onError: reject,
         windowOpenerFeatures:
@@ -163,14 +162,12 @@ const Profile = () => {
           </MenuList>
         </Menu>
       ) : (
-        <Menu>
-          <MenuButton as={Button} size={"md"} onClick={() => signIn()}>
-            <Flex align="center">
-              Log In&nbsp;
-              <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
-            </Flex>
-          </MenuButton>
-        </Menu>
+        <Button size={"md"} onClick={signIn}>
+          <Flex align="center">
+            Log In&nbsp;
+            <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
+          </Flex>
+        </Button>
       )}
     </>
   );
