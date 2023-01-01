@@ -188,7 +188,7 @@ const Marketplace = () => {
               maxW="1250px"
             >
               {tokensForSale.map((item) => (
-                <SingleNft tokenId={item} key={item} quickView={false} />
+                <SingleNft tokenId={item} key={item} isMarketplace={true} />
               ))}
             </SimpleGrid>
           </Center>

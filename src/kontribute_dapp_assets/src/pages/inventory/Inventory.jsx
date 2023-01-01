@@ -82,7 +82,7 @@ const Inventory = () => {
               maxW="1250px"
             >
               {tokensShowing.map((item) => (
-                <SingleNft tokenId={item} key={item} />
+                <SingleNft tokenId={item} key={item} isMarketplace={false} />
               ))}
             </SimpleGrid>
           </>

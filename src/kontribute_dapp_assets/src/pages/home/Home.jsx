@@ -19,7 +19,6 @@ import { NavLink } from "react-router-dom";
 import LaunchpadBanner from "./LaunchpadBanner";
 import anvLogo from "../../../assets/anvillogo.svg";
 import ratokoBG from "../../../assets/ratokoBG.png";
-import santaHat from "../../../assets/Santa_hat.png";
 import {
   ButtonColorDark,
   ButtonColorLight,
@@ -33,7 +32,6 @@ import {
 import PopularDrops from "./PopularDrops";
 import powered from "../../../assets/powered.dark.svg";
 import SocialProof from "./SocialProof";
-import Snowfall from "react-snowfall";
 
 const Home = () => {
   useEffect(() => {
@@ -42,8 +40,7 @@ const Home = () => {
 
   return (
     <Box>
-      <Snowfall />
-      <HomeAlert />
+      {/* <HomeAlert /> */}
       <ChakraImage
         w={"full"}
         h="80%"
@@ -107,17 +104,6 @@ const HomeBanner = () => {
         direction={{ base: "column", md: "row" }}
       >
         <Stack flex={1} spacing={5} position="relative">
-          <Flex
-            position="absolute"
-            left={{ base: -5, lg: -8 }}
-            top={2}
-            transform="rotate(-30deg)"
-            py={2}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <ChakraImage src={santaHat} height={{ base: "24px", lg: "40px" }} />
-          </Flex>
           <Heading
             lineHeight={1.1}
             fontWeight={"bold"}

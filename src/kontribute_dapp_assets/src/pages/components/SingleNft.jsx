@@ -11,22 +11,26 @@ import {
   Skeleton,
   VStack,
   useColorModeValue,
+  Button,
+  SlideFade,
   Flex,
 } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import icLogo from "../../../assets/ic-logo.png";
+import { BsFillLightningChargeFill } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import {
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
 
-const SingleNft = ({ tokenId }) => {
+const SingleNft = ({ tokenId, isMarketplace }) => {
   let isMounted = true;
   const path = useLocation();
   const dispatch = useAnvilDispatch();
   const [nft, setNft] = useState({});
   const [loaded, setLoaded] = useState(false);
+  const [showQuickBuy, setShowQuickBuy] = useState(false);
 
   const token = tokenToText(tokenId);
 
@@ -78,6 +82,8 @@ const SingleNft = ({ tokenId }) => {
           bg={bgColor}
           rounded={"md"}
           boxShadow="md"
+          onMouseOver={() => (isMarketplace ? setShowQuickBuy(true) : null)}
+          onMouseOut={() => (isMarketplace ? setShowQuickBuy(false) : null)}
         >
           <Box rounded={"lg"} pos={"relative"} overflow="hidden">
             <ChakraImage
@@ -94,8 +100,8 @@ const SingleNft = ({ tokenId }) => {
               }}
             />
           </Box>
-          <Box p={{ base: 2, md: 3 }} >
-            <VStack align={"start"} color={textColor}>
+          <Box p={{ base: 2, md: 3 }}>
+            <VStack align={"center"} color={textColor}>
               {loaded ? (
                 <>
                   <Heading
@@ -105,16 +111,18 @@ const SingleNft = ({ tokenId }) => {
                   >
                     {nft.name}
                   </Heading>
-
-                  <Flex align="center" pt={1}>
-                    <ChakraImage src={icLogo} h={"22px"} w={"auto"} />
-                    &nbsp;
-                    <Text fontWeight="bold" fontSize={"md"}>
-                      {e8sToIcp(nft.price) > 0
-                        ? Number(e8sToIcp(nft.price)).toFixed(2)
-                        : "-"}
-                    </Text>
-                  </Flex>
+                  {!showQuickBuy ? (
+                    <Flex align="center" pt={1}>
+                      <ChakraImage src={icLogo} h={"22px"} w={"auto"} />
+                      &nbsp;
+                      <Text fontWeight="bold" fontSize={"md"}>
+                        {e8sToIcp(nft.price) > 0
+                          ? Number(e8sToIcp(nft.price)).toFixed(2)
+                          : "-"}
+                      </Text>
+                    </Flex>
+                  ) : null}
+                  {showQuickBuy ? <QuickBuy tokenId={tokenId} /> : null}
                 </>
               ) : (
                 <>
@@ -127,6 +135,28 @@ const SingleNft = ({ tokenId }) => {
         </Box>
       </GridItem>
     </Link>
+  );
+};
+
+const QuickBuy = ({ tokenId }) => {
+  return (
+    <Flex pt={1} w={"100%"} justify="center">
+      <SlideFade in={true} offsetY="20px">
+        <Flex
+          align="center"
+          px={3}
+          borderRadius={"lg"}
+          color="black"
+          bg={"#e6eaee"}
+        >
+          <BsFillLightningChargeFill />
+          &nbsp;
+          <Text fontWeight="bold" fontSize={"md"}>
+            Quick buy
+          </Text>
+        </Flex>
+      </SlideFade>
+    </Flex>
   );
 };
 

@@ -223,7 +223,7 @@ const OurPicks = () => {
   const [loaded, setLoaded] = useState(false);
 
   const sortKeysForPicks = [
-    "author_3d2q2-ce4z5-osah6-dibbj-secst-grfxj-q3f7x-ahuhz-gk5ma-rsgjo-lae_story_The%20Kontribute%20Writathon!_chapter_Web3%20Author%20Competition",
+    "author_zqxph-ufrag-xelru-brcwg-4amzv-dxvcm-ws2eq-qg2jm-7kvnc-ugtig-wqe_story_Magic%20Powers_chapter_Beyond%20their%20magical%20tricks",
     "author_qflw3-vnfgg-ewg4g-rt7y7-zrana-4oruo-jfrbo-i3l5b-rid5c-7o7o2-pae_story_Interstellar%20Tales_chapter_Prologue",
     "author_3zgw5-lwcb5-szvtp-tkqbu-zcdmp-qphq3-4gmre-75bbr-airu3-kfyeq-4ae_story_dungeons%20and%20dragons%20campaign_chapter_Chapter%20Eight%3A%20The%20Final%20Battle",
   ];
