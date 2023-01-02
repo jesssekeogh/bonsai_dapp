@@ -25,6 +25,7 @@ import {
   useAnvilSelector,
   useAnvilDispatch,
   user_login,
+  user_logout,
 } from "@vvv-interactive/nftanvil-react";
 import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { setLogin, setLogout, setPrincipal } from "../../state/LoginSlice";
@@ -93,6 +94,7 @@ const Profile = () => {
 
   const signOut = async () => {
     await client.logout();
+    anvilDispatch(user_logout());
     dispatch(setLogout());
     dispatch(setPrincipal(""));
     Usergeek.setPrincipal(undefined);
@@ -164,7 +166,7 @@ const Profile = () => {
       ) : (
         <Button size={"md"} onClick={signIn}>
           <Flex align="center">
-            Log In&nbsp;
+            Log in&nbsp;
             <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
           </Flex>
         </Button>

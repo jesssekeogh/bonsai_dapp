@@ -6,3 +6,4 @@ export { default as SingleNft } from "./SingleNft";
 export { default as Confetti } from "./Confetti";
 export { default as IcpToDollars } from "./IcpToDollars";
 export { default as ChainAndStandard } from "./ChainAndStandard";
+export { default as BuySingle } from "./nft_functions/BuySingle";

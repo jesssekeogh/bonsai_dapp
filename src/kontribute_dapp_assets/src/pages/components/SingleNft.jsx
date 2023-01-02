@@ -11,7 +11,6 @@ import {
   Skeleton,
   VStack,
   useColorModeValue,
-  Button,
   SlideFade,
   Flex,
 } from "@chakra-ui/react";
@@ -23,6 +22,8 @@ import {
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
+import { BuySingle, IcpToDollars } from "./index";
+import { useSelector } from "react-redux";
 
 const SingleNft = ({ tokenId, isMarketplace }) => {
   let isMounted = true;
@@ -31,6 +32,8 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
   const [nft, setNft] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [showQuickBuy, setShowQuickBuy] = useState(false);
+  const [usdPrice, setUsdPrice] = useState(0);
+  const loggedIn = useSelector((state) => state.Profile.loggedIn);
 
   const token = tokenToText(tokenId);
 
@@ -38,6 +41,7 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
     const meta = await dispatch(nft_fetch(token));
 
     if (isMounted) {
+      setUsdPrice(await IcpToDollars(meta.price.amount));
       setNft({
         id: token,
         name: meta.name,
@@ -67,23 +71,23 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
   }, []);
 
   return (
-    <Link
-      to={"/nft/" + token}
-      state={{
-        prev: path.pathname,
-        showConfetti: false,
-        totalNfts: 1,
-      }}
-    >
-      <GridItem>
-        <Box
-          role={"group"}
-          w={["160px", null, "280px"]}
-          bg={bgColor}
-          rounded={"md"}
-          boxShadow="md"
-          onMouseOver={() => (isMarketplace ? setShowQuickBuy(true) : null)}
-          onMouseOut={() => (isMarketplace ? setShowQuickBuy(false) : null)}
+    <GridItem>
+      <Box
+        role={"group"}
+        w={["160px", null, "280px"]}
+        bg={bgColor}
+        rounded={"md"}
+        boxShadow="md"
+        onMouseOver={() => (isMarketplace ? setShowQuickBuy(true) : null)}
+        onMouseOut={() => (isMarketplace ? setShowQuickBuy(false) : null)}
+      >
+        <Link
+          to={"/nft/" + token}
+          state={{
+            prev: path.pathname,
+            showConfetti: false,
+            totalNfts: 1,
+          }}
         >
           <Box rounded={"lg"} pos={"relative"} overflow="hidden">
             <ChakraImage
@@ -100,61 +104,96 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
               }}
             />
           </Box>
-          <Box p={{ base: 2, md: 3 }}>
-            <VStack align={"center"} color={textColor}>
-              {loaded ? (
-                <>
-                  <Heading
-                    fontSize={{ base: "sm", md: "md" }}
-                    color={nftNameColor}
-                    noOfLines={1}
-                  >
-                    {nft.name}
-                  </Heading>
-                  {!showQuickBuy ? (
-                    <Flex align="center" pt={1}>
-                      <ChakraImage src={icLogo} h={"22px"} w={"auto"} />
-                      &nbsp;
-                      <Text fontWeight="bold" fontSize={"md"}>
-                        {e8sToIcp(nft.price) > 0
-                          ? Number(e8sToIcp(nft.price)).toFixed(2)
-                          : "-"}
-                      </Text>
-                    </Flex>
-                  ) : null}
-                  {showQuickBuy ? <QuickBuy tokenId={tokenId} /> : null}
-                </>
-              ) : (
-                <>
-                  <Skeleton height="15px" width={"100px"} my={2} />
-                  <Skeleton height="15px" width={"70px"} mt={2} />
-                </>
-              )}
-            </VStack>
-          </Box>
+        </Link>
+        <Box p={{ base: 2, md: 3 }}>
+          <VStack align={"center"} color={textColor}>
+            {loaded ? (
+              <>
+                <Heading
+                  fontSize={{ base: "sm", md: "md" }}
+                  color={nftNameColor}
+                  noOfLines={1}
+                >
+                  {nft.name}
+                </Heading>
+                {!showQuickBuy ? (
+                  <Flex align="center" pt={1}>
+                    <ChakraImage src={icLogo} h={"22px"} w={"auto"} />
+                    &nbsp;
+                    <Text fontWeight="bold" fontSize={"md"}>
+                      {e8sToIcp(nft.price) > 0
+                        ? Number(e8sToIcp(nft.price)).toFixed(2)
+                        : "-"}
+                    </Text>
+                  </Flex>
+                ) : null}
+                {showQuickBuy ? (
+                  <QuickBuy
+                    tokenId={tokenId}
+                    Icp={nft.price}
+                    usd={usdPrice}
+                    setShowQuickBuy={setShowQuickBuy}
+                    loggedIn={loggedIn}
+                  />
+                ) : null}
+              </>
+            ) : (
+              <>
+                <Skeleton height="15px" width={"100px"} my={2} />
+                <Skeleton height="15px" width={"70px"} mt={2} />
+              </>
+            )}
+          </VStack>
         </Box>
-      </GridItem>
-    </Link>
+      </Box>
+    </GridItem>
   );
 };
 
-const QuickBuy = ({ tokenId }) => {
+const QuickBuy = ({ tokenId, Icp, usd, setShowQuickBuy, loggedIn }) => {
   return (
     <Flex pt={1} w={"100%"} justify="center">
       <SlideFade in={true} offsetY="20px">
-        <Flex
-          align="center"
-          px={3}
-          borderRadius={"lg"}
-          color="black"
-          bg={"#e6eaee"}
-        >
-          <BsFillLightningChargeFill />
-          &nbsp;
-          <Text fontWeight="bold" fontSize={"md"}>
-            Quick buy
-          </Text>
-        </Flex>
+        {loggedIn ? (
+          <BuySingle
+            tokenId={tokenToText(tokenId)}
+            price={Icp}
+            usd={usd}
+            setShowQuickBuy={setShowQuickBuy}
+          >
+            <Flex
+              align="center"
+              px={3}
+              borderRadius={"lg"}
+              color="black"
+              bg={"#e6eaee"}
+              _hover={{
+                opacity: "0.8",
+                cursor: "pointer",
+              }}
+            >
+              <BsFillLightningChargeFill />
+              &nbsp;
+              <Text fontWeight="bold" fontSize={"md"}>
+                Quick buy
+              </Text>
+            </Flex>
+          </BuySingle>
+        ) : (
+          <Flex
+            align="center"
+            px={3}
+            borderRadius={"lg"}
+            color="black"
+            bg={"#e6eaee"}
+          >
+            <BsFillLightningChargeFill />
+            &nbsp;
+            <Text fontWeight="bold" fontSize={"md"}>
+              Log in to buy
+            </Text>
+          </Flex>
+        )}
       </SlideFade>
     </Flex>
   );
