@@ -29,6 +29,7 @@ import "../../../assets/main.css";
 import { unwrapAllProposals, unwrapStory } from "./components/Unwrapping";
 import AuthorsCollectibles from "./components/AuthorsCollectibles";
 import * as DOMPurify from "dompurify";
+import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 
 const SingleStory = () => {
   const params = useParams();
@@ -36,6 +37,8 @@ const SingleStory = () => {
   const storyServiceClient = startStoryServiceClient(indexClient);
   const storySortKey = encodeURIComponent(params.storySortKey);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
+  const { identity } = authentication.getAgentOptions();
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -81,7 +84,7 @@ const SingleStory = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadStory();
-  }, [loggedIn]);
+  }, [loggedIn, identity]);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");
@@ -89,10 +92,15 @@ const SingleStory = () => {
     <Box py={{ base: 0, md: 10, lg: 12 }} pb={{ base: 10 }}>
       {loaded ? (
         <Center>
-          {location.state ? <Confetti /> : null}
+          {location.state ? (
+            location.state.showConfetti ? (
+              <Confetti />
+            ) : null
+          ) : null}
           <SimpleGrid
             columns={{ base: 1, lg: 2 }}
             templateColumns={{ base: "auto", lg: "1fr 500px" }}
+            grid-auto-flow="dense"
           >
             {/* for mobile: */}
             <Hide above="md">
@@ -106,6 +114,8 @@ const SingleStory = () => {
                   address={storyContent.address}
                   author={storyContent.author}
                   monetized={storyContent.monetized}
+                  identity={identity}
+                  runIncrement={true}
                 />
                 <AuthorsCollectibles address={storyContent.monetizedAddress} />
               </GridItem>
@@ -178,6 +188,8 @@ const SingleStory = () => {
                     address={storyContent.address}
                     author={storyContent.author}
                     monetized={storyContent.monetized}
+                    identity={identity}
+                    runIncrement={false}
                   />
                   <AuthorsCollectibles
                     address={storyContent.monetizedAddress}
@@ -199,7 +211,11 @@ const SingleStory = () => {
                     leftIcon={<ArrowBackIcon />}
                     _hover={{ boxShadow: "base" }}
                     mb={3}
-                    onClick={() => navigate("/stories")}
+                    onClick={() =>
+                      location.state
+                        ? navigate(location.state.previous)
+                        : navigate("/stories")
+                    }
                   >
                     <Text>Go Back</Text>
                   </Button>

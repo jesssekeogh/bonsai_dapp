@@ -18,7 +18,6 @@ export const startIndexClient = () => {
 };
 
 export const startStoryServiceClient = (indexClient) => {
-
   return new ActorClient({
     actorOptions: {
       IDL: UserServiceCanisterIDL,

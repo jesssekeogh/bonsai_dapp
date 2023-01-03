@@ -16,10 +16,10 @@ import {
   Flex,
   Image as ChakraImage,
 } from "@chakra-ui/react";
-import { CopyIcon, LockIcon } from "@chakra-ui/icons";
+import { CopyIcon, LockIcon, CheckIcon } from "@chakra-ui/icons";
 import { RiSendPlaneFill, RiPencilFill } from "react-icons/ri";
 import { IoIosImages } from "react-icons/io";
-import { CopyToast } from "../toasts/Toasts";
+import { CgProfile } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useAnvilSelector,
@@ -40,16 +40,17 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
+  const principal = useSelector((state) => state.Profile.principal);
   const address = useAnvilSelector((state) => state.user.address);
   const user_icp = e8sToIcp(useAnvilSelector((state) => state.user.icp));
 
-  const { onCopy } = useClipboard(address);
+  const { onCopy, hasCopied } = useClipboard(address);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const SignInFunctions = async (principal) => {
-    dispatch(setLogin());
     anvilDispatch(user_login());
     dispatch(setPrincipal(principal.toString()));
+    dispatch(setLogin());
     Usergeek.setPrincipal(principal);
     Usergeek.trackSession();
     Usergeek.trackEvent("UserSignIn");
@@ -118,13 +119,14 @@ const Profile = () => {
           </MenuButton>
           <MenuList>
             <MenuGroup title={"ICP Wallet"} />
-            <Tooltip label="Copy address">
+            <Tooltip
+              hasArrow
+              closeOnClick={false}
+              label={hasCopied ? "Copied" : "Copy address"}
+            >
               <MenuItem
-                closeOnSelect
-                onClick={() => {
-                  onCopy(), CopyToast();
-                }}
-                icon={<CopyIcon />}
+                onClick={() => onCopy()}
+                icon={hasCopied ? <CheckIcon /> : <CopyIcon />}
                 maxW="240px"
               >
                 {address
@@ -149,7 +151,12 @@ const Profile = () => {
             </MenuItem>
             <NavLink to="/inventory">
               <MenuItem closeOnSelect icon={<IoIosImages />}>
-                Collectibles
+                My collectibles
+              </MenuItem>
+            </NavLink>
+            <NavLink to={`/profile/${principal}`}>
+              <MenuItem closeOnSelect icon={<CgProfile />}>
+                My profile
               </MenuItem>
             </NavLink>
             <NavLink to={"/stories/create"}>

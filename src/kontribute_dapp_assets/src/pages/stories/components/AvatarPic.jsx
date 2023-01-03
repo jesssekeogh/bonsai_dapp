@@ -5,6 +5,7 @@ import {
   startStoryServiceClient,
 } from "../../CanDBClient/client";
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
+import { Link } from "react-router-dom";
 
 const AvatarPic = ({ author, address, smallView, refresh, monetized }) => {
   const indexClient = startIndexClient();
@@ -35,31 +36,37 @@ const AvatarPic = ({ author, address, smallView, refresh, monetized }) => {
         setDefaultId(false);
         setAuthorDetails(details[0].value.ok[0]);
       }
+    } else {
+      setDefaultId(true);
     }
   };
 
   useEffect(() => {
     load();
-  }, [refresh]);
+  }, [refresh, author]);
 
   return (
     <>
       {defaultId ? (
-        <Flex align={smallView ? "center" : "end"} gap={2}>
-          <Avatar size={smallView ? "sm" : "md"} bg="teal.500" />{" "}
-          <Text color={"gray.500"}>{`${address.substring(
-            0,
-            5
-          )}...${address.substring(59, 64)}`}</Text>
-          {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
-        </Flex>
-      ) : (
-        <Box>
+        <Link to={`/profile/${author}`}>
           <Flex align={smallView ? "center" : "end"} gap={2}>
-            <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
-            <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
+            <Avatar size={smallView ? "sm" : "md"} bg="teal.500" />{" "}
+            <Text color={"gray.500"}>{`${address.substring(
+              0,
+              5
+            )}...${address.substring(59, 64)}`}</Text>
             {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
           </Flex>
+        </Link>
+      ) : (
+        <Box>
+          <Link to={`/profile/${author}`}>
+            <Flex align={smallView ? "center" : "end"} gap={2}>
+              <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
+              <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
+              {monetized && !smallView ? <Tag>Collectible Seller</Tag> : null}
+            </Flex>
+          </Link>
           {!smallView ? (
             <Text mt={3} color={"gray.500"} maxW={["320px", null, "500px"]}>
               "{authorDetails.bio}"

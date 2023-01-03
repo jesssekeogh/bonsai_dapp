@@ -58,6 +58,8 @@ const StoryUtils = ({
   address,
   author,
   monetized,
+  identity,
+  runIncrement,
 }) => {
   const location = useLocation();
   const indexClient = startIndexClient();
@@ -66,6 +68,7 @@ const StoryUtils = ({
 
   const [likesTotal, setLikesTotal] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [hasRan, setHasRan] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
 
@@ -89,9 +92,12 @@ const StoryUtils = ({
   };
 
   const incrementView = async () => {
-    await storyServiceClient.update(partitionKey, "", (actor) =>
-      actor.incrementView(storySortKey)
-    );
+    if (!hasRan) {
+      await storyServiceClient.update(partitionKey, "", (actor) =>
+        actor.incrementView(storySortKey)
+      );
+    }
+    setHasRan(true);
   };
 
   const deleteStory = async () => {
@@ -112,8 +118,10 @@ const StoryUtils = ({
   useEffect(() => {
     setLikesTotal(likes);
     checkIfLiked();
-    incrementView();
-  }, []);
+    if (runIncrement) {
+      incrementView();
+    }
+  }, [loggedIn, identity]);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");

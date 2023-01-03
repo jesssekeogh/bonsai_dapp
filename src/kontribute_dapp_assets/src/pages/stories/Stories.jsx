@@ -6,7 +6,6 @@ import {
   Container,
   Center,
   useColorModeValue,
-  Heading,
   Button,
   Tabs,
   TabList,
@@ -199,7 +198,7 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
         <Heading size="md">Topics</Heading>
         <SimpleGrid columns={2} spacing={0}>
           {Genres.map((item) => (
-            <GridItem m={2} p={2} key={item}>
+            <GridItem m={1} p={2} key={item}>
               <Button
                 isDisabled={storyFilter === item ? true : false}
                 onClick={() => setStoryFilter(item)}
@@ -277,6 +276,7 @@ const OurPicks = () => {
                 <Skeleton height="12px" w={"100px"} />
               </Flex>
               <Skeleton height="12px" mt={1} ms={1} w={"200px"} />
+              <Skeleton height="12px" mt={2} ms={1} w={"200px"} />
             </Box>
           ))
         )}

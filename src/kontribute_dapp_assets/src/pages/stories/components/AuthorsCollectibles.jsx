@@ -41,7 +41,7 @@ const AuthorsCollectibles = ({ address }) => {
 
   useEffect(() => {
     loadSelling();
-  }, []);
+  }, [address]);
   const bgColor = useColorModeValue("white", "#111111");
   return (
     <>

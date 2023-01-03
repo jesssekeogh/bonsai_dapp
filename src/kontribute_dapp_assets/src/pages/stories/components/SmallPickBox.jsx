@@ -11,21 +11,24 @@ const SmallPickBox = ({ data }) => {
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
 
   return (
-    <NavLink
-      to={`/stories/author_${data.author}_story_${data.groupName}_chapter_${data.title}`}
-    >
-      <Box mt={5}>
-        <AvatarPic
-          author={data.author}
-          address={data.address}
-          smallView={true}
-          monetized={data.monetized}
-        />
+    <Box mt={5}>
+      <AvatarPic
+        author={data.author}
+        address={data.address}
+        smallView={true}
+        monetized={data.monetized}
+      />
+      <NavLink
+        to={`/stories/author_${data.author}_story_${data.groupName}_chapter_${data.title}`}
+      >
         <Heading ms={1} size={"sm"} mt={1} noOfLines={1} color={textColor}>
           {decodeURIComponent(data.groupName)}
         </Heading>
-      </Box>
-    </NavLink>
+        <Heading size={"sm"} color={textColor} ms={1} my={1} noOfLines={1}>
+          {decodeURIComponent(data.title)}
+        </Heading>
+      </NavLink>
+    </Box>
   );
 };
 

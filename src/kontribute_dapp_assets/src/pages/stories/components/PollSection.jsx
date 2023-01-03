@@ -152,7 +152,7 @@ const PollSection = ({
 
   useEffect(() => {
     load();
-  }, [loggedIn]);
+  }, [loggedIn, hasVoted]);
 
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const bgColor = useColorModeValue("white", "#111111");

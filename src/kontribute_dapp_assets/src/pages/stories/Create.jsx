@@ -193,7 +193,9 @@ const Create = () => {
       Usergeek.trackEvent("StoryPosted");
 
       let sk = keys.replace("STORY SORT KEY: ", "");
-      return navigate(`/stories/${sk}`, { state: { showConfetti: true } });
+      return navigate(`/stories/${sk}`, {
+        state: { showConfetti: true, previous: "/stories/create" },
+      });
     } catch (e) {
       toast.closeAll();
       FailedToast("Failed", e.toString());
