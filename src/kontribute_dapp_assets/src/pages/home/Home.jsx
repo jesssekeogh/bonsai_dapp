@@ -1,63 +1,55 @@
 import React, { useEffect } from "react";
 import {
-  Container,
   Heading,
   Text,
   Stack,
   useColorModeValue,
-  Button,
   Box,
-  Flex,
   Center,
-  Image as ChakraImage,
   Alert,
   AlertDescription,
   Link,
 } from "@chakra-ui/react";
-import { ArrowForwardIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { NavLink } from "react-router-dom";
-import LaunchpadBanner from "./LaunchpadBanner";
-import anvLogo from "../../../assets/anvillogo.svg";
-import ratokoBG from "../../../assets/ratokoBG.png";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
-  ButtonColorDark,
-  ButtonColorLight,
-  ButtonTextColorDark,
-  ButtonTextColorlight,
   HeadingColorDark,
   HeadingColorLight,
-  TextColorDark,
-  TextColorLight,
 } from "../../containers/colormode/Colors";
-import PopularDrops from "./PopularDrops";
-import powered from "../../../assets/powered.dark.svg";
-import SocialProof from "./SocialProof";
+import TopNfts from "./TopNfts";
+import TopAuthors from "./TopAuthors";
+import TopStories from "./TopStories";
 
 const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const textColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   return (
-    <Box>
-      {/* <HomeAlert /> */}
-      <ChakraImage
-        w={"full"}
-        h="80%"
-        fit="cover"
-        src={ratokoBG}
-        pos={"absolute"}
-        sx={{
-          maskImage:
-            "linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0))",
-        }}
-      />
-      <HomeBanner />
-      <PopularDrops />
-      <SocialProof />
-      <Center mt={20} pb={20}>
-        <ChakraImage w={"250px"} fit="cover" src={powered} />
+    <Box color={textColor} px={5} pb={12}>
+      <Center my={{ base: 5, md: 10 }}>
+        <Stack spacing={5} textAlign="center">
+          <Heading
+            lineHeight={1.1}
+            fontWeight={"bold"}
+            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+            bgGradient={`linear(to-tl, #f9c051, #d0a85d)`}
+            bgClip="text"
+            transition="0.3s"
+          >
+            Discover stories and explore art
+          </Heading>
+          <Center>
+            <Text fontSize={{ base: "xl", md: "2xl" }} maxW="2xl">
+              Kontribute is a new web3 creators platform built on ICP that
+              brings story writing and digital art collectibles together.
+            </Text>
+          </Center>
+        </Stack>
       </Center>
+      <TopAuthors />
+      <TopStories />
+      <TopNfts />
     </Box>
   );
 };
@@ -90,86 +82,5 @@ const HomeAlert = () => {
         ✍️
       </AlertDescription>
     </Alert>
-  );
-};
-
-const HomeBanner = () => {
-  return (
-    <Container maxW={"7xl"} mt={"-3rem"} px={5}>
-      <Stack
-        align={"center"}
-        spacing={{ base: 8, md: 10 }}
-        pt={{ base: 20, md: 28 }}
-        pb={20}
-        direction={{ base: "column", md: "row" }}
-      >
-        <Stack flex={1} spacing={5} position="relative">
-          <Heading
-            lineHeight={1.1}
-            fontWeight={"bold"}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
-            color={useColorModeValue(HeadingColorLight, HeadingColorDark)}
-          >
-            Discover stories and explore art
-          </Heading>
-          <Text
-            fontSize={{ base: "xl", md: "3xl" }}
-            color={useColorModeValue(TextColorLight, TextColorDark)}
-          >
-            Kontribute is a web3 creators platform that brings story writing and
-            digital art collectibles together
-          </Text>
-          <Stack
-            spacing={{ base: 4, sm: 6 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <NavLink to={"/stories"}>
-              <Button
-                bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
-                color={useColorModeValue(
-                  ButtonTextColorlight,
-                  ButtonTextColorDark
-                )}
-                boxShadow="base"
-                size={"lg"}
-                _hover={{
-                  transform: "translateY(-2px)",
-                  boxShadow: "lg",
-                }}
-                rightIcon={<ArrowForwardIcon />}
-              >
-                Discover Stories
-              </Button>
-            </NavLink>
-            <NavLink to={"/marketplace"}>
-              <Button
-                bg={useColorModeValue(ButtonColorLight, ButtonColorDark)}
-                color={useColorModeValue(
-                  ButtonTextColorlight,
-                  ButtonTextColorDark
-                )}
-                boxShadow="base"
-                size={"lg"}
-                _hover={{
-                  transform: "translateY(-2px)",
-                  boxShadow: "lg",
-                }}
-                rightIcon={<ArrowForwardIcon />}
-              >
-                Trade art
-              </Button>
-            </NavLink>
-          </Stack>
-        </Stack>
-        <LaunchpadBanner
-          mainImg={ratokoBG}
-          logoImg={anvLogo}
-          link={
-            "/marketplace/bbd87200973033cb69bc0aee03e90df1a1de01e28aa0246bb175baabfd071754"
-          }
-          name={"Ratoko is now trading on the marketplace!"}
-        />
-      </Stack>
-    </Container>
   );
 };

@@ -79,9 +79,12 @@ const AuthorProfile = () => {
     if (stories.length > 0 && stories[0].value.stories.length > 0) {
       let authorStories = stories[0].value.stories;
 
+      // getSize(authorStories);
+
       const filterByLatest = authorStories.sort(
         (a, b) => Number(b.time) - Number(a.time)
       );
+
       setAllStories(filterByLatest);
 
       for (let story of stories[0].value.stories) {
@@ -96,6 +99,19 @@ const AuthorProfile = () => {
     setTotalViews(views.toString());
     setLoaded(true);
   };
+
+  // return array size in bytes
+  // query limit is 2mb?
+  // const getSize = (storyArray) => {
+  //   let newArray = storyArray.map((story) => {
+  //     for (let value in story) {
+  //       story[value] = story[value].toString();
+  //     }
+  //     return story;
+  //   });
+
+  //   console.info(new Blob([JSON.stringify(newArray)]).size);
+  // };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -144,10 +160,7 @@ const AuthorProfile = () => {
                         ))
                       ) : (
                         <Flex justify="center">
-                          <Text
-                            py={"100px"}
-                            px={{ base: null, md: "200px" }}
-                          >
+                          <Text py={"100px"} px={{ base: null, md: "200px" }}>
                             No stories here!😕
                           </Text>
                         </Flex>
