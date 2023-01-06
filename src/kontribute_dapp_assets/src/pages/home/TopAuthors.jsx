@@ -8,41 +8,114 @@ import {
   VStack,
   SimpleGrid,
   useColorModeValue,
+  useBreakpointValue,
   Skeleton,
   Flex,
   Text,
+  IconButton,
+  Avatar,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
+import * as Principal from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import {
   startIndexClient,
   startStoryServiceClient,
 } from "../CanDBClient/client";
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
 import { FcApproval } from "react-icons/fc";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { VERIFIED } from "../../containers/verified/Verified";
+import { motion, AnimatePresence } from "framer-motion";
+
+const AUTHORS = [
+  "gjb2q-dzr7c-xdce5-m3yqz-zx3vg-7vciz-7vgcg-sov33-ln7rs-btbjk-2qe",
+  "3zgw5-lwcb5-szvtp-tkqbu-zcdmp-qphq3-4gmre-75bbr-airu3-kfyeq-4ae",
+  "zqxph-ufrag-xelru-brcwg-4amzv-dxvcm-ws2eq-qg2jm-7kvnc-ugtig-wqe",
+  "qflw3-vnfgg-ewg4g-rt7y7-zrana-4oruo-jfrbo-i3l5b-rid5c-7o7o2-pae",
+  "7xvg3-yvl47-x2bkx-tg6yr-hdn6p-xtzti-qiwha-gwdqt-pix4u-7ie7i-3qe",
+  "bc2fh-bgwnk-fupqb-53xlk-ulfsk-tl7y3-difge-krqya-gb3am-uhwp6-gae",
+  "ztgpg-mqoa6-walku-aw7gp-anwd4-bjo4a-pv75y-2dfyt-3azec-q4fjd-wqe",
+  "6iwey-ng4gi-zg5jc-bk32y-chexd-dpjjq-slimi-nq4tw-jw6sl-ihzqq-lae",
+  "3d2q2-ce4z5-osah6-dibbj-secst-grfxj-q3f7x-ahuhz-gk5ma-rsgjo-lae",
+];
+
+// 3 authors on desktop, 1 on mobile
+const TOTALPAGESBIGSCREEN = 3;
+const TOTALPAGESSMALLSCREEN = 9; // amount of authors
 
 const TopAuthors = () => {
-  const authors = [
-    "3zgw5-lwcb5-szvtp-tkqbu-zcdmp-qphq3-4gmre-75bbr-airu3-kfyeq-4ae",
-    "zqxph-ufrag-xelru-brcwg-4amzv-dxvcm-ws2eq-qg2jm-7kvnc-ugtig-wqe",
-    "gjb2q-dzr7c-xdce5-m3yqz-zx3vg-7vciz-7vgcg-sov33-ln7rs-btbjk-2qe",
-  ];
+  const [page, setPage] = useState(0);
+  const [authorsToShow, setAuthorsToShow] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const smallOrBigScreen = useBreakpointValue({ base: "small", lg: "big" });
 
+  const loadAuthors = () => {
+    if (smallOrBigScreen === "big") {
+      if (page < 3) {
+        setAuthorsToShow(AUTHORS.slice(page * 3, (page + 1) * 3));
+        setTotalPages(TOTALPAGESBIGSCREEN);
+      } else {
+        setPage(0);
+      }
+    } else if (smallOrBigScreen === "small") {
+      setAuthorsToShow(AUTHORS.slice(page * 1, (page + 1) * 1));
+      setTotalPages(TOTALPAGESSMALLSCREEN);
+    }
+  };
+
+  const changePage = (input) => {
+    // change direction in motion div
+    if (input === "next") {
+      setPage(page + 1);
+    } else if (input === "prev") {
+      setPage(page - 1);
+    }
+  };
+
+  useEffect(() => {
+    loadAuthors();
+  }, [page, smallOrBigScreen]);
+
+  const bgColor = useColorModeValue("White", "#1d1d20");
   return (
-    <Box>
-      <Center pb={3}>
-        <Heading fontSize={{ base: "xl", lg: "3xl" }}>Notable authors</Heading>
-      </Center>
+    <Box mt={{ base: 5, md: 10 }}>
       <Center>
+        <IconButton
+          icon={<ChevronLeftIcon boxSize={12} />}
+          size="lg"
+          bg={bgColor}
+          boxShadow="md"
+          borderRadius="100%"
+          mr={-6}
+          zIndex={1}
+          onClick={() => changePage("prev")}
+          isDisabled={page === 0}
+          _hover={{ boxShadow: "lg" }}
+        />
         <SimpleGrid
           columns={{ base: 1, md: 1, lg: 3 }}
           pb={5}
           gap={{ base: 3, md: 5 }}
+          px={1}
           maxW="1050px"
+          overflow="hidden"
         >
-          {authors.map((item) => (
-            <TopAuthorCard author={item} key={item} />
+          {authorsToShow.map((item) => (
+            <TopAuthorCard author={item} key={item} page={page} />
           ))}
         </SimpleGrid>
+        <IconButton
+          icon={<ChevronRightIcon boxSize={12} />}
+          size="lg"
+          bg={bgColor}
+          boxShadow="md"
+          borderRadius="100%"
+          ml={-6}
+          zIndex={1}
+          onClick={() => changePage("next")}
+          isDisabled={page + 1 === totalPages}
+          _hover={{ boxShadow: "lg" }}
+        />
       </Center>
     </Box>
   );
@@ -50,11 +123,13 @@ const TopAuthors = () => {
 
 export default TopAuthors;
 
-const TopAuthorCard = ({ author }) => {
+const TopAuthorCard = ({ author, page }) => {
   const [src, setSrc] = useState("");
   const [authorDetails, setAuthorDetails] = useState({});
   const [totalViews, setTotalViews] = useState(0);
   const [totalLikes, setTotalLikes] = useState(0);
+
+  let direction = 1;
 
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
@@ -100,12 +175,25 @@ const TopAuthorCard = ({ author }) => {
           nft_fetch(details[0].value.ok[0].nftProfilePic.toLowerCase())
         );
 
-        meta.thumb.internal
-          ? setSrc(meta.thumb.internal.url)
-          : setSrc(meta.thumb.external);
+        meta.content.internal
+          ? setSrc(meta.content.internal.url)
+          : setSrc(meta.content.external);
         setAuthorDetails(details[0].value.ok[0]);
       }
     } catch (e) {
+      // get address
+      let address;
+      for (let i = 0; i < 100000; i++) {
+        let c = Principal.principalToAccountIdentifier(author, i);
+
+        if (c.substring(0, 3) === "a00") {
+          address = c;
+          break;
+        }
+      }
+      setAuthorDetails({
+        pseudonym: `${address.substring(0, 5)}...${address.substring(59, 64)}`,
+      });
       console.log(e.toString());
     }
   };
@@ -115,65 +203,121 @@ const TopAuthorCard = ({ author }) => {
     getLikesAndViews();
   }, [author]);
 
+  const variants = {
+    enter: (direction) => {
+      return {
+        x: direction > 0 ? 1000 : -1000,
+        opacity: 0,
+      };
+    },
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => {
+      return {
+        zIndex: 0,
+        x: direction < 0 ? 1000 : -1000,
+        opacity: 0,
+      };
+    },
+  };
+
   const bgColor = useColorModeValue("White", "#1d1d20");
   return (
     <NavLink to={"/profile/" + author}>
-      <Box
-        spacing="30px"
-        marginTop="5"
-        boxShadow="md"
-        borderRadius="lg"
-        bg={bgColor}
-        _hover={{
-          transform: "translateY(-3px)",
-          boxShadow: "lg",
+      <motion.div
+        variants={variants}
+        custom={direction}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{
+          x: { type: "spring", stiffness: 300, damping: 30 },
+          opacity: { duration: 0.2 },
         }}
-        transition="0.3s ease-in-out"
       >
-        <Box borderRadius="lg" overflow="hidden">
-          <ChakraImage
-            src={src}
-            fallback={<Skeleton boxSize="335px" borderRadius="lg" />}
-            objectFit="contain"
-          />
+        <Box
+          spacing="30px"
+          boxShadow="md"
+          borderRadius="lg"
+          bg={bgColor}
+          _hover={{
+            transform: "translateY(-3px)",
+            boxShadow: "lg",
+          }}
+          transition="0.3s ease-in-out"
+        >
+          <Box borderRadius="lg" overflow="hidden">
+            <ChakraImage
+              src={src}
+              fallback={<Avatar h="335px" w="auto" borderRadius="lg" />}
+              objectFit="cover"
+              boxSize="335px"
+            />
+          </Box>
+          <Box p={5}>
+            <Flex align="center">
+              {authorDetails.pseudonym ? (
+                <Heading size={"md"} noOfLines={1}>
+                  {authorDetails.pseudonym}
+                  &nbsp;
+                </Heading>
+              ) : (
+                <Skeleton height="24px" w={"120px"} />
+              )}
+              {VERIFIED.includes(authorDetails.pseudonym) ? (
+                <FcApproval />
+              ) : null}
+            </Flex>
+            <HStack justify="start" spacing={12} mt={3} align="center">
+              {totalLikes ? (
+                <>
+                  <VStack spacing={-1} align="start">
+                    <Text
+                      fontSize={"xs"}
+                      textTransform="uppercase"
+                      color="gray.500"
+                      fontWeight={700}
+                    >
+                      Views
+                    </Text>
+                    <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
+                      {totalViews}
+                    </Text>
+                  </VStack>
+                  <VStack spacing={-1} align="start">
+                    <Text
+                      fontSize={"xs"}
+                      textTransform="uppercase"
+                      color="gray.500"
+                      fontWeight={700}
+                    >
+                      Likes
+                    </Text>
+                    <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
+                      {totalLikes}
+                    </Text>
+                  </VStack>
+                </>
+              ) : (
+                <>
+                  <VStack align="start">
+                    <Skeleton height="14px" w="50px" />
+                    <Skeleton height={{ base: "16px", md: "19px" }} w="50px" />
+                  </VStack>
+
+                  <VStack align="start">
+                    <Skeleton height="14px" w="50px" />
+                    <Skeleton height={{ base: "16px", md: "19px" }} w="50px" />
+                  </VStack>
+                </>
+              )}
+            </HStack>
+          </Box>
         </Box>
-        <Box p={5}>
-          <Flex align="center">
-            <Heading size={"md"} noOfLines={1}>
-              {authorDetails.pseudonym}&nbsp;
-            </Heading>
-            <FcApproval />
-          </Flex>
-          <HStack justify="start" spacing={12} mt={3} align="center">
-            <VStack spacing={-1} align="start">
-              <Text
-                fontSize={"xs"}
-                textTransform="uppercase"
-                color="gray.500"
-                fontWeight={700}
-              >
-                Views
-              </Text>
-              <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
-                {totalViews}
-              </Text>
-            </VStack>
-            <VStack spacing={-1} align="start">
-              <Text
-                fontSize={"xs"}
-                textTransform="uppercase"
-                color="gray.500"
-                fontWeight={700}
-              >
-                Likes
-              </Text>
-              <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
-                {totalLikes}
-              </Text>
-            </VStack>
-          </HStack>
-        </Box>
-      </Box>
+      </motion.div>
     </NavLink>
   );
 };

@@ -26,7 +26,7 @@ const Home = () => {
 
   const textColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   return (
-    <Box color={textColor} px={5} pb={12}>
+    <Box color={textColor} px={3} pb={12}>
       <Center my={{ base: 5, md: 10 }}>
         <Stack spacing={5} textAlign="center">
           <Heading

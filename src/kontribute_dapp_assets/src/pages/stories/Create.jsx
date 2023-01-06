@@ -492,14 +492,7 @@ const Monetization = ({ dispatch, storyState, proposals }) => {
 };
 
 const PickGenre = ({ genre, dispatch }) => {
-  const Genres = [
-    "Fiction",
-    "Non-Fiction",
-    "Short Story",
-    "Blog",
-    "Other",
-    "Web3Author Competition",
-  ];
+  const Genres = ["Fiction", "Non-Fiction", "Short Story", "Blog", "Other"];
 
   return (
     <Menu>

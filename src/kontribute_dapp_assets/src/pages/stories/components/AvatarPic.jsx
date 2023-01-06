@@ -7,8 +7,7 @@ import {
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
 import { Link } from "react-router-dom";
 import { FcApproval } from "react-icons/fc";
-
-const VERIFIED = ["Crypto Girl", "Daine", "TsuDohNimh"];
+import { VERIFIED } from "../../../containers/verified/Verified";
 
 const AvatarPic = ({ author, address, smallView, refresh, monetized }) => {
   const indexClient = startIndexClient();
@@ -53,7 +52,7 @@ const AvatarPic = ({ author, address, smallView, refresh, monetized }) => {
       {defaultId ? (
         <Link to={`/profile/${author}`}>
           <Flex align={smallView ? "center" : "end"} gap={2}>
-            <Avatar size={smallView ? "sm" : "md"} bg="teal.500" />{" "}
+            <Avatar size={smallView ? "sm" : "md"} />{" "}
             <Text color={"gray.500"}>{`${address.substring(
               0,
               5
@@ -64,7 +63,7 @@ const AvatarPic = ({ author, address, smallView, refresh, monetized }) => {
       ) : (
         <Box>
           <Link to={`/profile/${author}`}>
-            <Flex align={smallView ? "center" : "end"} gap={1}>
+            <Flex align={smallView ? "center" : "end"} gap={2}>
               <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
               <Flex align="center" gap={1}>
                 <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>

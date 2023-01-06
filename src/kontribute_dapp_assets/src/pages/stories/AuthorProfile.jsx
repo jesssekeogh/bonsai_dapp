@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as Principal from "@vvv-interactive/nftanvil-tools/cjs/token.js";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   startIndexClient,
   startStoryServiceClient,
