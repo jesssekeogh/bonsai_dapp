@@ -100,7 +100,6 @@ const SingleStory = () => {
           <SimpleGrid
             columns={{ base: 1, lg: 2 }}
             templateColumns={{ base: "auto", lg: "1fr 500px" }}
-            grid-auto-flow="dense"
           >
             {/* for mobile: */}
             <Hide above="md">
@@ -163,6 +162,7 @@ const SingleStory = () => {
                   lineHeight={1.5}
                   fontSize={"21px"}
                   fontFamily="'Times New Roman', Times, serif"
+                  wordBreak="break-word"
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(
                       decodeURIComponent(storyContent.body),

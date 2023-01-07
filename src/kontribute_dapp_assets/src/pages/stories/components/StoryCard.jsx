@@ -36,6 +36,7 @@ const StoryCard = ({ data }) => {
         boxShadow={"xl"}
         rounded={"lg"}
         p={4}
+        overflow="hidden"
       >
         <Flex align="center" gap={2}>
           <AvatarPic
@@ -58,11 +59,12 @@ const StoryCard = ({ data }) => {
           </Heading>
           <Text
             noOfLines={2}
+            wordBreak="break-word"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(decodeURIComponent(data.body), {
                 FORBID_ATTR: ["style"],
                 ALLOWED_TAGS: [""],
-              }),
+              }).toString(),
             }}
           ></Text>
           <Flex mt={3} gap={{ base: 1, md: 2 }} align={"center"}>
