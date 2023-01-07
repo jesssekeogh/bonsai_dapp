@@ -25,7 +25,7 @@ import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
 import { FcApproval } from "react-icons/fc";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { VERIFIED } from "../../containers/verified/Verified";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const AUTHORS = [
   "gjb2q-dzr7c-xdce5-m3yqz-zx3vg-7vciz-7vgcg-sov33-ln7rs-btbjk-2qe",
@@ -33,9 +33,9 @@ const AUTHORS = [
   "zqxph-ufrag-xelru-brcwg-4amzv-dxvcm-ws2eq-qg2jm-7kvnc-ugtig-wqe",
   "qflw3-vnfgg-ewg4g-rt7y7-zrana-4oruo-jfrbo-i3l5b-rid5c-7o7o2-pae",
   "7xvg3-yvl47-x2bkx-tg6yr-hdn6p-xtzti-qiwha-gwdqt-pix4u-7ie7i-3qe",
+  "olrda-tpftz-wwerk-7whnq-s3l47-oq4kh-wvumc-byngh-yzkev-3rwze-pae",
   "bc2fh-bgwnk-fupqb-53xlk-ulfsk-tl7y3-difge-krqya-gb3am-uhwp6-gae",
   "ztgpg-mqoa6-walku-aw7gp-anwd4-bjo4a-pv75y-2dfyt-3azec-q4fjd-wqe",
-  "6iwey-ng4gi-zg5jc-bk32y-chexd-dpjjq-slimi-nq4tw-jw6sl-ihzqq-lae",
   "3d2q2-ce4z5-osah6-dibbj-secst-grfxj-q3f7x-ahuhz-gk5ma-rsgjo-lae",
 ];
 
@@ -48,6 +48,7 @@ const TopAuthors = () => {
   const [authorsToShow, setAuthorsToShow] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const smallOrBigScreen = useBreakpointValue({ base: "small", lg: "big" });
+  const [direction, setDirection] = useState(1);
 
   const loadAuthors = () => {
     if (smallOrBigScreen === "big") {
@@ -64,11 +65,20 @@ const TopAuthors = () => {
   };
 
   const changePage = (input) => {
-    // change direction in motion div
     if (input === "next") {
-      setPage(page + 1);
+      setDirection(1);
+      if (page + 1 === totalPages) {
+        setPage(0);
+      } else {
+        setPage(page + 1);
+      }
     } else if (input === "prev") {
-      setPage(page - 1);
+      setDirection(0);
+      if (page === 0) {
+        setPage(totalPages - 1);
+      } else {
+        setPage(page - 1);
+      }
     }
   };
 
@@ -78,7 +88,7 @@ const TopAuthors = () => {
 
   const bgColor = useColorModeValue("White", "#1d1d20");
   return (
-    <Box mt={{ base: 5, md: 10 }}>
+    <Box mt={{ base: 7, md: 10 }}>
       <Center>
         <IconButton
           icon={<ChevronLeftIcon boxSize={12} />}
@@ -89,7 +99,6 @@ const TopAuthors = () => {
           mr={-6}
           zIndex={1}
           onClick={() => changePage("prev")}
-          isDisabled={page === 0}
           _hover={{ boxShadow: "lg" }}
         />
         <SimpleGrid
@@ -101,7 +110,7 @@ const TopAuthors = () => {
           overflow="hidden"
         >
           {authorsToShow.map((item) => (
-            <TopAuthorCard author={item} key={item} page={page} />
+            <TopAuthorCard author={item} key={item} direction={direction} />
           ))}
         </SimpleGrid>
         <IconButton
@@ -113,7 +122,6 @@ const TopAuthors = () => {
           ml={-6}
           zIndex={1}
           onClick={() => changePage("next")}
-          isDisabled={page + 1 === totalPages}
           _hover={{ boxShadow: "lg" }}
         />
       </Center>
@@ -123,13 +131,11 @@ const TopAuthors = () => {
 
 export default TopAuthors;
 
-const TopAuthorCard = ({ author, page }) => {
+const TopAuthorCard = ({ author, direction }) => {
   const [src, setSrc] = useState("");
   const [authorDetails, setAuthorDetails] = useState({});
   const [totalViews, setTotalViews] = useState(0);
   const [totalLikes, setTotalLikes] = useState(0);
-
-  let direction = 1;
 
   const indexClient = startIndexClient();
   const storyServiceClient = startStoryServiceClient(indexClient);
@@ -215,42 +221,29 @@ const TopAuthorCard = ({ author, page }) => {
       x: 0,
       opacity: 1,
     },
-    exit: (direction) => {
-      return {
-        zIndex: 0,
-        x: direction < 0 ? 1000 : -1000,
-        opacity: 0,
-      };
-    },
   };
 
   const bgColor = useColorModeValue("White", "#1d1d20");
   return (
     <NavLink to={"/profile/" + author}>
       <motion.div
-        variants={variants}
-        custom={direction}
-        initial="enter"
+        variants={variants} // custom functions for animations
+        custom={direction} // input
+        initial="enter" // calling the custom functions
         animate="center"
-        exit="exit"
         transition={{
           x: { type: "spring", stiffness: 300, damping: 30 },
           opacity: { duration: 0.2 },
         }}
       >
-        <Box
-          spacing="30px"
-          boxShadow="md"
-          borderRadius="lg"
-          bg={bgColor}
-          _hover={{
-            transform: "translateY(-3px)",
-            boxShadow: "lg",
-          }}
-          transition="0.3s ease-in-out"
-        >
+        <Box spacing="30px" boxShadow="md" borderRadius="lg" bg={bgColor}>
           <Box borderRadius="lg" overflow="hidden">
             <ChakraImage
+              transform="scale(1.0)"
+              transition="0.3s ease-in-out"
+              _hover={{
+                transform: "scale(1.05)",
+              }}
               src={src}
               fallback={<Avatar h="335px" w="auto" borderRadius="lg" />}
               objectFit="cover"

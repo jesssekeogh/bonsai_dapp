@@ -35,7 +35,7 @@ const MarketplaceLanding = () => {
       <Tabs variant="line" colorScheme="cyan" mx={5}>
         <TabList>
           <Tab>
-            <Heading size="lg">Story Art</Heading>
+            <Heading size="lg">Collections</Heading>
           </Tab>
         </TabList>
         <TabPanels>

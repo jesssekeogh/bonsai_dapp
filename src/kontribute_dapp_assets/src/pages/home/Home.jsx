@@ -18,6 +18,7 @@ import {
 import TopNfts from "./TopNfts";
 import TopAuthors from "./TopAuthors";
 import TopStories from "./TopStories";
+import CardInfo from "./CardInfo";
 
 const Home = () => {
   useEffect(() => {
@@ -26,7 +27,7 @@ const Home = () => {
 
   const textColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   return (
-    <Box color={textColor} px={3} pb={12}>
+    <Box color={textColor} px={3} pb={20}>
       <Center my={{ base: 5, md: 10 }}>
         <Stack spacing={5} textAlign="center">
           <Heading
@@ -37,7 +38,7 @@ const Home = () => {
             bgClip="text"
             transition="0.3s"
           >
-            Discover stories and explore art
+            Explore stories and discover art
           </Heading>
           <Center>
             <Text fontSize={{ base: "xl", md: "2xl" }} maxW="2xl">
@@ -50,6 +51,7 @@ const Home = () => {
       <TopAuthors />
       <TopStories />
       <TopNfts />
+      <CardInfo />
     </Box>
   );
 };

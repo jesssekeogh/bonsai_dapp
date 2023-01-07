@@ -4,4 +4,5 @@ export const VERIFIED = [
   "TsuDohNimh",
   "jes1",
   "Kontribute",
+  "Web3 ⚡ William"
 ];
