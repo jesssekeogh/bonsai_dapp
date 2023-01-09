@@ -252,7 +252,12 @@ const Create = () => {
               mr={{ base: 0, md: 3 }}
               mb={3}
             >
-              <Container minW={{ lg: "2xl" }} minH="2xl" color={textColor}>
+              <Container
+                minW={{ lg: "2xl" }}
+                pb={3}
+                minH="2xl"
+                color={textColor}
+              >
                 <Stack p={2} pb={4} align="center">
                   {storyOption === "New story" ? (
                     <Input
@@ -313,9 +318,6 @@ const Create = () => {
                   address={address}
                   author={userId}
                 />
-                {proposalsArray.length > 1 ? (
-                  <PollSection justCreated={true} pollData={proposalsArray} />
-                ) : null}
                 <ActionButtons
                   setStoryOption={setStoryOption}
                   storyOption={storyOption}
@@ -328,6 +330,9 @@ const Create = () => {
                   storyState={storyState}
                   proposals={proposalsArray.length}
                 />
+                {proposalsArray.length > 1 ? (
+                  <PollSection justCreated={true} pollData={proposalsArray} />
+                ) : null}
               </Box>
             </GridItem>
           </SimpleGrid>

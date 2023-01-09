@@ -43,7 +43,7 @@ const CardInfo = () => {
           />
           <SingleInfoCard
             image={dfinityColor}
-            title={"Financially backed by Dfinity"}
+            title={"Backed by Dfinity"}
             body={
               "Supported by The Dfinity Foundation, a not-for-profit organization who is a major contributor to the ICP blockchain."
             }
@@ -52,7 +52,7 @@ const CardInfo = () => {
             image={supernova}
             title={"1st place in Supernova"}
             body={
-              "Winners of the 1st place prize of the social-fi category in the global supernova hackathon."
+              "Winners of the 1st place prize in the social-fi category of the global supernova hackathon."
             }
           />
         </SimpleGrid>
@@ -66,7 +66,7 @@ export default CardInfo;
 const SingleInfoCard = ({ image, title, body }) => {
   const bgColor = useColorModeValue("White", "#1d1d20");
   return (
-    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
+    <motion.div whileHover={{ scale: 1.05 }}>
       <Box spacing="30px" boxShadow="md" borderRadius="lg" bg={bgColor}>
         <Box borderRadius="lg" overflow="hidden" align="center">
           <ChakraImage

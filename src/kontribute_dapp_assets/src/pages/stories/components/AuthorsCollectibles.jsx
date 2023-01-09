@@ -51,7 +51,11 @@ const AuthorsCollectibles = ({ address }) => {
             <Heading fontWeight={600} size="md">
               Authors Collectibles
             </Heading>
-            <Stack direction="row" justify="center" my={3}>
+            <Stack
+              direction="row"
+              justify={tokens.length > 2 ? "center" : "start"}
+              my={3}
+            >
               {tokens.map((item) => (
                 <SmallNft tokenId={item} key={item} />
               ))}

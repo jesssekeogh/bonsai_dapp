@@ -45,7 +45,10 @@ const StoryCard = ({ data }) => {
             smallView={true}
             monetized={data.monetized}
           />
-          ·<Text color={"gray.500"}>{moment(time.getTime()).fromNow()}</Text>
+          ·
+          <Text color={"gray.500"} noOfLines={1}>
+            {moment(time.getTime()).fromNow()}
+          </Text>
         </Flex>
         <NavLink
           to={`/stories/author_${data.author}_story_${data.groupName}_chapter_${data.title}`}
@@ -64,7 +67,7 @@ const StoryCard = ({ data }) => {
               __html: DOMPurify.sanitize(decodeURIComponent(data.body), {
                 FORBID_ATTR: ["style"],
                 ALLOWED_TAGS: [""],
-              }).toString(),
+              }),
             }}
           ></Text>
           <Flex mt={3} gap={{ base: 1, md: 2 }} align={"center"}>

@@ -24,12 +24,12 @@ import {
   Tooltip,
   Text,
   GridItem,
+  VStack,
   Box,
   Hide,
 } from "@chakra-ui/react";
-import { ViewIcon, CopyIcon, CheckIcon } from "@chakra-ui/icons";
-import { FaHeart } from "react-icons/fa";
-import { BiCylinder } from "react-icons/bi";
+import { CopyIcon, CheckIcon } from "@chakra-ui/icons";
+import { BiCylinder, BiWallet } from "react-icons/bi";
 import LoadingStoryCard from "./components/LoadingStoryCard";
 import AvatarPic from "./components/AvatarPic";
 import AuthorsCollectibles from "./components/AuthorsCollectibles";
@@ -216,56 +216,110 @@ const ProfileBox = ({ author, address, totalLikes, totalViews, canister }) => {
           smallView={false}
           monetized={false}
         />
-        <Flex mt={1} gap={2} align={"center"} justify="center">
-          <Button
-            bg={"none"}
-            p={0}
-            m={0}
-            size="md"
-            color="gray.500"
-            leftIcon={<ViewIcon />}
-            _hover={{ bg: "none", cursor: "default" }}
-          >
-            {totalViews} views
-          </Button>
-          ·
-          <Button
-            bg={"none"}
-            p={0}
-            m={0}
-            size="md"
-            color="gray.500"
-            leftIcon={<FaHeart />}
-            _hover={{ bg: "none", cursor: "default" }}
-          >
-            {totalLikes} likes
-          </Button>
-        </Flex>
-        <Flex mt={0} gap={{ base: 1, md: 2 }} align={"center"} justify="center">
-          <Tooltip
-            hasArrow
-            closeOnClick={false}
-            label={hasCopied ? "Copied" : "Copy canister"}
-          >
-            <Button
-              bg={"none"}
-              p={0}
-              m={0}
-              size="md"
-              color="gray.500"
-              onClick={() => onCopy()}
-              leftIcon={<BiCylinder />}
-              rightIcon={hasCopied ? <CheckIcon /> : <CopyIcon />}
-              _hover={{ bg: "none", cursor: "pointer", opacity: "0.8" }}
+        <VStack align="start" justify="start" gap={1} mt={3}>
+          <Flex mt={1} gap={5} align={"center"} justify="start">
+            <VStack spacing={-1} align="start">
+              <Text
+                fontSize={"xs"}
+                textTransform="uppercase"
+                color="gray.500"
+                fontWeight={700}
+              >
+                Views
+              </Text>
+              <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
+                {totalViews}
+              </Text>
+            </VStack>
+            <VStack spacing={-1} align="start">
+              <Text
+                fontSize={"xs"}
+                textTransform="uppercase"
+                color="gray.500"
+                fontWeight={700}
+              >
+                Likes
+              </Text>
+              <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
+                {totalLikes}
+              </Text>
+            </VStack>
+          </Flex>
+          <CopyAddress address={address} />
+          <VStack spacing={-1} align="start">
+            <Flex align="center" gap={1} color="gray.500">
+              <BiCylinder />
+              <Text
+                fontSize={"xs"}
+                textTransform="uppercase"
+                fontWeight={700}
+                display="inline"
+              >
+                Canister
+              </Text>
+            </Flex>
+            <Tooltip
+              hasArrow
+              closeOnClick={false}
+              label={hasCopied ? "Copied" : "Copy canister"}
             >
-              Canister:{" "}
-              {canister
-                ? canister.substring(0, 5) + "..." + canister.substring(20, 27)
-                : null}
-            </Button>
-          </Tooltip>
-        </Flex>
+              <Button
+                bg={"none"}
+                p={0}
+                m={0}
+                size="md"
+                onClick={() => onCopy()}
+                rightIcon={hasCopied ? <CheckIcon /> : <CopyIcon />}
+                _hover={{ bg: "none", cursor: "pointer", opacity: "0.8" }}
+              >
+                {canister
+                  ? canister.substring(0, 5) +
+                    "..." +
+                    canister.substring(20, 27)
+                  : "none"}
+              </Button>
+            </Tooltip>
+          </VStack>
+        </VStack>
       </Container>
     </Flex>
+  );
+};
+
+const CopyAddress = ({ address }) => {
+  const { onCopy, hasCopied } = useClipboard(address);
+  return (
+    <VStack spacing={-1} align="start">
+      <Flex align="center" gap={1} color="gray.500">
+        <BiWallet />
+        <Text
+          fontSize={"xs"}
+          textTransform="uppercase"
+          fontWeight={700}
+          display="inline"
+        >
+          Address
+        </Text>
+      </Flex>
+      <Tooltip
+        hasArrow
+        closeOnClick={false}
+        label={hasCopied ? "Copied" : "Copy address"}
+      >
+        <Button
+          bg={"none"}
+          p={0}
+          m={0}
+          size="md"
+          onClick={() => onCopy()}
+          rightIcon={hasCopied ? <CheckIcon /> : <CopyIcon />}
+          _hover={{ bg: "none", cursor: "pointer", opacity: "0.8" }}
+        >
+          {address
+            ? `${address.substring(0, 5)}...${address.substring(59, 64)}`
+            : "none"}
+        </Button>
+      </Tooltip>
+    </VStack>
   );
 };

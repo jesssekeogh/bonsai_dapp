@@ -133,6 +133,7 @@ const SingleStory = () => {
                 minH="2xl"
                 color={textColor}
                 className={"ql-container"}
+                pb={3}
               >
                 <Stack p={2} pb={4} align="center">
                   <Text

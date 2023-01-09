@@ -222,9 +222,9 @@ const OurPicks = () => {
   const [loaded, setLoaded] = useState(false);
 
   const sortKeysForPicks = [
-    "author_zqxph-ufrag-xelru-brcwg-4amzv-dxvcm-ws2eq-qg2jm-7kvnc-ugtig-wqe_story_Magic%20Powers_chapter_Beyond%20their%20magical%20tricks",
-    "author_qflw3-vnfgg-ewg4g-rt7y7-zrana-4oruo-jfrbo-i3l5b-rid5c-7o7o2-pae_story_Interstellar%20Tales_chapter_Prologue",
-    "author_3zgw5-lwcb5-szvtp-tkqbu-zcdmp-qphq3-4gmre-75bbr-airu3-kfyeq-4ae_story_dungeons%20and%20dragons%20campaign_chapter_Chapter%20Eight%3A%20The%20Final%20Battle",
+    "author_zqxph-ufrag-xelru-brcwg-4amzv-dxvcm-ws2eq-qg2jm-7kvnc-ugtig-wqe_story_Crypto%20Girl%20in%20Wonderland_chapter_Chapter%201",
+    "author_olrda-tpftz-wwerk-7whnq-s3l47-oq4kh-wvumc-byngh-yzkev-3rwze-pae_story_The%20Crypto%20Vampires%20of%20Nakano_chapter_Reunion%20with%20Takeshi",
+    "author_3zgw5-lwcb5-szvtp-tkqbu-zcdmp-qphq3-4gmre-75bbr-airu3-kfyeq-4ae_story_LIT-RPG%20Details_chapter_--",
   ];
 
   const load = async () => {

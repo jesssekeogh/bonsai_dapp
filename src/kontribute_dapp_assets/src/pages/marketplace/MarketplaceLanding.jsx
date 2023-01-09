@@ -23,6 +23,8 @@ import pendragonLogo from "../../../assets/pendragon_logo.png";
 import anvLogo from "../../../assets/anvillogo.svg";
 import badbotBg from "../../../assets/badbot-ninja-bg.png";
 import ratokoBG from "../../../assets/ratokoBG.png";
+import basementBG from "../../../assets/basement_bg.png";
+import questionMark from "../../../assets/question_mark.svg";
 
 const MarketplaceLanding = () => {
   useEffect(() => {
@@ -68,6 +70,14 @@ const NftCards = () => {
       gap={5}
       maxW="1250px"
     >
+      <CollectionThumb
+        colimg={basementBG}
+        title={"Basement"}
+        authorimg={questionMark}
+        link={
+          "a003c792cdcc238efd300cacf3591572a18739f5f634d3420bcaa97a6791010d"
+        }
+      />
       <CollectionThumb
         colimg={ratokoBG}
         title={"Ratoko"}

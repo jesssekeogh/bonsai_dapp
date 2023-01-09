@@ -66,7 +66,9 @@ const AvatarPic = ({ author, address, smallView, refresh, monetized }) => {
             <Flex align={smallView ? "center" : "end"} gap={2}>
               <Avatar size={smallView ? "sm" : "md"} src={src} />{" "}
               <Flex align="center" gap={1}>
-                <Text color={"gray.500"}>{authorDetails.pseudonym}</Text>
+                <Text color={"gray.500"} noOfLines={1}>
+                  {authorDetails.pseudonym}
+                </Text>
                 {VERIFIED.includes(authorDetails.pseudonym) ? (
                   <FcApproval />
                 ) : null}

@@ -11,6 +11,7 @@ import {
   Skeleton,
   VStack,
   useColorModeValue,
+  useBreakpointValue,
   SlideFade,
   Flex,
 } from "@chakra-ui/react";
@@ -62,6 +63,7 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
   const bgColor = useColorModeValue("White", "#1d1d20");
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   const nftNameColor = useColorModeValue(nft.colorLight, nft.colorDark);
+  const isMobile = useBreakpointValue({ base: true, lg: false });
 
   useEffect(() => {
     load();
@@ -78,8 +80,12 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
         bg={bgColor}
         rounded={"md"}
         boxShadow="md"
-        onMouseOver={() => (isMarketplace ? setShowQuickBuy(true) : null)}
-        onMouseOut={() => (isMarketplace ? setShowQuickBuy(false) : null)}
+        onMouseOver={() =>
+          isMarketplace && !isMobile ? setShowQuickBuy(true) : null
+        }
+        onMouseOut={() =>
+          isMarketplace && !isMobile ? setShowQuickBuy(false) : null
+        }
       >
         <Link
           to={"/nft/" + token}
