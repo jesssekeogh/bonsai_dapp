@@ -219,8 +219,7 @@ const ProfileBox = ({ author, address, totalLikes, totalViews, canister }) => {
         />
         <VStack align="start" justify="start" gap={1} mt={3}>
           <Stack
-            align="center"
-            gap={1}
+            gap={{ base: 0, lg: 5 }}
             direction={{ base: "column", lg: "row" }}
           >
             <CopyAddress address={address} />
@@ -243,7 +242,7 @@ const ProfileBox = ({ author, address, totalLikes, totalViews, canister }) => {
               >
                 <Button
                   bg={"none"}
-                  pl={0}
+                  p={0}
                   m={0}
                   size="md"
                   onClick={() => onCopy()}
@@ -254,12 +253,12 @@ const ProfileBox = ({ author, address, totalLikes, totalViews, canister }) => {
                     ? canister.substring(0, 5) +
                       "..." +
                       canister.substring(20, 27)
-                    : "none"}
+                    : "No canister found"}
                 </Button>
               </Tooltip>
             </VStack>
           </Stack>
-          <Flex mt={1} gap={5} align={"center"} justify="start">
+          <Flex gap={5} align={"center"} justify="start">
             <VStack spacing={-1} align="start">
               <Text
                 fontSize={"xs"}
@@ -315,7 +314,7 @@ const CopyAddress = ({ address }) => {
       >
         <Button
           bg={"none"}
-          pl={0}
+          p={0}
           m={0}
           size="md"
           onClick={() => onCopy()}
@@ -324,7 +323,7 @@ const CopyAddress = ({ address }) => {
         >
           {address
             ? `${address.substring(0, 5)}...${address.substring(59, 64)}`
-            : "none"}
+            : "No address found"}
         </Button>
       </Tooltip>
     </VStack>
