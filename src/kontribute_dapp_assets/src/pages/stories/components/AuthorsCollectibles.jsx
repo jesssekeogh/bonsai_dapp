@@ -49,7 +49,7 @@ const AuthorsCollectibles = ({ address }) => {
         <Flex rounded={"lg"} mb={3}>
           <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
             <Heading fontWeight={600} size="md">
-              Authors Collectibles
+              Authors collectibles
             </Heading>
             <Stack
               direction="row"

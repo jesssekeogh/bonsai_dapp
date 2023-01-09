@@ -95,8 +95,8 @@ const AuthorProfile = () => {
       setAllStories([]);
     }
 
-    setTotalLikes(likes.toString());
-    setTotalViews(views.toString());
+    setTotalLikes(likes.toLocaleString());
+    setTotalViews(views.toLocaleString());
     setLoaded(true);
   };
 

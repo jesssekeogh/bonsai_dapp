@@ -260,7 +260,7 @@ const OurPicks = () => {
     <Flex rounded={"lg"} mt={3}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Heading size="md" flex="1">
-          Our Picks ✍️
+          Our picks ✍️
         </Heading>
         {loaded ? (
           <>
