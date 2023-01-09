@@ -25,6 +25,7 @@ import {
   Text,
   GridItem,
   VStack,
+  Stack,
   Box,
   Hide,
 } from "@chakra-ui/react";
@@ -217,6 +218,47 @@ const ProfileBox = ({ author, address, totalLikes, totalViews, canister }) => {
           monetized={false}
         />
         <VStack align="start" justify="start" gap={1} mt={3}>
+          <Stack
+            align="center"
+            gap={1}
+            direction={{ base: "column", lg: "row" }}
+          >
+            <CopyAddress address={address} />
+            <VStack spacing={-1} align="start">
+              <Flex align="center" mb={-1} gap={1} color="gray.500">
+                <BiCylinder />
+                <Text
+                  fontSize={"xs"}
+                  textTransform="uppercase"
+                  fontWeight={700}
+                  display="inline"
+                >
+                  Canister
+                </Text>
+              </Flex>
+              <Tooltip
+                hasArrow
+                closeOnClick={false}
+                label={hasCopied ? "Copied" : "Copy canister"}
+              >
+                <Button
+                  bg={"none"}
+                  pl={0}
+                  m={0}
+                  size="md"
+                  onClick={() => onCopy()}
+                  rightIcon={hasCopied ? <CheckIcon /> : <CopyIcon />}
+                  _hover={{ bg: "none", cursor: "pointer", opacity: "0.8" }}
+                >
+                  {canister
+                    ? canister.substring(0, 5) +
+                      "..." +
+                      canister.substring(20, 27)
+                    : "none"}
+                </Button>
+              </Tooltip>
+            </VStack>
+          </Stack>
           <Flex mt={1} gap={5} align={"center"} justify="start">
             <VStack spacing={-1} align="start">
               <Text
@@ -245,41 +287,6 @@ const ProfileBox = ({ author, address, totalLikes, totalViews, canister }) => {
               </Text>
             </VStack>
           </Flex>
-          <CopyAddress address={address} />
-          <VStack spacing={-1} align="start">
-            <Flex align="center" gap={1} color="gray.500">
-              <BiCylinder />
-              <Text
-                fontSize={"xs"}
-                textTransform="uppercase"
-                fontWeight={700}
-                display="inline"
-              >
-                Canister
-              </Text>
-            </Flex>
-            <Tooltip
-              hasArrow
-              closeOnClick={false}
-              label={hasCopied ? "Copied" : "Copy canister"}
-            >
-              <Button
-                bg={"none"}
-                p={0}
-                m={0}
-                size="md"
-                onClick={() => onCopy()}
-                rightIcon={hasCopied ? <CheckIcon /> : <CopyIcon />}
-                _hover={{ bg: "none", cursor: "pointer", opacity: "0.8" }}
-              >
-                {canister
-                  ? canister.substring(0, 5) +
-                    "..." +
-                    canister.substring(20, 27)
-                  : "none"}
-              </Button>
-            </Tooltip>
-          </VStack>
         </VStack>
       </Container>
     </Flex>
@@ -290,7 +297,7 @@ const CopyAddress = ({ address }) => {
   const { onCopy, hasCopied } = useClipboard(address);
   return (
     <VStack spacing={-1} align="start">
-      <Flex align="center" gap={1} color="gray.500">
+      <Flex align="center" mb={-1} gap={1} color="gray.500">
         <BiWallet />
         <Text
           fontSize={"xs"}
@@ -308,7 +315,7 @@ const CopyAddress = ({ address }) => {
       >
         <Button
           bg={"none"}
-          p={0}
+          pl={0}
           m={0}
           size="md"
           onClick={() => onCopy()}
