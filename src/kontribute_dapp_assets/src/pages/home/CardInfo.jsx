@@ -28,7 +28,7 @@ const CardInfo = () => {
       </Center>
       <Center marginTop="5">
         <SimpleGrid
-          columns={{ base: 1, md: 1, lg: 3 }}
+          columns={{ base: 1, md: 2, lg: 3 }}
           pb={5}
           gap={{ base: 5, md: 10 }}
           px={1}

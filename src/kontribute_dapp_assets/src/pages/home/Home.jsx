@@ -19,6 +19,7 @@ import TopNfts from "./TopNfts";
 import TopAuthors from "./TopAuthors";
 import TopStories from "./TopStories";
 import CardInfo from "./CardInfo";
+import SocialCards from "./SocialCards";
 
 const Home = () => {
   useEffect(() => {
@@ -41,7 +42,7 @@ const Home = () => {
             Explore stories and discover art
           </Heading>
           <Center>
-            <Text fontSize={{ base: "xl", md: "2xl" }} maxW="2xl">
+            <Text fontSize={{ base: "lg", md: "2xl" }} maxW="2xl">
               Kontribute is a new web3 creators platform built on ICP that
               brings story writing and digital art collectibles together.
             </Text>
@@ -52,6 +53,7 @@ const Home = () => {
       <TopStories />
       <TopNfts />
       <CardInfo />
+      <SocialCards />
     </Box>
   );
 };

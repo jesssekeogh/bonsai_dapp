@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Box,
-  Container,
-  Stack,
-  Text,
-  IconButton,
-} from "@chakra-ui/react";
-import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import { Box, Container, Stack, Text, IconButton } from "@chakra-ui/react";
+import { FaDiscord, FaTwitter, FaGithub, FaMedium } from "react-icons/fa";
 import "../../../assets/main.css";
 
 const SocialButton = ({ icon, href }) => {
@@ -46,16 +40,21 @@ const Footer = () => {
           <Text as="kbd" size="sm">
             Developed by Team Bonsai
           </Text>
-          <Stack direction={"row"} spacing={6}>
+          <Stack direction={"row"} spacing={5}>
+            <SocialButton
+              label={"Twitter"}
+              href={"https://mobile.twitter.com/TeamBonsai_ICP"}
+              icon={<FaTwitter />}
+            />
             <SocialButton
               label={"Discord"}
               href={"https://discord.gg/mWEzS9gvbZ"}
               icon={<FaDiscord />}
             />
             <SocialButton
-              label={"Twitter"}
-              href={"https://mobile.twitter.com/TeamBonsai_ICP"}
-              icon={<FaTwitter />}
+              label={"Medium"}
+              href={"https://medium.com/@teambonsai.icp"}
+              icon={<FaMedium />}
             />
             <SocialButton
               label={"Github"}
