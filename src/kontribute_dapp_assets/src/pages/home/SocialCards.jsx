@@ -23,7 +23,7 @@ const SocialCards = () => {
         <SimpleGrid
           columns={{ base: 2, md: 4, lg: 4 }}
           pb={5}
-          gap={{ base: 5, md: 10 }}
+          gap={{ base: 3, md: 6 }}
           px={1}
           maxW="1250px"
         >

@@ -41,7 +41,7 @@ const MarketplaceLanding = () => {
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
+          <TabPanel px={0} mx={0}>
             <Heading
               size="xs"
               boxShadow="base"
@@ -67,7 +67,7 @@ const NftCards = () => {
     <SimpleGrid
       columns={{ base: 1, md: 2, lg: 3 }}
       pb={12}
-      gap={5}
+      gap={{ base: 3, md: 6 }}
       maxW="1250px"
     >
       <CollectionThumb
@@ -126,12 +126,13 @@ const CollectionThumb = ({ colimg, title, authorimg, link }) => {
             borderRadius="lg"
             bg={bgColor}
           >
-            <Box borderRadius="lg" overflow="hidden" mb={3}>
+            <Box borderRadius="lg" overflow="hidden" mb={3} align="center">
               <ChakraImage
                 transform="scale(1.0)"
                 src={colimg}
+                borderRadius="md"
                 fallback={<Skeleton height={250} borderRadius="lg" />}
-                objectFit="contain"
+                objectFit="cover"
                 transition="0.3s ease-in-out"
                 _hover={{
                   transform: "scale(1.05)",

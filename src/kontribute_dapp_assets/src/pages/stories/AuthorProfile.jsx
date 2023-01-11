@@ -143,15 +143,15 @@ const AuthorProfile = () => {
             </Box>
           </GridItem>
         </Hide>
-        <GridItem ml={{ base: 0, lg: 20 }} mr={{ base: 0, lg: 3 }}>
-          <Tabs variant="line" colorScheme="cyan" mx={3}>
+        <GridItem ml={{ base: 0, lg: 20 }}>
+          <Tabs variant="line" colorScheme="cyan" mx={{base: 3, md: 6}}>
             <TabList>
               <Tab>
                 <Heading size="lg">Stories</Heading>
               </Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>
+              <TabPanel px={0} mx={0}>
                 <SlideFade in={true} offsetY="20px">
                   {Loaded ? (
                     <>

@@ -104,9 +104,9 @@ const TopAuthors = () => {
         <SimpleGrid
           columns={{ base: 1, md: 1, lg: 3 }}
           pb={5}
-          gap={{ base: 3, md: 5 }}
+          gap={{ base: 0, md: 6 }}
           px={1}
-          maxW="1050px"
+          maxW="1200px"
           overflow="hidden"
         >
           {authorsToShow.map((item) => (

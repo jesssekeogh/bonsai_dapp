@@ -78,7 +78,7 @@ const Inventory = () => {
           <>
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
-              gap={{ base: 3, md: 5 }}
+              gap={{ base: 3, md: 6 }}
               maxW="1250px"
             >
               {tokensShowing.map((item) => (

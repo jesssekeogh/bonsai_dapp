@@ -55,12 +55,12 @@ function BasicStatistics({ nftsTotal }) {
 
   return (
     <Box
-      maxW="7xl"
+      maxW="1250px"
       mx={"auto"}
       pt={{ base: 0, sm: null, md: 10 }}
       px={{ base: 2, sm: 12, md: 17 }}
     >
-      <SimpleGrid columns={2} spacing={{ base: 4, lg: 8 }}>
+      <SimpleGrid columns={2} spacing={{ base: 3, lg: 6 }}>
         <StatsCard title={"ICP:"} stat={user_icp} />
         <StatsCard title={"Collectibles:"} stat={nftsTotal} />
       </SimpleGrid>

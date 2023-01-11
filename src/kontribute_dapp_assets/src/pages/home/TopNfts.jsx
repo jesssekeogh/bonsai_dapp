@@ -52,8 +52,8 @@ const TopNfts = () => {
         <SimpleGrid
           columns={{ base: 2, md: 2, lg: 4 }}
           pb={3}
-          gap={{ base: 3, md: 5 }}
-          maxW="1250px"
+          gap={{ base: 3, md: 6 }}
+          maxW="1200px"
         >
           {tokens.map((item) => (
             <SingleNft tokenId={item} isMarketplace={false} key={item} />

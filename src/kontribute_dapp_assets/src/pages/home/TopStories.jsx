@@ -78,7 +78,7 @@ const TopStories = () => {
       <Center pb={3}>
         <Heading fontSize={{ base: "2xl", lg: "3xl" }}>Top stories</Heading>
       </Center>
-      <Tabs variant="line" colorScheme="cyan" maxW="1050px">
+      <Tabs variant="line" colorScheme="cyan" maxW="1200px">
         <TabList>
           <Tab>
             <Heading fontSize="xl">All</Heading>

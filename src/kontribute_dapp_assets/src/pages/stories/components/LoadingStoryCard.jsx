@@ -33,7 +33,7 @@ const LoadingStoryCard = () => {
           my={3}
           noOfLines={6}
           spacing="4"
-          w={{ base: "280px", md: "570px" }}
+          w={{ base: "auto", md: "570px" }}
         />
       </Container>
     </Flex>

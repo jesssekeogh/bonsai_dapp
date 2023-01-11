@@ -63,7 +63,7 @@ const Owned = ({ tokenId, tokens, price }) => {
   }
   const bgColor = useColorModeValue("white", "#111111");
   return (
-    <Flex rounded={"lg"}>
+    <Flex rounded={"lg"} w={{ base: "100%", md: "auto" }}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Text
           fontWeight={600}

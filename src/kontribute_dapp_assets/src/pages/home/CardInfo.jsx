@@ -30,9 +30,9 @@ const CardInfo = () => {
         <SimpleGrid
           columns={{ base: 1, md: 2, lg: 3 }}
           pb={5}
-          gap={{ base: 5, md: 10 }}
+          gap={{ base: 3, md: 6 }}
           px={1}
-          maxW="1250px"
+          maxW="1200px"
         >
           <SingleInfoCard
             image={icLogo}

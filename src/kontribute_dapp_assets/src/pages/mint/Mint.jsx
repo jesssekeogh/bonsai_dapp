@@ -271,7 +271,7 @@ const Mint = () => {
               p={2}
               borderRadius="lg"
               ml={{ base: 0, lg: 20 }}
-              mr={{ base: 0, md: 3 }}
+              mr={{ base: 0, md: 6 }}
               mb={3}
             >
               <Input

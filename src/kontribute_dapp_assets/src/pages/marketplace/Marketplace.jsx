@@ -184,7 +184,7 @@ const Marketplace = () => {
             <SimpleGrid
               columns={{ base: 2, md: 2, lg: 4 }}
               pb={5}
-              gap={{ base: 3, md: 5 }}
+              gap={{ base: 3, md: 6 }}
               maxW="1250px"
             >
               {tokensForSale.map((item) => (

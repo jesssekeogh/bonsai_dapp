@@ -108,14 +108,14 @@ const Stories = () => {
         templateColumns={{ base: "auto", lg: "1fr 350px" }}
       >
         <GridItem ml={{ base: 0, lg: 20 }}>
-          <Tabs variant="line" colorScheme="cyan" mx={3}>
+          <Tabs variant="line" colorScheme="cyan" mx={{base: 3, md: 6}}>
             <TabList>
               <Tab>
                 <Heading size="lg">{storyFilter}</Heading>
               </Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>
+              <TabPanel px={0} mx={0}>
                 <SlideFade in={true} offsetY="20px">
                   {Loaded ? (
                     <>

@@ -4,6 +4,7 @@ import {
   Center,
   Flex,
   Heading,
+  Hide,
   Stack,
   Text,
   HStack,
@@ -28,7 +29,7 @@ import { useParams } from "react-router-dom";
 import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { LoadingSpinner } from "../../containers/index";
 import { Link, useLocation } from "react-router-dom";
-import { Confetti, GetMine, ChainAndStandard } from "../components";
+import { Confetti, GetMine } from "../components";
 import ForSale from "./ForSale";
 import Owned from "./Owned";
 import {
@@ -174,20 +175,22 @@ const LargeNft = () => {
         <Stack
           flex={1}
           flexDirection="column"
-          justifyContent="center"
-          alignItems="start"
-          p={{ sm: 5, md: 8 }}
+          justifyContent={{ base: "center", md: "start" }}
+          alignItems={{ base: "center", md: "start" }}
+          p={{ base: 3, md: 6 }}
           pt={2}
         >
           <HStack>
-            <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
-              <Button
-                leftIcon={<ArrowBackIcon />}
-                _hover={{ boxShadow: "base" }}
-              >
-                <Text>Go Back</Text>
-              </Button>
-            </Link>
+            <Hide below="md">
+              <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
+                <Button
+                  leftIcon={<ArrowBackIcon />}
+                  _hover={{ boxShadow: "base" }}
+                >
+                  <Text>Go Back</Text>
+                </Button>
+              </Link>
+            </Hide>
             {pathData.amount > 1 ? (
               <Link to="/marketplace">
                 <Button _hover={{ opacity: "0.8" }}>
@@ -196,7 +199,6 @@ const LargeNft = () => {
               </Link>
             ) : null}
           </HStack>
-          <ChainAndStandard />
           {address ? (
             <Owned tokenId={data.id} tokens={ownedTokens} price={data.price} />
           ) : null}
@@ -235,6 +237,40 @@ const LargeNft = () => {
                 fontSize={{ base: "md", md: "lg" }}
                 color="#b2b8be"
               >
+                Chain:&nbsp;
+              </Text>
+              <Text
+                casing={"uppercase"}
+                color={textColor}
+                fontSize={{ base: "sm", md: "md" }}
+                fontWeight={500}
+              >
+                ICP
+              </Text>
+            </Flex>
+            <Flex align="center">
+              <Text
+                fontWeight={600}
+                fontSize={{ base: "md", md: "lg" }}
+                color="#b2b8be"
+              >
+                Token standard:&nbsp;
+              </Text>
+              <Text
+                casing={"uppercase"}
+                color={textColor}
+                fontSize={{ base: "sm", md: "md" }}
+                fontWeight={500}
+              >
+                NFTA
+              </Text>
+            </Flex>
+            <Flex align="center">
+              <Text
+                fontWeight={600}
+                fontSize={{ base: "md", md: "lg" }}
+                color="#b2b8be"
+              >
                 Rarity:&nbsp;
               </Text>
               <Text fontWeight={500} color={textColor}>
@@ -252,6 +288,16 @@ const LargeNft = () => {
               {data.lore}
             </Text>
           </Box>
+          <Hide above="md">
+            <Link to={pathData.prevPath ? pathData.prevPath : "/marketplace"}>
+              <Button
+                leftIcon={<ArrowBackIcon />}
+                _hover={{ boxShadow: "base" }}
+              >
+                <Text>Go Back</Text>
+              </Button>
+            </Link>
+          </Hide>
         </Stack>
       </Stack>
     </Center>
