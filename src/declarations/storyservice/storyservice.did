@@ -42,7 +42,6 @@ type StoryService =
    skExists: (text) -> (bool) query;
    transferCycles: () -> ();
    voteOnProposal: (text, text) -> (Result);
-   whoami: () -> (principal);
  };
 type SingleStory = 
  record {

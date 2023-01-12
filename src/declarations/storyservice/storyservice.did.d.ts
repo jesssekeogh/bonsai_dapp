@@ -112,7 +112,6 @@ export interface StoryService {
   'skExists' : ActorMethod<[string], boolean>,
   'transferCycles' : ActorMethod<[], undefined>,
   'voteOnProposal' : ActorMethod<[string, string], Result>,
-  'whoami' : ActorMethod<[], Principal>,
 }
 export type Tree = { 'leaf' : null } |
   { 'node' : [Color, Tree, [string, [] | [AttributeValueRBTreeValue]], Tree] };

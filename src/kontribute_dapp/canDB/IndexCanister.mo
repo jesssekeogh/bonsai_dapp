@@ -93,15 +93,15 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
   // Spins up a new storyservice canister with the provided pk and controllers
   func createStoryServiceCanister(pk : Text, controllers : ?[Principal]) : async Text {
     Debug.print("creating new story service canister with pk=" # pk);
-    // Pre-load 6T cycles for the creation of a new storyservice canister
-    // Note that canister creation costs 100 billion cycles, meaning there are 5.9T
+    // Pre-load 2T cycles for the creation of a new storyservice canister
+    // Note that canister creation costs 100 billion cycles, meaning there are 1.9T
     // left over for the new canister when it is created
-    Cycles.add(1_000_000_000_000);
+    Cycles.add(2_000_000_000_000);
     let newStoryServiceCanister = await StoryService.StoryService({
       partitionKey = pk;
       scalingOptions = {
         autoScalingHook = autoScaleStoryServiceCanister;
-        sizeLimit = #heapSize(200_000_000); // Scale out at 200MB
+        sizeLimit = #heapSize(475_000_000); // Scale out at 200MB
       };
       owners = controllers;
     });
@@ -149,7 +149,7 @@ shared ({ caller = owner }) actor class IndexCanister() = this {
     let pk = serviceId;
     let scalingOptions = {
       autoScalingHook = autoScaleStoryServiceCanister;
-      sizeLimit = #heapSize(200_000_000); // Scale out at 200MB
+      sizeLimit = #heapSize(475_000_000); // Scale out at 475MB
     };
 
     let result = await Admin.upgradeCanistersByPK(pkToCanisterMap, pk, wasmModule, scalingOptions);

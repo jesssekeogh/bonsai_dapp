@@ -151,7 +151,6 @@ export const idlFactory = ({ IDL }) => {
     'skExists' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'transferCycles' : IDL.Func([], [], []),
     'voteOnProposal' : IDL.Func([IDL.Text, IDL.Text], [Result], []),
-    'whoami' : IDL.Func([], [IDL.Principal], []),
   });
   return StoryService;
 };

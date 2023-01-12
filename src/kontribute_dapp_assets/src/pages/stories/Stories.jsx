@@ -108,7 +108,7 @@ const Stories = () => {
         templateColumns={{ base: "auto", lg: "1fr 350px" }}
       >
         <GridItem ml={{ base: 0, lg: 20 }}>
-          <Tabs variant="line" colorScheme="cyan" mx={{base: 3, md: 6}}>
+          <Tabs variant="line" colorScheme="cyan" mx={{ base: 3, md: 6 }}>
             <TabList>
               <Tab>
                 <Heading size="lg">{storyFilter}</Heading>
@@ -159,13 +159,12 @@ const Stories = () => {
             </TabPanels>
           </Tabs>
         </GridItem>
-        <GridItem>
+        <GridItem mt={{ base: 3, md: 20 }}>
+          <OurPicks />
           <Box
             pos={{ base: "auto", md: "sticky" }}
             top={{ base: "auto", md: "20" }}
-            mt={{ base: 3, md: 20 }}
           >
-            <OurPicks />
             <BrowseUtils
               storyFilter={storyFilter}
               setStoryFilter={setStoryFilter}
@@ -196,9 +195,9 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
     <Flex rounded={"lg"} my={3}>
       <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Heading size="md">Topics</Heading>
-        <SimpleGrid columns={2} spacing={0}>
+        <SimpleGrid mt={5} columns={2} spacing={3}>
           {Genres.map((item) => (
-            <GridItem m={1} p={2} key={item}>
+            <GridItem m={1} key={item}>
               <Button
                 isDisabled={storyFilter === item ? true : false}
                 onClick={() => setStoryFilter(item)}

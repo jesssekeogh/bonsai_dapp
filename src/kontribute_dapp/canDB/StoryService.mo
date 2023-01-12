@@ -25,10 +25,6 @@ shared ({ caller = owner }) actor class StoryService({
         scalingOptions = scalingOptions;
     });
 
-    public shared ({ caller }) func whoami() : async Principal {
-        return caller;
-    };
-
     public query func getPK() : async Text { db.pk };
 
     public query func skExists(sk : Text) : async Bool {
@@ -835,5 +831,11 @@ shared ({ caller = owner }) actor class StoryService({
             },
         );
     };
+
+    // Used to pass new scaling options to the db through an upgrade from the IndexCanister if desired
+    system func postupgrade() {
+        db.scalingOptions := scalingOptions;
+    };
+
     // end
 };

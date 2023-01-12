@@ -127,11 +127,7 @@ const AuthorProfile = () => {
       >
         <Hide above="md">
           <GridItem>
-            <Box
-              pos={{ base: "auto", md: "sticky" }}
-              top={{ base: "auto", md: "20" }}
-              mt={{ base: 3, md: 20 }}
-            >
+            <Box mt={{ base: 3, md: 20 }}>
               <ProfileBox
                 author={params.authorPrincipal}
                 address={address}
@@ -144,7 +140,7 @@ const AuthorProfile = () => {
           </GridItem>
         </Hide>
         <GridItem ml={{ base: 0, lg: 20 }}>
-          <Tabs variant="line" colorScheme="cyan" mx={{base: 3, md: 6}}>
+          <Tabs variant="line" colorScheme="cyan" mx={{ base: 3, md: 6 }}>
             <TabList>
               <Tab>
                 <Heading size="lg">Stories</Heading>
@@ -180,11 +176,10 @@ const AuthorProfile = () => {
           </Tabs>
         </GridItem>
         <Hide below="md">
-          <GridItem>
+          <GridItem mt={{ base: 3, md: 20 }}>
             <Box
               pos={{ base: "auto", md: "sticky" }}
               top={{ base: "auto", md: "20" }}
-              mt={{ base: 3, md: 20 }}
             >
               <ProfileBox
                 author={params.authorPrincipal}
