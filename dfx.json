@@ -1,9 +1,5 @@
 {
   "canisters": {
-    "story": {
-      "main": "src/kontribute_dapp/story.mo",
-      "type": "motoko"
-    },
     "ito": {
       "main": "src/kontribute_dapp/ito.mo",
       "type": "motoko"
@@ -16,14 +12,8 @@
       "main": "src/kontribute_dapp/canDB/StoryService.mo",
       "type": "motoko"
     },
-    "votingservice": {
-      "main": "src/kontribute_dapp/canDB/VotingService.mo",
-      "type": "motoko"
-    },
     "kontribute_dapp_assets": {
-      "dependencies": [
-        "story"
-      ],
+      "dependencies": ["index"],
       "frontend": {
         "entrypoint": "src/kontribute_dapp_assets/src/index.html"
       },

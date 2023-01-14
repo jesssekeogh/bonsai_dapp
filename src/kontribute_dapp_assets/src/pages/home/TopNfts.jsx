@@ -24,7 +24,7 @@ const TopNfts = () => {
       "https://nftpkg.com/api/v1/prices/" + MINTERADDRESS
     ).then((x) => x.json());
 
-    for (let nft of prices) {
+    for (let nft of prices.sort((a, b) => a[2] - b[2])) {
       if (nft[2] > 0) {
         forSale.push(nft[0]);
       }
