@@ -24,7 +24,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { LoadingSpinner } from "../../containers/index";
 import { PollSection, StoryUtils } from "./components";
 import { useSelector } from "react-redux";
-import { Confetti } from "../components";
+import { Confetti, GetAuthorsSelling } from "../components";
 import "../../../assets/main.css";
 import { unwrapAllProposals, unwrapStory } from "./components/Unwrapping";
 import AuthorsCollectibles from "./components/AuthorsCollectibles";
@@ -48,6 +48,7 @@ const SingleStory = () => {
   const [proposalsArray, setProposalsArray] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
+  const [authorSelling, setAuthorSelling] = useState([]);
 
   const loadStory = async () => {
     const storyData = await storyServiceClient.query(partitionKey, (actor) =>
@@ -75,6 +76,8 @@ const SingleStory = () => {
     if (hasVoted[0].value) {
       setHasVoted(true);
     }
+
+    setAuthorSelling(await GetAuthorsSelling(result.monetizedAddress));
 
     setStoryContent(result);
     setProposalsArray(proposals);
@@ -116,7 +119,10 @@ const SingleStory = () => {
                   identity={identity}
                   runIncrement={true}
                 />
-                <AuthorsCollectibles address={storyContent.monetizedAddress} />
+                <AuthorsCollectibles
+                  address={storyContent.monetizedAddress}
+                  tokens={authorSelling}
+                />
               </GridItem>
             </Hide>
             <GridItem
@@ -193,6 +199,7 @@ const SingleStory = () => {
                   />
                   <AuthorsCollectibles
                     address={storyContent.monetizedAddress}
+                    tokens={authorSelling}
                   />
                 </Hide>
                 {/* takes in an array of objects */}

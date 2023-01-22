@@ -88,7 +88,7 @@ const TopAuthors = () => {
 
   const bgColor = useColorModeValue("White", "#1d1d20");
   return (
-    <Box mt={{ base: 7, md: 10 }}>
+    <Box mt={5}>
       <Center>
         <IconButton
           icon={<ChevronLeftIcon boxSize={12} />}
@@ -245,9 +245,9 @@ const TopAuthorCard = ({ author, direction }) => {
                 transform: "scale(1.05)",
               }}
               src={src}
-              fallback={<Avatar h="335px" w="auto" borderRadius="lg" />}
+              fallback={<Avatar h={{base: "330px", md: "400px" }} w="auto" borderRadius="lg" />}
               objectFit="cover"
-              boxSize="335px"
+              boxSize={{base: "330px", md: "400px" }}
             />
           </Box>
           <Box p={5}>

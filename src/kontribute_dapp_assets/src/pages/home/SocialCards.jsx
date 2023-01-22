@@ -21,7 +21,7 @@ const SocialCards = () => {
       </Center>
       <Center marginTop="5">
         <SimpleGrid
-          columns={{ base: 2, md: 4, lg: 4 }}
+          columns={{ base: 2, md: 2, lg: 4 }}
           pb={5}
           gap={{ base: 3, md: 6 }}
           px={1}
@@ -69,7 +69,13 @@ const SingleInfoCard = ({ title, children, href }) => {
   return (
     <Link href={href} _hover={{ textDecoration: "none" }} isExternal>
       <motion.div whileHover={{ scale: 1.05 }}>
-        <Box spacing="30px" boxShadow="md" borderRadius="lg" bg={bgColor}>
+        <Box
+          spacing="30px"
+          boxShadow="md"
+          borderRadius="lg"
+          w={["160px", null, "280px"]}
+          bg={bgColor}
+        >
           <Box borderRadius="lg" overflow="hidden" align="center" px={5} pt={5}>
             {children}
           </Box>

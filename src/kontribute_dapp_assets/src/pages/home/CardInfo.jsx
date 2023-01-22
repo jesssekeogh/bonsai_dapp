@@ -75,7 +75,7 @@ const SingleInfoCard = ({ image, title, body }) => {
             borderRadius="full"
             fallback={<Skeleton h="335px" w="auto" borderRadius="lg" />}
             objectFit="contain"
-            boxSize="335px"
+            boxSize={{base: "330px", md: "400px" }}
           />
         </Box>
         <Box p={5}>

@@ -249,7 +249,7 @@ const Mint = () => {
   }, []);
 
   return (
-    <Box py={{ base: 0, md: 10, lg: 12 }} p={3}>
+    <Box pb={{ base: 10, md: 12 }} mt={{ base: 5, md: 10 }} px={3}>
       <SlideFade in={true} offsetY="20px">
         <Center>
           <Stack align="center" mb={5}>

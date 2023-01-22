@@ -173,7 +173,7 @@ const Profile = () => {
       ) : (
         <Button size={"md"} onClick={signIn}>
           <Flex align="center">
-            Log in&nbsp;
+            Login&nbsp;
             <ChakraImage src={IcLogo} h={"20px"} w={"auto"} />
           </Flex>
         </Button>

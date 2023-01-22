@@ -34,6 +34,7 @@ import { BiCylinder, BiWallet } from "react-icons/bi";
 import LoadingStoryCard from "./components/LoadingStoryCard";
 import AvatarPic from "./components/AvatarPic";
 import AuthorsCollectibles from "./components/AuthorsCollectibles";
+import GetAuthorsSelling from "../components/GetAuthorsSelling";
 
 // test a faulty principal
 const AuthorProfile = () => {
@@ -45,6 +46,7 @@ const AuthorProfile = () => {
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalViews, setTotalViews] = useState(0);
   const [canister, setCanister] = useState(null);
+  const [authorSelling, setAuthorSelling] = useState([]);
 
   const partitionKey = `author_${params.authorPrincipal}`;
 
@@ -96,6 +98,8 @@ const AuthorProfile = () => {
       setAllStories([]);
     }
 
+    setAuthorSelling(await GetAuthorsSelling(address));
+
     setTotalLikes(likes.toLocaleString());
     setTotalViews(views.toLocaleString());
     setLoaded(true);
@@ -135,7 +139,7 @@ const AuthorProfile = () => {
                 totalViews={totalViews}
                 canister={canister}
               />
-              <AuthorsCollectibles address={address} />
+              <AuthorsCollectibles address={address} tokens={authorSelling} />
             </Box>
           </GridItem>
         </Hide>
@@ -188,7 +192,7 @@ const AuthorProfile = () => {
                 totalViews={totalViews}
                 canister={canister}
               />
-              <AuthorsCollectibles address={address} />
+              <AuthorsCollectibles address={address} tokens={authorSelling} />
             </Box>
           </GridItem>
         </Hide>

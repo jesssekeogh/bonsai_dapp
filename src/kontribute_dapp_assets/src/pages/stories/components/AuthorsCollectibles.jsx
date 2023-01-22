@@ -18,29 +18,7 @@ import { tokenToText } from "@vvv-interactive/nftanvil-tools/cjs/token.js";
 import { useAnvilDispatch, nft_fetch } from "@vvv-interactive/nftanvil-react";
 import { NavLink } from "react-router-dom";
 
-const AuthorsCollectibles = ({ address }) => {
-  const [tokens, setTokens] = useState([]);
-  const loadSelling = async () => {
-    let forSale = [];
-    const prices = await fetch(
-      "https://nftpkg.com/api/v1/prices/" + address
-    ).then((x) => x.json());
-
-    for (let nft of prices.sort((a, b) => a[2] - b[2])) {
-      if (nft[2] > 0) {
-        forSale.push(nft[0]);
-      }
-      if (forSale.length > 3) {
-        break;
-      }
-    }
-
-    setTokens(forSale);
-  };
-
-  useEffect(() => {
-    loadSelling();
-  }, [address]);
+const AuthorsCollectibles = ({ address, tokens }) => {
   const bgColor = useColorModeValue("white", "#111111");
   return (
     <>
@@ -84,10 +62,8 @@ const SmallNft = ({ tokenId }) => {
   const [thumb, setThumb] = useState();
 
   const load = async () => {
-    const meta = await dispatch(nft_fetch(tokenToText(tokenId)));
-    setThumb(
-      meta.thumb.internal ? meta.thumb.internal.url : meta.thumb.external
-    );
+    const { thumb } = await dispatch(nft_fetch(tokenToText(tokenId)));
+    setThumb(thumb.internal ? thumb.internal.url : thumb.external);
   };
 
   useEffect(() => {

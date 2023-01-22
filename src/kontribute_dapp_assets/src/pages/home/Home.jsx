@@ -29,12 +29,12 @@ const Home = () => {
   const textColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   return (
     <Box color={textColor} px={3} pb={20}>
-      <Center my={{ base: 5, md: 10 }}>
-        <Stack spacing={5} textAlign="center">
+      <Center pb={{ base: 0, md: 3 }} mt={{ base: 5, md: 8 }}>
+        <Stack spacing={3} textAlign="center">
           <Heading
             lineHeight={1.1}
             fontWeight={"bold"}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+            fontSize={{ base: "3xl", sm: "4xl", lg: "5xl" }}
             bgGradient={`linear(to-tl, #f9c051, #d0a85d)`}
             bgClip="text"
             transition="0.3s"
@@ -42,9 +42,11 @@ const Home = () => {
             Explore stories and discover art
           </Heading>
           <Center>
-            <Text fontSize={{ base: "lg", md: "2xl" }} maxW="2xl">
-              Kontribute is a new web3 creators platform built on ICP that
-              brings story writing and digital art collectibles together.
+            <Text
+              fontSize={{ base: "lg", md: "xl" }}
+              maxW={{ base: "xs", md: "xl" }}
+            >
+              Kontribute is a new web3 creators platform built on ICP
             </Text>
           </Center>
         </Stack>

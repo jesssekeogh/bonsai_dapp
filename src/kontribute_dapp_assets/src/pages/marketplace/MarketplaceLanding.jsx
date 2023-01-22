@@ -131,7 +131,13 @@ const CollectionThumb = ({ colimg, title, authorimg, link }) => {
                 transform="scale(1.0)"
                 src={colimg}
                 borderRadius="md"
-                fallback={<Skeleton height={250} borderRadius="lg" />}
+                fallback={
+                  <Skeleton
+                    h={{ base: "230px", md: "265px" }}
+                    w={"400px"}
+                    borderRadius="lg"
+                  />
+                }
                 objectFit="cover"
                 transition="0.3s ease-in-out"
                 _hover={{
