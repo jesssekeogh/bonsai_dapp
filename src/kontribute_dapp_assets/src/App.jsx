@@ -8,7 +8,7 @@ import {
   Marketplace,
   LargeNft,
   Create,
-  PendragonNft,
+  NoblebrightNft,
   SingleStory,
   Mint,
   AuthorProfile,
@@ -40,7 +40,7 @@ function App() {
           <Route path="/stories/:storySortKey" element={<SingleStory />} />
           <Route path="/mint" element={<Mint />} />
           <Route path="/profile/:authorPrincipal" element={<AuthorProfile />} />
-          <Route path="/launchpad/pendragon-nft" element={<PendragonNft />} />
+          <Route path="/noblebright" element={<NoblebrightNft />} />
         </Routes>
         <Footer />
       </Router>

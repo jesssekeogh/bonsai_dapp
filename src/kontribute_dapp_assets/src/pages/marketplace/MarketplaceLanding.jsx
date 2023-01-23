@@ -30,7 +30,6 @@ const MarketplaceLanding = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const bgColor = useColorModeValue("White", "#1d1d20");
 
   return (
     <Center mt={{ base: 0, md: 8 }} mb={8}>
@@ -41,17 +40,7 @@ const MarketplaceLanding = () => {
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel px={0} mx={0}>
-            <Heading
-              size="xs"
-              boxShadow="base"
-              p={2}
-              borderRadius="lg"
-              bg={bgColor}
-            >
-              Collect art of characters, accessories, or anything else from a
-              story featured on Kontribute
-            </Heading>
+          <TabPanel mt={3} px={0} mx={0}>
             <NftCards />
           </TabPanel>
         </TabPanels>
@@ -121,7 +110,6 @@ const CollectionThumb = ({ colimg, title, authorimg, link }) => {
         <Link to={"/marketplace/" + link}>
           <Box
             spacing="30px"
-            marginTop="5"
             boxShadow="md"
             borderRadius="lg"
             bg={bgColor}

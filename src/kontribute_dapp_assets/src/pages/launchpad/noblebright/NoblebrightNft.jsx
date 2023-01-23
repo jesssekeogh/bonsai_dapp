@@ -1,13 +1,13 @@
 import React from "react";
 import { OfferingPage } from "../lp_components";
-import logo from "../../../../assets/pendragon_logo.png";
+import logo from "../../../../assets/Bonsai-Team-ICON-Black.png";
 
-const PendragonNft = () => {
+const NoblebrightNft = () => {
   return (
     <>
       <OfferingPage
-        title={"Pendragon Quest presents"}
-        collectionName={"Pendragon Quest NFTs"}
+        title={"Team Bonsai presents"}
+        collectionName={"NobelBright Comic NFTs"}
         img={logo}
         name1={"Knight"}
         name2={"Arthur's Chosen"}
@@ -26,11 +26,11 @@ const PendragonNft = () => {
           "Pendragon Quest consists of 1200 hand drawn NFTs which you can own in order to access our story. Holders will be eligible to decide the path that the story takes and participate in unique story events. Holders will also be able receive our future NFT airdrop at a 1:1 ratio."
         }
         // launchingSoon
-        saleEnded
+        // saleEnded
         // airdropEnded
       />
     </>
   );
 };
 
-export default PendragonNft;
+export default NoblebrightNft;

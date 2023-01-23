@@ -1,5 +1,5 @@
 export { default as Home } from "./home/Home";
-export { default as PendragonNft } from "./launchpad/pendragon_Nft/PendragonNft";
+export { default as NoblebrightNft } from "./launchpad/noblebright/NoblebrightNft";
 export { default as Inventory } from "./inventory/Inventory";
 export { default as MarketplaceLanding } from "./marketplace/MarketplaceLanding";
 export { default as Marketplace } from "./marketplace/Marketplace";
