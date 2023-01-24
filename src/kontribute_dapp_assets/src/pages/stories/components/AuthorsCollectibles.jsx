@@ -79,13 +79,14 @@ const SmallNft = ({ tokenId }) => {
         totalNfts: 1,
       }}
     >
-      <Box role={"group"} w={size} rounded={"lg"} boxShadow="md">
+      <Box role={"group"} w={size} rounded={"lg"} align="center" boxShadow="lg">
         <ChakraImage
           transform="scale(1.0)"
           bg="#fff"
           height={size}
-          rounded={"lg"}
+          boxShadow="lg"
           width={"auto"}
+          rounded="lg"
           objectFit={"cover"}
           src={thumb}
           fallback={<Skeleton rounded="lg" height={size} />}

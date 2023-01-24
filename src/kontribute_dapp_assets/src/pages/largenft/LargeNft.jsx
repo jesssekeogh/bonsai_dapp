@@ -142,6 +142,7 @@ const LargeNft = () => {
           boxShadow={"lg"}
           bg={bgColor}
           boxSize={["100%", null, "600px"]}
+          justifyContent="center"
         >
           <ChakraImage
             _hover={{

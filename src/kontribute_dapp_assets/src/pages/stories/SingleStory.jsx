@@ -173,7 +173,7 @@ const SingleStory = () => {
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(
                       decodeURIComponent(storyContent.body),
-                      { FORBID_ATTR: ["style"], FORBID_TAGS: ["style"] }
+                      { FORBID_ATTR: ["style"], FORBID_TAGS: ["style", "pre"] }
                     ),
                   }}
                 />

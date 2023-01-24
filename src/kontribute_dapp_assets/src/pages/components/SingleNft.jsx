@@ -95,11 +95,12 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
             totalNfts: 1,
           }}
         >
-          <Box rounded={"lg"} pos={"relative"} overflow="hidden">
+          <Box rounded={"lg"} pos={"relative"} align="center" overflow="hidden">
             <ChakraImage
               transform="scale(1.0)"
               bg="#fff"
               height={["160px", null, "280px"]}
+              rounded="lg"
               width={"auto"}
               objectFit={"cover"}
               src={nft.thumb}
