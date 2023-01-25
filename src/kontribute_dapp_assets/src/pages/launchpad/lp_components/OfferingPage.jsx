@@ -4,7 +4,7 @@ import {
   Center,
   Heading,
   Text,
-  Stack,
+  VStack,
   SimpleGrid,
   HStack,
   useColorModeValue,
@@ -16,10 +16,21 @@ import {
 } from "@chakra-ui/react";
 import { Airdrop, CollectionStats, Purchase } from "../../components/index";
 import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
+import {
+  HeadingColorDark,
+  HeadingColorLight,
+} from "../../../containers/colormode/Colors";
 
 const OfferingPage = (props) => {
+  const textColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   return (
-    <Container maxW="1250px" pb={{ base: 10, md: 12 }} mt={{ base: 5, md: 10 }} px={3}>
+    <Container
+      maxW="1250px"
+      pb={{ base: 10, md: 12 }}
+      mt={{ base: 5, md: 10 }}
+      px={3}
+      color={textColor}
+    >
       <Header props={{ ...props }} />
       <SlideFade in={true} offsetY="20px">
         <Prices props={{ ...props }} />
@@ -51,7 +62,7 @@ const Header = ({ props }) => {
   return (
     <>
       <Center mb={3}>
-        <Flex align="center">
+        <VStack>
           <ChakraImage
             bg="#fff"
             rounded={"lg"}
@@ -59,15 +70,14 @@ const Header = ({ props }) => {
             width={"auto"}
             src={props.img}
             p={1}
-            m={2}
           />
           <Heading size="sm" color="gray">
             {props.title}
           </Heading>
-        </Flex>
+        </VStack>
       </Center>
       <Center>
-        <Heading textAlign="center" size="lg">
+        <Heading fontFamily="MedievalSharp" textAlign="center" size="lg">
           {props.collectionName}
         </Heading>
       </Center>
@@ -77,7 +87,7 @@ const Header = ({ props }) => {
 
 const Prices = ({ props }) => {
   return (
-    <Box as="section" py="10" px={{ base: "4", md: "8" }}>
+    <Box as="section" py={{ base: 5, md: 8 }} px={{ base: "4", md: "8" }}>
       <SimpleGrid
         columns={{ base: 1, lg: 3 }}
         spacing={{ base: "8", lg: "2" }}
@@ -128,18 +138,18 @@ const PricingCard = ({
   discount,
   launchingSoon,
 }) => {
+  const bgColor = useColorModeValue("White", "#1d1d20");
   return (
     <Box
       position="relative"
       p={5}
       h={isMain ? "110%" : "auto"}
       overflow="hidden"
-      shadow="lg"
+      boxShadow="lg"
       maxW="md"
       width="100%"
-      border={"double"}
       borderRadius="lg"
-      backgroundColor="#16171b"
+      bg={bgColor}
     >
       {discount ? (
         <Flex
@@ -165,32 +175,32 @@ const PricingCard = ({
         </Flex>
       ) : null}
       <Center>
-        <Heading bgGradient="linear(to-t, #705025, #a7884a)" bgClip="text">
-          {name}
-        </Heading>
+        <Heading>{name}</Heading>
       </Center>
-      <Flex align="flex-end" justify="center" fontWeight="extrabold" my="8">
-        <Text
-          as="kbd"
-          bgGradient="linear(to-l, #ed1f79, #2dade2)"
-          bgClip="text"
-        >
-          ICP:&nbsp;
-        </Text>
-        <Text
-          as="kbd"
-          bgGradient="linear(to-r, #ed1f79, #f15b25)"
-          bgClip="text"
-          size={"md"}
-        >
-          {e8sToIcp(price)}
+      <Flex justify="center" my={8} align="baseline" gap={1}>
+        <Heading fontSize={{ base: "xl", md: "3xl" }}>
+          {Number(e8sToIcp(price)).toFixed(2)}
+        </Heading>
+        <Text fontSize={{ base: "md", md: "lg" }} fontWeight="bold">
+          ICP
         </Text>
       </Flex>
       <Center>
-        {" "}
-        <Text fontWeight={600} color="#f0e6d3" fontSize="lg" pb={5}>
-          {details}
-        </Text>
+        {details === 1 ? (
+          <Text fontWeight={600} fontSize="lg" pb={5}>
+            1 image here
+          </Text>
+        ) : null}
+        {details === 5 ? (
+          <Text fontWeight={600} fontSize="lg" pb={5}>
+            5 images here
+          </Text>
+        ) : null}
+        {details === 10 ? (
+          <Text fontWeight={600} fontSize="lg" pb={5}>
+            10 images here
+          </Text>
+        ) : null}
       </Center>
       <Center>
         {saleEnded ? (

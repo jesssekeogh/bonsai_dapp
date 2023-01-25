@@ -6,18 +6,18 @@ const NoblebrightNft = () => {
   return (
     <>
       <OfferingPage
-        title={"Team Bonsai presents"}
-        collectionName={"NobelBright Comic NFTs"}
+        title={"Team Bonsai presents..."}
+        collectionName={"NobleBright Comic NFTs <make this a large logo?>"}
         img={logo}
-        name1={"Knight"}
-        name2={"Arthur's Chosen"}
-        name3={"Knight Commander"}
+        name1={"Hooded"}
+        name2={"NobleBright"}
+        name3={"Priestess"}
         price1={80000000}
         price2={600000000}
         price3={350000000}
-        details1={"1 Pendragon Quest NFT"}
-        details2={"10 Pendragon Quest NFTs"}
-        details3={"5 Pendragon Quest NFTs"}
+        details1={1}
+        details2={10}
+        details3={5}
         nfts1={1}
         nfts2={10}
         nfts3={5}

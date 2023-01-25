@@ -33,7 +33,6 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
   const [nft, setNft] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [showQuickBuy, setShowQuickBuy] = useState(false);
-  const [usdPrice, setUsdPrice] = useState(0);
   const loggedIn = useSelector((state) => state.Profile.loggedIn);
 
   const token = tokenToText(tokenId);
@@ -42,7 +41,6 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
     const meta = await dispatch(nft_fetch(token));
 
     if (isMounted) {
-      setUsdPrice(await IcpToDollars(meta.price.amount));
       setNft({
         id: token,
         name: meta.name,
@@ -138,7 +136,6 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
                   <QuickBuy
                     tokenId={tokenId}
                     Icp={nft.price}
-                    usd={usdPrice}
                     setShowQuickBuy={setShowQuickBuy}
                     loggedIn={loggedIn}
                   />
@@ -157,7 +154,7 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
   );
 };
 
-const QuickBuy = ({ tokenId, Icp, usd, setShowQuickBuy, loggedIn }) => {
+const QuickBuy = ({ tokenId, Icp, setShowQuickBuy, loggedIn }) => {
   return (
     <Flex pt={1} w={"100%"} justify="center">
       <SlideFade in={true} offsetY="20px">
@@ -165,7 +162,6 @@ const QuickBuy = ({ tokenId, Icp, usd, setShowQuickBuy, loggedIn }) => {
           <BuySingle
             tokenId={tokenToText(tokenId)}
             price={Icp}
-            usd={usd}
             setShowQuickBuy={setShowQuickBuy}
           >
             <Flex

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   useBreakpointValue,
+  useColorModeValue,
   Heading,
   Text,
   Stack,
@@ -12,9 +13,10 @@ import {
   Grid,
   GridItem,
   IconButton,
+  Button,
   Tooltip,
 } from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
+import { InfoIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 
 const Stats = () => async (dispatch, getState) => {
@@ -70,19 +72,14 @@ const CollectionStats = ({ props }) => {
         gap={6}
       >
         <GridItem w="100%" colSpan={{ base: 1, sm: 2, md: 2 }}>
-          <Heading as={"h2"}>
-            Tokenomics{" "}
-            <Tooltip label="Read more about this collections tokenomics">
-              <a href={props.tokenomics_link} target="_blank" rel="noreferrer">
-                <IconButton
-                  size="sm"
-                  bg="#0fbdde"
-                  color="white"
-                  icon={<InfoIcon />}
-                />
-              </a>
-            </Tooltip>
-          </Heading>
+          <a href={props.tokenomics_link} target="_blank" rel="noreferrer">
+            <Flex align="center">
+              <Tooltip label="Read more about this collections tokenomics">
+                <Heading textDecoration={"underline"}>Tokenomics</Heading>
+              </Tooltip>
+              <ExternalLinkIcon boxSize={6} mx={1} />
+            </Flex>
+          </a>
           <Text fontWeight={600} fontSize="lg">
             {props.tokenomics_details}
           </Text>
@@ -105,36 +102,27 @@ const CollectionStats = ({ props }) => {
 };
 
 const DataBox = ({ label, info, data }) => {
+  const bgColor = useColorModeValue("White", "#1d1d20");
   return (
     <GridItem w="100%">
       <Flex flexDirection={"column"}>
         <Box
           px={{ base: "4", md: "6" }}
           py={{ base: "5", md: "6" }}
-          border={"double"}
+          boxShadow="lg"
           borderRadius="lg"
-          backgroundColor="#16171b"
+          bg={bgColor}
         >
           <Stack>
-            <Text fontSize="sm" fontWeight={600} color="#f0e6d3">
+            <Text fontSize="sm" fontWeight={600}>
               {label}{" "}
               <Tooltip label={info}>
                 <InfoIcon boxSize={5} viewBox="0 0 30 30" />
               </Tooltip>
             </Text>
-            <Box
-              maxW={"100px"}
-              align={"center"}
-              size={useBreakpointValue({ base: "sm", md: "md" })}
-              borderRadius="md"
-              bg="#0fbdde"
-              color="black"
-              fontWeight="semibold"
-              p={1}
-            >
+            <Button _hover={{ cursor: "default" }} p={1}>
               {data}
-              {/* N/A */}
-            </Box>
+            </Button>
           </Stack>
         </Box>
       </Flex>

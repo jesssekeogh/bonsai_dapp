@@ -53,7 +53,7 @@ const canvasStyles = {
   left: 0,
 };
 
-const BuySingle = ({ tokenId, price, usd, setShowQuickBuy, children }) => {
+const BuySingle = ({ tokenId, price, setShowQuickBuy, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAnvilDispatch();
   // 0.01icp= 001000000 e8s
@@ -164,12 +164,23 @@ const BuySingle = ({ tokenId, price, usd, setShowQuickBuy, children }) => {
             <Heading
               fontSize={{ base: "sm", md: "md" }}
               fontWeight={600}
-              mb={2}
+              textDecoration="underline"
             >
               Item:
-              <Text casing={"uppercase"}>{tokenId}</Text>
             </Heading>
-            <Heading fontSize={{ base: "sm", md: "md" }} fontWeight={600}>
+            <Heading
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight={600}
+              mb={2}
+              textTransform="uppercase"
+            >
+              {tokenId}
+            </Heading>
+            <Heading
+              textDecoration="underline"
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight={600}
+            >
               Price:
             </Heading>
             <Flex align="center" fontWeight={600}>
@@ -182,8 +193,6 @@ const BuySingle = ({ tokenId, price, usd, setShowQuickBuy, children }) => {
               </Tooltip>
               &nbsp;
               {e8sToIcp(price)}
-              &nbsp;
-              <Text>({usd})</Text>
             </Flex>
           </ModalBody>
 

@@ -91,11 +91,6 @@ const SendingIcp = ({ isOpen, onClose, user_icp }) => {
       <ModalContent mx="10%">
         <ModalHeader>
           ICP: {user_icp}
-          <FormControl>
-            <FormHelperText>
-              + 0.0001 ICP in transfer fees paid to IC
-            </FormHelperText>
-          </FormControl>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
@@ -129,6 +124,9 @@ const SendingIcp = ({ isOpen, onClose, user_icp }) => {
                 </Button>
               </InputRightElement>
             </InputGroup>
+            <FormHelperText>
+              + 0.0001 ICP in transfer fees paid to IC
+            </FormHelperText>
           </FormControl>
         </ModalBody>
 

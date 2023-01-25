@@ -4,6 +4,7 @@ import {
   Heading,
   Button,
   useBreakpointValue,
+  useColorModeValue,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -11,12 +12,17 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Flex,
+  Tooltip,
+  Center,
   useDisclosure,
-  FormHelperText,
   FormControl,
+  FormHelperText,
+  Image as ChakraImage,
   createStandaloneToast,
 } from "@chakra-ui/react";
-import { GiConfirmed } from "react-icons/gi";
+import IcLogo from "../../../../assets/ic-logo.png";
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { createItoActor } from "../../../../../declarations/ito.js";
 import {
   user_pwr_transfer,
@@ -36,6 +42,12 @@ import {
 } from "../../../containers/toasts/Toasts";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import {
+  ButtonColorDark,
+  ButtonColorLight,
+  ButtonTextColorDark,
+  ButtonTextColorlight,
+} from "../../../containers/colormode/Colors.jsx";
 
 const { toast } = createStandaloneToast();
 
@@ -97,7 +109,7 @@ const Purchase = ({ nfts, amount }) => {
     }
 
     toast.closeAll();
-    SuccessToast("Success","Congratulations! You got " + nfts + " NFT(s)");
+    SuccessToast("Success", "Congratulations! You got " + nfts + " NFT(s)");
 
     return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
       state: {
@@ -109,80 +121,86 @@ const Purchase = ({ nfts, amount }) => {
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const buttonBgColor = useColorModeValue(ButtonColorLight, ButtonColorDark);
+  const buttonTextColor = useColorModeValue(
+    ButtonTextColorlight,
+    ButtonTextColorDark
+  );
   return (
     <>
       <Button
+        bg={buttonBgColor}
+        color={buttonTextColor}
+        mt={2}
         size={useBreakpointValue(["md", "lg"])}
-        fontSize={{ base: "sm", sm: "sm", md: "md" }}
-        rounded={"full"}
-        color={"white"}
-        bgGradient="linear(to-r, #c61682, #ee670d)"
-        _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
+        leftIcon={<MdOutlineAccountBalanceWallet />}
+        _hover={{ opacity: "0.8" }}
         mb={3}
         onClick={onOpen}
         isDisabled={!isLogged}
       >
-        <Text as="kbd">Buy Now</Text>
+        <Text>Buy now</Text>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent bg="#141414" color="#fff" mx="10%">
-          <ModalHeader
-            as="kbd"
-            bgGradient="linear(to-l, #ed1f79, #2dade2)"
-            bgClip="text"
-          >
-            Price:{" "}
-            <Text
-              as="kbd"
-              bgGradient="linear(to-r, #ed1f79, #f15b25)"
-              bgClip="text"
+        <ModalContent mx="10%">
+          <ModalHeader>
+            <Center>Complete Checkout</Center>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={3}>
+            <Heading
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight={600}
+              textDecoration="underline"
             >
-              {AccountIdentifier.e8sToIcp(amount)} ICP
-            </Text>
+              Item:
+            </Heading>
+            <Heading
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight={600}
+              mb={2}
+            >
+              You will be randomly allocated {nfts} NFT(s) from the collection!
+            </Heading>
+            <Heading
+              textDecoration="underline"
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight={600}
+            >
+              Price:
+            </Heading>
+            <Flex align="center" fontWeight={600}>
+              <Tooltip label="ICP">
+                <ChakraImage
+                  src={IcLogo}
+                  h={["18px", null, "25px"]}
+                  w={"auto"}
+                />
+              </Tooltip>
+              &nbsp;
+              {AccountIdentifier.e8sToIcp(amount)}
+            </Flex>
             <FormControl>
               <FormHelperText>
                 + 0.0001 ICP in transfer fees paid to IC
               </FormHelperText>
             </FormControl>
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {" "}
-            <Heading
-              fontSize={{ base: "xs", sm: "xs", md: "md" }}
-              color={"white"}
-            >
-              You will be randomly allocated {nfts} NFT(s) from the
-              collection!
-            </Heading>
           </ModalBody>
           <ModalFooter>
             <Button
-              bg="#17191e"
-              border="1px"
-              borderColor="#9d8144"
-              color="#f0e6d3"
-              colorScheme="#17191e"
-              rightIcon={<GiConfirmed />}
-              mr={3}
+              leftIcon={<MdOutlineAccountBalanceWallet />}
+              bg={buttonBgColor}
+              color={buttonTextColor}
+              size={useBreakpointValue(["md", "lg"])}
+              width="100%"
               _hover={{ opacity: "0.8" }}
               onClick={async () => {
                 onClose();
                 dispatch(buy(amount));
               }}
             >
-              Confirm Payment
-            </Button>
-            <Button
-              colorScheme="black"
-              color="#f0e6d3"
-              variant="outline"
-              _hover={{ opacity: "0.8" }}
-              onClick={onClose}
-            >
-              Cancel
+              Checkout
             </Button>
           </ModalFooter>
         </ModalContent>

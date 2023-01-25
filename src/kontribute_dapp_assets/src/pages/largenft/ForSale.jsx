@@ -72,7 +72,7 @@ const ForSale = ({ Icp, tokenId, tokens }) => {
           </Text>
         </Flex>
         {!tokens.includes(tokenFromText(tokenId)) ? (
-          <BuySingle tokenId={tokenId} price={Icp} usd={usdPrice}>
+          <BuySingle tokenId={tokenId} price={Icp}>
             <Button
               leftIcon={<MdOutlineAccountBalanceWallet />}
               bg={buttonBgColor}
