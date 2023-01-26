@@ -12,6 +12,7 @@ import {
   SingleStory,
   Mint,
   AuthorProfile,
+  Snapshot,
 } from "./pages";
 import { Box, useColorMode } from "@chakra-ui/react";
 import { NavBar, LoadingSpinner } from "./containers";
@@ -41,6 +42,7 @@ function App() {
           <Route path="/mint" element={<Mint />} />
           <Route path="/profile/:authorPrincipal" element={<AuthorProfile />} />
           <Route path="/noblebright" element={<NoblebrightNft />} />
+          <Route path="/snapshot" element={<Snapshot />} />
         </Routes>
         <Footer />
       </Router>

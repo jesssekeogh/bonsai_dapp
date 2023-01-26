@@ -153,7 +153,8 @@ const PricingCard = ({
     >
       {discount ? (
         <Flex
-          bgGradient="linear(to-r, #6190E8, #A7BFE8)"
+          bg="radial-gradient(circle, rgba(208,168,93,1) 54%, rgba(249,190,82,1) 100%)"
+          color="white"
           position="absolute"
           right={-20}
           top={6}
@@ -167,10 +168,9 @@ const PricingCard = ({
             fontSize="xs"
             textTransform="uppercase"
             fontWeight="bold"
-            letterSpacing="wider"
             color={useColorModeValue("white", "gray.800")}
           >
-            Discount
+            {details === 5 ? "12%" : details === 10 ? "25%" : null} Discount
           </Text>
         </Flex>
       ) : null}

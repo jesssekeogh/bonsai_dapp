@@ -3,7 +3,6 @@ import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  useBreakpointValue,
   useColorModeValue,
   Heading,
   Text,
@@ -12,7 +11,6 @@ import {
   Flex,
   Grid,
   GridItem,
-  IconButton,
   Button,
   Tooltip,
 } from "@chakra-ui/react";

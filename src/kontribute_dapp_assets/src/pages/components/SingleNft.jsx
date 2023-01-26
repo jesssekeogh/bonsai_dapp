@@ -23,7 +23,7 @@ import {
   TextColorDark,
   TextColorLight,
 } from "../../containers/colormode/Colors";
-import { BuySingle, IcpToDollars } from "./index";
+import { BuySingle } from "./index";
 import { useSelector } from "react-redux";
 
 const SingleNft = ({ tokenId, isMarketplace }) => {

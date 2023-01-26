@@ -10,3 +10,4 @@ export { default as Stories } from "./stories/Stories";
 export { default as Create } from "./stories/Create";
 export { default as SingleStory } from "./stories/SingleStory";
 export { default as AuthorProfile } from "./stories/AuthorProfile";
+export { default as Snapshot } from "./AnvilTools/Snapshot";

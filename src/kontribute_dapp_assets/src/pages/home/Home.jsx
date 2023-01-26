@@ -8,8 +8,8 @@ import {
   Center,
   Alert,
   AlertDescription,
-  Link,
 } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   HeadingColorDark,
@@ -28,35 +28,38 @@ const Home = () => {
 
   const textColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   return (
-    <Box color={textColor} px={3} pb={20}>
-      <Center pb={{ base: 0, md: 3 }} mt={{ base: 5, md: 8 }}>
-        <Stack spacing={3} textAlign="center">
-          <Heading
-            lineHeight={1.1}
-            fontWeight={"bold"}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "5xl" }}
-            bgGradient={`linear(to-tl, #f9c051, #d0a85d)`}
-            bgClip="text"
-            transition="0.3s"
-          >
-            Explore stories and discover art
-          </Heading>
-          <Center>
-            <Text
-              fontSize={{ base: "lg", md: "xl" }}
-              maxW={{ base: "xs", md: "xl" }}
+    <>
+      <HomeAlert />
+      <Box color={textColor} px={3} pb={20}>
+        <Center pb={{ base: 0, md: 3 }} mt={{ base: 5, md: 8 }}>
+          <Stack spacing={3} textAlign="center">
+            <Heading
+              lineHeight={1.1}
+              fontWeight={"bold"}
+              fontSize={{ base: "3xl", sm: "4xl", lg: "5xl" }}
+              bgGradient={`linear(to-tl, #f9c051, #d0a85d)`}
+              bgClip="text"
+              transition="0.3s"
             >
-              Kontribute is a new web3 creators platform built on ICP
-            </Text>
-          </Center>
-        </Stack>
-      </Center>
-      <TopAuthors />
-      <TopStories />
-      <TopNfts />
-      <CardInfo />
-      <SocialCards />
-    </Box>
+              Explore stories and discover art
+            </Heading>
+            <Center>
+              <Text
+                fontSize={{ base: "lg", md: "xl" }}
+                maxW={{ base: "xs", md: "xl" }}
+              >
+                Kontribute is a new web3 creators platform built on ICP
+              </Text>
+            </Center>
+          </Stack>
+        </Center>
+        <TopAuthors />
+        <TopStories />
+        <TopNfts />
+        <CardInfo />
+        <SocialCards />
+      </Box>
+    </>
   );
 };
 
@@ -75,17 +78,17 @@ const HomeAlert = () => {
       mt={{ base: -1, lg: 0 }}
     >
       <AlertDescription>
-        ✍️ Win digital collectibles by participating in the{" "}
-        <Link
-          fontWeight="bold"
-          href={
-            "https://3ezq7-iqaaa-aaaal-aaacq-cai.raw.ic0.app/stories/author_3d2q2-ce4z5-osah6-dibbj-secst-grfxj-q3f7x-ahuhz-gk5ma-rsgjo-lae_story_The%20Kontribute%20Writathon!_chapter_Web3%20Author%20Competition"
-          }
-        >
-          Web3 Author Competition
-          <ExternalLinkIcon mx="2px" />
-        </Link>{" "}
-        ✍️
+        ⚡️ New NFT ⚡️{" "}
+        <NavLink to="/noblebright">
+          <Text
+            display="inline"
+            fontWeight="bold"
+            _hover={{ textDecoration: "underline" }}
+          >
+            NobleBright Comic NFTs
+            <ExternalLinkIcon mx="2px" />
+          </Text>{" "}
+        </NavLink>
       </AlertDescription>
     </Alert>
   );
