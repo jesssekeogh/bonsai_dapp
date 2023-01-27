@@ -6,7 +6,6 @@ import {
   Text,
   VStack,
   SimpleGrid,
-  HStack,
   useColorModeValue,
   Container,
   Flex,
@@ -61,26 +60,18 @@ const OfferingPage = (props) => {
 const Header = ({ props }) => {
   return (
     <>
-      <Center mb={3}>
-        <VStack>
-          <ChakraImage
-            bg="#fff"
-            rounded={"lg"}
-            height={"40px"}
-            width={"auto"}
-            src={props.img}
-            p={1}
-          />
-          <Heading size="sm" color="gray">
-            {props.title}
-          </Heading>
-        </VStack>
+      <Center minH={120}>
+        <ChakraImage pos="absolute" h={{base: 220, md: 300}} src={props.collectionLogo} />
       </Center>
-      <Center>
-        <Heading fontFamily="MedievalSharp" textAlign="center" size="lg">
-          {props.collectionName}
-        </Heading>
-      </Center>
+      <Heading
+        mt={-5}
+        fontStyle="italic"
+        fontFamily="MedievalSharp"
+        textAlign="center"
+        size="lg"
+      >
+        {props.collectionSubHeading}
+      </Heading>
     </>
   );
 };

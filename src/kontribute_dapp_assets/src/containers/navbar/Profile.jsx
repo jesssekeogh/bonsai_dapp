@@ -16,8 +16,9 @@ import {
   Flex,
   Image as ChakraImage,
 } from "@chakra-ui/react";
-import { CopyIcon, LockIcon, CheckIcon } from "@chakra-ui/icons";
+import { CopyIcon, CheckIcon } from "@chakra-ui/icons";
 import { RiSendPlaneFill, RiPencilFill } from "react-icons/ri";
+import { MdLogout } from "react-icons/md";
 import { IoIosImages } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
@@ -165,8 +166,8 @@ const Profile = () => {
               </MenuItem>
             </NavLink>
             <MenuDivider />
-            <MenuItem icon={<LockIcon />} onClick={() => signOut()}>
-              Sign Out
+            <MenuItem icon={<MdLogout />} onClick={() => signOut()}>
+              Logout
             </MenuItem>
           </MenuList>
         </Menu>

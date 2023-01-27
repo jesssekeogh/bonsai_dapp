@@ -1,14 +1,13 @@
 import React from "react";
 import { OfferingPage } from "../lp_components";
-import logo from "../../../../assets/Bonsai-Team-ICON-Black.png";
+import nobleBrightLogo from "../../../../assets/noblebright_logo.png";
 
 const NoblebrightNft = () => {
   return (
     <>
       <OfferingPage
-        title={"Team Bonsai presents..."}
-        collectionName={"NobleBright Comic NFTs <make this a large logo?>"}
-        img={logo}
+        collectionLogo={nobleBrightLogo}
+        collectionSubHeading={"Comicbook NFTs"}
         name1={"Hooded"}
         name2={"NobleBright"}
         name3={"Priestess"}

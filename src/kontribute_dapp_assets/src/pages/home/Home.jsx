@@ -78,7 +78,7 @@ const HomeAlert = () => {
       mt={{ base: -1, lg: 0 }}
     >
       <AlertDescription>
-        ⚡️ New NFT ⚡️{" "}
+        ⚡️ New Launch ⚡️{" "}
         <NavLink to="/noblebright">
           <Text
             display="inline"

@@ -61,8 +61,7 @@ const LargeNft = () => {
             id: params.tokenid,
             name: meta.name,
             lore: meta.lore,
-            attributes: meta.attributes,
-            tags: meta.tags,
+            royalty: (Number(meta.authorShare) / 100).toString(),
             colorDark: itemQuality.dark[meta.quality].color,
             colorLight: itemQuality.light[meta.quality].color,
             rating: itemQuality.light[meta.quality].label,
@@ -193,7 +192,7 @@ const LargeNft = () => {
               </Link>
             </Hide>
             {pathData.amount > 1 ? (
-              <Link to="/marketplace">
+              <Link to="/inventory">
                 <Button _hover={{ opacity: "0.8" }}>
                   <Text>{"+ " + (pathData.amount - 1) + " other NFTs"}</Text>
                 </Button>
@@ -212,6 +211,7 @@ const LargeNft = () => {
               fontWeight="bold"
               fontSize={["2xl", null, "4xl"]}
               fontStyle={"italic"}
+              mb={1}
             >
               {data.name}
             </Heading>
@@ -241,29 +241,11 @@ const LargeNft = () => {
                 Chain:&nbsp;
               </Text>
               <Text
-                casing={"uppercase"}
                 color={textColor}
                 fontSize={{ base: "sm", md: "md" }}
                 fontWeight={500}
               >
                 ICP
-              </Text>
-            </Flex>
-            <Flex align="center">
-              <Text
-                fontWeight={600}
-                fontSize={{ base: "md", md: "lg" }}
-                color="#b2b8be"
-              >
-                Token standard:&nbsp;
-              </Text>
-              <Text
-                casing={"uppercase"}
-                color={textColor}
-                fontSize={{ base: "sm", md: "md" }}
-                fontWeight={500}
-              >
-                NFTA
               </Text>
             </Flex>
             <Flex align="center">
@@ -278,14 +260,33 @@ const LargeNft = () => {
                 {data.rating}
               </Text>
             </Flex>
+            <Flex align="center">
+              <Text
+                fontWeight={600}
+                fontSize={{ base: "md", md: "lg" }}
+                color="#b2b8be"
+              >
+                Author royalty:&nbsp;
+              </Text>
+              <Text fontWeight={500} color={textColor}>
+                {data.royalty}%
+              </Text>
+            </Flex>
             <Text
+              display="inline"
               fontWeight={600}
               fontSize={{ base: "md", md: "lg" }}
               color="#b2b8be"
             >
-              Description:
+              Description:&nbsp;
             </Text>
-            <Text fontWeight={500} color={textColor} mb={2} maxW="520px">
+            <Text
+              display="inline"
+              fontWeight={500}
+              color={textColor}
+              mb={2}
+              maxW="500px"
+            >
               {data.lore}
             </Text>
           </Box>
