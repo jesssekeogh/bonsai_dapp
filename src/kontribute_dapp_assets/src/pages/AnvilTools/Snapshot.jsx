@@ -16,17 +16,18 @@ const Snapshot = () => {
     const ids = [];
     const bearers = [];
     const bearerCounts = {};
+
     try {
       const meta = await fetch(
         `https://nftpkg.com/api/v1/author/${MINTINGADDRESS}`
       ).then((x) => x.json());
-    } catch (e) {
-        setLoading(false)
-      return setNftsChecked("Failed to fetch");
-    }
 
-    for (let nft of meta) {
-      ids.push(tokenToText(nft[0]));
+      for (let nft of meta) {
+        ids.push(tokenToText(nft[0]));
+      }
+    } catch (e) {
+      setLoading(false);
+      return setNftsChecked("Failed to fetch");
     }
 
     let amount = 0;

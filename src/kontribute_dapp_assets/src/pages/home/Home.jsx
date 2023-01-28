@@ -29,7 +29,7 @@ const Home = () => {
   const textColor = useColorModeValue(HeadingColorLight, HeadingColorDark);
   return (
     <>
-      <HomeAlert />
+      {/* <HomeAlert /> */}
       <Box color={textColor} px={3} pb={20}>
         <Center pb={{ base: 0, md: 3 }} mt={{ base: 5, md: 8 }}>
           <Stack spacing={3} textAlign="center">

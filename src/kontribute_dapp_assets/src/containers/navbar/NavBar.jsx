@@ -30,7 +30,7 @@ const LinkItems = [
     link: "/marketplace",
   },
   { name: "Mint", link: "/mint" },
-  { name: "NobleBright", link: "/noblebright" },
+  // { name: "NobleBright", link: "/noblebright" },
 ];
 
 const NavItem = ({ link, name }) => {

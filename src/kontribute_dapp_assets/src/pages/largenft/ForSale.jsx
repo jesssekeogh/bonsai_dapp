@@ -43,7 +43,7 @@ const ForSale = ({ Icp, tokenId, tokens }) => {
   const textColor = useColorModeValue(TextColorLight, TextColorDark);
   return (
     <Flex rounded={"lg"} w={{ base: "100%", md: "60%" }}>
-      <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
+      <Container bg={bgColor} boxShadow={"xl"} rounded={"lg"} overflow="hidden" p={4}>
         <Text
           fontWeight={600}
           fontSize={{ base: "md", md: "lg" }}

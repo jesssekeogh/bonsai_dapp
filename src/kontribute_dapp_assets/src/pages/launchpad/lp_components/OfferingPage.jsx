@@ -4,8 +4,8 @@ import {
   Center,
   Heading,
   Text,
-  VStack,
   SimpleGrid,
+  useBreakpointValue,
   useColorModeValue,
   Container,
   Flex,
@@ -37,16 +37,16 @@ const OfferingPage = (props) => {
           {props.airdropEnded ? (
             <Badge
               borderRadius="md"
-              fontSize="xl"
+              fontSize="2xl"
               fontWeight="bold"
               colorScheme="red"
             >
               Offering ended!
             </Badge>
           ) : props.launchingSoon ? (
-            <Text fontWeight={600} color="#f0e6d3">
-              Launching Soon!
-            </Text>
+            <Badge borderRadius="md" fontSize="2xl" fontWeight="bold">
+              Launching Soon
+            </Badge>
           ) : (
             <Airdrop />
           )}
@@ -61,7 +61,11 @@ const Header = ({ props }) => {
   return (
     <>
       <Center minH={120}>
-        <ChakraImage pos="absolute" h={{base: 220, md: 300}} src={props.collectionLogo} />
+        <ChakraImage
+          pos="absolute"
+          h={{ base: 220, md: 300 }}
+          src={props.collectionLogo}
+        />
       </Center>
       <Heading
         mt={-5}
@@ -78,7 +82,7 @@ const Header = ({ props }) => {
 
 const Prices = ({ props }) => {
   return (
-    <Box as="section" py={{ base: 5, md: 8 }} px={{ base: "4", md: "8" }}>
+    <Box as="section" py={{ base: 5, md: 8 }}>
       <SimpleGrid
         columns={{ base: 1, lg: 3 }}
         spacing={{ base: "8", lg: "2" }}
@@ -130,11 +134,12 @@ const PricingCard = ({
   launchingSoon,
 }) => {
   const bgColor = useColorModeValue("White", "#1d1d20");
+  const isPhone = useBreakpointValue({ base: true, md: false });
   return (
     <Box
       position="relative"
       p={5}
-      h={isMain ? "110%" : "auto"}
+      h={isMain && !isPhone ? "110%" : "auto"}
       overflow="hidden"
       boxShadow="lg"
       maxW="md"
@@ -197,16 +202,16 @@ const PricingCard = ({
         {saleEnded ? (
           <Badge
             borderRadius="md"
-            fontSize="xl"
+            fontSize="2xl"
             fontWeight="bold"
             colorScheme="red"
           >
             Sold out!
           </Badge>
         ) : launchingSoon ? (
-          <Text fontWeight={600} color="#f0e6d3">
-            Launching Soon!
-          </Text>
+          <Badge borderRadius="md" fontSize="2xl" fontWeight="bold">
+            Launching Soon
+          </Badge>
         ) : (
           <Purchase nfts={nfts} amount={price} />
         )}

@@ -121,7 +121,7 @@ const LargeNft = () => {
       {pathData.showConfetti ? <Confetti /> : null}
       <Stack
         direction={{ base: "column", md: "column", lg: "row" }}
-        p={{ base: 3, md: 10 }}
+        p={{ base: 3, md: 8 }}
       >
         <Box pt={{ base: 0, md: 2 }}>
           <ChakraImage
@@ -140,8 +140,9 @@ const LargeNft = () => {
           borderRadius="lg"
           boxShadow={"lg"}
           bg={bgColor}
-          boxSize={["100%", null, "600px"]}
+          maxW="70vh"
           justifyContent="center"
+          alignItems="center"
         >
           <ChakraImage
             _hover={{
@@ -150,8 +151,10 @@ const LargeNft = () => {
             borderRadius="lg"
             src={data.content}
             objectFit="cover"
+            w="100%"
+            h="100%"
             fallback={
-              <Skeleton borderRadius="lg" boxSize={["320px", null, "580px"]} />
+              <Skeleton borderRadius="lg" boxSize={["320px", null, "520px"]} />
             }
           />
         </Flex>
@@ -177,8 +180,9 @@ const LargeNft = () => {
           flexDirection="column"
           justifyContent={{ base: "center", md: "start" }}
           alignItems={{ base: "center", md: "start" }}
-          p={{ base: 3, md: 6 }}
+          px={{ base: 0, md: 3 }}
           pt={2}
+          maxW="500px"
         >
           <HStack>
             <Hide below="md">
@@ -205,7 +209,7 @@ const LargeNft = () => {
           {data.price > 0 ? (
             <ForSale Icp={data.price} tokenId={data.id} tokens={ownedTokens} />
           ) : null}
-          <Box bg={bgColor} boxShadow={"xl"} rounded={"lg"} p={4}>
+          <Box bg={bgColor} boxShadow={"xl"} w="100%" rounded={"lg"} p={4}>
             <Heading
               color={nftNameColor}
               fontWeight="bold"
@@ -221,7 +225,7 @@ const LargeNft = () => {
                 fontSize={{ base: "md", md: "lg" }}
                 color="#b2b8be"
               >
-                Token ID:&nbsp;
+                Token:&nbsp;
               </Text>
               <Text
                 casing={"uppercase"}
@@ -280,14 +284,8 @@ const LargeNft = () => {
             >
               Description:&nbsp;
             </Text>
-            <Text
-              display="inline"
-              fontWeight={500}
-              color={textColor}
-              mb={2}
-              maxW="500px"
-            >
-              {data.lore}
+            <Text display="inline" fontWeight={500} color={textColor} mb={2}>
+              {data.lore ? data.lore : "None"}
             </Text>
           </Box>
           <Hide above="md">
