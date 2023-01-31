@@ -20,11 +20,13 @@ import logo from "../../../assets/Bonsai-Team-ICON-Black.png";
 import bonsailogo from "../../../assets/Bonsai_Warriors_Background_1.png";
 import pendragonBG from "../../../assets/pendragon.png";
 import pendragonLogo from "../../../assets/pendragon_logo.png";
+import cryptogirlLogo from "../../../assets/cryptogirl_logo.jpeg";
 import anvLogo from "../../../assets/anvillogo.svg";
 import badbotBg from "../../../assets/badbot-ninja-bg.png";
 import ratokoBG from "../../../assets/ratokoBG.png";
 import basementBG from "../../../assets/basement_bg.png";
 import questionMark from "../../../assets/question_mark.svg";
+import cryptogirlBG from "../../../assets/cryptogirl_bg.jpeg";
 
 const MarketplaceLanding = () => {
   useEffect(() => {
@@ -59,6 +61,14 @@ const NftCards = () => {
       gap={{ base: 3, md: 6 }}
       maxW="1250px"
     >
+      <CollectionThumb
+        colimg={cryptogirlBG}
+        title={"Crypto Girl in Wonderland"}
+        authorimg={cryptogirlLogo}
+        link={
+          "a007d0f435865a7ff5ad5ad2251b04005a569778e55613e0482ea421a36ced4e"
+        }
+      />
       <CollectionThumb
         colimg={basementBG}
         title={"Basement"}
@@ -108,17 +118,14 @@ const CollectionThumb = ({ colimg, title, authorimg, link }) => {
     <>
       <SlideFade in={true} offsetY="20px">
         <Link to={"/marketplace/" + link}>
-          <Box
-            spacing="30px"
-            boxShadow="md"
-            borderRadius="lg"
-            bg={bgColor}
-          >
+          <Box spacing="30px" boxShadow="md" borderRadius="lg" bg={bgColor}>
             <Box borderRadius="lg" overflow="hidden" mb={3} align="center">
               <ChakraImage
                 transform="scale(1.0)"
                 src={colimg}
                 borderRadius="md"
+                width="full"
+                h={{ base: "100%", md: "265px" }}
                 fallback={
                   <Skeleton
                     h={{ base: "230px", md: "265px" }}
@@ -148,7 +155,7 @@ const Author = (props) => {
         shadow="lg"
         zIndex={1}
         p="5px"
-        borderRadius="5px"
+        borderRadius="lg"
         bg="#fff"
         boxSize="60px"
         src={props.img}
