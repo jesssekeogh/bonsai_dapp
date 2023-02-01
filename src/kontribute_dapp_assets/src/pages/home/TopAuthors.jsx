@@ -184,7 +184,6 @@ const TopAuthorCard = ({ author, direction }) => {
         meta.content.internal
           ? setSrc(meta.content.internal.url)
           : setSrc(meta.content.external);
-        setAuthorDetails(details[0].value.ok[0]);
       }
     } catch (e) {
       // get address
@@ -245,9 +244,15 @@ const TopAuthorCard = ({ author, direction }) => {
                 transform: "scale(1.05)",
               }}
               src={src}
-              fallback={<Avatar h={{base: "330px", md: "400px" }} w="auto" borderRadius="lg" />}
+              fallback={
+                <Avatar
+                  h={{ base: "330px", md: "400px" }}
+                  w="auto"
+                  borderRadius="lg"
+                />
+              }
               objectFit="cover"
-              boxSize={{base: "330px", md: "400px" }}
+              boxSize={{ base: "330px", md: "400px" }}
             />
           </Box>
           <Box p={5}>

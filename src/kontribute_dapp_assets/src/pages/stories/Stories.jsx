@@ -34,7 +34,7 @@ const Stories = () => {
   const [stories, setStories] = useState([]);
   const [Loaded, setLoaded] = useState(false);
 
-  const [storyFilter, setStoryFilter] = useState("Latest");
+  const [storyFilter, setStoryFilter] = useState("Top");
 
   const [showAll, setShowAll] = useState(false);
 
@@ -73,7 +73,11 @@ const Stories = () => {
       (a, b) => Number(b.time) - Number(a.time)
     );
 
-    if (storyFilter !== "Latest") {
+    if (
+      storyFilter !== "Top" &&
+      storyFilter !== "Latest" &&
+      storyFilter !== "Most Liked"
+    ) {
       const filterByFilter = filterByLatest.filter((a) => {
         if (a.genre === storyFilter) {
           return a;
@@ -83,15 +87,47 @@ const Stories = () => {
       if (showAll) {
         setStories(filterByFilter);
       } else {
-        setStories(filterByFilter.slice(0, 15));
+        setStories(filterByFilter.slice(0, 20));
+      }
+
+      return setLoaded(true);
+    }
+
+    if (storyFilter === "Latest") {
+      if (showAll) {
+        setStories(filterByLatest);
+      } else {
+        setStories(filterByLatest.slice(0, 20));
       }
       return setLoaded(true);
     }
 
+    if (storyFilter === "Most Liked") {
+      if (showAll) {
+        setStories(
+          filterByLatest.sort((a, b) => Number(b.views) - Number(a.views))
+        );
+      } else {
+        setStories(
+          filterByLatest
+            .sort((a, b) => Number(b.likes) - Number(a.likes))
+            .slice(0, 20)
+        );
+      }
+      return setLoaded(true);
+    }
+
+    // default is top
     if (showAll) {
-      setStories(filterByLatest);
+      setStories(
+        filterByLatest.sort((a, b) => Number(b.views) - Number(a.views))
+      );
     } else {
-      setStories(filterByLatest.slice(0, 15));
+      setStories(
+        filterByLatest
+          .sort((a, b) => Number(b.views) - Number(a.views))
+          .slice(0, 20)
+      );
     }
     setLoaded(true);
   };
@@ -183,7 +219,9 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
   const bgColor = useColorModeValue("white", "#111111");
 
   const Genres = [
+    "Top",
     "Latest",
+    "Most Liked",
     "Fiction",
     "Non-Fiction",
     "Short Story",

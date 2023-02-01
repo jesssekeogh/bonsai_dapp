@@ -123,13 +123,13 @@ const CollectionThumb = ({ colimg, title, authorimg, link }) => {
               <ChakraImage
                 transform="scale(1.0)"
                 src={colimg}
-                borderRadius="md"
+                borderRadius="lg"
                 width="full"
                 h={{ base: "100%", md: "265px" }}
                 fallback={
                   <Skeleton
                     h={{ base: "230px", md: "265px" }}
-                    w={"400px"}
+                    w={"398px"}
                     borderRadius="lg"
                   />
                 }
