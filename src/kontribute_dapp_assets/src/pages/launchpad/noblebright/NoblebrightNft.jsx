@@ -20,11 +20,11 @@ const NoblebrightNft = () => {
         nfts1={1}
         nfts2={10}
         nfts3={5}
-        tokenomics_link={"https://www.pendragonquest.xyz/"}
+        tokenomics_link={"https://medium.com/@teambonsai.icp/noblebright-comicbook-nfts-c0e44c5526ee"}
         tokenomics_details={
-          "Pendragon Quest consists of 1200 hand drawn NFTs which you can own in order to access our story. Holders will be eligible to decide the path that the story takes and participate in unique story events. Holders will also be able receive our future NFT airdrop at a 1:1 ratio."
+          "Noblebright Comicbook NFTs consist of 1080 NFTs. Inside each NFT is a comic strip that introduces you to the Noblebright world and the main protagonist. Holders will be eligible for poll voting to decide the path that the story and NFT collection take."
         }
-        // launchingSoon
+        launchingSoon
         // saleEnded
         // airdropEnded
       />

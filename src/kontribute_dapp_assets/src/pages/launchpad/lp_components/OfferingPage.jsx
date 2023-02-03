@@ -184,17 +184,17 @@ const PricingCard = ({
       <Center>
         {details === 1 ? (
           <Text fontWeight={600} fontSize="lg" pb={5}>
-            1 image here
+            1 NFT
           </Text>
         ) : null}
         {details === 5 ? (
           <Text fontWeight={600} fontSize="lg" pb={5}>
-            5 images here
+            5 NFTs
           </Text>
         ) : null}
         {details === 10 ? (
           <Text fontWeight={600} fontSize="lg" pb={5}>
-            10 images here
+            10 NFTs
           </Text>
         ) : null}
       </Center>

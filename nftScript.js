@@ -1,30 +1,30 @@
 const data = require("./input.js");
 // let data = []; // for first one
 const quality = 6;
-const namex = "Arthur's Knight #";
-const tags = ["Knight"];
+const namex = "Noblebright #";
+const tags = ["Comic"];
 const lore =
-  "Join Arthur on his adventure throughout Camelot and beyond! Discover the secrets and mysteries that lie before him.";
-const authorShare = 150;
+  "The artifacts of these mighty people have been left scattered across the lands. Claiming the Noblebright - A Device that empowers its holder with godlike strength - only a few of these exist.";
+const authorShare = 1000;
 // const content = "Zhu_Luoli";
 // const thumb = content;
 
-for (let i = 1176; i < 1201; i++) {
+for (let i = 1051; i < 1081; i++) {
   data.push({
     quality: quality,
     name: namex + i,
     tags: tags,
     attributes: {
-      physical: Math.round(Math.random() * (100 - 0) + 0),
-      mental: Math.round(Math.random() * (100 - 0) + 0),
-      social: Math.round(Math.random() * (100 - 0) + 0),
+      dust: Math.round(Math.random() * (100 - 0) + 0),
+      academic: Math.round(Math.random() * (100 - 0) + 0),
+      knowledge: Math.round(Math.random() * (100 - 0) + 0),
     },
     lore: lore,
     authorShare: authorShare,
     content:
-      "./Pendragon_Quest/Arthur_s_Knight_" + String(i).padStart(5, 0) + ".png",
+      "./Noblebright/noblebright_comic.png",
     thumb:
-      "./Pendragon_Quest/Arthur_s_Knight_" + String(i).padStart(5, 0) + ".png",
+      `./Noblebright/noblebright_thumb_${i}.jpg`,
   });
 }
 

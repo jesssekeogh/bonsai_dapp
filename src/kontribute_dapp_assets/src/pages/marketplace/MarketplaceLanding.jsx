@@ -65,7 +65,7 @@ const NftCards = () => {
     >
       <CollectionThumb
         colimg={doglesBG}
-        title={"Imagine"}
+        title={"Thedogles"}
         authorimg={doglesLogo}
         link={
           "a00e640a6046e233c3b203957511170c393ecc8edfe59958ba5c9b9f998332a9"
