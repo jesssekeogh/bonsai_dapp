@@ -140,7 +140,9 @@ const LargeNft = () => {
           borderRadius="lg"
           boxShadow={"lg"}
           bg={bgColor}
-          maxW="70vh"
+          maxW="50vh"
+          minW={{ md: "535px" }}
+          minH={{ md: "535px" }}
           justifyContent="center"
           alignItems="center"
         >

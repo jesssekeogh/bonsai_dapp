@@ -86,7 +86,7 @@ const StoryCard = ({ data }) => {
               leftIcon={<ViewIcon />}
               _hover={{ bg: "none", cursor: "default" }}
             >
-              {data.views.toString()}
+              {data.views.toLocaleString()}
             </Button>
             ·
             <Button
@@ -98,7 +98,7 @@ const StoryCard = ({ data }) => {
               leftIcon={<FaHeart />}
               _hover={{ bg: "none", cursor: "default" }}
             >
-              {data.likes.toString()}
+              {data.likes.toLocaleString()}
             </Button>
           </Flex>
         </NavLink>

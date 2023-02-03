@@ -34,7 +34,7 @@ const Stories = () => {
   const [stories, setStories] = useState([]);
   const [Loaded, setLoaded] = useState(false);
 
-  const [storyFilter, setStoryFilter] = useState("Top");
+  const [storyFilter, setStoryFilter] = useState("Latest");
 
   const [showAll, setShowAll] = useState(false);
 
@@ -45,7 +45,7 @@ const Stories = () => {
 
     const skLowerBound = "author_";
     const skUpperBound = "author_~";
-    const limit = 1000;
+    const limit = 5;
     const ascending = [false];
 
     let storiesToShow = [];
@@ -55,7 +55,6 @@ const Stories = () => {
       const stories = storyServiceClient.query(user, (actor) =>
         actor.scanAllFullStories(skLowerBound, skUpperBound, limit, ascending)
       );
-
       storyPromises.push(stories);
     }
 
@@ -64,7 +63,9 @@ const Stories = () => {
         const latestStoryFromAuthor = await stories;
 
         for (let story of latestStoryFromAuthor[0].value.stories) {
-          storiesToShow.push(story);
+          if (story.body.length > 200) {
+            storiesToShow.push(story);
+          }
         }
       })
     );
@@ -93,13 +94,18 @@ const Stories = () => {
       return setLoaded(true);
     }
 
-    if (storyFilter === "Latest") {
+    if (storyFilter === "Top") {
       if (showAll) {
-        setStories(filterByLatest);
+        setStories(
+          filterByLatest.sort((a, b) => Number(b.views) - Number(a.views))
+        );
       } else {
-        setStories(filterByLatest.slice(0, 20));
+        setStories(
+          filterByLatest
+            .sort((a, b) => Number(b.views) - Number(a.views))
+            .slice(0, 20)
+        );
       }
-      return setLoaded(true);
     }
 
     if (storyFilter === "Most Liked") {
@@ -117,19 +123,13 @@ const Stories = () => {
       return setLoaded(true);
     }
 
-    // default is top
+    // default is latest
     if (showAll) {
-      setStories(
-        filterByLatest.sort((a, b) => Number(b.views) - Number(a.views))
-      );
+      setStories(filterByLatest);
     } else {
-      setStories(
-        filterByLatest
-          .sort((a, b) => Number(b.views) - Number(a.views))
-          .slice(0, 20)
-      );
+      setStories(filterByLatest.slice(0, 20));
     }
-    setLoaded(true);
+    return setLoaded(true);
   };
 
   useEffect(() => {
@@ -219,8 +219,8 @@ const BrowseUtils = ({ storyFilter, setStoryFilter }) => {
   const bgColor = useColorModeValue("white", "#111111");
 
   const Genres = [
-    "Top",
     "Latest",
+    "Top",
     "Most Liked",
     "Fiction",
     "Non-Fiction",

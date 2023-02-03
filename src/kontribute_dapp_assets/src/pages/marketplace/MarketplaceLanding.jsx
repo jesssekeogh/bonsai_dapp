@@ -21,12 +21,14 @@ import bonsailogo from "../../../assets/Bonsai_Warriors_Background_1.png";
 import pendragonBG from "../../../assets/pendragon.png";
 import pendragonLogo from "../../../assets/pendragon_logo.png";
 import cryptogirlLogo from "../../../assets/cryptogirl_logo.jpeg";
+import doglesLogo from "../../../assets/thedogles_logo.jpeg";
 import anvLogo from "../../../assets/anvillogo.svg";
 import badbotBg from "../../../assets/badbot-ninja-bg.png";
 import ratokoBG from "../../../assets/ratokoBG.png";
 import basementBG from "../../../assets/basement_bg.png";
 import questionMark from "../../../assets/question_mark.svg";
 import cryptogirlBG from "../../../assets/cryptogirl_bg.jpeg";
+import doglesBG from "../../../assets/thedogles_bg.jpeg";
 
 const MarketplaceLanding = () => {
   useEffect(() => {
@@ -61,6 +63,14 @@ const NftCards = () => {
       gap={{ base: 3, md: 6 }}
       maxW="1250px"
     >
+      <CollectionThumb
+        colimg={doglesBG}
+        title={"Imagine"}
+        authorimg={doglesLogo}
+        link={
+          "a00e640a6046e233c3b203957511170c393ecc8edfe59958ba5c9b9f998332a9"
+        }
+      />
       <CollectionThumb
         colimg={cryptogirlBG}
         title={"Crypto Girl in Wonderland"}

@@ -298,7 +298,7 @@ const Mint = () => {
               />
               {nftContent == "" ? (
                 <Button
-                  boxSize={["95vw", null, "600px"]}
+                  boxSize={["95vw", null, "500px"]}
                   border="2px dashed"
                   borderColor={isClicked && nftContent === "" ? "red" : "auto"}
                   onClick={() => {
