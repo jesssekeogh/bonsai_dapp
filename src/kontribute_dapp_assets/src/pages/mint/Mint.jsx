@@ -433,17 +433,15 @@ const Mint = () => {
                     isLoading={isMinting}
                     leftIcon={<ImInfinite />}
                     rightIcon={<ImInfinite />}
-                    isDisabled
-                    // disabled={loggedIn ? false : true}
+                    isDisabled={loggedIn ? false : true}
                     onClick={() => MintNFT()}
                     boxShadow="base"
                     _hover={{
                       boxShadow: "md",
                     }}
                   >
-                    Currently unavailable
-                    {/* Mint
-                    {pwrPrice !== 0 ? ` for ${pwrPrice} ICP` : null} */}
+                    Mint
+                    {pwrPrice !== 0 ? ` for ${pwrPrice} ICP` : null}
                   </Button>
                 </Stack>
               </Box>

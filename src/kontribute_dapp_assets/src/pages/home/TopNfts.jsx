@@ -13,7 +13,7 @@ import { NavLink } from "react-router-dom";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 const MINTERADDRESS =
-  "a007d0f435865a7ff5ad5ad2251b04005a569778e55613e0482ea421a36ced4e";
+  "a00e640a6046e233c3b203957511170c393ecc8edfe59958ba5c9b9f998332a9";
 
 const TopNfts = () => {
   const [tokens, setTokens] = useState([]);
