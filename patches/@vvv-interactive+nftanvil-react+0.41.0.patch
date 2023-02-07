@@ -1,8 +1,28 @@
 diff --git a/node_modules/@vvv-interactive/nftanvil-react/cjs/reducers/nft.js b/node_modules/@vvv-interactive/nftanvil-react/cjs/reducers/nft.js
-index b186112..89e307c 100644
+index b186112..88eb419 100644
 --- a/node_modules/@vvv-interactive/nftanvil-react/cjs/reducers/nft.js
 +++ b/node_modules/@vvv-interactive/nftanvil-react/cjs/reducers/nft.js
-@@ -738,6 +738,8 @@ const nft_mint = vals => async (dispatch, getState) => {
+@@ -189,7 +189,9 @@ const nft_purchase = _ref2 => {
+   let {
+     id,
+     amount,
+-    affiliate = []
++    affiliate = [],
++    payment_token_kind = {normal:null},
++    payment_token = 1,
+   } = _ref2;
+   return async (dispatch, getState) => {
+     let s = getState();
+@@ -211,6 +213,8 @@ const nft_purchase = _ref2 => {
+       user: {
+         address: AccountIdentifier.TextToArray(address)
+       },
++      payment_token_kind,
++      payment_token,
+       subaccount,
+       affiliate,
+       amount
+@@ -738,6 +742,8 @@ const nft_mint = vals => async (dispatch, getState) => {
    let subaccount = [AccountIdentifier.TextToArray(s.user.subaccount) || null].filter(Boolean);
    if (!address) throw Error("Annonymous cant mint"); // Wont let annonymous mint
  
@@ -11,7 +31,7 @@ index b186112..89e307c 100644
    try {
      var _mrez$err, _mrez$err2, _vals$content$, _vals$content$$intern, _vals$thumb, _vals$thumb$internal;
  
-@@ -766,7 +768,7 @@ const nft_mint = vals => async (dispatch, getState) => {
+@@ -766,7 +772,7 @@ const nft_mint = vals => async (dispatch, getState) => {
        tokenIndex,
        transactionId
      } = mrez.ok;
@@ -20,7 +40,7 @@ index b186112..89e307c 100644
  
      if (vals !== null && vals !== void 0 && (_vals$content$ = vals.content[0]) !== null && _vals$content$ !== void 0 && (_vals$content$$intern = _vals$content$.internal) !== null && _vals$content$$intern !== void 0 && _vals$content$$intern.url) {
        await (0, _data.uploadFile)(nft, tokenIndex, "content", await (0, _data.chunkBlob)(vals.content[0].internal.url), subaccount);
-@@ -781,6 +783,7 @@ const nft_mint = vals => async (dispatch, getState) => {
+@@ -781,6 +787,7 @@ const nft_mint = vals => async (dispatch, getState) => {
    }
  
    dispatch((0, _user.user_refresh_balances)());
@@ -28,3 +48,16 @@ index b186112..89e307c 100644
  };
  
  exports.nft_mint = nft_mint;
+diff --git a/node_modules/@vvv-interactive/nftanvil-react/src/reducers/nft.js b/node_modules/@vvv-interactive/nftanvil-react/src/reducers/nft.js
+index a56fd95..6fbb6ef 100644
+--- a/node_modules/@vvv-interactive/nftanvil-react/src/reducers/nft.js
++++ b/node_modules/@vvv-interactive/nftanvil-react/src/reducers/nft.js
+@@ -193,7 +193,7 @@ const nft_fetch_file = async (
+ };
+ 
+ export const nft_purchase =
+-  ({ id, amount, affiliate = [] }) =>
++  ({ id, amount, affiliate = []}) =>
+   async (dispatch, getState) => {
+     let s = getState();
+ 

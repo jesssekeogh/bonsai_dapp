@@ -56,10 +56,6 @@ const returnMintRecord = (
   royalty
 ) => {
   return {
-    price: {
-      marketplace: [],
-      amount: 0,
-    },
     domain: [],
     authorShare: royalty,
     name: [name],
@@ -289,7 +285,7 @@ const Mint = () => {
                     let content = await resizeImage(url, 1280, 1280);
                     setNftContent(content);
 
-                    let thumb = await resizeImage(url, 432, 432);
+                    let thumb = await resizeImage(url, 432, 432, true);
                     setNftThumb(thumb);
                   } else {
                     FailedToast("Failed", "File must be an image!");
@@ -437,15 +433,17 @@ const Mint = () => {
                     isLoading={isMinting}
                     leftIcon={<ImInfinite />}
                     rightIcon={<ImInfinite />}
-                    disabled={loggedIn ? false : true}
+                    isDisabled
+                    // disabled={loggedIn ? false : true}
                     onClick={() => MintNFT()}
                     boxShadow="base"
                     _hover={{
                       boxShadow: "md",
                     }}
                   >
-                    Mint
-                    {pwrPrice !== 0 ? ` for ${pwrPrice} ICP` : null}
+                    Currently unavailable
+                    {/* Mint
+                    {pwrPrice !== 0 ? ` for ${pwrPrice} ICP` : null} */}
                   </Button>
                 </Stack>
               </Box>

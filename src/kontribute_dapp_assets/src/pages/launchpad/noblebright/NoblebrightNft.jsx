@@ -24,8 +24,8 @@ const NoblebrightNft = () => {
         tokenomics_details={
           "Noblebright Comicbook NFTs consist of 1080 NFTs. Inside each NFT is a comic strip that introduces you to the Noblebright world and the main protagonist. Holders will be eligible for poll voting to decide the path that the story and NFT collection take."
         }
-        launchingSoon
-        // saleEnded
+        // launchingSoon
+        saleEnded
         // airdropEnded
       />
     </>

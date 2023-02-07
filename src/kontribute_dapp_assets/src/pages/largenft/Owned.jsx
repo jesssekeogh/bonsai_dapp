@@ -140,13 +140,11 @@ const TransferButton = ({ tokenId }) => {
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>To Address</FormLabel>
-              <Tooltip label="ICP Address (NOT PRINCIPAL ID)">
-                <Input
-                  variant="filled"
-                  placeholder="a00fe60cfcc1ec....."
-                  onChange={(event) => setTo(event.target.value)}
-                />
-              </Tooltip>
+              <Input
+                variant="filled"
+                placeholder="a00fe60cfcc1ec....."
+                onChange={(event) => setTo(event.target.value)}
+              />
               <FormHelperText>
                 Address must support NFTA{" "}
                 <Tooltip label="popular dapps that support NFTA: kontribute.app and nftanvil.com">

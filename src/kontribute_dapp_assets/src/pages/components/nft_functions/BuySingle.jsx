@@ -108,6 +108,8 @@ const BuySingle = ({ tokenId, price, setShowQuickBuy, children }) => {
     let buyObj = {
       id: tokenId,
       amount: Number(price),
+      payment_token_kind : {normal:null},
+      payment_token: 1,
       affiliate: [
         {
           address: TextToArray(

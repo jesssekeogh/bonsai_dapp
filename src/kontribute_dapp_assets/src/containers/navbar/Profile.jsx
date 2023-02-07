@@ -33,6 +33,7 @@ import { setLogin, setLogout, setPrincipal } from "../../state/LoginSlice";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import SendingIcp from "./SendingIcp";
+import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
 
 const Profile = () => {
   const [client, setClient] = useState();

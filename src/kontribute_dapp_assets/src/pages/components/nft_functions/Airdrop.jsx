@@ -65,14 +65,19 @@ const Airdrop = () => {
     console.log("airdrop_use", brez);
     if ("err" in brez) throw new Error(brez.err);
 
-    let tid = brez.ok.map((x) => Number(x))[0];
+    // let tid = brez.ok.map((x) => Number(x))[0];
+    // await ito.claim(address, subaccount, tid);
+    let promises = [];
+    for (let token of brez.ok.map((x) => Number(x))) {
+      ito.claim(address, subaccount, token);
+    }
 
-    await ito.claim(address, subaccount, tid);
+    await Promise.allSettled(promises.map(async (claimed) => await claimed));
 
-    return navigate("/nft/" + tokenToText(tid), {
+    return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
       state: {
-        prev: "/launchpad/pendragon-nft",
-        showConfetti: true,
+        prev: "/noblebright",
+        showConfetti: false,
         totalNfts: 1,
       },
     }); // returns the claimed token

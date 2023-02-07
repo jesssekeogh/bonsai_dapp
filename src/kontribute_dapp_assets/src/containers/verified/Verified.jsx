@@ -1,8 +1,9 @@
 export const VERIFIED = [
   "Crypto Girl",
-  "Daine",
+  "Thedogles",
   "TsuDohNimh",
   "jes1",
   "Kontribute",
-  "Web3 ⚡ William"
+  "Web3 ⚡ William",
+  "SuitedCrypto",
 ];

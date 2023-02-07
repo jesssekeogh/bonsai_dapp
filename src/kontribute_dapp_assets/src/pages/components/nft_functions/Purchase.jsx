@@ -98,7 +98,7 @@ const Purchase = ({ nfts, amount }) => {
     SendingToast("Purchasing NFT(s)...");
 
     // send tx_id to our custom collection.mo contract
-    let brez = await collection.buy_tx(txid, subaccount);
+    let brez = await collection.buy_tx( amount, txid, subaccount);
     console.log("buy_tx", brez);
 
     dispatch(user_refresh_balances());
@@ -113,7 +113,7 @@ const Purchase = ({ nfts, amount }) => {
 
     return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
       state: {
-        prev: "/launchpad/pendragon-nft",
+        prev: "/noblebright",
         showConfetti: true,
         totalNfts: nfts,
       },

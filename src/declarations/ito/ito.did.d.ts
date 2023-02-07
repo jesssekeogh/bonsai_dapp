@@ -11,7 +11,7 @@ export interface Class {
   'add' : ActorMethod<[TokenIdentifier], Result_3>,
   'airdrop_add' : ActorMethod<[Array<number>], Result_3>,
   'airdrop_use' : ActorMethod<[AccountIdentifier, Array<number>], Result_4>,
-  'buy_tx' : ActorMethod<[TransactionId, [] | [SubAccount]], Result_4>,
+  'buy_tx' : ActorMethod<[bigint, TransactionId, [] | [SubAccount]], Result_4>,
   'claim' : ActorMethod<
     [AccountIdentifier, [] | [SubAccount], TokenIdentifier],
     Result_3,

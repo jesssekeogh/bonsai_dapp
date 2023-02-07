@@ -38,7 +38,11 @@ export const idlFactory = ({ IDL }) => {
         [Result_4],
         [],
       ),
-    'buy_tx' : IDL.Func([TransactionId, IDL.Opt(SubAccount)], [Result_4], []),
+    'buy_tx' : IDL.Func(
+        [IDL.Nat, TransactionId, IDL.Opt(SubAccount)],
+        [Result_4],
+        [],
+      ),
     'claim' : IDL.Func(
         [AccountIdentifier, IDL.Opt(SubAccount), TokenIdentifier],
         [Result_3],

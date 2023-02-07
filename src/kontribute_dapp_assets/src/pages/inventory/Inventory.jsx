@@ -17,6 +17,9 @@ import { LoadingSpinner } from "../../containers";
 import InventoryStats from "./InventoryStats.jsx";
 import { GetMine } from "../components";
 import { SingleNft } from "../components";
+import { createItoActor } from "../../../../declarations/ito.js"
+import authentication from "@vvv-interactive/nftanvil-react/cjs/auth.js";
+import * as AccountIdentifier from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 
 const NFTSDISPLAYED = 20;
 
@@ -29,6 +32,26 @@ const Inventory = () => {
   const anvilDispatch = useAnvilDispatch();
   const loaded = useAnvilSelector((state) => state.user.map.history);
   const [loadedTokens, setLoadedTokens] = useState();
+
+  // const getFromITO = () => async (dispatch, getState) => {
+  //   const s = getState();
+
+  //   let ito = createItoActor({
+  //     agentOptions: authentication.getAgentOptions(),
+  //   });
+
+  //   let address = AccountIdentifier.TextToArray(s.user.address);
+
+  //   let subaccount = [
+  //     AccountIdentifier.TextToArray(s.user.subaccount) || null,
+  //   ].filter(Boolean);
+
+  //   let owned = await ito.owned(address)
+
+  //   for(let token of owned.ok.tokens){
+  //     ito.claim(address, subaccount, token);
+  //   }
+  // }
 
   const initialLoad = async () => {
     let tokens = await anvilDispatch(GetMine());
@@ -52,6 +75,7 @@ const Inventory = () => {
   useEffect(() => {
     if (loaded) {
       fetchTokens();
+      // anvilDispatch(getFromITO())
       return () => {
         isMounted = false;
       };
