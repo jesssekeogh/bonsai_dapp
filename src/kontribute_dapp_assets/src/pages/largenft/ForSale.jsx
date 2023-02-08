@@ -81,7 +81,7 @@ const ForSale = ({ Icp, tokenId, tokens }) => {
               w="full"
               size="lg"
               _hover={{ opacity: "0.8" }}
-              disabled={loggedIn ? false : true}
+              isDisabled={loggedIn ? false : true}
             >
               Buy now
             </Button>

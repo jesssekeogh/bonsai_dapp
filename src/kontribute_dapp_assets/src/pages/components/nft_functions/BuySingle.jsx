@@ -3,7 +3,8 @@ import {
   Button,
   Box,
   Heading,
-  Text,
+  FormControl,
+  FormHelperText,
   Flex,
   Image as ChakraImage,
   Tooltip,
@@ -113,9 +114,9 @@ const BuySingle = ({ tokenId, price, setShowQuickBuy, children }) => {
       affiliate: [
         {
           address: TextToArray(
-            "a00dcee3d64e4daaa34ebfa7b95fba5f095e234d32a4770958e3f8e8818cafe1"
+            "a008e74937e5f920f82b8697b26847f16ea8dc45e7d1ffa11a86e5348df44c35"
           ),
-          amount: 100000,
+          amount: 200,
         },
       ],
     };
@@ -196,6 +197,9 @@ const BuySingle = ({ tokenId, price, setShowQuickBuy, children }) => {
               &nbsp;
               {e8sToIcp(price)}
             </Flex>
+            <FormControl>
+              <FormHelperText>includes 2% marketplace fee</FormHelperText>
+            </FormControl>
           </ModalBody>
 
           <ModalFooter>

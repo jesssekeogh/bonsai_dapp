@@ -125,7 +125,7 @@ const TransferButton = ({ tokenId }) => {
         color={buttonTextColor}
         size="lg"
         _hover={{ opacity: "0.8" }}
-        disabled={address ? false : true}
+        isDisabled={address ? false : true}
         onClick={() => onOpen()}
       >
         Transfer
@@ -200,9 +200,9 @@ const SellButton = ({ tokenId }) => {
         marketplace: [
           {
             address: AccountIdentifier.TextToArray(
-              "a00dcee3d64e4daaa34ebfa7b95fba5f095e234d32a4770958e3f8e8818cafe1"
+              "a008e74937e5f920f82b8697b26847f16ea8dc45e7d1ffa11a86e5348df44c35"
             ),
-            share: 50,
+            share: 200,
           },
         ],
       },
@@ -236,7 +236,7 @@ const SellButton = ({ tokenId }) => {
         color={buttonTextColor}
         size="lg"
         _hover={{ opacity: "0.8" }}
-        disabled={address ? false : true}
+        isDisabled={address ? false : true}
         onClick={() => onOpen()}
       >
         Sell
@@ -256,7 +256,7 @@ const SellButton = ({ tokenId }) => {
                 placeholder="0.1"
                 onChange={(event) => setAmount(event.target.value)}
               />
-              <FormHelperText>+ 0.05% marketplace fee</FormHelperText>
+              <FormHelperText>+ 2% marketplace fee</FormHelperText>
             </FormControl>
           </ModalBody>
 
@@ -368,7 +368,7 @@ const BurnButton = ({ tokenId }) => {
         color={buttonTextColor}
         size="lg"
         _hover={{ opacity: "0.8" }}
-        disabled={address ? false : true}
+        isDisabled={address ? false : true}
         onClick={() => onOpen()}
       >
         Burn
