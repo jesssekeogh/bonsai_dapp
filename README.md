@@ -18,6 +18,7 @@ you can visit the dapp here: [Kontribute.app](https://kontribute.app). Kontribut
 
 ### ICP Tools
 
+* [CanDB](https://github.com/canscale/CanDB)
 * [Anvil Protocol](https://docs.nftanvil.com/docs/sdk/js)
 * [User Geek](https://usergeek.app/)
 * [Internet Identity](https://internetcomputer.org/docs/current/tokenomics/identity-auth/what-is-ic-identity/)
@@ -39,10 +40,15 @@ We try to take a modern approach to the frontend in terms of using modern React 
 
 ### Backend
 
-Our backend is a mix between in house smart contracts written in Motoko aswell as using frontend api's to call external smart contracts on the ICP blockchain. We call features and tools from other Motoko packages using Vessel - a Motoko package manager. A large chunk of our Motoko backend is calling the Anvil Protocols smart contracts - covering our whole NFT integration. We also have custom smart contracts for managing and storing user stories. All of this makes Kontribute a multi-canister dapp. 
+Our backend is a mix between in house smart contracts written in Motoko aswell as using frontend api's to call external smart contracts on the ICP blockchain. We call features and tools from other Motoko packages using Vessel - a Motoko package manager. Some of our Motoko backend is calling the Anvil Protocols smart contracts - covering our whole NFT integration. For our story integration we use CanDB, a flexible, performant, and horizontally scalable non-relational multi-canister database built for the Internet Computer. All of this makes Kontribute a multi-canister dapp.
 
-## ICP, Anvil Protocol, APIs
+## ICP, Anvil Protocol, CanDB and APIs
 
-The ICP blockchain allows us to create "canisters" which can serve your applications code (a canister is just a smart contract which in turn is just code on a blockchain), We use canisters to host both our frontend and backend. Our dapps authentication uses [Internet Identity](https://internetcomputer.org/docs/current/tokenomics/identity-auth/what-is-ic-identity/) which is currently an ICP specific authentication system, it is secure and powered by cryptography and allows users to create anonymous user IDs and wallets. We have integrated the Anvil Protocol which allows us to achieve NFT integration aswell as providing us with a variety of tools, including `vessel` and `npm` packages. Our marketplace, inventory and ICP wallet are all powered by the Anvil Protocol. We use UserGeek for analytics which allows us to obtain stats on unique users who use our dapp aswell as things like how many users purchased NFTs, All information is anonymous.
+The ICP blockchain allows us to create "canisters" which can serve your applications code (a canister is just a smart contract which in turn is just code on a blockchain), We use canisters to host both our frontend and backend. Our dapps authentication uses [Internet Identity](https://internetcomputer.org/docs/current/tokenomics/identity-auth/what-is-ic-identity/) which is currently an ICP specific authentication system, it is secure and powered by cryptography and allows users to create anonymous user IDs and wallets. We have integrated the Anvil Protocol which allows us to achieve NFT integration aswell as providing us with a variety of tools, including `vessel` and `npm` packages. Our marketplace, inventory and ICP wallet are all powered by the Anvil Protocol. We have integrated the Motoko library CanDB and using this we designed a data model that lets us give each author (anyone who posts a story on the platform) a unique canister that they can own. This makes Kontribute a highly scalable dapp that sticks purely to blockchain infrastructure. We use UserGeek for analytics which allows us to obtain stats on unique users who use our dapp, as well as things like how many users purchased NFTs, All information is anonymous.
+
+## License
+Kontribute is distributed under the terms of the Apache License (Version 2.0).
+
+See LICENSE for details.
 
 <p align="right">(<a href="#top">back to top</a>)</p>

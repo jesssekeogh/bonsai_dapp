@@ -29,6 +29,7 @@ import basementBG from "../../../assets/basement_bg.png";
 import questionMark from "../../../assets/question_mark.svg";
 import cryptogirlBG from "../../../assets/cryptogirl_bg.jpeg";
 import doglesBG from "../../../assets/thedogles_bg.jpeg";
+import noblebrightBG from "../../../assets/noblebright_landscape_v2.jpeg";
 
 const MarketplaceLanding = () => {
   useEffect(() => {
@@ -63,6 +64,14 @@ const NftCards = () => {
       gap={{ base: 3, md: 6 }}
       maxW="1250px"
     >
+      <CollectionThumb
+        colimg={noblebrightBG}
+        title={"Noblebright"}
+        authorimg={logo}
+        link={
+          "a00d75688a183490f92ce8b6967ab39dffa9735be50c5ea94bbdac9cb4e463f1"
+        }
+      />
       <CollectionThumb
         colimg={doglesBG}
         title={"Thedogles"}
