@@ -47,7 +47,7 @@ const Airdrop = () => {
   const navigate = useNavigate();
   const isLogged = useSelector((state) => state.Profile.loggedIn);
 
-  const airdrop_use = (key) => async (dispatch, getState) => {
+  const airdrop_use = () => async (dispatch, getState) => {
     const s = getState();
 
     let address = AccountIdentifier.TextToArray(s.user.address);
@@ -60,38 +60,40 @@ const Airdrop = () => {
       agentOptions: authentication.getAgentOptions(),
     });
 
-    let brez = await ito.airdrop_use(address, base58ToBytes(key));
+    let stats = await ito.stats();
+    console.log(stats)
+    
+    let brez = await ito.airdrop_use(address);
 
     console.log("airdrop_use", brez);
     if ("err" in brez) throw new Error(brez.err);
 
-    // let tid = brez.ok.map((x) => Number(x))[0];
-    // await ito.claim(address, subaccount, tid);
-    let promises = [];
-    for (let token of brez.ok.map((x) => Number(x))) {
-      ito.claim(address, subaccount, token);
-    }
+    let tid = brez.ok.map((x) => Number(x))[0];
 
-    await Promise.allSettled(promises.map(async (claimed) => await claimed));
+    await ito.claim(address, subaccount, tid);
 
-    return navigate("/nft/" + tokenToText(brez.ok.map((x) => Number(x))[0]), {
+    return navigate("/nft/" + tokenToText(tid), {
       state: {
         prev: "/noblebright",
-        showConfetti: false,
+        showConfetti: true,
         totalNfts: 1,
       },
     }); // returns the claimed token
+
+    // let promises = [];
+    // for (let token of brez.ok.map((x) => Number(x))) {
+    //   ito.claim(address, subaccount, token);
+    // }
+
+    // await Promise.allSettled(promises.map(async (claimed) => await claimed));
   };
 
-  const send_code = async (code) => {
-    if (code.length < 1) {
-      return FailedToast("Failed", "Airdrop code Invalid");
-    }
+  const send_code = async () => {
     onClose();
     SendingToast("Claiming NFT...");
 
     try {
-      await dispatch(airdrop_use(code));
+      await dispatch(airdrop_use());
       toast.closeAll();
       SuccessToast("Success", "Congratulations! You got 1 NFT");
     } catch (e) {
@@ -113,30 +115,44 @@ const Airdrop = () => {
         color={buttonTextColor}
         leftIcon={<FaParachuteBox />}
         size={useBreakpointValue(["md", "lg"])}
-        _hover={{ opacity: "0.8" }}
-        mb={3}
+        _hover={{ opacity: "0.95" }}
+        boxShadow="lg"
         onClick={onOpen}
         isDisabled={!isLogged}
       >
-        Use airdrop code
+        Claim airdrop
       </Button>
       {/* modal */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent mx="10%">
           <ModalHeader>
-            <Center>Airdrop Code</Center>
+            <Center>Claim Airdrop</Center>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Heading fontSize={{ base: "xs", sm: "xs", md: "md" }}>
+            <Heading
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight={600}
+              textDecoration="underline"
+            >
+              Item:
+            </Heading>
+            <Heading
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight={600}
+              mb={2}
+            >
+              You will be randomly allocated 1 NFT from the collection!
+            </Heading>
+            {/* <Heading fontSize={{ base: "xs", sm: "xs", md: "md" }}>
               <FormControl>
                 <Input
                   placeholder="2q3yzvCiraWf2vAR..."
                   onChange={(event) => setCode(event.target.value)}
                 />
               </FormControl>
-            </Heading>
+            </Heading> */}
           </ModalBody>
           <ModalFooter>
             <Button
@@ -146,7 +162,7 @@ const Airdrop = () => {
               width="100%"
               _hover={{ opacity: "0.8" }}
               leftIcon={<FaParachuteBox />}
-              onClick={() => send_code(code)}
+              onClick={() => send_code()}
             >
               Confirm Airdrop
             </Button>

@@ -52,7 +52,7 @@ type AccountIdentifier = blob;
 service : {
   add: (TokenIdentifier) -> (Result_3);
   airdrop_add: (blob) -> (Result_3);
-  airdrop_use: (AccountIdentifier, blob) -> (Result_4);
+  airdrop_use: (AccountIdentifier) -> (Result_4);
   buy_tx: (nat, TransactionId, opt SubAccount) -> (Result_4);
   claim: (AccountIdentifier, opt SubAccount, TokenIdentifier) -> (Result_3);
   icp_balance: () -> (Result_2);

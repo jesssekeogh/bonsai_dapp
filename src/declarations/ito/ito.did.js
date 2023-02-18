@@ -33,11 +33,7 @@ export const idlFactory = ({ IDL }) => {
   const Class = IDL.Service({
     'add' : IDL.Func([TokenIdentifier], [Result_3], []),
     'airdrop_add' : IDL.Func([IDL.Vec(IDL.Nat8)], [Result_3], []),
-    'airdrop_use' : IDL.Func(
-        [AccountIdentifier, IDL.Vec(IDL.Nat8)],
-        [Result_4],
-        [],
-      ),
+    'airdrop_use' : IDL.Func([AccountIdentifier], [Result_4], []),
     'buy_tx' : IDL.Func(
         [IDL.Nat, TransactionId, IDL.Opt(SubAccount)],
         [Result_4],

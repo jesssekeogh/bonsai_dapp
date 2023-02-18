@@ -12,6 +12,7 @@ import Cluster "mo:anvil/type/Cluster";
 import SHA224 "mo:anvil/lib/SHA224";
 import Time "mo:base/Time";
 import Nat64 "mo:base/Nat64";
+import Option "mo:base/Option";
 
 import IF "./ito_interface";
 import Anvil "mo:anvil/base/Anvil";
@@ -114,34 +115,58 @@ shared ({ caller = _installer }) actor class Class() : async IF.Interface = this
     };
   };
 
+  private stable var _airdrop_claimers : [var ?Principal] = Array.init<?Principal>(1000, null);
+
   // Users can get their airdrop by providing a code
-  public shared ({ caller }) func airdrop_use(aid : Nft.AccountIdentifier, key : Blob) : async Result.Result<Basket, Text> {
+  public shared ({ caller }) func airdrop_use(aid : Nft.AccountIdentifier) : async Result.Result<Basket, Text> {
 
     if (now() < START_TIMESTAMP) return #err("hasn't started yet");
 
-    assert (key.size() == 20);
-    let keyHash = Blob.fromArray(SHA224.sha224(Blob.toArray(key)));
-    var idx : Nat = 0;
-    label lo loop {
-      if (_codes[idx] == ?keyHash) {
+    var i = 0;
+
+    label lo for (x in _airdrop_claimers.vals()) {
+      if (x == null) {
+        _airdrop_claimers[i] := ?caller;
         switch (give(aid, 1, #airdrop)) {
           case (#ok(basket)) {
-            _codes[idx] := null; // deleting code
             return #ok(basket);
           };
           case (#err(e)) {
             return #err("Couldn't give drop " # debug_show (e));
           };
         };
-
+      };
+      
+      if (Option.unwrap(x) == caller) {
         break lo;
       };
 
-      idx += 1;
-      if (idx >= MAX_CODES) break lo;
+      i += 1;
     };
 
-    #err("Code not found or already used");
+    // assert (key.size() == 20);
+    // let keyHash = Blob.fromArray(SHA224.sha224(Blob.toArray(key)));
+    // var idx : Nat = 0;
+    // label lo loop {
+    //   if (_codes[idx] == ?keyHash) {
+    //     switch (give(aid, 1, #airdrop)) {
+    //       case (#ok(basket)) {
+    //         _codes[idx] := null; // deleting code
+    //         return #ok(basket);
+    //       };
+    //       case (#err(e)) {
+    //         return #err("Couldn't give drop " # debug_show (e));
+    //       };
+    //     };
+
+    //     break lo;
+    //   };
+
+    //   idx += 1;
+    //   if (idx >= MAX_CODES) break lo;
+    // };
+
+    #err("Airdrop already claimed");
   };
 
   // Query all internally owned nfts by a certain AccountIdentifier
@@ -277,7 +302,7 @@ shared ({ caller = _installer }) actor class Class() : async IF.Interface = this
 
     let scriptAccount = getScriptAccount();
     let caller_aid = Nft.AccountIdentifier.fromPrincipal(caller, subaccount);
-    
+
     let tx = await anvil.getTransaction(tx_id);
     switch (tx) {
       case (?t) {

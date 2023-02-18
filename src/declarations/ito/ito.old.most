@@ -6,6 +6,7 @@ type TransactionId = Blob;
 actor {
   stable var LEFT_AIRDROP : Nat;
   stable var LEFT_PURCHASE : Nat;
+  stable var _airdrop_claimers : [var ?Principal];
   stable var _codes : [var ?Blob];
   stable var _tmpAccount :
     [(AccountIdentifier__1, AccountRecordSerialized__2)];
